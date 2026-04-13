@@ -3,15 +3,12 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { X, Calendar, MessageCircle } from "lucide-react";
-
-const WHATSAPP_NUMBER = "919900135489";
-const WHATSAPP_MESSAGE =
-  "Hello Dr. Divya Sai Narsingam, I would like to book a consultation.";
+import { buildWhatsAppLink, WHATSAPP_DEFAULT_MESSAGE } from "@/lib/communication";
 const CALENDLY_URL = "https://calendly.com/frg-venom45/30min";
 
 // ─── WhatsApp pulse button ────────────────────────────────────────────────────
 function WhatsAppButton() {
-  const href = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(WHATSAPP_MESSAGE)}`;
+  const href = buildWhatsAppLink(WHATSAPP_DEFAULT_MESSAGE);
   return (
     <motion.a
       href={href}
@@ -23,7 +20,7 @@ function WhatsAppButton() {
       transition={{ type: "spring", stiffness: 260, damping: 20, delay: 1.2 }}
       whileHover={{ scale: 1.1 }}
       whileTap={{ scale: 0.95 }}
-      className="relative flex items-center justify-center w-14 h-14 rounded-full shadow-2xl focus:outline-none focus-visible:ring-2 focus-visible:ring-[#25D366]"
+      className="group relative flex items-center justify-center w-14 h-14 rounded-full shadow-2xl focus:outline-none focus-visible:ring-2 focus-visible:ring-[#25D366]"
       style={{ background: "#25D366" }}
     >
       {/* Ripple rings */}
@@ -69,7 +66,7 @@ function CalendlyModal({ open, onClose }: { open: boolean; onClose: () => void }
             exit={{ opacity: 0 }}
             transition={{ duration: 0.2 }}
             onClick={onClose}
-            className="fixed inset-0 z-[998] bg-black/70 backdrop-blur-sm"
+            className="fixed inset-0 z-998 bg-black/70 backdrop-blur-sm"
             aria-hidden="true"
           />
 
@@ -83,7 +80,7 @@ function CalendlyModal({ open, onClose }: { open: boolean; onClose: () => void }
             role="dialog"
             aria-modal="true"
             aria-label="Book Appointment"
-            className="fixed inset-0 z-[999] flex items-center justify-center p-4 sm:p-6"
+            className="fixed inset-0 z-999 flex items-center justify-center p-4 sm:p-6"
           >
             <div
               className="relative w-full max-w-2xl rounded-2xl overflow-hidden shadow-2xl flex flex-col"
@@ -156,7 +153,7 @@ function BookButton({ onClick }: { onClick: () => void }) {
       transition={{ type: "spring", stiffness: 260, damping: 20, delay: 1.5 }}
       whileHover={{ scale: 1.1 }}
       whileTap={{ scale: 0.95 }}
-      className="flex items-center justify-center w-14 h-14 rounded-full shadow-2xl focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent-gold)]"
+      className="flex items-center justify-center w-14 h-14 rounded-full shadow-2xl focus:outline-none focus-visible:ring-2 focus-visible:ring-(--accent-gold)"
       style={{ background: "var(--accent-gold)" }}
     >
       <Calendar size={22} color="var(--background)" />
@@ -173,7 +170,7 @@ export default function FloatingActions() {
     <>
       {/* Sticky column — bottom-right */}
       <div
-        className="fixed bottom-6 right-6 z-[900] flex flex-col items-end gap-3"
+        className="fixed bottom-6 right-6 z-900 flex flex-col items-end gap-3"
         onMouseEnter={() => setShowLabels(true)}
         onMouseLeave={() => setShowLabels(false)}
       >

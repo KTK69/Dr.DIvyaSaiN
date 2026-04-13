@@ -1,26 +1,36 @@
+import Image from "next/image";
 import Link from "next/link";
 import { MapPin, Phone, Mail } from "lucide-react";
+
+const LOGO = "/images/img/Dr%20Divya%20Logo%20Circle.png";
 
 export default function Footer() {
   return (
     <footer
-      className="border-t border-[var(--border)] bg-[var(--bg-surface)]"
+      className="border-t border-(--border) bg-(--bg-surface)"
       role="contentinfo"
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
           {/* Brand */}
           <div className="lg:col-span-2">
-            <h2
-              className="text-lg font-medium text-[var(--foreground)] mb-1"
-              style={{ fontFamily: "var(--font-serif)" }}
-            >
-              Dr. Divya Sai Narsingam
-            </h2>
-            <p className="text-sm text-[var(--accent-gold-light)] mb-4">
-              MCh Plastic Surgery · Board-Certified
-            </p>
-            <p className="text-sm text-[var(--foreground-muted)] leading-relaxed max-w-sm">
+            <div className="flex items-center gap-4 mb-4">
+              <div className="relative h-14 w-14 overflow-hidden rounded-full border border-(--border) bg-(--bg-card) shrink-0">
+                <Image src={LOGO} alt="Dr. Divya Sai Narsingam logo" fill className="object-cover" />
+              </div>
+              <div>
+                <h2
+                  className="text-lg font-medium text-(--foreground) mb-1"
+                  style={{ fontFamily: "var(--font-serif)" }}
+                >
+                  Dr. Divya Sai Narsingam
+                </h2>
+                <p className="text-sm text-(--accent-gold-light)">
+                  MCh Plastic Surgery · Board-Certified
+                </p>
+              </div>
+            </div>
+            <p className="text-sm text-(--foreground-muted) leading-relaxed max-w-sm">
               Consultant Plastic &amp; Reconstructive Surgeon at CARE Hospitals,
               Gachibowli, Hyderabad. Specialising in aesthetic and reconstructive
               plastic surgery with over 14 years of clinical experience.
@@ -29,7 +39,7 @@ export default function Footer() {
 
           {/* Services */}
           <div>
-            <h3 className="text-xs font-semibold uppercase tracking-widest text-[var(--foreground-muted)] mb-4">
+            <h3 className="text-xs font-semibold uppercase tracking-widest text-(--foreground-muted) mb-4">
               Services
             </h3>
             <ul className="space-y-2">
@@ -44,7 +54,7 @@ export default function Footer() {
                 <li key={href}>
                   <Link
                     href={href}
-                    className="text-sm text-[var(--foreground-muted)] hover:text-[var(--foreground)] transition-colors"
+                    className="text-sm text-(--foreground-muted) hover:text-(--foreground) transition-colors"
                   >
                     {label}
                   </Link>
@@ -55,21 +65,21 @@ export default function Footer() {
 
           {/* Contact */}
           <div>
-            <h3 className="text-xs font-semibold uppercase tracking-widest text-[var(--foreground-muted)] mb-4">
+            <h3 className="text-xs font-semibold uppercase tracking-widest text-(--foreground-muted) mb-4">
               Contact
             </h3>
             <ul className="space-y-3">
               <li className="flex gap-3">
-                <MapPin size={15} className="text-[var(--accent-gold)] mt-0.5 shrink-0" />
-                <span className="text-sm text-[var(--foreground-muted)] leading-relaxed">
+                <MapPin size={15} className="text-(--accent-gold) mt-0.5 shrink-0" />
+                <span className="text-sm text-(--foreground-muted) leading-relaxed">
                   Room No. 205, OPD Building,<br />
                   CARE Hospital, Old Mumbai Highway,<br />
                   Gachibowli, Hyderabad – 500032
                 </span>
               </li>
               <li className="flex gap-3 items-center">
-                <Mail size={15} className="text-[var(--accent-gold)] shrink-0" />
-                <span className="text-sm text-[var(--foreground-muted)]">
+                <Mail size={15} className="text-(--accent-gold) shrink-0" />
+                <span className="text-sm text-(--foreground-muted)">
                   Appointments via CARE Hospitals
                 </span>
               </li>
@@ -77,8 +87,8 @@ export default function Footer() {
           </div>
         </div>
 
-        <div className="mt-12 pt-8 border-t border-[var(--border)] flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-          <p className="text-xs text-[var(--foreground-subtle)]">
+        <div className="mt-12 pt-8 border-t border-(--border) flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+          <p className="text-xs text-(--foreground-subtle)">
             © {new Date().getFullYear()} Dr. Divya Sai Narsingam. All rights reserved.
           </p>
           <nav className="flex gap-5" aria-label="Footer navigation">
@@ -87,12 +97,13 @@ export default function Footer() {
               ["About", "/about"],
               ["Services", "/services"],
               ["Experience", "/experience"],
+              ["Testimonials", "/testimonials"],
               ["Contact", "/contact"],
             ].map(([label, href]) => (
               <Link
                 key={href}
                 href={href}
-                className="text-xs text-[var(--foreground-subtle)] hover:text-[var(--foreground-muted)] transition-colors"
+                className="text-xs text-(--foreground-subtle) hover:text-(--foreground-muted) transition-colors"
               >
                 {label}
               </Link>

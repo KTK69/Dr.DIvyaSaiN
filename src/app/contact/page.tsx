@@ -3,6 +3,7 @@ import PageWrapper from "@/components/ui/PageWrapper";
 import AppointmentForm from "@/components/contact/AppointmentForm";
 import { MapPin, Clock, Info } from "lucide-react";
 import JsonLd from "@/components/seo/JsonLd";
+import WhatsAppSupportCard from "@/components/contact/WhatsAppSupportCard";
 
 export const metadata: Metadata = {
   title: "Book Appointment | Dr. Divya Sai Narsingam – CARE Hospitals Hyderabad",
@@ -49,18 +50,18 @@ export default function ContactPage() {
     <PageWrapper>
       <JsonLd data={localBusinessJsonLd} />
 
-      <div className="pt-28 pb-16 border-b border-[var(--border)] bg-[var(--bg-surface)]">
+      <div className="pt-28 pb-16 border-b border-(--border) bg-(--bg-surface)">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <p className="text-xs font-semibold uppercase tracking-widest text-[var(--accent-gold)] mb-3">
+          <p className="text-xs font-semibold uppercase tracking-widest text-(--accent-gold) mb-3">
             Appointments
           </p>
           <h1
-            className="text-4xl md:text-5xl font-medium text-[var(--foreground)] max-w-2xl"
+            className="text-4xl md:text-5xl font-medium text-(--foreground) max-w-2xl"
             style={{ fontFamily: "var(--font-serif)" }}
           >
             Book a Consultation
           </h1>
-          <p className="mt-4 text-base text-[var(--foreground-muted)] max-w-xl">
+          <p className="mt-4 text-base text-(--foreground-muted) max-w-xl">
             Pick a slot directly from the calendar below, or use the form to
             send a consultation request. Our team will confirm your appointment
             and send any pre-visit instructions.
@@ -73,7 +74,7 @@ export default function ContactPage() {
         {/* ── Calendly inline booking ──────────────────────────────────────── */}
         <section className="mb-16" aria-labelledby="calendly-heading">
           <div className="glass-card rounded-2xl overflow-hidden">
-            <div className="px-6 pt-6 pb-4 border-b border-[var(--border)] flex flex-col sm:flex-row sm:items-center gap-3">
+            <div className="px-6 pt-6 pb-4 border-b border-(--border) flex flex-col sm:flex-row sm:items-center gap-3">
               <div
                 className="flex items-center justify-center w-9 h-9 rounded-lg shrink-0"
                 style={{ background: "var(--accent-gold)", color: "var(--background)" }}
@@ -83,12 +84,12 @@ export default function ContactPage() {
               <div>
                 <h2
                   id="calendly-heading"
-                  className="text-base font-medium text-[var(--foreground)]"
+                  className="text-base font-medium text-(--foreground)"
                   style={{ fontFamily: "var(--font-serif)" }}
                 >
                   Choose an Available Slot
                 </h2>
-                <p className="text-xs text-[var(--foreground-muted)] mt-0.5">
+                <p className="text-xs text-(--foreground-muted) mt-0.5">
                   Instantly book your consultation — select a date &amp; time that works for you.
                 </p>
               </div>
@@ -114,18 +115,20 @@ export default function ContactPage() {
 
           {/* Info sidebar */}
           <aside className="space-y-6">
+            <WhatsAppSupportCard />
+
             {/* Location */}
             <div className="glass-card rounded-xl p-6">
               <div className="flex items-center gap-2 mb-4">
-                <MapPin size={16} className="text-[var(--accent-gold)]" />
+                <MapPin size={16} className="text-(--accent-gold)" />
                 <h2
-                  className="text-base font-medium text-[var(--foreground)]"
+                  className="text-base font-medium text-(--foreground)"
                   style={{ fontFamily: "var(--font-serif)" }}
                 >
                   Location
                 </h2>
               </div>
-              <address className="not-italic text-sm text-[var(--foreground-muted)] leading-relaxed">
+              <address className="not-italic text-sm text-(--foreground-muted) leading-relaxed">
                 Room No. 205, OPD Building
                 <br />
                 CARE Hospital
@@ -143,26 +146,26 @@ export default function ContactPage() {
             {/* Map placeholder */}
             <div className="glass-card rounded-xl overflow-hidden">
               <div
-                className="aspect-[4/3] bg-gradient-to-br from-[var(--bg-card)] to-[var(--bg-surface)] flex flex-col items-center justify-center"
+                className="aspect-4/3 bg-linear-to-br from-(--bg-card) to-(--bg-surface) flex flex-col items-center justify-center"
                 aria-label="Map placeholder – CARE Hospitals Gachibowli"
                 role="img"
               >
                 <MapPin
                   size={32}
-                  className="text-[var(--accent-gold)] opacity-50 mb-2"
+                  className="text-(--accent-gold) opacity-50 mb-2"
                 />
-                <p className="text-xs text-[var(--foreground-subtle)] text-center px-6">
+                <p className="text-xs text-(--foreground-subtle) text-center px-6">
                   CARE Hospitals, Gachibowli
                   <br />
                   Hyderabad, Telangana
                 </p>
               </div>
-              <div className="px-6 py-4 border-t border-[var(--border)]">
+              <div className="px-6 py-4 border-t border-(--border)">
                 <a
                   href="https://maps.google.com/?q=CARE+Hospitals+Gachibowli+Hyderabad"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-xs text-[var(--accent-gold-light)] hover:underline"
+                  className="text-xs text-(--accent-gold-light) hover:underline"
                 >
                   View on Google Maps →
                 </a>
@@ -172,21 +175,21 @@ export default function ContactPage() {
             {/* Hours */}
             <div className="glass-card rounded-xl p-6">
               <div className="flex items-center gap-2 mb-4">
-                <Clock size={16} className="text-[var(--accent-gold)]" />
+                <Clock size={16} className="text-(--accent-gold)" />
                 <h2
-                  className="text-base font-medium text-[var(--foreground)]"
+                  className="text-base font-medium text-(--foreground)"
                   style={{ fontFamily: "var(--font-serif)" }}
                 >
                   OPD Hours
                 </h2>
               </div>
-              <p className="text-sm text-[var(--foreground-muted)] mb-1">
+              <p className="text-sm text-(--foreground-muted) mb-1">
                 Monday – Friday
               </p>
-              <p className="text-sm text-[var(--foreground)]">
+              <p className="text-sm text-(--foreground)">
                 As per CARE Hospitals schedule
               </p>
-              <p className="text-xs text-[var(--foreground-subtle)] mt-3">
+              <p className="text-xs text-(--foreground-subtle) mt-3">
                 For specific appointment slots, please submit the form and our
                 team will confirm availability.
               </p>
@@ -197,9 +200,9 @@ export default function ContactPage() {
               <div className="flex items-start gap-3">
                 <Info
                   size={16}
-                  className="text-[var(--foreground-muted)] mt-0.5 shrink-0"
+                  className="text-(--foreground-muted) mt-0.5 shrink-0"
                 />
-                <p className="text-xs text-[var(--foreground-muted)] leading-relaxed">
+                <p className="text-xs text-(--foreground-muted) leading-relaxed">
                   For emergencies or urgent surgical referrals, please contact
                   CARE Hospitals directly or visit the emergency department.
                   Appointment requests via this form are for scheduled

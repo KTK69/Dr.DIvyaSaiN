@@ -5,6 +5,12 @@ import { cosmeticServices, reconstructiveServices } from "@/lib/doctor-data";
 import { CheckCircle, ArrowRight } from "lucide-react";
 import Link from "next/link";
 import JsonLd from "@/components/seo/JsonLd";
+import {
+  buildBreadcrumbJsonLd,
+  buildFaqJsonLd,
+  buildServiceJsonLd,
+  buildServiceMetadata,
+} from "@/lib/seo";
 
 interface Props {
   params: Promise<{ slug: string }>;
@@ -18,19 +24,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
   const service = cosmeticServices.find((s) => s.slug === slug);
   if (!service) return {};
-  return {
-    title: `${service.name} in Hyderabad | Dr. Divya Sai Narsingam`,
-    description: `${service.shortDesc} Expert cosmetic surgery by Dr. Divya Sai Narsingam at CARE Hospitals, Gachibowli, Hyderabad.`,
-    keywords: [
-      `${service.name} Hyderabad`,
-      `${service.name} Gachibowli`,
-      "cosmetic surgeon Hyderabad",
-      "plastic surgeon CARE Hospitals",
-    ],
-    alternates: {
-      canonical: `https://www.drdivyanarsingam.com/services/cosmetic/${slug}`,
-    },
-  };
+  return buildServiceMetadata(service, "cosmetic", slug);
 }
 
 export default async function CosmeticServicePage({ params }: Props) {
@@ -40,24 +34,33 @@ export default async function CosmeticServicePage({ params }: Props) {
 
   const related = cosmeticServices.filter((s) => s.slug !== slug).slice(0, 3);
 
-  const serviceJsonLd = {
-    "@context": "https://schema.org",
-    "@type": "MedicalProcedure",
-    name: service.name,
-    description: service.description,
-    procedureType: "Surgical",
-    followup: "Follow-up as advised",
-    preparation: "Consultation required prior to procedure",
-    provider: {
-      "@type": "Physician",
-      name: "Dr. Divya Sai Narsingam",
-      medicalSpecialty: "Plastic and Reconstructive Surgery",
+  const serviceJsonLd = buildServiceJsonLd(service, "cosmetic", slug);
+  const breadcrumbJsonLd = buildBreadcrumbJsonLd([
+    { name: "Home", url: "https://www.drdivyanarsingam.com" },
+    { name: "Services", url: "https://www.drdivyanarsingam.com/services" },
+    { name: "Cosmetic Surgery", url: "https://www.drdivyanarsingam.com/services" },
+    { name: service.name, url: `https://www.drdivyanarsingam.com/services/cosmetic/${slug}` },
+  ]);
+  const faqJsonLd = buildFaqJsonLd([
+    {
+      question: `Who is a good candidate for ${service.name}?`,
+      answer: `Patients seeking aesthetic improvement or contour refinement after careful assessment may be candidates for ${service.name}. A consultation is required to confirm suitability.`,
     },
-  };
+    {
+      question: `How long is recovery after ${service.name}?`,
+      answer: `Recovery varies by procedure and individual healing, but Dr. Divya Sai Narsingam explains the expected downtime and follow-up during consultation.`,
+    },
+    {
+      question: `Is ${service.name} performed in Hyderabad?`,
+      answer: `Yes. Cosmetic procedures are planned in coordination with CARE Hospitals, Gachibowli, Hyderabad.`,
+    },
+  ]);
 
   return (
     <PageWrapper>
       <JsonLd data={serviceJsonLd} />
+      <JsonLd data={breadcrumbJsonLd} />
+      <JsonLd data={faqJsonLd} />
 
       <div className="pt-28 pb-16 border-b border-[var(--border)] bg-[var(--bg-surface)]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -158,6 +161,46 @@ export default async function CosmeticServicePage({ params }: Props) {
               >
                 Book Consultation <ArrowRight size={15} />
               </Link>
+            </section>
+
+            <section className="glass-card rounded-xl p-8" aria-labelledby="faq-heading">
+              <h2
+                id="faq-heading"
+                className="text-xl font-medium text-[var(--foreground)] mb-4"
+                style={{ fontFamily: "var(--font-serif)" }}
+              >
+                Frequently asked questions
+              </h2>
+              <div className="space-y-4 text-sm text-[var(--foreground-muted)] leading-relaxed">
+                <div>
+                  <p className="font-medium text-[var(--foreground)] mb-1">
+                    What happens at the first consultation?
+                  </p>
+                  <p>
+                    The consultation includes a discussion of goals, medical
+                    history, physical assessment, and a procedure-specific
+                    recommendation.
+                  </p>
+                </div>
+                <div>
+                  <p className="font-medium text-[var(--foreground)] mb-1">
+                    Will the result look natural?
+                  </p>
+                  <p>
+                    The surgical plan is tailored to the patient's anatomy and
+                    expectations so the result remains balanced and natural.
+                  </p>
+                </div>
+                <div>
+                  <p className="font-medium text-[var(--foreground)] mb-1">
+                    How do I book a follow-up?
+                  </p>
+                  <p>
+                    Follow-up can be arranged through the contact page or
+                    WhatsApp support for quick coordination.
+                  </p>
+                </div>
+              </div>
             </section>
           </div>
 
