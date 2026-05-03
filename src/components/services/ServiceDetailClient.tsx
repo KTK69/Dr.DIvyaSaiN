@@ -46,7 +46,7 @@ export default function ServiceDetailClient({ slug, serverService }: Props) {
               What this includes
             </h2>
             <ul className="space-y-3" role="list">
-              {(service.key_points || service.keyPoints || []).map((point: string) => (
+              {("key_points" in service ? service.key_points : "keyPoints" in service ? service.keyPoints : []).map((point: string) => (
                 <li key={point} className="flex items-start gap-3">
                   <CheckCircle size={16} className="text-(--accent-blue) mt-0.5 shrink-0" />
                   <span className="text-sm text-(--foreground-muted) leading-relaxed">{point}</span>
