@@ -15,6 +15,20 @@ export type LegacyService = {
   category?: Service["category"];
 };
 
+function getServiceKeyPoints(service: Service | LegacyService) {
+  const modernPoints = (service as Service).key_points;
+  if (Array.isArray(modernPoints)) {
+    return modernPoints;
+  }
+
+  const legacyPoints = (service as LegacyService).keyPoints;
+  if (Array.isArray(legacyPoints)) {
+    return legacyPoints;
+  }
+
+  return [] as string[];
+}
+
 interface Props {
   slug: string;
   serverService?: LegacyService | null;
@@ -46,7 +60,7 @@ export default function ServiceDetailClient({ slug, serverService }: Props) {
               What this includes
             </h2>
             <ul className="space-y-3" role="list">
-              {("key_points" in service ? service.key_points : "keyPoints" in service ? service.keyPoints : []).map((point: string) => (
+              {getServiceKeyPoints(service).map((point: string) => (
                 <li key={point} className="flex items-start gap-3">
                   <CheckCircle size={16} className="text-(--accent-blue) mt-0.5 shrink-0" />
                   <span className="text-sm text-(--foreground-muted) leading-relaxed">{point}</span>
@@ -118,7 +132,7 @@ export default function ServiceDetailClient({ slug, serverService }: Props) {
 
           <div className="glass-card rounded-xl p-6">
             <h3 className="text-xs font-semibold uppercase tracking-widest text-(--foreground-muted) mb-3">Location</h3>
-            <p className="text-sm text-(--foreground-muted) leading-relaxed">Room No. 205, OPD Building,<br/>CARE Hospital, Old Mumbai Highway,<br/>Gachibowli, Hyderabad – 500032</p>
+            <p className="text-sm text-(--foreground-muted) leading-relaxed">Room No. 20, 1st Floor,<br/>AIG Hospitals, Banjara Hills,<br/>Hyderabad – 500034</p>
           </div>
         </aside>
       </div>
