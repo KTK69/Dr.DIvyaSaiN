@@ -3,9 +3,10 @@ import "./globals.css";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import FloatingActions from "@/components/ui/FloatingActions";
+import { SiteContentProvider } from "@/components/site/SiteContentProvider";
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://www.drdivyanarsingam.com"),
+  metadataBase: new URL("https://drdivyaplasticsurgeon.com"),
   title: {
     default:
       "Dr. Divya Sai Narsingam | Plastic & Reconstructive Surgeon Hyderabad",
@@ -54,10 +55,12 @@ export default function RootLayout({
         />
       </head>
       <body>
-        <Navbar />
-        <main>{children}</main>
-        <Footer />
-        <FloatingActions />
+        <SiteContentProvider>
+          <Navbar />
+          <main>{children}</main>
+          <Footer />
+          <FloatingActions />
+        </SiteContentProvider>
       </body>
     </html>
   );

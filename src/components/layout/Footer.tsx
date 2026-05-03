@@ -1,10 +1,16 @@
+"use client";
+
 import Image from "next/image";
 import Link from "next/link";
-import { MapPin, Phone, Mail } from "lucide-react";
+import { MapPin, Mail } from "lucide-react";
+import { useSiteContent } from "@/components/site/SiteContentProvider";
 
 const LOGO = "/images/img/Dr%20Divya%20Logo%20Circle.png";
 
 export default function Footer() {
+  const { content } = useSiteContent();
+  const footer = content.footer;
+
   return (
     <footer
       className="border-t border-(--border) bg-(--bg-surface)"
@@ -26,31 +32,22 @@ export default function Footer() {
                   Dr. Divya Sai Narsingam
                 </h2>
                 <p className="text-sm text-(--accent-gold-light)">
-                  MCh Plastic Surgery · Board-Certified
+                  {footer.qualifications}
                 </p>
               </div>
             </div>
             <p className="text-sm text-(--foreground-muted) leading-relaxed max-w-sm">
-              Consultant Plastic &amp; Reconstructive Surgeon at CARE Hospitals,
-              Gachibowli, Hyderabad. Specialising in aesthetic and reconstructive
-              plastic surgery with over 14 years of clinical experience.
+              {footer.bio}
             </p>
           </div>
 
           {/* Services */}
           <div>
             <h3 className="text-xs font-semibold uppercase tracking-widest text-(--foreground-muted) mb-4">
-              Services
+              {footer.servicesTitle}
             </h3>
             <ul className="space-y-2">
-              {[
-                ["Onco Reconstruction", "/services/reconstructive/onco-reconstruction"],
-                ["Breast Reconstruction", "/services/reconstructive/breast-reconstruction"],
-                ["Microvascular Surgery", "/services/reconstructive/microvascular-surgery"],
-                ["Breast Augmentation", "/services/cosmetic/breast-augmentation"],
-                ["Body Lipocontouring", "/services/cosmetic/body-lipocontouring"],
-                ["Gynecomastia", "/services/cosmetic/gynecomastia-reduction"],
-              ].map(([label, href]) => (
+              {footer.services.map(({ label, href }) => (
                 <li key={href}>
                   <Link
                     href={href}
@@ -66,21 +63,19 @@ export default function Footer() {
           {/* Contact */}
           <div>
             <h3 className="text-xs font-semibold uppercase tracking-widest text-(--foreground-muted) mb-4">
-              Contact
+              {footer.contactTitle}
             </h3>
             <ul className="space-y-3">
               <li className="flex gap-3">
                 <MapPin size={15} className="text-(--accent-gold) mt-0.5 shrink-0" />
                 <span className="text-sm text-(--foreground-muted) leading-relaxed">
-                  Room No. 205, OPD Building,<br />
-                  CARE Hospital, Old Mumbai Highway,<br />
-                  Gachibowli, Hyderabad – 500032
+                  {footer.contactLocation}
                 </span>
               </li>
               <li className="flex gap-3 items-center">
                 <Mail size={15} className="text-(--accent-gold) shrink-0" />
                 <span className="text-sm text-(--foreground-muted)">
-                  Appointments via CARE Hospitals
+                  {footer.contactEmail}
                 </span>
               </li>
             </ul>
@@ -89,21 +84,14 @@ export default function Footer() {
 
         <div className="mt-12 pt-8 border-t border-(--border) flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
           <p className="text-xs text-(--foreground-subtle)">
-            © {new Date().getFullYear()} Dr. Divya Sai Narsingam. All rights reserved.
+            © {new Date().getFullYear()} {footer.copyright}
           </p>
           <nav className="flex gap-5" aria-label="Footer navigation">
-            {[
-              ["Home", "/"],
-              ["About", "/about"],
-              ["Services", "/services"],
-              ["Experience", "/experience"],
-              ["Testimonials", "/testimonials"],
-              ["Contact", "/contact"],
-            ].map(([label, href]) => (
+            {footer.links.map(({ label, href }) => (
               <Link
                 key={href}
                 href={href}
-                className="text-xs text-(--foreground-subtle) hover:text-(--foreground-muted) transition-colors"
+                className="text-xs text-(--foreground-muted) hover:text-(--foreground) transition-colors"
               >
                 {label}
               </Link>
@@ -114,3 +102,4 @@ export default function Footer() {
     </footer>
   );
 }
+

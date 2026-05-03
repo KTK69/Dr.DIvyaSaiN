@@ -3,6 +3,7 @@ import Link from "next/link";
 import PageWrapper from "@/components/ui/PageWrapper";
 import SectionHeading from "@/components/ui/SectionHeading";
 import JsonLd from "@/components/seo/JsonLd";
+import TestimonialsPageHeader from "@/components/testimonials/TestimonialsPageHeader";
 import { ArrowRight, PlayCircle, Quote, Star } from "lucide-react";
 
 export const metadata: Metadata = {
@@ -21,7 +22,7 @@ export const metadata: Metadata = {
     "Dr Divya Sai Narsingam testimonials",
   ],
   alternates: {
-    canonical: "https://www.drdivyanarsingam.com/testimonials",
+    canonical: "https://drdivyaplasticsurgeon.com/reviews",
   },
 };
 
@@ -29,7 +30,7 @@ const pageJsonLd = {
   "@context": "https://schema.org",
   "@type": "WebPage",
   name: "Testimonials & Video Reviews",
-  url: "https://www.drdivyanarsingam.com/testimonials",
+  url: "https://drdivyaplasticsurgeon.com/reviews",
   description:
     "Patient testimonials and video reviews for reconstructive and cosmetic plastic surgery in Hyderabad.",
   about: [
@@ -76,20 +77,7 @@ export default function TestimonialsPage() {
 
       <div className="pt-28 pb-16 border-b border-(--border) bg-(--bg-surface)">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <p className="text-xs font-semibold uppercase tracking-widest text-(--accent-gold) mb-3">
-            Patient Experiences
-          </p>
-          <h1
-            className="text-4xl md:text-5xl font-medium text-(--foreground) max-w-3xl"
-            style={{ fontFamily: "var(--font-serif)" }}
-          >
-            Testimonials and video reviews
-          </h1>
-          <p className="mt-4 text-base text-(--foreground-muted) max-w-2xl leading-relaxed">
-            A dedicated space for patient stories, approved YouTube testimonials,
-            and service-specific feedback across reconstructive and cosmetic
-            plastic surgery.
-          </p>
+          <TestimonialsPageHeader />
         </div>
       </div>
 
@@ -201,3 +189,4 @@ export default function TestimonialsPage() {
     </PageWrapper>
   );
 }
+

@@ -5,6 +5,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod/v4";
 import { useState } from "react";
 import { Send, CheckCircle } from "lucide-react";
+import { submitAppointment } from "@/lib/api";
 
 const appointmentSchema = z.object({
   fullName: z.string().min(2, "Please enter your full name"),
@@ -19,6 +20,7 @@ type AppointmentFormData = z.infer<typeof appointmentSchema>;
 
 export default function AppointmentForm() {
   const [submitted, setSubmitted] = useState(false);
+  const [submitError, setSubmitError] = useState<string | null>(null);
 
   const {
     register,
@@ -30,9 +32,14 @@ export default function AppointmentForm() {
   });
 
   const onSubmit = async (data: AppointmentFormData) => {
-    // Simulate API call
-    await new Promise((res) => setTimeout(res, 1000));
-    console.log("Appointment request:", data);
+    setSubmitError(null);
+    const result = await submitAppointment(data);
+
+    if (!result.ok) {
+      setSubmitError(result.message || "Unable to submit appointment request.");
+      return;
+    }
+
     setSubmitted(true);
     reset();
   };
@@ -198,6 +205,11 @@ export default function AppointmentForm() {
       </div>
 
       <div className="pt-2">
+        {submitError && (
+          <p className="mb-3 text-xs text-red-400" role="alert">
+            {submitError}
+          </p>
+        )}
         <button
           type="submit"
           disabled={isSubmitting}

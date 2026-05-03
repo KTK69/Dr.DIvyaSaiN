@@ -3,6 +3,7 @@ import HeroSection from "@/components/home/HeroSection";
 import ServicesPreview from "@/components/home/ServicesPreview";
 import AboutPreview from "@/components/home/AboutPreview";
 import AwardsStrip from "@/components/home/AwardsStrip";
+import BeforeAfterGallery from "@/components/home/BeforeAfterGallery";
 import CTASection from "@/components/home/CTASection";
 import JsonLd from "@/components/seo/JsonLd";
 
@@ -12,7 +13,7 @@ export const metadata: Metadata = {
   description:
     "Dr. Divya Sai Narsingam – MCh Plastic Surgery. Consultant at CARE Hospitals Gachibowli, Hyderabad. 14+ years experience in reconstructive and cosmetic surgery.",
   alternates: {
-    canonical: "https://www.drdivyanarsingam.com",
+    canonical: "https://drdivyaplasticsurgeon.com",
   },
 };
 
@@ -24,14 +25,14 @@ const physicianJsonLd = {
   description:
     "Board-certified Plastic and Reconstructive Surgeon with over 14 years of clinical experience. Consultant at CARE Hospitals, Gachibowli, Hyderabad.",
   medicalSpecialty: "Plastic and Reconstructive Surgery",
-  url: "https://www.drdivyanarsingam.com",
+  url: "https://drdivyaplasticsurgeon.com",
   address: {
     "@type": "PostalAddress",
     streetAddress:
-      "Room No. 205, OPD Building, Old Mumbai Highway, Jayabheri Pine Valley",
-    addressLocality: "Gachibowli",
+      "Room No. 20, 1st Floor, AIG Hospitals",
+    addressLocality: "Banjara Hills",
     addressRegion: "Telangana",
-    postalCode: "500032",
+    postalCode: "500034",
     addressCountry: "IN",
   },
   worksFor: {
@@ -80,6 +81,7 @@ export default function HomePage() {
       <AwardsStrip />
       <AboutPreview />
       <ServicesPreview />
+      <BeforeAfterGallery />
       <CTASection />
     </>
   );

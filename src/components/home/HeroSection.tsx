@@ -4,10 +4,13 @@ import { motion } from "framer-motion";
 import Link from "next/link";
 import Image from "next/image";
 import { ArrowRight, Award } from "lucide-react";
+import { useSiteContent } from "@/components/site/SiteContentProvider";
 
 const HERO_IMAGE = "/images/img/Dr%20Divya%20Plastic%20Surgeon%20home.jpg";
 
 export default function HeroSection() {
+  const { content } = useSiteContent();
+  const hero = content.home.hero;
   return (
     <section
       className="relative min-h-screen flex items-center overflow-hidden"
@@ -37,59 +40,58 @@ export default function HeroSection() {
               transition={{ duration: 0.5, delay: 0.1 }}
               className="text-xs font-semibold uppercase tracking-widest text-(--accent-gold) mb-5"
             >
-              Plastic &amp; Reconstructive Surgery · Hyderabad
+              {hero.eyebrow}
             </motion.p>
 
             <h1
               className="text-4xl sm:text-5xl lg:text-6xl font-medium text-(--foreground) leading-tight mb-6"
               style={{ fontFamily: "var(--font-serif)" }}
             >
-              Precision Surgery.
+              {hero.title}
               <br />
               <em className="not-italic" style={{ color: "var(--accent-gold-light)" }}>
-                Compassionate
+                {hero.emphasis}
               </em>{" "}
               Care.
             </h1>
 
             <p className="text-base text-(--foreground-muted) leading-relaxed mb-8 max-w-lg">
-              Dr. Divya Sai Narsingam is a board-certified Plastic &amp;
-              Reconstructive Surgeon with over 14 years of clinical experience.
-              Consultant at CARE Hospitals, Gachibowli, Hyderabad — combining
-              surgical excellence with individualized patient care.
+              {hero.summary}
             </p>
 
             <div className="flex flex-wrap gap-4">
               <Link
-                href="/contact"
+                href={hero.ctaPrimary.href}
                 className="inline-flex items-center gap-2 px-6 py-3 rounded-lg bg-(--accent-gold) text-(--background) text-sm font-medium hover:bg-(--accent-gold-light) transition-colors duration-200"
               >
-                Book Consultation
+                {hero.ctaPrimary.label}
                 <ArrowRight size={16} />
               </Link>
               <Link
-                href="/about"
+                href={hero.ctaSecondary.href}
                 className="inline-flex items-center gap-2 px-6 py-3 rounded-lg border border-(--border) text-(--foreground-muted) text-sm hover:border-(--foreground-muted) hover:text-(--foreground) transition-all duration-200"
               >
-                About the Doctor
+                {hero.ctaSecondary.label}
               </Link>
             </div>
 
             {/* Quick stats */}
             <div className="flex flex-wrap gap-8 mt-12 pt-8 border-t border-(--border)">
               {[
-                { value: "14+", label: "Years Experience" },
-                { value: "7+", label: "Years Specialist" },
-                { value: "MCh", label: "Plastic Surgery" },
-              ].map(({ value, label }) => (
+                { value: "14+", label: "Years Experience", highlight: true },
+                { value: "9+", label: "Years Specialist", highlight: true },
+                { value: "MCh", label: "Plastic Surgery", highlight: false },
+              ].map(({ value, label, highlight }) => (
                 <div key={label}>
                   <p
-                    className="text-2xl font-medium text-(--foreground)"
+                    className={`font-medium ${highlight ? "text-4xl text-(--accent-gold)" : "text-3xl text-(--foreground)"}`}
                     style={{ fontFamily: "var(--font-serif)" }}
                   >
                     {value}
                   </p>
-                  <p className="text-xs text-(--foreground-muted) mt-0.5">{label}</p>
+                  <p className={`text-sm mt-1 ${highlight ? "text-(--accent-gold-light)" : "text-(--foreground-muted)"}`}>
+                    {label}
+                  </p>
                 </div>
               ))}
             </div>
@@ -143,7 +145,7 @@ export default function HeroSection() {
               <div className="mt-6 pt-5 border-t border-(--border) flex items-center gap-3">
                 <Award size={16} className="text-(--accent-gold) shrink-0" />
                 <p className="text-xs text-(--foreground-muted)">
-                  University Topper · MCh Plastic Surgery, MS Ramaiah Medical College
+                  University Topper · MCh Plastic Surgery
                 </p>
               </div>
             </div>

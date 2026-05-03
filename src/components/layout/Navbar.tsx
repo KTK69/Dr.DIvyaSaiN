@@ -6,37 +6,12 @@ import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { Menu, X, ChevronDown } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
+import { useSiteContent } from "@/components/site/SiteContentProvider";
 
 const LOGO = "/images/img/Dr%20Divya%20Logo%20Circle.png";
 
-const reconstructiveLinks = [
-  { href: "/services/reconstructive/onco-reconstruction", label: "Onco Reconstruction" },
-  { href: "/services/reconstructive/breast-reconstruction", label: "Breast Reconstruction" },
-  { href: "/services/reconstructive/trauma-reconstruction", label: "Trauma Reconstruction" },
-  { href: "/services/reconstructive/hand-surgery", label: "Hand Surgery" },
-  { href: "/services/reconstructive/microvascular-surgery", label: "Microvascular Surgery" },
-  { href: "/services/reconstructive/maxillofacial-trauma", label: "Maxillofacial Trauma" },
-  { href: "/services/reconstructive/facial-plastic-surgery", label: "Facial Plastic Surgery" },
-];
-
-const cosmeticLinks = [
-  { href: "/services/cosmetic/breast-augmentation", label: "Breast Augmentation" },
-  { href: "/services/cosmetic/breast-reduction", label: "Breast Reduction" },
-  { href: "/services/cosmetic/tummy-tuck", label: "Tummy Tuck" },
-  { href: "/services/cosmetic/body-lipocontouring", label: "Body Lipocontouring" },
-  { href: "/services/cosmetic/gynecomastia-reduction", label: "Gynecomastia Reduction" },
-];
-
-const navLinks = [
-  { href: "/", label: "Home" },
-  { href: "/about", label: "About" },
-  { href: "/experience", label: "Experience" },
-  { href: "/doctors-talk", label: "Doctor's Talk" },
-  { href: "/testimonials", label: "Testimonials" },
-  { href: "/contact", label: "Contact" },
-];
-
 export default function Navbar() {
+  const { content } = useSiteContent();
   const [mobileOpen, setMobileOpen] = useState(false);
   const [servicesOpen, setServicesOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
@@ -50,11 +25,6 @@ export default function Navbar() {
   }, []);
 
   useEffect(() => {
-    setMobileOpen(false);
-    setServicesOpen(false);
-  }, [pathname]);
-
-  useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
       if (dropdownRef.current && !dropdownRef.current.contains(e.target as Node)) {
         setServicesOpen(false);
@@ -66,6 +36,8 @@ export default function Navbar() {
 
   const isActive = (href: string) =>
     href === "/" ? pathname === "/" : pathname.startsWith(href);
+
+  const navLinks = content.navigation.links;
 
   return (
     <header
@@ -147,7 +119,7 @@ export default function Navbar() {
                         <p className="text-xs font-semibold uppercase tracking-widest text-(--accent-gold) mb-3">
                           Reconstructive
                         </p>
-                        {reconstructiveLinks.map(({ href, label }) => (
+                        {content.navigation.services.reconstructive.map(({ href, label }) => (
                           <Link
                             key={href}
                             href={href}
@@ -161,7 +133,7 @@ export default function Navbar() {
                         <p className="text-xs font-semibold uppercase tracking-widest text-(--accent-blue) mb-3">
                           Cosmetic
                         </p>
-                        {cosmeticLinks.map(({ href, label }) => (
+                        {content.navigation.services.cosmetic.map(({ href, label }) => (
                           <Link
                             key={href}
                             href={href}
@@ -186,7 +158,7 @@ export default function Navbar() {
             </div>
 
             <Link
-              href="/contact"
+              href="/contactus"
               className="ml-2 px-4 py-2 text-sm rounded-lg border border-(--accent-gold) text-(--accent-gold-light) hover:bg-(--accent-gold) hover:text-(--background) transition-all duration-200"
             >
               Book Consultation
@@ -232,7 +204,7 @@ export default function Navbar() {
                 <p className="text-xs uppercase tracking-widest text-(--accent-gold) mb-2">
                   Reconstructive Surgery
                 </p>
-                {reconstructiveLinks.map(({ href, label }) => (
+                {content.navigation.services.reconstructive.map(({ href, label }) => (
                   <Link
                     key={href}
                     href={href}
@@ -246,7 +218,7 @@ export default function Navbar() {
                 <p className="text-xs uppercase tracking-widest text-(--accent-blue) mb-2">
                   Cosmetic Surgery
                 </p>
-                {cosmeticLinks.map(({ href, label }) => (
+                {content.navigation.services.cosmetic.map(({ href, label }) => (
                   <Link
                     key={href}
                     href={href}
@@ -258,7 +230,7 @@ export default function Navbar() {
               </div>
               <div className="pt-4">
                 <Link
-                  href="/contact"
+                  href="/contactus"
                   className="block text-center px-4 py-2.5 text-sm rounded-lg border border-(--accent-gold) text-(--accent-gold-light)"
                 >
                   Book Consultation

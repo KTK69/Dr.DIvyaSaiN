@@ -3,7 +3,7 @@ User-agent: *
 Allow: /
 
 # Host
-Host: https://www.drdivyanarsingam.com
+Host: https://drdivyaplasticsurgeon.com
 
 # Sitemaps
-Sitemap: https://www.drdivyanarsingam.com/sitemap.xml
+Sitemap: https://drdivyaplasticsurgeon.com/sitemap.xml

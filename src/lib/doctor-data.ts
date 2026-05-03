@@ -4,9 +4,9 @@ export const doctor = {
   title: "Consultant Plastic & Reconstructive Surgeon",
   hospital: "CARE Hospitals, Gachibowli, Hyderabad",
   yearsExperience: 14,
-  yearsSpecialist: 7,
+  yearsSpecialist: 9,
   summary:
-    "Dr. Divya Sai Narsingam is a board-certified Plastic and Reconstructive Surgeon with over 14 years of clinical experience, including 7 years as a specialist. She is currently practicing as a Consultant at CARE Hospitals, Gachibowli, Hyderabad. She is known for delivering safe, natural-looking results in both aesthetic and reconstructive plastic surgery, combining surgical precision with compassionate care.",
+    "Dr. Divya Sai Narsingam is a board-certified Plastic and Reconstructive Surgeon with over 14 years of clinical experience, including 9 years as a specialist. She is currently practicing as a Consultant at CARE Hospitals, Gachibowli, Hyderabad. She is known for delivering safe, natural-looking results in both aesthetic and reconstructive plastic surgery, combining surgical precision with compassionate care.",
   philosophy:
     "Surgery is as much about listening as it is about operating. Every patient brings a unique story, unique anatomy, and unique expectations. My role is to understand that story fully — and then use every tool at my disposal to help write a better chapter.",
 };
@@ -34,13 +34,13 @@ export const experience = [
   {
     role: "Consultant Plastic & Reconstructive Surgeon",
     institution: "CARE Hospitals, Gachibowli, Hyderabad",
-    period: "July 2018 – Present",
+    period: "2024 – Present",
     current: true,
   },
   {
-    role: "Senior Resident & Fellowship",
-    institution: "NIMS Hyderabad",
-    period: "March 2019 – March 2020",
+    role: "Consultant Plastic & Reconstructive Surgeon",
+    institution: "CARE Hospitals, Banjara Hills, Hyderabad",
+    period: "2018 – 2024",
     current: false,
   },
   {
@@ -127,13 +127,13 @@ export const conferences = [
 ];
 
 export const contactInfo = {
-  hospital: "CARE Hospital",
-  roomNo: "Room No. 205, OPD Building",
-  street: "Old Mumbai Highway, Jayabheri Pine Valley",
-  area: "Gachibowli",
-  city: "Hyderabad, Telangana – 500032",
+  hospital: "AIG Hospitals",
+  roomNo: "Room No. 20, 1st Floor",
+  street: "AIG Hospitals",
+  area: "Banjara Hills",
+  city: "Hyderabad – 500034",
   fullAddress:
-    "Room No. 205, OPD Building, Old Mumbai Highway, Jayabheri Pine Valley, Gachibowli, Hyderabad, Telangana – 500032",
+    "Room No. 20, 1st Floor, AIG Hospitals, Banjara Hills, Hyderabad – 500034",
 };
 
 export const reconstructiveServices = [
@@ -263,6 +263,34 @@ export const cosmeticServices = [
       "Preservation of nipple sensation and blood supply",
       "Simultaneous uplift (mastopexy) as needed",
       "Significant improvement in posture and quality of life",
+    ],
+  },
+  {
+    slug: "breast-lift",
+    name: "Breast Lift (Mastopexy)",
+    shortDesc:
+      "Lifting and reshaping the breasts for a firmer, more youthful contour.",
+    description:
+      "A breast lift reshapes and elevates the breast tissue to restore a higher position and improved contour. The procedure can be tailored to mild or significant droop, and may be combined with augmentation or reduction depending on goals.",
+    keyPoints: [
+      "Restores breast position and improves contour",
+      "Repositions the nipple-areola complex",
+      "Can be combined with augmentation or reduction",
+      "Scar pattern tailored to the degree of ptosis",
+    ],
+  },
+  {
+    slug: "rhinoplasty",
+    name: "Rhinoplasty",
+    shortDesc:
+      "Refining nasal shape and proportion while preserving breathing function.",
+    description:
+      "Rhinoplasty balances nasal shape with facial proportions while maintaining or improving nasal airflow. Surgical planning considers the bridge, tip, and nostrils, with techniques chosen to deliver natural-looking results.",
+    keyPoints: [
+      "Shape refinement for bridge, tip, and nostrils",
+      "Functional assessment of the nasal airway",
+      "Open or closed technique based on anatomy",
+      "Natural, balanced facial proportions",
     ],
   },
   {

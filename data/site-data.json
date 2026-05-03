@@ -1,0 +1,437 @@
+{
+  "about": {
+    "heading": "About Dr. Divya Sai Narsingam",
+    "summary": "Dr. Divya Sai Narsingam is a board-certified Plastic and Reconstructive Surgeon with over 14 years of clinical experience, including 7 years as a specialist. She is currently practicing as a Consultant at CARE Hospitals, Gachibowli, Hyderabad. She is known for delivering safe, natural-looking results in both aesthetic and reconstructive plastic surgery, combining surgical precision with compassionate care.",
+    "meta_title": "About Dr. Divya Sai Narsingam | Plastic Surgeon Hyderabad",
+    "meta_description": "Learn about qualifications, experience, and clinical approach of Dr. Divya Sai Narsingam in Hyderabad."
+  },
+  "blogs": [
+    {
+      "id": "blog-1",
+      "slug": "understanding-breast-reconstruction-after-mastectomy",
+      "title": "Understanding Breast Reconstruction After Mastectomy",
+      "excerpt": "A practical guide to implant and flap-based breast reconstruction options after cancer surgery.",
+      "content": "Breast reconstruction can be immediate or delayed, and the right approach depends on oncological safety, body profile, and patient preference. Common options include implant-based reconstruction and autologous flaps. During consultation, treatment goals, expected stages, scar placement, and recovery plans are discussed in detail to support confident decision-making.",
+      "image": "/images/img/about.jpeg",
+      "published_at": "2026-02-18",
+      "updated_at": "2026-03-02",
+      "category": "reconstructive",
+      "meta_title": "Breast Reconstruction After Mastectomy | Dr. Divya Sai Narsingam",
+      "meta_description": "Learn reconstruction choices after mastectomy, including implants and flap options, with specialist guidance in Hyderabad."
+    },
+    {
+      "id": "blog-2",
+      "slug": "what-is-microvascular-surgery-and-who-needs-it",
+      "title": "What Is Microvascular Surgery and Who Needs It?",
+      "excerpt": "How free flap reconstruction restores form and function in complex defects.",
+      "content": "Microvascular surgery involves transferring tissue with tiny blood vessels and reconnecting them under magnification. It is often used for complex trauma and oncologic defects where standard closure is insufficient. Careful flap planning, vessel selection, and postoperative monitoring are central to successful outcomes.",
+      "image": "/images/img/about.jpeg",
+      "published_at": "2026-01-24",
+      "category": "reconstructive",
+      "meta_title": "Microvascular Surgery Explained | Hyderabad Reconstructive Surgeon",
+      "meta_description": "Understand microvascular free flap surgery, indications, and recovery with expert reconstructive care in Hyderabad."
+    },
+    {
+      "id": "blog-3",
+      "slug": "gynecomastia-causes-assessment-and-surgical-correction",
+      "title": "Gynecomastia: Causes, Assessment, and Surgical Correction",
+      "excerpt": "Evaluation and treatment options for male breast enlargement with realistic expectations.",
+      "content": "Gynecomastia can result from hormonal causes, medications, or persistent gland tissue. Once secondary causes are evaluated, treatment may involve gland excision, liposuction, or both. Surgical planning focuses on chest contour, scar minimization, and skin quality to achieve a balanced result.",
+      "image": "/images/img/about.jpeg",
+      "published_at": "2025-12-09",
+      "category": "cosmetic",
+      "meta_title": "Gynecomastia Surgery Guide | Dr. Divya Sai Narsingam",
+      "meta_description": "Read about gynecomastia causes, diagnosis, and surgical correction options for a flatter chest contour."
+    }
+  ],
+  "services": [
+    {
+      "id": "service-onco-reconstruction",
+      "slug": "onco-reconstruction",
+      "name": "Onco Reconstruction",
+      "summary": "Surgical restoration following cancer resection, preserving function and form.",
+      "content": "Oncoplastic and reconstructive surgery following tumor resection in breast, head and neck, skin, and soft tissue cancers. Dr. Narsingam works closely with oncology teams to plan resection margins and simultaneous or staged reconstruction, restoring both function and appearance.",
+      "image": "/images/img/about.jpeg",
+      "category": "reconstructive",
+      "key_points": [
+        "Immediate and delayed breast reconstruction post-mastectomy",
+        "Skin and soft tissue coverage after wide local excision",
+        "Head and neck reconstruction following tumour removal",
+        "Coordination with oncosurgery teams for optimal outcomes"
+      ],
+      "faq": [
+        {
+          "question": "Who is a good candidate for Onco Reconstruction?",
+          "answer": "Surgical restoration following cancer resection, preserving function and form. A detailed consultation is required to confirm suitability and treatment plan."
+        },
+        {
+          "question": "What does Onco Reconstruction typically include?",
+          "answer": "Immediate and delayed breast reconstruction post-mastectomy Skin and soft tissue coverage after wide local excision Head and neck reconstruction following tumour removal Coordination with oncosurgery teams for optimal outcomes"
+        },
+        {
+          "question": "Where is Onco Reconstruction performed?",
+          "answer": "Procedures are planned in coordination with CARE Hospitals, Gachibowli, Hyderabad."
+        }
+      ],
+      "meta_title": "Onco Reconstruction in Hyderabad | Dr. Divya Sai Narsingam",
+      "meta_description": "Surgical restoration following cancer resection, preserving function and form. Specialist reconstructive surgery by Dr. Divya Sai Narsingam at CARE Hospitals, Gachibowli, Hyderabad."
+    },
+    {
+      "id": "service-breast-reconstruction",
+      "slug": "breast-reconstruction",
+      "name": "Breast Reconstruction",
+      "summary": "Restoring breast shape and symmetry after mastectomy or lumpectomy.",
+      "content": "Breast reconstruction is a deeply personal procedure that restores the breast mound following mastectomy or significant lumpectomy. Options include implant-based reconstruction, autologous tissue reconstruction using flaps (TRAM, DIEP, LD), and oncoplastic techniques that combine cancer resection with volume replacement.",
+      "image": "/images/img/about.jpeg",
+      "category": "reconstructive",
+      "key_points": [
+        "Implant-based (tissue expander to implant) reconstruction",
+        "Autologous flap reconstruction (LD, TRAM)",
+        "Nipple and areola reconstruction",
+        "Symmetry correction of the opposite breast"
+      ],
+      "faq": [
+        {
+          "question": "Who is a good candidate for Breast Reconstruction?",
+          "answer": "Restoring breast shape and symmetry after mastectomy or lumpectomy. A detailed consultation is required to confirm suitability and treatment plan."
+        },
+        {
+          "question": "What does Breast Reconstruction typically include?",
+          "answer": "Implant-based (tissue expander to implant) reconstruction Autologous flap reconstruction (LD, TRAM) Nipple and areola reconstruction Symmetry correction of the opposite breast"
+        },
+        {
+          "question": "Where is Breast Reconstruction performed?",
+          "answer": "Procedures are planned in coordination with CARE Hospitals, Gachibowli, Hyderabad."
+        }
+      ],
+      "meta_title": "Breast Reconstruction in Hyderabad | Dr. Divya Sai Narsingam",
+      "meta_description": "Restoring breast shape and symmetry after mastectomy or lumpectomy. Specialist reconstructive surgery by Dr. Divya Sai Narsingam at CARE Hospitals, Gachibowli, Hyderabad."
+    },
+    {
+      "id": "service-trauma-reconstruction",
+      "slug": "trauma-reconstruction",
+      "name": "Trauma Reconstruction",
+      "summary": "Restoring tissue and function following accidents, burns, or injuries.",
+      "content": "Traumatic wounds — whether from road accidents, industrial injuries, burns, or degloving — often require complex reconstructive approaches. Dr. Narsingam specialises in acute wound management, skin grafting, local and regional flap coverage, and staged reconstruction to restore function and minimise deformity.",
+      "image": "/images/img/about.jpeg",
+      "category": "reconstructive",
+      "key_points": [
+        "Acute traumatic wound management",
+        "Split-thickness and full-thickness skin grafting",
+        "Local and pedicled flap coverage",
+        "Burn contracture release and resurfacing"
+      ],
+      "faq": [
+        {
+          "question": "Who is a good candidate for Trauma Reconstruction?",
+          "answer": "Restoring tissue and function following accidents, burns, or injuries. A detailed consultation is required to confirm suitability and treatment plan."
+        },
+        {
+          "question": "What does Trauma Reconstruction typically include?",
+          "answer": "Acute traumatic wound management Split-thickness and full-thickness skin grafting Local and pedicled flap coverage Burn contracture release and resurfacing"
+        },
+        {
+          "question": "Where is Trauma Reconstruction performed?",
+          "answer": "Procedures are planned in coordination with CARE Hospitals, Gachibowli, Hyderabad."
+        }
+      ],
+      "meta_title": "Trauma Reconstruction in Hyderabad | Dr. Divya Sai Narsingam",
+      "meta_description": "Restoring tissue and function following accidents, burns, or injuries. Specialist reconstructive surgery by Dr. Divya Sai Narsingam at CARE Hospitals, Gachibowli, Hyderabad."
+    },
+    {
+      "id": "service-hand-surgery",
+      "slug": "hand-surgery",
+      "name": "Hand Surgery",
+      "summary": "Reconstructive and functional surgery of the hand and upper extremity.",
+      "content": "The hand is one of the most complex and functionally critical parts of the body. Hand surgery addresses traumatic injuries (tendon, nerve, and vessel lacerations), congenital anomalies, infections, and functional deficits following crush injuries or replantation.",
+      "image": "/images/img/about.jpeg",
+      "category": "reconstructive",
+      "key_points": [
+        "Tendon repair and reconstruction",
+        "Nerve repair and grafting",
+        "Fingertip and composite tissue injuries",
+        "Post-traumatic hand rehabilitation planning"
+      ],
+      "faq": [
+        {
+          "question": "Who is a good candidate for Hand Surgery?",
+          "answer": "Reconstructive and functional surgery of the hand and upper extremity. A detailed consultation is required to confirm suitability and treatment plan."
+        },
+        {
+          "question": "What does Hand Surgery typically include?",
+          "answer": "Tendon repair and reconstruction Nerve repair and grafting Fingertip and composite tissue injuries Post-traumatic hand rehabilitation planning"
+        },
+        {
+          "question": "Where is Hand Surgery performed?",
+          "answer": "Procedures are planned in coordination with CARE Hospitals, Gachibowli, Hyderabad."
+        }
+      ],
+      "meta_title": "Hand Surgery in Hyderabad | Dr. Divya Sai Narsingam",
+      "meta_description": "Reconstructive and functional surgery of the hand and upper extremity. Specialist reconstructive surgery by Dr. Divya Sai Narsingam at CARE Hospitals, Gachibowli, Hyderabad."
+    },
+    {
+      "id": "service-microvascular-surgery",
+      "slug": "microvascular-surgery",
+      "name": "Microvascular Surgery",
+      "summary": "Free flap tissue transfer using operating microscope for complex reconstruction.",
+      "content": "Microvascular surgery involves the transfer of tissue — skin, muscle, or bone — from one part of the body to another, using tiny blood vessel anastomoses performed under a surgical microscope. This technique allows reconstruction of complex defects where simpler methods are inadequate.",
+      "image": "/images/img/about.jpeg",
+      "category": "reconstructive",
+      "key_points": [
+        "Free flap transfer for head, neck, and limb defects",
+        "Perforator flap design and harvest",
+        "Anastomosis under surgical microscopy",
+        "Postoperative flap monitoring and salvage"
+      ],
+      "faq": [
+        {
+          "question": "Who is a good candidate for Microvascular Surgery?",
+          "answer": "Free flap tissue transfer using operating microscope for complex reconstruction. A detailed consultation is required to confirm suitability and treatment plan."
+        },
+        {
+          "question": "What does Microvascular Surgery typically include?",
+          "answer": "Free flap transfer for head, neck, and limb defects Perforator flap design and harvest Anastomosis under surgical microscopy Postoperative flap monitoring and salvage"
+        },
+        {
+          "question": "Where is Microvascular Surgery performed?",
+          "answer": "Procedures are planned in coordination with CARE Hospitals, Gachibowli, Hyderabad."
+        }
+      ],
+      "meta_title": "Microvascular Surgery in Hyderabad | Dr. Divya Sai Narsingam",
+      "meta_description": "Free flap tissue transfer using operating microscope for complex reconstruction. Specialist reconstructive surgery by Dr. Divya Sai Narsingam at CARE Hospitals, Gachibowli, Hyderabad."
+    },
+    {
+      "id": "service-maxillofacial-trauma",
+      "slug": "maxillofacial-trauma",
+      "name": "Maxillofacial Trauma",
+      "summary": "Surgical management of facial bone fractures and soft tissue injuries.",
+      "content": "Maxillofacial trauma encompasses injuries to the bones and soft tissues of the face — including orbital fractures, nasal fractures, mandibular fractures, and complex panfacial injuries. Timely and accurate repair restores normal facial contour, occlusion, and eye protection.",
+      "image": "/images/img/about.jpeg",
+      "category": "reconstructive",
+      "key_points": [
+        "Orbital floor and rim fracture repair",
+        "Nasal bone and septal fracture reduction",
+        "Mandibular fracture open reduction and fixation",
+        "Soft tissue laceration repair and scar management"
+      ],
+      "faq": [
+        {
+          "question": "Who is a good candidate for Maxillofacial Trauma?",
+          "answer": "Surgical management of facial bone fractures and soft tissue injuries. A detailed consultation is required to confirm suitability and treatment plan."
+        },
+        {
+          "question": "What does Maxillofacial Trauma typically include?",
+          "answer": "Orbital floor and rim fracture repair Nasal bone and septal fracture reduction Mandibular fracture open reduction and fixation Soft tissue laceration repair and scar management"
+        },
+        {
+          "question": "Where is Maxillofacial Trauma performed?",
+          "answer": "Procedures are planned in coordination with CARE Hospitals, Gachibowli, Hyderabad."
+        }
+      ],
+      "meta_title": "Maxillofacial Trauma in Hyderabad | Dr. Divya Sai Narsingam",
+      "meta_description": "Surgical management of facial bone fractures and soft tissue injuries. Specialist reconstructive surgery by Dr. Divya Sai Narsingam at CARE Hospitals, Gachibowli, Hyderabad."
+    },
+    {
+      "id": "service-facial-plastic-surgery",
+      "slug": "facial-plastic-surgery",
+      "name": "Facial Plastic Surgery",
+      "summary": "Reconstructive and aesthetic procedures of the face and facial structures.",
+      "content": "Facial plastic surgery encompasses both reconstructive procedures — scar revision, correction of post-traumatic deformity, eyelid surgery — and aesthetic enhancements performed with natural results as the priority. Every facial procedure is tailored to the individual's anatomy and goals.",
+      "image": "/images/img/about.jpeg",
+      "category": "reconstructive",
+      "key_points": [
+        "Scar revision and resurfacing",
+        "Blepharoplasty (eyelid correction)",
+        "Rhinoplasty (nose reshaping)",
+        "Ear correction (otoplasty)"
+      ],
+      "faq": [
+        {
+          "question": "Who is a good candidate for Facial Plastic Surgery?",
+          "answer": "Reconstructive and aesthetic procedures of the face and facial structures. A detailed consultation is required to confirm suitability and treatment plan."
+        },
+        {
+          "question": "What does Facial Plastic Surgery typically include?",
+          "answer": "Scar revision and resurfacing Blepharoplasty (eyelid correction) Rhinoplasty (nose reshaping) Ear correction (otoplasty)"
+        },
+        {
+          "question": "Where is Facial Plastic Surgery performed?",
+          "answer": "Procedures are planned in coordination with CARE Hospitals, Gachibowli, Hyderabad."
+        }
+      ],
+      "meta_title": "Facial Plastic Surgery in Hyderabad | Dr. Divya Sai Narsingam",
+      "meta_description": "Reconstructive and aesthetic procedures of the face and facial structures. Specialist reconstructive surgery by Dr. Divya Sai Narsingam at CARE Hospitals, Gachibowli, Hyderabad."
+    },
+    {
+      "id": "service-breast-augmentation",
+      "slug": "breast-augmentation",
+      "name": "Breast Augmentation",
+      "summary": "Enhancing breast volume and shape using implants or fat transfer.",
+      "content": "Breast augmentation increases breast size and improves symmetry using silicone gel or cohesive implants placed in a precise surgical pocket. Dr. Narsingam takes a conservative, patient-centred approach — the goal is a natural, proportionate outcome that suits the individual's frame.",
+      "image": "/images/img/about.jpeg",
+      "category": "cosmetic",
+      "key_points": [
+        "Silicone gel implant selection and sizing",
+        "Submuscular and dual-plane placement",
+        "Scar minimisation with inframammary or periareolar incisions",
+        "Fat transfer augmentation for modest size change"
+      ],
+      "faq": [
+        {
+          "question": "Who is a good candidate for Breast Augmentation?",
+          "answer": "Enhancing breast volume and shape using implants or fat transfer. A detailed consultation is required to confirm suitability and treatment plan."
+        },
+        {
+          "question": "What does Breast Augmentation typically include?",
+          "answer": "Silicone gel implant selection and sizing Submuscular and dual-plane placement Scar minimisation with inframammary or periareolar incisions Fat transfer augmentation for modest size change"
+        },
+        {
+          "question": "Where is Breast Augmentation performed?",
+          "answer": "Procedures are planned in coordination with CARE Hospitals, Gachibowli, Hyderabad."
+        }
+      ],
+      "meta_title": "Breast Augmentation in Hyderabad | Dr. Divya Sai Narsingam",
+      "meta_description": "Enhancing breast volume and shape using implants or fat transfer. Specialist cosmetic surgery by Dr. Divya Sai Narsingam at CARE Hospitals, Gachibowli, Hyderabad."
+    },
+    {
+      "id": "service-breast-reduction",
+      "slug": "breast-reduction",
+      "name": "Breast Reduction",
+      "summary": "Reducing breast size to relieve physical symptoms and improve proportions.",
+      "content": "Symptomatic macromastia — neck pain, back pain, skin rashes, and restricted activity — is a genuine medical condition. Breast reduction surgery removes excess glandular tissue, fat, and skin, reshaping the breast to a comfortable, proportionate size while preserving sensation and, where possible, breastfeeding ability.",
+      "image": "/images/img/about.jpeg",
+      "category": "cosmetic",
+      "key_points": [
+        "Vertical and Wise-pattern reduction techniques",
+        "Preservation of nipple sensation and blood supply",
+        "Simultaneous uplift (mastopexy) as needed",
+        "Significant improvement in posture and quality of life"
+      ],
+      "faq": [
+        {
+          "question": "Who is a good candidate for Breast Reduction?",
+          "answer": "Reducing breast size to relieve physical symptoms and improve proportions. A detailed consultation is required to confirm suitability and treatment plan."
+        },
+        {
+          "question": "What does Breast Reduction typically include?",
+          "answer": "Vertical and Wise-pattern reduction techniques Preservation of nipple sensation and blood supply Simultaneous uplift (mastopexy) as needed Significant improvement in posture and quality of life"
+        },
+        {
+          "question": "Where is Breast Reduction performed?",
+          "answer": "Procedures are planned in coordination with CARE Hospitals, Gachibowli, Hyderabad."
+        }
+      ],
+      "meta_title": "Breast Reduction in Hyderabad | Dr. Divya Sai Narsingam",
+      "meta_description": "Reducing breast size to relieve physical symptoms and improve proportions. Specialist cosmetic surgery by Dr. Divya Sai Narsingam at CARE Hospitals, Gachibowli, Hyderabad."
+    },
+    {
+      "id": "service-tummy-tuck",
+      "slug": "tummy-tuck",
+      "name": "Tummy Tuck (Abdominoplasty)",
+      "summary": "Removing excess abdominal skin and tightening the abdominal wall.",
+      "content": "Abdominoplasty addresses excess skin and fat in the abdomen — a concern commonly following significant weight loss or post-pregnancy changes. The procedure tightens the rectus muscles if diastasis (separation) exists, removes the lower abdominal apron, and repositions the umbilicus for a smooth, firm contour.",
+      "image": "/images/img/about.jpeg",
+      "category": "cosmetic",
+      "key_points": [
+        "Full, mini, and extended abdominoplasty options",
+        "Rectus muscle plication for diastasis repair",
+        "Combined with liposuction for optimal contouring",
+        "Low, concealable scar placement"
+      ],
+      "faq": [
+        {
+          "question": "Who is a good candidate for Tummy Tuck (Abdominoplasty)?",
+          "answer": "Removing excess abdominal skin and tightening the abdominal wall. A detailed consultation is required to confirm suitability and treatment plan."
+        },
+        {
+          "question": "What does Tummy Tuck (Abdominoplasty) typically include?",
+          "answer": "Full, mini, and extended abdominoplasty options Rectus muscle plication for diastasis repair Combined with liposuction for optimal contouring Low, concealable scar placement"
+        },
+        {
+          "question": "Where is Tummy Tuck (Abdominoplasty) performed?",
+          "answer": "Procedures are planned in coordination with CARE Hospitals, Gachibowli, Hyderabad."
+        }
+      ],
+      "meta_title": "Tummy Tuck (Abdominoplasty) in Hyderabad | Dr. Divya Sai Narsingam",
+      "meta_description": "Removing excess abdominal skin and tightening the abdominal wall. Specialist cosmetic surgery by Dr. Divya Sai Narsingam at CARE Hospitals, Gachibowli, Hyderabad."
+    },
+    {
+      "id": "service-body-lipocontouring",
+      "slug": "body-lipocontouring",
+      "name": "Body Lipocontouring",
+      "summary": "Precise fat removal and reshaping of body contours through liposuction.",
+      "content": "Lipocontouring uses tumescent liposuction to selectively remove stubborn fat deposits that are resistant to diet and exercise. It is a body sculpting procedure — not a weight loss treatment — and works best when performed with attention to the body's natural curves and proportions.",
+      "image": "/images/img/about.jpeg",
+      "category": "cosmetic",
+      "key_points": [
+        "Abdomen, flanks, thighs, arms, and neck",
+        "Tumescent technique for safety and precision",
+        "High-definition contouring where appropriate",
+        "Fat transfer (lipofilling) to areas needing volume"
+      ],
+      "faq": [
+        {
+          "question": "Who is a good candidate for Body Lipocontouring?",
+          "answer": "Precise fat removal and reshaping of body contours through liposuction. A detailed consultation is required to confirm suitability and treatment plan."
+        },
+        {
+          "question": "What does Body Lipocontouring typically include?",
+          "answer": "Abdomen, flanks, thighs, arms, and neck Tumescent technique for safety and precision High-definition contouring where appropriate Fat transfer (lipofilling) to areas needing volume"
+        },
+        {
+          "question": "Where is Body Lipocontouring performed?",
+          "answer": "Procedures are planned in coordination with CARE Hospitals, Gachibowli, Hyderabad."
+        }
+      ],
+      "meta_title": "Body Lipocontouring in Hyderabad | Dr. Divya Sai Narsingam",
+      "meta_description": "Precise fat removal and reshaping of body contours through liposuction. Specialist cosmetic surgery by Dr. Divya Sai Narsingam at CARE Hospitals, Gachibowli, Hyderabad."
+    },
+    {
+      "id": "service-gynecomastia-reduction",
+      "slug": "gynecomastia-reduction",
+      "name": "Gynecomastia Reduction",
+      "summary": "Surgical correction of enlarged male breast tissue for a flatter chest.",
+      "content": "Gynecomastia — the development of glandular breast tissue in males — can cause significant psychological distress. After excluding hormonal or pharmacological causes, surgical treatment combines glandular excision with liposuction to achieve a flat, masculine chest contour.",
+      "image": "/images/img/about.jpeg",
+      "category": "cosmetic",
+      "key_points": [
+        "Thorough endocrine and pharmacological workup",
+        "Glandular excision via periareolar incision",
+        "Liposuction for adipose component",
+        "Skin tightening for severe cases with skin excess"
+      ],
+      "faq": [
+        {
+          "question": "Who is a good candidate for Gynecomastia Reduction?",
+          "answer": "Surgical correction of enlarged male breast tissue for a flatter chest. A detailed consultation is required to confirm suitability and treatment plan."
+        },
+        {
+          "question": "What does Gynecomastia Reduction typically include?",
+          "answer": "Thorough endocrine and pharmacological workup Glandular excision via periareolar incision Liposuction for adipose component Skin tightening for severe cases with skin excess"
+        },
+        {
+          "question": "Where is Gynecomastia Reduction performed?",
+          "answer": "Procedures are planned in coordination with CARE Hospitals, Gachibowli, Hyderabad."
+        }
+      ],
+      "meta_title": "Gynecomastia Reduction in Hyderabad | Dr. Divya Sai Narsingam",
+      "meta_description": "Surgical correction of enlarged male breast tissue for a flatter chest. Specialist cosmetic surgery by Dr. Divya Sai Narsingam at CARE Hospitals, Gachibowli, Hyderabad."
+    }
+  ],
+  "reviews": [
+    {
+      "id": "review-1",
+      "patient_name": "Verified patient feedback",
+      "procedure": "Breast reconstruction",
+      "quote": "The treatment journey was clearly explained and follow-up care was highly supportive.",
+      "rating": 5
+    },
+    {
+      "id": "review-2",
+      "patient_name": "Verified patient feedback",
+      "procedure": "Gynecomastia reduction",
+      "quote": "Consultation was thoughtful and the surgical result aligned with expectations.",
+      "rating": 5
+    }
+  ]
+}
