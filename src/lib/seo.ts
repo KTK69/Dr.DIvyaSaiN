@@ -34,6 +34,10 @@ function categoryKeywords(category: ServiceCategory) {
       ];
 }
 
+function uniqueKeywords(values: string[]) {
+  return [...new Set(values.map((value) => value.trim()).filter(Boolean))];
+}
+
 export function buildServiceMetadata(
   service: ServiceItem,
   category: ServiceCategory,
@@ -184,10 +188,19 @@ export function buildEditablePageMetadata(page: PageSeoEntry): Metadata {
 
 export function buildBlogMetadata(blog: Blog): Metadata {
   const canonical = `${SITE_URL}/blog/${blog.slug}`;
+  const keywords = uniqueKeywords([
+    blog.title,
+    `${blog.title} Hyderabad`,
+    blog.meta_title,
+    blog.category ? `${blog.category} surgery blog` : "",
+    "Dr Divya Sai Narsingam blog",
+    "plastic surgery blog Hyderabad",
+  ]);
 
   return {
     title: blog.meta_title,
     description: blog.meta_description,
+    keywords,
     alternates: {
       canonical,
     },
@@ -237,10 +250,22 @@ export function buildBlogJsonLd(blog: Blog) {
 
 export function buildUnifiedServiceMetadata(service: Service): Metadata {
   const canonical = `${SITE_URL}/services/${service.slug}`;
+  const keywords = uniqueKeywords([
+    service.name,
+    `${service.name} Hyderabad`,
+    `${service.name} Gachibowli`,
+    service.meta_title,
+    "Dr Divya Sai Narsingam",
+    "CARE Hospitals Hyderabad",
+    ...(service.category === "reconstructive"
+      ? categoryKeywords("reconstructive")
+      : categoryKeywords("cosmetic")),
+  ]);
 
   return {
     title: service.meta_title,
     description: service.meta_description,
+    keywords,
     alternates: {
       canonical,
     },
