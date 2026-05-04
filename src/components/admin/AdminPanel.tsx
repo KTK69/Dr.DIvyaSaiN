@@ -1,11 +1,11 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useSiteContent } from "@/components/site/SiteContentProvider";
 import type { SiteContent } from "@/lib/site-content";
 
-type Section = "navigation" | "footer" | "home" | "aboutPage" | "experiencePage" | "testimonialsPage" | "blogPage" | "servicesPage" | "doctorTalkPage" | "contactPage" | "about" | "experience" | "doctorTalk" | "testimonials" | "blog" | "services" | "contact";
+type Section = "navigation" | "footer" | "siteSeo" | "home" | "aboutPage" | "experiencePage" | "testimonialsPage" | "blogPage" | "servicesPage" | "doctorTalkPage" | "contactPage" | "about" | "experience" | "doctorTalk" | "testimonials" | "blog" | "services" | "contact";
 
 type DoctorTalkItem = SiteContent["doctorTalk"][number];
 type TestimonialItem = { id: string; patient_name: string; procedure: string; quote: string; rating: number };
@@ -18,6 +18,7 @@ type GalleryImage = { src: string; alt: string; label: string };
 const navItems: Array<{ key: Section; label: string }> = [
   { key: "navigation", label: "Navigation" },
   { key: "footer", label: "Footer" },
+  { key: "siteSeo", label: "Site SEO" },
   { key: "home", label: "Home Content" },
   { key: "aboutPage", label: "About Page" },
   { key: "experiencePage", label: "Experience Page" },
@@ -39,13 +40,23 @@ type SessionResponse = { authenticated?: boolean };
 
 export default function AdminPanel() {
   const router = useRouter();
-  const { content, setContent, resetContent } = useSiteContent();
+  const {
+    content,
+    setContent,
+    saveContent,
+    refreshContent,
+    resetContent,
+    saving,
+    lastSyncedAt,
+  } = useSiteContent();
   const [authenticated, setAuthenticated] = useState(false);
   const [checkingSession, setCheckingSession] = useState(true);
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [activeSection, setActiveSection] = useState<Section>("home");
   const [message, setMessage] = useState("");
+  const skipAutosaveRef = useRef(true);
+  const previousSavedSnapshotRef = useRef("");
 
   const sectionTitle = useMemo(() => navItems.find((item) => item.key === activeSection)?.label ?? activeSection, [activeSection]);
 
@@ -71,6 +82,10 @@ export default function AdminPanel() {
       if (!active) {
         return;
       }
+      if (ok) {
+        skipAutosaveRef.current = true;
+        await refreshContent();
+      }
       setAuthenticated(ok);
       setCheckingSession(false);
     };
@@ -88,7 +103,42 @@ export default function AdminPanel() {
       active = false;
       window.removeEventListener("pageshow", handlePageShow);
     };
-  }, []);
+  }, [refreshContent]);
+
+  useEffect(() => {
+    if (!authenticated) {
+      skipAutosaveRef.current = true;
+      previousSavedSnapshotRef.current = "";
+      return;
+    }
+
+    const snapshot = JSON.stringify(content);
+
+    if (skipAutosaveRef.current) {
+      previousSavedSnapshotRef.current = snapshot;
+      skipAutosaveRef.current = false;
+      return;
+    }
+
+    if (snapshot === previousSavedSnapshotRef.current) {
+      return;
+    }
+
+    const timeoutId = window.setTimeout(async () => {
+      const ok = await saveContent(content);
+      if (ok) {
+        previousSavedSnapshotRef.current = snapshot;
+        setMessage("Changes synced across the site.");
+        return;
+      }
+
+      setMessage("Unable to save changes. Configure Vercel Blob and try again.");
+    }, 800);
+
+    return () => {
+      window.clearTimeout(timeoutId);
+    };
+  }, [authenticated, content, saveContent]);
 
   async function login() {
     setMessage("");
@@ -104,6 +154,8 @@ export default function AdminPanel() {
         return;
       }
 
+      skipAutosaveRef.current = true;
+      await refreshContent();
       setAuthenticated(true);
       setMessage("Logged in");
     } catch {
@@ -318,7 +370,7 @@ export default function AdminPanel() {
             className="rounded-lg border border-(--border) px-4 py-2 text-sm"
             onClick={() => {
               resetContent();
-              setMessage("Reset to defaults");
+              setMessage("Reset queued. Saving to shared storage...");
             }}
           >
             Reset
@@ -350,7 +402,13 @@ export default function AdminPanel() {
             <h2 className="text-xl font-medium text-(--foreground)" style={{ fontFamily: "var(--font-serif)" }}>
               {sectionTitle}
             </h2>
-            <p className="text-sm text-(--foreground-subtle)">Changes save instantly to localStorage</p>
+            <p className="text-sm text-(--foreground-subtle)">
+              {saving
+                ? "Saving to Vercel storage..."
+                : lastSyncedAt
+                  ? `Synced ${new Date(lastSyncedAt).toLocaleString()}`
+                  : "Changes auto-save to shared storage"}
+            </p>
           </div>
 
           {message ? <p className="mb-4 text-sm text-(--accent-gold-light)">{message}</p> : null}
@@ -684,6 +742,73 @@ export default function AdminPanel() {
             </div>
           ) : null}
 
+          {activeSection === "siteSeo" ? (
+            <div className="space-y-8">
+              <div className="grid gap-6 md:grid-cols-2">
+                <Field
+                  label="Default Title"
+                  value={content.siteSeo.titleDefault}
+                  onChange={(value) =>
+                    update("siteSeo", { ...content.siteSeo, titleDefault: value })
+                  }
+                />
+                <Field
+                  label="Title Template"
+                  value={content.siteSeo.titleTemplate}
+                  onChange={(value) =>
+                    update("siteSeo", { ...content.siteSeo, titleTemplate: value })
+                  }
+                />
+                <Field
+                  label="Meta Description"
+                  value={content.siteSeo.description}
+                  onChange={(value) =>
+                    update("siteSeo", { ...content.siteSeo, description: value })
+                  }
+                  multiline
+                  className="md:col-span-2"
+                />
+              </div>
+
+              <div className="border-t border-(--border) pt-6">
+                <h3 className="text-sm font-semibold text-(--foreground) mb-4">Keywords</h3>
+                <KeywordField
+                  label="One keyword per line"
+                  values={content.siteSeo.keywords}
+                  onChange={(value) =>
+                    update("siteSeo", { ...content.siteSeo, keywords: value })
+                  }
+                />
+              </div>
+
+              <div className="border-t border-(--border) pt-6">
+                <h3 className="text-sm font-semibold text-(--foreground) mb-4">Open Graph</h3>
+                <div className="grid gap-6 md:grid-cols-2">
+                  <Field
+                    label="Site Name"
+                    value={content.siteSeo.openGraph.siteName}
+                    onChange={(value) =>
+                      update("siteSeo", {
+                        ...content.siteSeo,
+                        openGraph: { ...content.siteSeo.openGraph, siteName: value },
+                      })
+                    }
+                  />
+                  <Field
+                    label="Locale"
+                    value={content.siteSeo.openGraph.locale}
+                    onChange={(value) =>
+                      update("siteSeo", {
+                        ...content.siteSeo,
+                        openGraph: { ...content.siteSeo.openGraph, locale: value },
+                      })
+                    }
+                  />
+                </div>
+              </div>
+            </div>
+          ) : null}
+
           {activeSection === "aboutPage" ? (
             <div className="grid gap-6 md:grid-cols-2">
               <Field label="Page Heading" value={content.aboutPage.heading} onChange={(value) => update("aboutPage", { ...content.aboutPage, heading: value })} />
@@ -805,6 +930,36 @@ function SelectField({ label, value, options, onChange, className = "" }: { labe
           </option>
         ))}
       </select>
+    </label>
+  );
+}
+
+function KeywordField({
+  label,
+  values,
+  onChange,
+  className = "",
+}: {
+  label: string;
+  values: string[];
+  onChange: (values: string[]) => void;
+  className?: string;
+}) {
+  return (
+    <label className={`block text-sm text-(--foreground-muted) ${className}`}>
+      <span className="mb-1 block">{label}</span>
+      <textarea
+        value={values.join("\n")}
+        onChange={(event) =>
+          onChange(
+            event.target.value
+              .split("\n")
+              .map((item) => item.trim())
+              .filter(Boolean),
+          )
+        }
+        className="min-h-32 w-full rounded-lg border border-(--border) bg-transparent px-3 py-2 text-(--foreground)"
+      />
     </label>
   );
 }

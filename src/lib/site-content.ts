@@ -1,5 +1,9 @@
-import { doctor, education, experience, awards, publications, research, conferences, contactInfo, reconstructiveServices, cosmeticServices, expertise } from "@/lib/doctor-data";
-import { DEFAULT_BLOGS } from "@/lib/content-repository";
+import { doctor, education, experience, awards, publications, research, conferences, contactInfo, expertise } from "@/lib/doctor-data";
+import {
+  DEFAULT_BLOGS,
+  DEFAULT_REVIEWS,
+  DEFAULT_SERVICES,
+} from "@/lib/default-content-data";
 import type { AboutContent, Blog, Review, Service } from "@/types/content";
 
 // Navigation item type
@@ -140,10 +144,23 @@ export type FooterContent = {
   copyright: string;
 };
 
+export type SiteSeoContent = {
+  titleDefault: string;
+  titleTemplate: string;
+  description: string;
+  keywords: string[];
+  openGraph: {
+    type: "website";
+    locale: string;
+    siteName: string;
+  };
+};
+
 export type SiteContent = {
   // Navigation & Layout
   navigation: NavigationContent;
   footer: FooterContent;
+  siteSeo: SiteSeoContent;
   
   // Pages
   home: HomeContent;
@@ -249,6 +266,28 @@ export const DEFAULT_SITE_CONTENT: SiteContent = {
       { label: "Contact", href: "/contactus" },
     ],
     copyright: "Dr. Divya Sai Narsingam. All rights reserved.",
+  },
+
+  siteSeo: {
+    titleDefault:
+      "Dr. Divya Sai Narsingam | Plastic & Reconstructive Surgeon Hyderabad",
+    titleTemplate: "%s | Dr. Divya Sai Narsingam",
+    description:
+      "Dr. Divya Sai Narsingam – Board-certified Plastic & Reconstructive Surgeon at CARE Hospitals, Gachibowli, Hyderabad. MCh Plastic Surgery. Expert in cosmetic surgery, breast reconstruction, and microvascular surgery.",
+    keywords: [
+      "Plastic Surgeon in Hyderabad",
+      "Reconstructive Surgeon Gachibowli",
+      "Breast Reconstruction Surgeon Hyderabad",
+      "Dr Divya Sai Narsingam",
+      "CARE Hospitals Hyderabad plastic surgery",
+      "cosmetic surgeon Hyderabad",
+      "MCh Plastic Surgery Hyderabad",
+    ],
+    openGraph: {
+      type: "website",
+      locale: "en_IN",
+      siteName: "Dr. Divya Sai Narsingam – Plastic Surgeon",
+    },
   },
 
   // Page content
@@ -433,39 +472,10 @@ export const DEFAULT_SITE_CONTENT: SiteContent = {
     },
   ],
   testimonials: [
-    {
-      id: "review-1",
-      patient_name: "Verified patient feedback",
-      procedure: "Breast reconstruction",
-      quote:
-        "The treatment journey was clearly explained and follow-up care was highly supportive.",
-      rating: 5,
-    },
-    {
-      id: "review-2",
-      patient_name: "Verified patient feedback",
-      procedure: "Gynecomastia reduction",
-      quote:
-        "Consultation was thoughtful and the surgical result aligned with expectations.",
-      rating: 5,
-    },
+    ...DEFAULT_REVIEWS,
   ],
   blog: DEFAULT_BLOGS.map((blog) => ({ ...blog })),
-  services: [...reconstructiveServices, ...cosmeticServices].map((item) => ({
-    id: `service-${item.slug}`,
-    slug: item.slug,
-    name: item.name,
-    summary: item.shortDesc,
-    content: item.description,
-    image: "/images/img/about.jpeg",
-    category: reconstructiveServices.some((svc) => svc.slug === item.slug)
-      ? "reconstructive"
-      : "cosmetic",
-    key_points: item.keyPoints,
-    faq: [],
-    meta_title: `${item.name} in Hyderabad | Dr. Divya Sai Narsingam`,
-    meta_description: item.shortDesc,
-  })) as Service[],
+  services: DEFAULT_SERVICES.map((service) => ({ ...service })) as Service[],
   contact: {
     phone: "+91 XXXXX XXXXX",
     email: "appointments@example.com",

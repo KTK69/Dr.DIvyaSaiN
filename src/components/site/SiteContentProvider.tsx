@@ -1,124 +1,154 @@
 "use client";
 
-import React, { createContext, useContext, useMemo, useSyncExternalStore } from "react";
+import React, {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import { DEFAULT_SITE_CONTENT, type SiteContent } from "@/lib/site-content";
-
-const STORAGE_KEY = "emmi-site-content";
-const CONTENT_EVENT = "emmi-site-content-changed";
-
-let _cachedRaw: string | null = null;
-let _cachedSnapshot: SiteContent | null = null;
+import type { SiteContentEnvelope } from "@/lib/site-content-utils";
 
 type SiteContentContextValue = {
   content: SiteContent;
   setContent: React.Dispatch<React.SetStateAction<SiteContent>>;
+  saveContent: (nextContent?: SiteContent) => Promise<boolean>;
+  refreshContent: () => Promise<void>;
   resetContent: () => void;
+  saving: boolean;
+  lastSyncedAt: string | null;
 };
 
 const SiteContentContext = createContext<SiteContentContextValue | null>(null);
 
-function isPlainObject(value: unknown): value is Record<string, unknown> {
-  return Boolean(value) && typeof value === "object" && !Array.isArray(value);
+async function fetchSiteContentEnvelope(): Promise<SiteContentEnvelope | null> {
+  const response = await fetch("/api/site-content", { cache: "no-store" });
+
+  if (!response.ok) {
+    return null;
+  }
+
+  return (await response.json()) as SiteContentEnvelope;
 }
 
-function mergeWithDefaults<T>(defaults: T, stored: unknown): T {
-  if (!isPlainObject(defaults)) {
-    return (stored ?? defaults) as T;
+async function postSiteContentEnvelope(
+  nextContent: SiteContent,
+): Promise<(SiteContentEnvelope & { ok?: boolean }) | null> {
+  const response = await fetch("/api/admin/content", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ content: nextContent }),
+  });
+
+  if (!response.ok) {
+    return null;
   }
 
-  const storedObject = isPlainObject(stored) ? stored : {};
-  const merged: Record<string, unknown> = { ...defaults, ...storedObject };
-
-  for (const key of Object.keys(defaults as Record<string, unknown>)) {
-    const defaultValue = (defaults as Record<string, unknown>)[key];
-    const storedValue = storedObject[key];
-
-    if (Array.isArray(defaultValue)) {
-      merged[key] = Array.isArray(storedValue) ? storedValue : defaultValue;
-      continue;
-    }
-
-    if (isPlainObject(defaultValue)) {
-      merged[key] = mergeWithDefaults(defaultValue, storedValue);
-      continue;
-    }
-
-    merged[key] = storedValue ?? defaultValue;
-  }
-
-  return merged as T;
-}
-
-function readSnapshot(): SiteContent {
-  if (typeof window === "undefined") {
-    return DEFAULT_SITE_CONTENT;
-  }
-
-  const raw = window.localStorage.getItem(STORAGE_KEY);
-
-  // If nothing stored, return default and reset cache
-  if (!raw) {
-    _cachedRaw = null;
-    _cachedSnapshot = DEFAULT_SITE_CONTENT;
-    return DEFAULT_SITE_CONTENT;
-  }
-
-  // Return cached object if the raw string hasn't changed
-  if (raw === _cachedRaw && _cachedSnapshot) {
-    return _cachedSnapshot;
-  }
-
-  try {
-    const parsed = JSON.parse(raw) as SiteContent;
-    const merged = mergeWithDefaults(DEFAULT_SITE_CONTENT, parsed);
-    _cachedRaw = raw;
-    _cachedSnapshot = merged;
-    return merged;
-  } catch {
-    _cachedRaw = raw;
-    _cachedSnapshot = DEFAULT_SITE_CONTENT;
-    return DEFAULT_SITE_CONTENT;
-  }
-}
-
-function writeSnapshot(nextContent: SiteContent) {
-  const raw = JSON.stringify(nextContent);
-  window.localStorage.setItem(STORAGE_KEY, raw);
-  // update cache so subsequent readSnapshot calls during this render return stable ref
-  _cachedRaw = raw;
-  _cachedSnapshot = nextContent;
-  window.dispatchEvent(new Event(CONTENT_EVENT));
-}
-
-function subscribe(listener: () => void) {
-  const handleStorage = (event: StorageEvent) => {
-    if (event.key === STORAGE_KEY) {
-      listener();
-    }
-  };
-
-  window.addEventListener("storage", handleStorage);
-  window.addEventListener(CONTENT_EVENT, listener);
-
-  return () => {
-    window.removeEventListener("storage", handleStorage);
-    window.removeEventListener(CONTENT_EVENT, listener);
-  };
+  return (await response.json()) as SiteContentEnvelope & { ok?: boolean };
 }
 
 export function SiteContentProvider({ children }: { children: React.ReactNode }) {
-  const content = useSyncExternalStore(subscribe, readSnapshot, () => DEFAULT_SITE_CONTENT);
+  const [content, setContentState] = useState(DEFAULT_SITE_CONTENT);
+  const [hasLocalEdits, setHasLocalEdits] = useState(false);
+  const [saving, setSaving] = useState(false);
+  const [lastSyncedAt, setLastSyncedAt] = useState<string | null>(null);
+  const hasLocalEditsRef = useRef(false);
+  const contentRef = useRef(content);
+
+  useEffect(() => {
+    hasLocalEditsRef.current = hasLocalEdits;
+  }, [hasLocalEdits]);
+
+  useEffect(() => {
+    contentRef.current = content;
+  }, [content]);
+
+  const setContent = useCallback<React.Dispatch<React.SetStateAction<SiteContent>>>(
+    (update) => {
+      setHasLocalEdits(true);
+      setContentState((previous) =>
+        typeof update === "function" ? update(previous) : update,
+      );
+    },
+    [],
+  );
+
+  const refreshContent = useCallback(async () => {
+    try {
+      const payload = await fetchSiteContentEnvelope();
+      if (!payload) {
+        return;
+      }
+
+      if (hasLocalEditsRef.current) {
+        return;
+      }
+
+      setContentState(payload.content ?? DEFAULT_SITE_CONTENT);
+      setLastSyncedAt(payload.updatedAt ?? null);
+    } catch {
+      // Ignore background refresh failures and keep the last good snapshot.
+    }
+  }, []);
+
+  useEffect(() => {
+    void refreshContent();
+
+    const interval = window.setInterval(() => {
+      void refreshContent();
+    }, 15000);
+
+    const refreshOnFocus = () => {
+      if (document.visibilityState === "visible") {
+        void refreshContent();
+      }
+    };
+
+    window.addEventListener("focus", refreshOnFocus);
+    document.addEventListener("visibilitychange", refreshOnFocus);
+
+    return () => {
+      window.clearInterval(interval);
+      window.removeEventListener("focus", refreshOnFocus);
+      document.removeEventListener("visibilitychange", refreshOnFocus);
+    };
+  }, [refreshContent]);
+
+  const saveContent = useCallback(async (nextContent?: SiteContent) => {
+    setSaving(true);
+
+    try {
+      const contentToSave = nextContent ?? contentRef.current;
+      const payload = await postSiteContentEnvelope(contentToSave);
+      if (!payload) {
+        return false;
+      }
+
+      setContentState(payload.content ?? contentToSave);
+      setHasLocalEdits(false);
+      setLastSyncedAt(payload.updatedAt ?? null);
+      return true;
+    } catch {
+      return false;
+    } finally {
+      setSaving(false);
+    }
+  }, []);
 
   const value = useMemo<SiteContentContextValue>(
     () => ({
       content,
-      setContent: (update) => {
-        const nextContent = typeof update === "function" ? update(readSnapshot()) : update;
-        writeSnapshot(nextContent);
-      },
-      resetContent: () => writeSnapshot(DEFAULT_SITE_CONTENT),
+      setContent,
+      saveContent,
+      refreshContent,
+      resetContent: () => setContent(DEFAULT_SITE_CONTENT),
+      saving,
+      lastSyncedAt,
     }),
-    [content],
+    [content, lastSyncedAt, refreshContent, saveContent, saving, setContent],
   );
 
   return <SiteContentContext.Provider value={value}>{children}</SiteContentContext.Provider>;
@@ -132,5 +162,4 @@ export function useSiteContent() {
 
   return context;
 }
-
 

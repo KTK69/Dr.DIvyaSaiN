@@ -5,7 +5,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod/v4";
 import { useState } from "react";
 import { Send, CheckCircle } from "lucide-react";
-import { submitAppointment } from "@/lib/api";
+import { submitAppointment } from "@/lib/client-api";
 
 const appointmentSchema = z.object({
   fullName: z.string().min(2, "Please enter your full name"),
