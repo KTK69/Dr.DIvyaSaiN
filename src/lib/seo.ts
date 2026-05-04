@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import type { cosmeticServices, reconstructiveServices } from "@/lib/doctor-data";
 import type { Blog, Service } from "@/types/content";
+import type { PageSeoEntry } from "@/lib/site-content";
 
 export type ReconstructiveService = (typeof reconstructiveServices)[number];
 export type CosmeticService = (typeof cosmeticServices)[number];
@@ -151,6 +152,32 @@ export function buildStaticPageMetadata(
       card: "summary_large_image",
       title,
       description,
+    },
+  };
+}
+
+export function buildEditablePageMetadata(page: PageSeoEntry): Metadata {
+  const canonical = `${SITE_URL}${page.canonicalPath}`;
+
+  return {
+    title: page.title,
+    description: page.description,
+    keywords: page.keywords,
+    alternates: {
+      canonical,
+    },
+    openGraph: {
+      type: "website",
+      title: page.title,
+      description: page.description,
+      url: canonical,
+      siteName: "Dr. Divya Sai Narsingam",
+      locale: "en_IN",
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: page.title,
+      description: page.description,
     },
   };
 }

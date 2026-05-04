@@ -2,15 +2,14 @@ import type { Metadata } from "next";
 import PageWrapper from "@/components/ui/PageWrapper";
 import BlogListingClient from "@/components/blog/BlogListingClient";
 import JsonLd from "@/components/seo/JsonLd";
-import { buildStaticPageMetadata, SITE_URL } from "@/lib/seo";
+import { SITE_URL } from "@/lib/seo";
+import { getEditablePageMetadata } from "@/lib/page-metadata";
 
 export const revalidate = 300;
 
-export const metadata: Metadata = buildStaticPageMetadata(
-  "Plastic Surgery Blog | Dr. Divya Sai Narsingam",
-  "Clinical insights, patient education, and treatment explainers by Dr. Divya Sai Narsingam.",
-  "/blog",
-);
+export async function generateMetadata(): Promise<Metadata> {
+  return getEditablePageMetadata("blog");
+}
 
 const blogListJsonLd = {
   "@context": "https://schema.org",

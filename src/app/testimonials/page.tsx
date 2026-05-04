@@ -3,26 +3,11 @@ import PageWrapper from "@/components/ui/PageWrapper";
 import JsonLd from "@/components/seo/JsonLd";
 import TestimonialsPageHeader from "@/components/testimonials/TestimonialsPageHeader";
 import TestimonialsContent from "@/components/testimonials/TestimonialsContent";
+import { getEditablePageMetadata } from "@/lib/page-metadata";
 
-export const metadata: Metadata = {
-  title: "Testimonials & Video Reviews | Dr. Divya Sai Narsingam",
-  description:
-    "Read patient testimonials and watch video reviews for reconstructive and cosmetic plastic surgery with Dr. Divya Sai Narsingam at CARE Hospitals, Hyderabad.",
-  keywords: [
-    "plastic surgery testimonials Hyderabad",
-    "video testimonials plastic surgeon",
-    "breast reconstruction testimonials",
-    "gynecomastia surgery reviews",
-    "tummy tuck reviews Hyderabad",
-    "onco reconstruction patient stories",
-    "microvascular surgery outcomes",
-    "facial plastic surgery reviews",
-    "Dr Divya Sai Narsingam testimonials",
-  ],
-  alternates: {
-    canonical: "https://drdivyaplasticsurgeon.com/reviews",
-  },
-};
+export async function generateMetadata(): Promise<Metadata> {
+  return getEditablePageMetadata("testimonials");
+}
 
 const pageJsonLd = {
   "@context": "https://schema.org",

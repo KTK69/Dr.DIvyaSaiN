@@ -7,15 +7,11 @@ import WhatsAppSupportCard from "@/components/contact/WhatsAppSupportCard";
 import ContactPageHeader from "@/components/contact/ContactPageHeader";
 import CalendlySection from "@/components/contact/CalendlySection";
 import LocationCard from "@/components/contact/LocationCard";
+import { getEditablePageMetadata } from "@/lib/page-metadata";
 
-export const metadata: Metadata = {
-  title: "Book Appointment | Dr. Divya Sai Narsingam – AIG Hospitals Banjara Hills",
-  description:
-    "Book a consultation with Dr. Divya Sai Narsingam at AIG Hospitals, Banjara Hills, Hyderabad. Plastic & Reconstructive Surgeon – MCh (Plastic Surgery).",
-  alternates: {
-    canonical: "https://drdivyaplasticsurgeon.com/contactus",
-  },
-};
+export async function generateMetadata(): Promise<Metadata> {
+  return getEditablePageMetadata("contact");
+}
 
 const localBusinessJsonLd = {
   "@context": "https://schema.org",

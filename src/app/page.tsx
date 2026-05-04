@@ -6,16 +6,11 @@ import AwardsStrip from "@/components/home/AwardsStrip";
 import BeforeAfterGallery from "@/components/home/BeforeAfterGallery";
 import CTASection from "@/components/home/CTASection";
 import JsonLd from "@/components/seo/JsonLd";
+import { getEditablePageMetadata } from "@/lib/page-metadata";
 
-export const metadata: Metadata = {
-  title:
-    "Plastic & Reconstructive Surgeon in Hyderabad | Dr. Divya Sai Narsingam",
-  description:
-    "Dr. Divya Sai Narsingam – MCh Plastic Surgery. Consultant at CARE Hospitals Gachibowli, Hyderabad. 14+ years experience in reconstructive and cosmetic surgery.",
-  alternates: {
-    canonical: "https://drdivyaplasticsurgeon.com",
-  },
-};
+export async function generateMetadata(): Promise<Metadata> {
+  return getEditablePageMetadata("home");
+}
 
 const physicianJsonLd = {
   "@context": "https://schema.org",

@@ -1,21 +1,11 @@
 import type { Metadata } from "next";
 import AboutContent from "@/components/about/AboutContent";
 import AboutPageHeader from "@/components/about/AboutPageHeader";
+import { getEditablePageMetadata } from "@/lib/page-metadata";
 
-export const metadata: Metadata = {
-  title: "About Dr. Divya Sai Narsingam | Plastic Surgeon Hyderabad",
-  description:
-    "Learn about Dr. Divya Sai Narsingam – MCh Plastic Surgery, University Topper, Consultant at CARE Hospitals Gachibowli. 14+ years of reconstructive and cosmetic surgery experience in Hyderabad.",
-  keywords: [
-    "Dr Divya Sai Narsingam biography",
-    "MCh Plastic Surgery Hyderabad",
-    "CARE Hospitals plastic surgeon",
-    "plastic surgeon Gachibowli",
-  ],
-  alternates: {
-    canonical: "https://drdivyaplasticsurgeon.com/aboutus",
-  },
-};
+export async function generateMetadata(): Promise<Metadata> {
+  return getEditablePageMetadata("about");
+}
 
 export default function AboutPage() {
   return (

@@ -1,12 +1,10 @@
 import type { Metadata } from "next";
 import ContactPage from "@/app/contact/page";
-import { buildStaticPageMetadata } from "@/lib/seo";
+import { getEditablePageMetadata } from "@/lib/page-metadata";
 
-export const metadata: Metadata = buildStaticPageMetadata(
-  "Contact and Appointment Booking | Dr. Divya Sai Narsingam",
-  "Book appointments and contact Dr. Divya Sai Narsingam for reconstructive and cosmetic surgery consultations in Hyderabad.",
-  "/contactus",
-);
+export async function generateMetadata(): Promise<Metadata> {
+  return getEditablePageMetadata("contactUs");
+}
 
 export default function ContactUsPage() {
   return <ContactPage />;

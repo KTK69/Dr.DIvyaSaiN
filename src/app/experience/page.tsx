@@ -1,15 +1,11 @@
 import type { Metadata } from "next";
 import ExperienceContent from "@/components/experience/ExperienceContent";
 import ExperiencePageHeader from "@/components/experience/ExperiencePageHeader";
+import { getEditablePageMetadata } from "@/lib/page-metadata";
 
-export const metadata: Metadata = {
-  title: "Experience & Academics | Dr. Divya Sai Narsingam",
-  description:
-    "Academic and professional timeline of Dr. Divya Sai Narsingam – publications, research, conference presentations, and career experience at CARE Hospitals Hyderabad.",
-  alternates: {
-    canonical: "https://drdivyaplasticsurgeon.com/experience",
-  },
-};
+export async function generateMetadata(): Promise<Metadata> {
+  return getEditablePageMetadata("experience");
+}
 
 export default function ExperiencePage() {
   return (

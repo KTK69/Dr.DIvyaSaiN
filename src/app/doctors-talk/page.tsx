@@ -2,15 +2,11 @@ import type { Metadata } from "next";
 import PageWrapper from "@/components/ui/PageWrapper";
 import DoctorsTalkPageHeader from "@/components/doctors-talk/DoctorsTalkPageHeader";
 import DoctorsTalkContent from "@/components/doctors-talk/DoctorsTalkContent";
+import { getEditablePageMetadata } from "@/lib/page-metadata";
 
-export const metadata: Metadata = {
-  title: "Doctor's Talk | Articles & Videos by Dr. Divya Sai Narsingam",
-  description:
-    "Educational articles, clinical insights, and video content by Dr. Divya Sai Narsingam – Plastic & Reconstructive Surgeon at CARE Hospitals, Hyderabad.",
-  alternates: {
-    canonical: "https://drdivyaplasticsurgeon.com/drvideo",
-  },
-};
+export async function generateMetadata(): Promise<Metadata> {
+  return getEditablePageMetadata("doctorsTalk");
+}
 
 export default function DoctorsTalkPage() {
   return (

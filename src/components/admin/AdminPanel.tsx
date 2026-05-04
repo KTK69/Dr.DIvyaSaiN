@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { useSiteContent } from "@/components/site/SiteContentProvider";
 import type { SiteContent } from "@/lib/site-content";
 
-type Section = "navigation" | "footer" | "siteSeo" | "home" | "aboutPage" | "experiencePage" | "testimonialsPage" | "blogPage" | "servicesPage" | "doctorTalkPage" | "contactPage" | "about" | "experience" | "doctorTalk" | "testimonials" | "blog" | "services" | "contact";
+type Section = "navigation" | "footer" | "siteSeo" | "pageSeo" | "home" | "aboutPage" | "experiencePage" | "testimonialsPage" | "blogPage" | "servicesPage" | "doctorTalkPage" | "contactPage" | "about" | "experience" | "doctorTalk" | "testimonials" | "blog" | "services" | "contact";
 
 type DoctorTalkItem = SiteContent["doctorTalk"][number];
 type TestimonialItem = { id: string; patient_name: string; procedure: string; quote: string; rating: number };
@@ -14,11 +14,13 @@ type ServiceItem = SiteContent["services"][number];
 type ExperienceItem = SiteContent["experience"]["experience"][number];
 type NavLink = { label: string; href: string };
 type GalleryImage = { src: string; alt: string; label: string };
+type PageSeoKey = keyof SiteContent["pageSeo"];
 
 const navItems: Array<{ key: Section; label: string }> = [
   { key: "navigation", label: "Navigation" },
   { key: "footer", label: "Footer" },
   { key: "siteSeo", label: "Site SEO" },
+  { key: "pageSeo", label: "Page SEO" },
   { key: "home", label: "Home Content" },
   { key: "aboutPage", label: "About Page" },
   { key: "experiencePage", label: "Experience Page" },
@@ -34,6 +36,21 @@ const navItems: Array<{ key: Section; label: string }> = [
   { key: "blog", label: "Blog Data" },
   { key: "services", label: "Services Data" },
   { key: "contact", label: "Contact Info" },
+];
+
+const pageSeoItems: Array<{ key: PageSeoKey; label: string }> = [
+  { key: "home", label: "Home (/)" },
+  { key: "about", label: "About (/about)" },
+  { key: "aboutUs", label: "About Us (/aboutus)" },
+  { key: "experience", label: "Experience (/experience)" },
+  { key: "doctorsTalk", label: "Doctor's Talk (/doctors-talk)" },
+  { key: "drVideo", label: "Doctor Videos (/drvideo)" },
+  { key: "testimonials", label: "Testimonials (/testimonials)" },
+  { key: "reviews", label: "Reviews (/reviews)" },
+  { key: "blog", label: "Blog (/blog)" },
+  { key: "services", label: "Services (/services)" },
+  { key: "contact", label: "Contact (/contact)" },
+  { key: "contactUs", label: "Contact Us (/contactus)" },
 ];
 
 type SessionResponse = { authenticated?: boolean };
@@ -806,6 +823,71 @@ export default function AdminPanel() {
                   />
                 </div>
               </div>
+            </div>
+          ) : null}
+
+          {activeSection === "pageSeo" ? (
+            <div className="space-y-8">
+              {pageSeoItems.map((pageItem) => {
+                const pageSeo = content.pageSeo[pageItem.key];
+
+                return (
+                  <div key={pageItem.key} className="rounded-xl border border-(--border) p-5 space-y-5">
+                    <div>
+                      <h3 className="text-sm font-semibold text-(--foreground)">{pageItem.label}</h3>
+                      <p className="text-xs text-(--foreground-subtle) mt-1">
+                        Edit the SEO fields for this static page.
+                      </p>
+                    </div>
+
+                    <div className="grid gap-6 md:grid-cols-2">
+                      <Field
+                        label="Title"
+                        value={pageSeo.title}
+                        onChange={(value) =>
+                          update("pageSeo", {
+                            ...content.pageSeo,
+                            [pageItem.key]: { ...pageSeo, title: value },
+                          })
+                        }
+                      />
+                      <Field
+                        label="Canonical Path"
+                        value={pageSeo.canonicalPath}
+                        onChange={(value) =>
+                          update("pageSeo", {
+                            ...content.pageSeo,
+                            [pageItem.key]: { ...pageSeo, canonicalPath: value },
+                          })
+                        }
+                      />
+                      <Field
+                        label="Meta Description"
+                        value={pageSeo.description}
+                        onChange={(value) =>
+                          update("pageSeo", {
+                            ...content.pageSeo,
+                            [pageItem.key]: { ...pageSeo, description: value },
+                          })
+                        }
+                        multiline
+                        className="md:col-span-2"
+                      />
+                    </div>
+
+                    <KeywordField
+                      label="Keywords (one per line)"
+                      values={pageSeo.keywords}
+                      onChange={(value) =>
+                        update("pageSeo", {
+                          ...content.pageSeo,
+                          [pageItem.key]: { ...pageSeo, keywords: value },
+                        })
+                      }
+                    />
+                  </div>
+                );
+              })}
             </div>
           ) : null}
 

@@ -4,25 +4,11 @@ import ServicesContent from "@/components/services/ServicesContent";
 
 import JsonLd from "@/components/seo/JsonLd";
 import ServicesPageHeader from "@/components/services/ServicesPageHeader";
+import { getEditablePageMetadata } from "@/lib/page-metadata";
 
-export const metadata: Metadata = {
-  title: "Plastic Surgery Services Hyderabad | Reconstructive & Cosmetic",
-  description:
-    "Comprehensive plastic and reconstructive surgery services by Dr. Divya Sai Narsingam at CARE Hospitals, Gachibowli, Hyderabad. Breast reconstruction, onco reconstruction, cosmetic procedures and more.",
-  keywords: [
-    "plastic surgery services Hyderabad",
-    "breast reconstruction Hyderabad",
-    "onco reconstruction Hyderabad",
-    "cosmetic surgery Gachibowli",
-    "microvascular surgery Hyderabad",
-    "gynecomastia reduction Hyderabad",
-    "tummy tuck Hyderabad",
-    "facial plastic surgery Hyderabad",
-  ],
-  alternates: {
-    canonical: "https://drdivyaplasticsurgeon.com/services",
-  },
-};
+export async function generateMetadata(): Promise<Metadata> {
+  return getEditablePageMetadata("services");
+}
 
 const servicesJsonLd = {
   "@context": "https://schema.org",
