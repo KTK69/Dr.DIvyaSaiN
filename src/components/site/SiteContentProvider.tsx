@@ -12,10 +12,24 @@ import React, {
 import { DEFAULT_SITE_CONTENT, type SiteContent } from "@/lib/site-content";
 import type { SiteContentEnvelope } from "@/lib/site-content-utils";
 
+type SiteContentApiPayload = SiteContentEnvelope & {
+  ok?: boolean;
+  message?: string;
+  diagnostics?: {
+    nodeEnv?: string;
+    vercelEnv?: string;
+    hasBlobToken?: boolean;
+    vercelProjectProductionUrl?: string | null;
+    vercelUrl?: string | null;
+  };
+};
+
 type SiteContentContextValue = {
   content: SiteContent;
   setContent: React.Dispatch<React.SetStateAction<SiteContent>>;
-  saveContent: (nextContent?: SiteContent) => Promise<boolean>;
+  saveContent: (
+    nextContent?: SiteContent,
+  ) => Promise<{ ok: boolean; message?: string }>;
   refreshContent: () => Promise<void>;
   resetContent: () => void;
   saving: boolean;
@@ -24,30 +38,35 @@ type SiteContentContextValue = {
 
 const SiteContentContext = createContext<SiteContentContextValue | null>(null);
 
-async function fetchSiteContentEnvelope(): Promise<SiteContentEnvelope | null> {
+async function fetchSiteContentEnvelope(): Promise<SiteContentApiPayload | null> {
   const response = await fetch("/api/site-content", { cache: "no-store" });
 
   if (!response.ok) {
     return null;
   }
 
-  return (await response.json()) as SiteContentEnvelope;
+  return (await response.json()) as SiteContentApiPayload;
 }
 
 async function postSiteContentEnvelope(
   nextContent: SiteContent,
-): Promise<(SiteContentEnvelope & { ok?: boolean }) | null> {
+): Promise<{ ok: boolean; payload?: SiteContentApiPayload; message?: string }> {
   const response = await fetch("/api/admin/content", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ content: nextContent }),
   });
 
-  if (!response.ok) {
-    return null;
+  const payload = (await response.json()) as SiteContentApiPayload;
+
+  if (!response.ok || payload.ok === false) {
+    return {
+      ok: false,
+      message: payload.message ?? "Unable to save site content.",
+    };
   }
 
-  return (await response.json()) as SiteContentEnvelope & { ok?: boolean };
+  return { ok: true, payload };
 }
 
 export function SiteContentProvider({ children }: { children: React.ReactNode }) {
@@ -122,17 +141,24 @@ export function SiteContentProvider({ children }: { children: React.ReactNode })
 
     try {
       const contentToSave = nextContent ?? contentRef.current;
-      const payload = await postSiteContentEnvelope(contentToSave);
-      if (!payload) {
-        return false;
+      const result = await postSiteContentEnvelope(contentToSave);
+      if (!result.ok || !result.payload) {
+        return {
+          ok: false,
+          message: result.message ?? "Unable to save site content.",
+        };
       }
 
+      const payload = result.payload;
       setContentState(payload.content ?? contentToSave);
       setHasLocalEdits(false);
       setLastSyncedAt(payload.updatedAt ?? null);
-      return true;
+      return { ok: true };
     } catch {
-      return false;
+      return {
+        ok: false,
+        message: "Unable to reach the content save endpoint.",
+      };
     } finally {
       setSaving(false);
     }

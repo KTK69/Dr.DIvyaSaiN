@@ -125,14 +125,14 @@ export default function AdminPanel() {
     }
 
     const timeoutId = window.setTimeout(async () => {
-      const ok = await saveContent(content);
-      if (ok) {
+      const result = await saveContent(content);
+      if (result.ok) {
         previousSavedSnapshotRef.current = snapshot;
         setMessage("Changes synced across the site.");
         return;
       }
 
-      setMessage("Unable to save changes. Configure Vercel Blob and try again.");
+      setMessage(result.message ?? "Unable to save changes.");
     }, 800);
 
     return () => {

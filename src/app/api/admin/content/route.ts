@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { cookies } from "next/headers";
 import { ADMIN_SESSION_COOKIE, isValidSessionToken } from "@/lib/admin-auth";
 import {
+  getSiteContentPersistenceDiagnostics,
   getStoredSiteContent,
   isSiteContentPersistenceConfigured,
   saveStoredSiteContent,
@@ -26,11 +27,18 @@ export async function GET() {
   }
 
   const payload = await getStoredSiteContent();
-  return NextResponse.json(payload, {
+  return NextResponse.json(
+    {
+      ok: true,
+      ...payload,
+      diagnostics: getSiteContentPersistenceDiagnostics(),
+    },
+    {
     headers: {
       "Cache-Control": "no-store",
     },
-  });
+    },
+  );
 }
 
 export async function POST(request: Request) {
@@ -47,6 +55,7 @@ export async function POST(request: Request) {
         ok: false,
         message:
           "Persistence is not configured. Add BLOB_READ_WRITE_TOKEN in Vercel to save admin changes.",
+        diagnostics: getSiteContentPersistenceDiagnostics(),
       },
       { status: 500 },
     );
@@ -68,10 +77,27 @@ export async function POST(request: Request) {
   }
 
   const mergedContent = mergeWithDefaults(DEFAULT_SITE_CONTENT, payload.content);
-  const saved = await saveStoredSiteContent(mergedContent);
+  try {
+    const saved = await saveStoredSiteContent(mergedContent);
 
-  return NextResponse.json({
-    ok: true,
-    ...saved,
-  });
+    return NextResponse.json({
+      ok: true,
+      ...saved,
+      diagnostics: getSiteContentPersistenceDiagnostics(),
+    });
+  } catch (error) {
+    const message =
+      error instanceof Error
+        ? error.message
+        : "Unknown persistence error while saving site content.";
+
+    return NextResponse.json(
+      {
+        ok: false,
+        message: `Blob save failed: ${message}`,
+        diagnostics: getSiteContentPersistenceDiagnostics(),
+      },
+      { status: 500 },
+    );
+  }
 }

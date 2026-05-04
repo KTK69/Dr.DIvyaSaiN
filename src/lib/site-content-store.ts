@@ -17,6 +17,17 @@ function hasBlobToken() {
   return Boolean(process.env.BLOB_READ_WRITE_TOKEN);
 }
 
+export function getSiteContentPersistenceDiagnostics() {
+  return {
+    nodeEnv: process.env.NODE_ENV ?? "unknown",
+    vercelEnv: process.env.VERCEL_ENV ?? "unknown",
+    hasBlobToken: hasBlobToken(),
+    vercelProjectProductionUrl:
+      process.env.VERCEL_PROJECT_PRODUCTION_URL ?? null,
+    vercelUrl: process.env.VERCEL_URL ?? null,
+  };
+}
+
 function createEnvelope(content: SiteContent): SiteContentEnvelope {
   return {
     content,
