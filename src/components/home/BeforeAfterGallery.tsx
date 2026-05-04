@@ -26,6 +26,7 @@ export default function BeforeAfterGallery() {
                   alt={image.alt}
                   fill
                   className="object-cover"
+                  unoptimized={image.src.startsWith("data:") || image.src.startsWith("blob:")}
                   sizes="(max-width: 1024px) 100vw, 25vw"
                 />
               </div>

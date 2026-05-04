@@ -1,26 +1,19 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useState, useSyncExternalStore } from "react";
+import { useEffect, useMemo, useState } from "react";
+import { useRouter } from "next/navigation";
 import { useSiteContent } from "@/components/site/SiteContentProvider";
 import type { SiteContent } from "@/lib/site-content";
 
-const AUTH_KEY = "emmi-admin-auth";
-const AUTH_EVENT = "emmi-admin-auth-changed";
-const USERNAME = "admin";
-const PASSWORD = "admin123";
-const SESSION_DURATION_MS = 30 * 60 * 1000;
-const SESSION_REFRESH_MS = 60 * 1000;
-
 type Section = "navigation" | "footer" | "home" | "aboutPage" | "experiencePage" | "testimonialsPage" | "blogPage" | "servicesPage" | "doctorTalkPage" | "contactPage" | "about" | "experience" | "doctorTalk" | "testimonials" | "blog" | "services" | "contact";
 
-type DoctorTalkItem = { title: string; description: string; href: string };
+type DoctorTalkItem = SiteContent["doctorTalk"][number];
 type TestimonialItem = { id: string; patient_name: string; procedure: string; quote: string; rating: number };
 type BlogItem = SiteContent["blog"][number];
 type ServiceItem = SiteContent["services"][number];
 type ExperienceItem = SiteContent["experience"]["experience"][number];
 type NavLink = { label: string; href: string };
 type GalleryImage = { src: string; alt: string; label: string };
-type AuthSession = { expiresAt: number };
 
 const navItems: Array<{ key: Section; label: string }> = [
   { key: "navigation", label: "Navigation" },
@@ -42,149 +35,94 @@ const navItems: Array<{ key: Section; label: string }> = [
   { key: "contact", label: "Contact Info" },
 ];
 
-function getAuthState() {
-  if (typeof window === "undefined") {
-    return false;
-  }
-
-  const session = readAuthSession();
-  if (!isSessionValid(session)) {
-    window.localStorage.removeItem(AUTH_KEY);
-    return false;
-  }
-
-  return true;
-}
-
-function readAuthSession(): AuthSession | null {
-  if (typeof window === "undefined") {
-    return null;
-  }
-
-  const raw = window.localStorage.getItem(AUTH_KEY);
-  if (!raw) {
-    return null;
-  }
-
-  try {
-    const parsed = JSON.parse(raw) as AuthSession;
-    if (!parsed || typeof parsed.expiresAt !== "number") {
-      return null;
-    }
-    return parsed;
-  } catch {
-    return null;
-  }
-}
-
-function isSessionValid(session: AuthSession | null) {
-  return Boolean(session && session.expiresAt > Date.now());
-}
-
-function setAuthSession() {
-  const next = { expiresAt: Date.now() + SESSION_DURATION_MS };
-  window.localStorage.setItem(AUTH_KEY, JSON.stringify(next));
-  window.dispatchEvent(new Event(AUTH_EVENT));
-  return next;
-}
-
-function clearAuthSession() {
-  window.localStorage.removeItem(AUTH_KEY);
-  window.dispatchEvent(new Event(AUTH_EVENT));
-}
-
-function subscribeAuth(listener: () => void) {
-  const handleStorage = (event: StorageEvent) => {
-    if (event.key === AUTH_KEY) {
-      listener();
-    }
-  };
-
-  window.addEventListener("storage", handleStorage);
-  window.addEventListener(AUTH_EVENT, listener);
-
-  return () => {
-    window.removeEventListener("storage", handleStorage);
-    window.removeEventListener(AUTH_EVENT, listener);
-  };
-}
+type SessionResponse = { authenticated?: boolean };
 
 export default function AdminPanel() {
+  const router = useRouter();
   const { content, setContent, resetContent } = useSiteContent();
-  const authenticated = useSyncExternalStore(subscribeAuth, getAuthState, () => false);
+  const [authenticated, setAuthenticated] = useState(false);
+  const [checkingSession, setCheckingSession] = useState(true);
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [activeSection, setActiveSection] = useState<Section>("home");
   const [message, setMessage] = useState("");
-  const sessionTimeoutRef = useRef<number | null>(null);
-  const lastRefreshRef = useRef(0);
 
   const sectionTitle = useMemo(() => navItems.find((item) => item.key === activeSection)?.label ?? activeSection, [activeSection]);
 
   useEffect(() => {
-    if (!authenticated) {
-      return undefined;
-    }
+    let active = true;
 
-    const session = readAuthSession();
-    if (!session) {
-      return undefined;
-    }
-
-    const scheduleTimeout = (expiresAt: number) => {
-      if (sessionTimeoutRef.current) {
-        window.clearTimeout(sessionTimeoutRef.current);
+    const checkSession = async () => {
+      try {
+        const response = await fetch("/api/admin/session", { cache: "no-store" });
+        if (!response.ok) {
+          return false;
+        }
+        const data = (await response.json()) as SessionResponse;
+        return Boolean(data.authenticated);
+      } catch {
+        return false;
       }
-      const delay = Math.max(0, expiresAt - Date.now());
-      sessionTimeoutRef.current = window.setTimeout(() => {
-        clearAuthSession();
-        setMessage("Session expired");
-      }, delay);
     };
 
-    const handleActivity = () => {
-      const now = Date.now();
-      if (now - lastRefreshRef.current < SESSION_REFRESH_MS) {
+    const runCheck = async () => {
+      setCheckingSession(true);
+      const ok = await checkSession();
+      if (!active) {
         return;
       }
-      lastRefreshRef.current = now;
-
-      const currentSession = readAuthSession();
-      if (!isSessionValid(currentSession)) {
-        clearAuthSession();
-        setMessage("Session expired");
-        return;
-      }
-
-      const nextSession = setAuthSession();
-      scheduleTimeout(nextSession.expiresAt);
+      setAuthenticated(ok);
+      setCheckingSession(false);
     };
 
-    const events = ["mousedown", "mousemove", "keydown", "scroll", "touchstart"] as const;
-    events.forEach((eventName) => window.addEventListener(eventName, handleActivity, { passive: true }));
-    scheduleTimeout(session.expiresAt);
+    runCheck();
 
+    const handlePageShow = (event: PageTransitionEvent) => {
+      if (event.persisted) {
+        void runCheck();
+      }
+    };
+
+    window.addEventListener("pageshow", handlePageShow);
     return () => {
-      events.forEach((eventName) => window.removeEventListener(eventName, handleActivity));
-      if (sessionTimeoutRef.current) {
-        window.clearTimeout(sessionTimeoutRef.current);
-      }
+      active = false;
+      window.removeEventListener("pageshow", handlePageShow);
     };
-  }, [authenticated]);
+  }, []);
 
-  function login() {
-    if (username === USERNAME && password === PASSWORD) {
-      setAuthSession();
+  async function login() {
+    setMessage("");
+    try {
+      const response = await fetch("/api/admin/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ username, password }),
+      });
+
+      if (!response.ok) {
+        setMessage("Invalid credentials");
+        return;
+      }
+
+      setAuthenticated(true);
       setMessage("Logged in");
-      return;
+    } catch {
+      setMessage("Unable to login");
     }
-
-    setMessage("Invalid credentials");
   }
 
-  function logout() {
-    clearAuthSession();
+  async function logout() {
+    try {
+      await fetch("/api/admin/logout", { method: "POST" });
+    } catch {
+      // No-op
+    }
+
+    setAuthenticated(false);
     setMessage("");
+    setPassword("");
+    setUsername("");
+    router.replace("/");
   }
 
   function update<K extends keyof SiteContent>(key: K, value: SiteContent[K]) {
@@ -230,7 +168,23 @@ export default function AdminPanel() {
       }
 
       if (section === "doctorTalk") {
-        return { ...previous, doctorTalk: [...previous.doctorTalk, { title: "", description: "", href: "/contact" }] };
+        return {
+          ...previous,
+          doctorTalk: [
+            ...previous.doctorTalk,
+            {
+              id: `talk-${Date.now()}`,
+              type: "article",
+              title: "",
+              description: "",
+              content: "",
+              category: "Reconstructive",
+              date: "",
+              readTime: "",
+              youtubeUrl: "",
+            },
+          ],
+        };
       }
 
       if (section === "testimonials") {
@@ -302,6 +256,17 @@ export default function AdminPanel() {
 
       return { ...previous, services: previous.services.filter((_, itemIndex) => itemIndex !== index) };
     });
+  }
+
+  if (checkingSession) {
+    return (
+      <div className="max-w-md mx-auto mt-24 p-6 glass-card rounded-2xl border border-(--border)">
+        <h1 className="text-2xl font-medium text-(--foreground) mb-2" style={{ fontFamily: "var(--font-serif)" }}>
+          Checking session
+        </h1>
+        <p className="text-sm text-(--foreground-muted)">Verifying access to the admin dashboard.</p>
+      </div>
+    );
   }
 
   if (!authenticated) {
@@ -438,7 +403,7 @@ export default function AdminPanel() {
                   renderItem={(item, _index, updateItem) => (
                     <div className="grid gap-4 md:grid-cols-2">
                       <Field label="Label" value={item.label} onChange={(value) => updateItem({ ...item, label: value })} />
-                      <Field label="Image URL" value={item.src} onChange={(value) => updateItem({ ...item, src: value })} />
+                      <ImageField label="Image" value={item.src} onChange={(value) => updateItem({ ...item, src: value })} />
                       <Field label="Alt text" value={item.alt} onChange={(value) => updateItem({ ...item, alt: value })} className="md:col-span-2" />
                     </div>
                   )}
@@ -481,13 +446,38 @@ export default function AdminPanel() {
               onAdd={() => addItem("doctorTalk")}
               onRemove={(index) => removeItem("doctorTalk", index)}
               onChange={(items) => update("doctorTalk", items)}
-              renderItem={(item, index, updateItem) => (
-                <div className="grid gap-4 md:grid-cols-2">
-                  <Field label="Title" value={item.title} onChange={(value) => updateItem({ ...item, title: value })} />
-                  <Field label="Link" value={item.href} onChange={(value) => updateItem({ ...item, href: value })} />
-                  <Field label="Description" value={item.description} onChange={(value) => updateItem({ ...item, description: value })} multiline />
-                </div>
-              )}
+              renderItem={(item, index, updateItem) => {
+                const itemType = item.type ?? "article";
+
+                return (
+                  <div className="grid gap-4 md:grid-cols-2">
+                    <Field label="Title" value={item.title ?? ""} onChange={(value) => updateItem({ ...item, title: value })} />
+                    <SelectField
+                      label="Type"
+                      value={itemType}
+                      options={[
+                        { label: "Article", value: "article" },
+                        { label: "Video", value: "video" },
+                      ]}
+                      onChange={(value) => updateItem({ ...item, type: value as DoctorTalkItem["type"] })}
+                    />
+                    {itemType === "article" ? (
+                      <>
+                        <Field label="Category" value={item.category ?? ""} onChange={(value) => updateItem({ ...item, category: value })} />
+                        <Field label="Date" value={item.date ?? ""} onChange={(value) => updateItem({ ...item, date: value })} />
+                        <Field label="Read time" value={item.readTime ?? ""} onChange={(value) => updateItem({ ...item, readTime: value })} />
+                      </>
+                    ) : null}
+                    <Field label="Description" value={item.description ?? ""} onChange={(value) => updateItem({ ...item, description: value })} multiline className="md:col-span-2" />
+                    {itemType === "article" ? (
+                      <Field label="Content" value={item.content ?? ""} onChange={(value) => updateItem({ ...item, content: value })} multiline className="md:col-span-2" />
+                    ) : null}
+                    {itemType === "video" ? (
+                      <Field label="YouTube URL" value={item.youtubeUrl ?? ""} onChange={(value) => updateItem({ ...item, youtubeUrl: value })} className="md:col-span-2" />
+                    ) : null}
+                  </div>
+                );
+              }}
             />
           ) : null}
 
@@ -518,6 +508,7 @@ export default function AdminPanel() {
                 <div className="grid gap-4 md:grid-cols-2">
                   <Field label="Title" value={item.title} onChange={(value) => updateItem({ ...item, title: value })} />
                   <Field label="Slug" value={item.slug} onChange={(value) => updateItem({ ...item, slug: value })} />
+                  <ImageField label="Image" value={item.image} onChange={(value) => updateItem({ ...item, image: value })} className="md:col-span-2" />
                   <Field label="Excerpt" value={item.excerpt} onChange={(value) => updateItem({ ...item, excerpt: value })} multiline />
                   <Field label="Content" value={item.content} onChange={(value) => updateItem({ ...item, content: value })} multiline />
                 </div>
@@ -709,9 +700,32 @@ export default function AdminPanel() {
           ) : null}
 
           {activeSection === "testimonialsPage" ? (
-            <div className="grid gap-6 md:grid-cols-2">
-              <Field label="Heading" value={content.testimonialsPage.heading} onChange={(value) => update("testimonialsPage", { ...content.testimonialsPage, heading: value })} />
-              <Field label="Subheading" value={content.testimonialsPage.subheading} onChange={(value) => update("testimonialsPage", { ...content.testimonialsPage, subheading: value })} />
+            <div className="space-y-8">
+              <div className="grid gap-6 md:grid-cols-2">
+                <Field label="Page heading" value={content.testimonialsPage.heading} onChange={(value) => update("testimonialsPage", { ...content.testimonialsPage, heading: value })} />
+                <Field label="Page subheading" value={content.testimonialsPage.subheading} onChange={(value) => update("testimonialsPage", { ...content.testimonialsPage, subheading: value })} />
+              </div>
+
+              <div className="border-t border-(--border) pt-6">
+                <h3 className="text-sm font-semibold text-(--foreground) mb-4">Video Testimonial Section</h3>
+                <div className="grid gap-6 md:grid-cols-2">
+                  <Field label="Eyebrow" value={content.testimonialsPage.video.eyebrow} onChange={(value) => update("testimonialsPage", { ...content.testimonialsPage, video: { ...content.testimonialsPage.video, eyebrow: value } })} />
+                  <Field label="Title" value={content.testimonialsPage.video.title} onChange={(value) => update("testimonialsPage", { ...content.testimonialsPage, video: { ...content.testimonialsPage.video, title: value } })} />
+                  <Field label="Subtitle" value={content.testimonialsPage.video.subtitle} onChange={(value) => update("testimonialsPage", { ...content.testimonialsPage, video: { ...content.testimonialsPage.video, subtitle: value } })} multiline className="md:col-span-2" />
+                  <Field label="YouTube URL" value={content.testimonialsPage.video.youtubeUrl} onChange={(value) => update("testimonialsPage", { ...content.testimonialsPage, video: { ...content.testimonialsPage.video, youtubeUrl: value } })} className="md:col-span-2" />
+                  <Field label="Video title" value={content.testimonialsPage.video.videoTitle} onChange={(value) => update("testimonialsPage", { ...content.testimonialsPage, video: { ...content.testimonialsPage.video, videoTitle: value } })} />
+                  <Field label="Video note" value={content.testimonialsPage.video.videoNote} onChange={(value) => update("testimonialsPage", { ...content.testimonialsPage, video: { ...content.testimonialsPage.video, videoNote: value } })} multiline className="md:col-span-2" />
+                </div>
+              </div>
+
+              <div className="border-t border-(--border) pt-6">
+                <h3 className="text-sm font-semibold text-(--foreground) mb-4">Written Testimonials Section</h3>
+                <div className="grid gap-6 md:grid-cols-2">
+                  <Field label="Eyebrow" value={content.testimonialsPage.written.eyebrow} onChange={(value) => update("testimonialsPage", { ...content.testimonialsPage, written: { ...content.testimonialsPage.written, eyebrow: value } })} />
+                  <Field label="Title" value={content.testimonialsPage.written.title} onChange={(value) => update("testimonialsPage", { ...content.testimonialsPage, written: { ...content.testimonialsPage.written, title: value } })} />
+                  <Field label="Subtitle" value={content.testimonialsPage.written.subtitle} onChange={(value) => update("testimonialsPage", { ...content.testimonialsPage, written: { ...content.testimonialsPage.written, subtitle: value } })} multiline className="md:col-span-2" />
+                </div>
+              </div>
             </div>
           ) : null}
 
@@ -746,6 +760,7 @@ export default function AdminPanel() {
               <Field label="Calendar Subheading" value={content.contactPage.calendarSubheading} onChange={(value) => update("contactPage", { ...content.contactPage, calendarSubheading: value })} />
               <Field label="Form Heading" value={content.contactPage.formHeading} onChange={(value) => update("contactPage", { ...content.contactPage, formHeading: value })} />
               <Field label="Location Heading" value={content.contactPage.locationHeading} onChange={(value) => update("contactPage", { ...content.contactPage, locationHeading: value })} />
+              <Field label="Location Address" value={content.contactPage.locationAddress} onChange={(value) => update("contactPage", { ...content.contactPage, locationAddress: value })} multiline />
               <div className="border-t border-(--border) pt-6">
                 <h3 className="text-sm font-semibold text-(--foreground) mb-4">Form Field Labels</h3>
                 <div className="grid gap-4 md:grid-cols-2">
@@ -779,7 +794,22 @@ function Field({ label, value, onChange, multiline = false, className = "" }: { 
   );
 }
 
-function ListEditor<T extends object>({
+function SelectField({ label, value, options, onChange, className = "" }: { label: string; value: string; options: Array<{ label: string; value: string }>; onChange: (value: string) => void; className?: string; }) {
+  return (
+    <label className={`block text-sm text-(--foreground-muted) ${className}`}>
+      <span className="mb-1 block">{label}</span>
+      <select value={value} onChange={(event) => onChange(event.target.value)} className="w-full rounded-lg border border-(--border) bg-transparent px-3 py-2 text-(--foreground)">
+        {options.map((option) => (
+          <option key={option.value} value={option.value} className="text-(--foreground)">
+            {option.label}
+          </option>
+        ))}
+      </select>
+    </label>
+  );
+}
+
+function ListEditor<T>({
   items,
   renderItem,
   onAdd,
@@ -818,14 +848,92 @@ function ListEditor<T extends object>({
 
 function ServiceForm({ item, onChange }: { item: ServiceItem; onChange: (value: ServiceItem) => void }) {
   return (
-    <div className="grid gap-4 md:grid-cols-2">
-      <Field label="Name" value={item.name} onChange={(value) => onChange({ ...item, name: value })} />
-      <Field label="Slug" value={item.slug} onChange={(value) => onChange({ ...item, slug: value })} />
-      <Field label="Summary" value={item.summary} onChange={(value) => onChange({ ...item, summary: value })} multiline />
-      <Field label="Content" value={item.content} onChange={(value) => onChange({ ...item, content: value })} multiline />
-      <Field label="Image" value={item.image} onChange={(value) => onChange({ ...item, image: value })} />
-      <Field label="Meta title" value={item.meta_title} onChange={(value) => onChange({ ...item, meta_title: value })} />
-      <Field label="Meta description" value={item.meta_description} onChange={(value) => onChange({ ...item, meta_description: value })} multiline />
+    <div className="space-y-6">
+      <div className="grid gap-4 md:grid-cols-2">
+        <Field label="Name" value={item.name} onChange={(value) => onChange({ ...item, name: value })} />
+        <Field label="Slug" value={item.slug} onChange={(value) => onChange({ ...item, slug: value })} />
+        <SelectField
+          label="Category"
+          value={item.category}
+          options={[
+            { label: "Reconstructive", value: "reconstructive" },
+            { label: "Cosmetic", value: "cosmetic" },
+          ]}
+          onChange={(value) => onChange({ ...item, category: value as ServiceItem["category"] })}
+        />
+        <ImageField label="Image" value={item.image} onChange={(value) => onChange({ ...item, image: value })} />
+        <Field label="Summary" value={item.summary} onChange={(value) => onChange({ ...item, summary: value })} multiline className="md:col-span-2" />
+        <Field label="Content" value={item.content} onChange={(value) => onChange({ ...item, content: value })} multiline className="md:col-span-2" />
+        <Field label="Meta title" value={item.meta_title} onChange={(value) => onChange({ ...item, meta_title: value })} />
+        <Field label="Meta description" value={item.meta_description} onChange={(value) => onChange({ ...item, meta_description: value })} multiline className="md:col-span-2" />
+      </div>
+
+      <div className="border-t border-(--border) pt-6">
+        <h3 className="text-sm font-semibold text-(--foreground) mb-4">Key points</h3>
+        <ListEditor<string>
+          items={item.key_points ?? []}
+          onAdd={() => onChange({ ...item, key_points: [...(item.key_points ?? []), ""] })}
+          onRemove={(index) => onChange({ ...item, key_points: (item.key_points ?? []).filter((_, i) => i !== index) })}
+          onChange={(items) => onChange({ ...item, key_points: items })}
+          renderItem={(point, index, updateItem) => (
+            <Field label={`Point ${index + 1}`} value={point} onChange={updateItem} className="md:col-span-2" />
+          )}
+        />
+      </div>
+
+      <div className="border-t border-(--border) pt-6">
+        <h3 className="text-sm font-semibold text-(--foreground) mb-4">FAQ</h3>
+        <ListEditor<{ question: string; answer: string }>
+          items={item.faq ?? []}
+          onAdd={() => onChange({ ...item, faq: [...(item.faq ?? []), { question: "", answer: "" }] })}
+          onRemove={(index) => onChange({ ...item, faq: (item.faq ?? []).filter((_, i) => i !== index) })}
+          onChange={(items) => onChange({ ...item, faq: items })}
+          renderItem={(faqItem, _index, updateItem) => (
+            <div className="grid gap-4 md:grid-cols-2">
+              <Field label="Question" value={faqItem.question} onChange={(value) => updateItem({ ...faqItem, question: value })} className="md:col-span-2" />
+              <Field label="Answer" value={faqItem.answer} onChange={(value) => updateItem({ ...faqItem, answer: value })} multiline className="md:col-span-2" />
+            </div>
+          )}
+        />
+      </div>
     </div>
+  );
+}
+
+function readFileAsDataUrl(file: File): Promise<string> {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => resolve(String(reader.result || ""));
+    reader.onerror = () => reject(new Error("Failed to read file"));
+    reader.readAsDataURL(file);
+  });
+}
+
+function ImageField({ label, value, onChange, className = "" }: { label: string; value: string; onChange: (value: string) => void; className?: string; }) {
+  const handleFileChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (!file) {
+      return;
+    }
+
+    try {
+      const dataUrl = await readFileAsDataUrl(file);
+      onChange(dataUrl);
+    } catch {
+      return;
+    } finally {
+      event.target.value = "";
+    }
+  };
+
+  return (
+    <label className={`block text-sm text-(--foreground-muted) ${className}`}>
+      <span className="mb-1 block">{label}</span>
+      <div className="space-y-2">
+        <input value={value} onChange={(event) => onChange(event.target.value)} className="w-full rounded-lg border border-(--border) bg-transparent px-3 py-2 text-(--foreground)" />
+        <input type="file" accept="image/*" onChange={handleFileChange} className="w-full rounded-lg border border-(--border) bg-transparent px-3 py-2 text-(--foreground)" />
+        {value ? <img src={value} alt={`${label} preview`} className="h-24 w-auto rounded-md border border-(--border) object-cover" /> : null}
+      </div>
+    </label>
   );
 }

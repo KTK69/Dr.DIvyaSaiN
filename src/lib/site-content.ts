@@ -1,4 +1,5 @@
 import { doctor, education, experience, awards, publications, research, conferences, contactInfo, reconstructiveServices, cosmeticServices, expertise } from "@/lib/doctor-data";
+import { DEFAULT_BLOGS } from "@/lib/content-repository";
 import type { AboutContent, Blog, Review, Service } from "@/types/content";
 
 // Navigation item type
@@ -55,6 +56,19 @@ export type ExperiencePageContent = {
 export type TestimonialsPageContent = {
   heading: string;
   subheading: string;
+  video: {
+    eyebrow: string;
+    title: string;
+    subtitle: string;
+    youtubeUrl: string;
+    videoTitle: string;
+    videoNote: string;
+  };
+  written: {
+    eyebrow: string;
+    title: string;
+    subtitle: string;
+  };
 };
 
 export type BlogPageContent = {
@@ -74,6 +88,18 @@ export type DoctorTalkPageContent = {
   subheading: string;
 };
 
+export type DoctorTalkItem = {
+  id: string;
+  type: "article" | "video";
+  title: string;
+  description: string;
+  content?: string;
+  category?: string;
+  date?: string;
+  readTime?: string;
+  youtubeUrl?: string;
+};
+
 export type ContactPageContent = {
   heading: string;
   subheading: string;
@@ -81,6 +107,7 @@ export type ContactPageContent = {
   calendarSubheading: string;
   formHeading: string;
   locationHeading: string;
+  locationAddress: string;
   formLabels: {
     fullName: string;
     phone: string;
@@ -146,7 +173,7 @@ export type SiteContent = {
     conferences: typeof conferences;
     awards: typeof awards;
   };
-  doctorTalk: Array<{ title: string; description: string; href: string }>;
+  doctorTalk: DoctorTalkItem[];
   testimonials: Review[];
   blog: Blog[];
   services: Service[];
@@ -311,11 +338,28 @@ export const DEFAULT_SITE_CONTENT: SiteContent = {
   testimonialsPage: {
     heading: "Patient Testimonials",
     subheading: "Real feedback from patients who trust our care",
+    video: {
+      eyebrow: "Video Testimonial",
+      title: "A YouTube video can be dropped in here",
+      subtitle:
+        "Use the embed URL from YouTube to replace the placeholder video below. This section is built for quick updates and future patient stories.",
+      youtubeUrl: "https://www.youtube.com/embed/ysz5S6PUM-U",
+      videoTitle: "Featured YouTube testimonial",
+      videoNote:
+        "Replace this placeholder embed with the approved YouTube link for a real patient testimonial.",
+    },
+    written: {
+      eyebrow: "Written Testimonials",
+      title: "Static patient feedback for now",
+      subtitle:
+        "These cards can later be replaced with live reviews or approved quotes from patients after consent and verification.",
+    },
   },
 
   blogPage: {
-    heading: "Latest Articles",
-    subheading: "Insights on cosmetic and reconstructive procedures",
+    heading: "Blog and patient education",
+    subheading:
+      "Practical medical guidance for patients exploring reconstructive and cosmetic treatment options.",
   },
 
   servicesPage: {
@@ -339,6 +383,7 @@ export const DEFAULT_SITE_CONTENT: SiteContent = {
       "Instantly book your consultation — select a date & time that works for you.",
     formHeading: "Consultation Request",
     locationHeading: "Location",
+    locationAddress: contactInfo.fullAddress,
     formLabels: {
       fullName: "Full Name",
       phone: "Phone Number",
@@ -369,9 +414,22 @@ export const DEFAULT_SITE_CONTENT: SiteContent = {
   experience: { experience, publications, research, conferences, awards },
   doctorTalk: [
     {
+      id: "talk-article-1",
+      type: "article",
       title: "Why consultation matters",
       description: "How a careful consultation shapes safer, more natural results.",
-      href: "/contactus",
+      content:
+        "Consultation is where goals, anatomy, and safety meet. A structured discussion clarifies what is achievable and how to plan recovery.\n\nDr. Narsingam reviews medical history, explains surgical options, and aligns expectations before any procedure is recommended.",
+      category: "Reconstructive",
+      date: "February 2026",
+      readTime: "4 min read",
+    },
+    {
+      id: "talk-video-1",
+      type: "video",
+      title: "Introduction to Plastic and Reconstructive Surgery",
+      description: "An overview of common procedures, safety, and recovery planning.",
+      youtubeUrl: "",
     },
   ],
   testimonials: [
@@ -392,7 +450,7 @@ export const DEFAULT_SITE_CONTENT: SiteContent = {
       rating: 5,
     },
   ],
-  blog: [],
+  blog: DEFAULT_BLOGS.map((blog) => ({ ...blog })),
   services: [...reconstructiveServices, ...cosmeticServices].map((item) => ({
     id: `service-${item.slug}`,
     slug: item.slug,

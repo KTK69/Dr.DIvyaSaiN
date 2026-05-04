@@ -19,7 +19,7 @@ export default function LocationCard() {
         </h2>
       </div>
       <address className="not-italic text-sm text-(--foreground-muted) leading-relaxed">
-        {content.footer.contactLocation}
+        {contactPage.locationAddress || content.footer.contactLocation}
       </address>
     </div>
   );

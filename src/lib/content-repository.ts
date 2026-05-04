@@ -66,6 +66,8 @@ const blogPosts: Blog[] = blogSeeds.map((entry) => {
   };
 });
 
+export const DEFAULT_BLOGS: Blog[] = blogPosts.map((post) => ({ ...post }));
+
 const services: Service[] = [...reconstructiveServices, ...cosmeticServices].map(
   (item) => {
     const category = reconstructiveServices.some((svc) => svc.slug === item.slug)
