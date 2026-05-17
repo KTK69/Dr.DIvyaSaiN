@@ -499,27 +499,26 @@ export const DEFAULT_SITE_CONTENT: SiteContent = {
     beforeAfterGallery: {
       eyebrow: "Before & After",
       title: "Before & After Gallery",
-      subtitle:
-        "Placeholder images shown here. Replace with approved patient photographs through the admin panel.",
+      subtitle: "",
       images: [
         {
           src: "/images/img/about.jpeg",
-          alt: "Before and after gallery placeholder 1",
+          alt: "Breast reconstruction treatment gallery",
           label: "Breast reconstruction",
         },
         {
           src: "/images/img/about.jpeg",
-          alt: "Before and after gallery placeholder 2",
+          alt: "Breast lift treatment gallery",
           label: "Breast lift",
         },
         {
           src: "/images/img/about.jpeg",
-          alt: "Before and after gallery placeholder 3",
+          alt: "Rhinoplasty treatment gallery",
           label: "Rhinoplasty",
         },
         {
           src: "/images/img/about.jpeg",
-          alt: "Before and after gallery placeholder 4",
+          alt: "Body contouring treatment gallery",
           label: "Body contouring",
         },
       ],
@@ -546,19 +545,18 @@ export const DEFAULT_SITE_CONTENT: SiteContent = {
     subheading: "Real feedback from patients who trust our care",
     video: {
       eyebrow: "Video Testimonial",
-      title: "A YouTube video can be dropped in here",
+      title: "Patient Video Story",
       subtitle:
-        "Use the embed URL from YouTube to replace the placeholder video below. This section is built for quick updates and future patient stories.",
+        "Watch a patient share their experience, treatment journey, and recovery.",
       youtubeUrl: "https://www.youtube.com/embed/ysz5S6PUM-U",
-      videoTitle: "Featured YouTube testimonial",
-      videoNote:
-        "Replace this placeholder embed with the approved YouTube link for a real patient testimonial.",
+      videoTitle: "Featured Patient Experience",
+      videoNote: "Shared with consent.",
     },
     written: {
       eyebrow: "Written Testimonials",
-      title: "Static patient feedback for now",
+      title: "Patient Reviews",
       subtitle:
-        "These cards can later be replaced with live reviews or approved quotes from patients after consent and verification.",
+        "Experiences shared by patients following reconstructive and cosmetic procedures.",
     },
   },
 

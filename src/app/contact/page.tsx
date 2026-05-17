@@ -45,15 +45,14 @@ export default function ContactPage() {
             {/* Location */}
             <LocationCard />
 
-            {/* Map placeholder */}
             <div className="glass-card rounded-xl overflow-hidden">
               <div
                 className="aspect-4/3 bg-linear-to-br from-(--bg-card) to-(--bg-surface) flex flex-col items-center justify-center"
-                aria-label="Map placeholder – AIG Hospitals Banjara Hills"
+                aria-label="Clinic location map"
               >
                 <div className="text-center">
                   <MapPin size={28} className="mx-auto text-(--foreground-muted) mb-2" />
-                  <p className="text-sm text-(--foreground-muted)">Location Map</p>
+                  <p className="text-sm text-(--foreground-muted)">Clinic location</p>
                 </div>
               </div>
             </div>

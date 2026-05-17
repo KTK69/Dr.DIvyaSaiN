@@ -54,16 +54,16 @@ export default function TestimonialsContent() {
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 section-padding space-y-20">
-      <section aria-labelledby="video-testimonial-heading">
-        <SectionHeading
-          eyebrow={videoSection.eyebrow}
-          title={videoSection.title}
-          subtitle={videoSection.subtitle}
-        />
+      {embedUrl ? (
+        <section aria-labelledby="video-testimonial-heading">
+          <SectionHeading
+            eyebrow={videoSection.eyebrow}
+            title={videoSection.title}
+            subtitle={videoSection.subtitle}
+          />
 
-        <div className="glass-card rounded-2xl overflow-hidden border border-(--border)">
-          <div className="aspect-video bg-black relative">
-            {embedUrl ? (
+          <div className="glass-card rounded-2xl overflow-hidden border border-(--border)">
+            <div className="aspect-video bg-black relative">
               <iframe
                 src={embedUrl}
                 title={videoSection.videoTitle || "Video testimonial"}
@@ -72,33 +72,26 @@ export default function TestimonialsContent() {
                 allowFullScreen
                 loading="lazy"
               />
-            ) : (
-              <div className="absolute inset-0 flex flex-col items-center justify-center text-center px-6">
-                <p className="text-sm text-(--foreground-muted)">Video unavailable</p>
-                <p className="mt-2 text-xs text-(--foreground-subtle)">
-                  Add a YouTube URL in the admin panel to enable playback.
-                </p>
-              </div>
-            )}
-          </div>
-          <div className="p-6 border-t border-(--border)">
-            <div className="flex items-start gap-3">
-              <PlayCircle size={18} className="text-(--accent-gold) mt-0.5 shrink-0" />
-              <div>
-                <h2
-                  className="text-lg font-medium text-(--foreground)"
-                  style={{ fontFamily: "var(--font-serif)" }}
-                >
-                  {videoSection.videoTitle}
-                </h2>
-                <p className="mt-2 text-sm text-(--foreground-muted) leading-relaxed">
-                  {videoSection.videoNote}
-                </p>
+            </div>
+            <div className="p-6 border-t border-(--border)">
+              <div className="flex items-start gap-3">
+                <PlayCircle size={18} className="text-(--accent-gold) mt-0.5 shrink-0" />
+                <div>
+                  <h2
+                    className="text-lg font-medium text-(--foreground)"
+                    style={{ fontFamily: "var(--font-serif)" }}
+                  >
+                    {videoSection.videoTitle}
+                  </h2>
+                  <p className="mt-2 text-sm text-(--foreground-muted) leading-relaxed">
+                    {videoSection.videoNote}
+                  </p>
+                </div>
               </div>
             </div>
           </div>
-        </div>
-      </section>
+        </section>
+      ) : null}
 
       <section aria-labelledby="written-testimonials-heading">
         <SectionHeading

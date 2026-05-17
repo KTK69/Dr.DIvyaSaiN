@@ -100,7 +100,7 @@ export const DEFAULT_SERVICES: Service[] = [
 export const DEFAULT_REVIEWS: Review[] = [
   {
     id: "review-1",
-    patient_name: "Verified patient feedback",
+    patient_name: "Patient",
     procedure: "Breast reconstruction",
     quote:
       "The treatment journey was clearly explained and follow-up care was highly supportive.",
@@ -108,7 +108,7 @@ export const DEFAULT_REVIEWS: Review[] = [
   },
   {
     id: "review-2",
-    patient_name: "Verified patient feedback",
+    patient_name: "Patient",
     procedure: "Gynecomastia reduction",
     quote:
       "Consultation was thoughtful and the surgical result aligned with expectations.",
