@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import type { cosmeticServices, reconstructiveServices } from "@/lib/doctor-data";
 import type { Blog, Service } from "@/types/content";
 import type { PageSeoEntry } from "@/lib/site-content";
+import { contactInfo, doctor, education } from "@/lib/doctor-data";
 
 export type ReconstructiveService = (typeof reconstructiveServices)[number];
 export type CosmeticService = (typeof cosmeticServices)[number];
@@ -9,6 +10,11 @@ export type ServiceItem = ReconstructiveService | CosmeticService;
 export type ServiceCategory = "reconstructive" | "cosmetic";
 
 export const SITE_URL = "https://drdivyaplasticsurgeon.com";
+const SITE_LOGO_URL = `${SITE_URL}/images/img/Dr%20Divya%20Logo%20Circle.png`;
+const SITE_IMAGE_URL = `${SITE_URL}/images/img/DR%20Divya.jpeg`;
+const ORGANIZATION_ID = `${SITE_URL}/#organization`;
+const CLINIC_ID = `${SITE_URL}/#clinic`;
+const PHYSICIAN_ID = `${SITE_URL}/#physician`;
 
 function categoryLabel(category: ServiceCategory) {
   return category === "reconstructive" ? "Reconstructive Surgery" : "Cosmetic Surgery";
@@ -36,6 +42,93 @@ function categoryKeywords(category: ServiceCategory) {
 
 function uniqueKeywords(values: string[]) {
   return [...new Set(values.map((value) => value.trim()).filter(Boolean))];
+}
+
+export function buildSiteIdentityJsonLd() {
+  const credentials = doctor.qualifications.split(",").map((item) => item.trim());
+  const alumniOf = education.map((item) => ({
+    "@type": "CollegeOrUniversity",
+    name: item.institution,
+  }));
+
+  return {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "Organization",
+        "@id": ORGANIZATION_ID,
+        name: doctor.name,
+        url: SITE_URL,
+        logo: {
+          "@type": "ImageObject",
+          url: SITE_LOGO_URL,
+        },
+        image: SITE_IMAGE_URL,
+      },
+      {
+        "@type": ["MedicalClinic", "MedicalBusiness"],
+        "@id": CLINIC_ID,
+        name: `${doctor.name} Plastic & Reconstructive Surgery`,
+        url: SITE_URL,
+        image: SITE_IMAGE_URL,
+        description: doctor.summary,
+        address: {
+          "@type": "PostalAddress",
+          streetAddress: `${contactInfo.roomNo}, ${contactInfo.street}`,
+          addressLocality: contactInfo.area,
+          addressRegion: "Telangana",
+          postalCode: "500034",
+          addressCountry: "IN",
+        },
+        areaServed: {
+          "@type": "City",
+          name: "Hyderabad",
+        },
+        founder: {
+          "@id": PHYSICIAN_ID,
+        },
+        parentOrganization: {
+          "@id": ORGANIZATION_ID,
+        },
+      },
+      {
+        "@type": "Physician",
+        "@id": PHYSICIAN_ID,
+        name: doctor.name,
+        url: SITE_URL,
+        image: SITE_IMAGE_URL,
+        description: doctor.summary,
+        medicalSpecialty: "Plastic and Reconstructive Surgery",
+        jobTitle: doctor.title,
+        hasCredential: credentials.map((item) => ({
+          "@type": "EducationalOccupationalCredential",
+          credentialCategory: item,
+        })),
+        alumniOf,
+        worksFor: {
+          "@id": CLINIC_ID,
+        },
+      },
+    ],
+  };
+}
+
+export function buildServicesPageJsonLd(services: Service[]) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "ItemList",
+    name: "Plastic Surgery Services",
+    url: `${SITE_URL}/services`,
+    itemListOrder: "https://schema.org/ItemListOrderAscending",
+    numberOfItems: services.length,
+    itemListElement: services.map((service, index) => ({
+      "@type": "ListItem",
+      position: index + 1,
+      url: `${SITE_URL}/services/${service.slug}`,
+      name: service.name,
+      description: service.summary,
+    })),
+  };
 }
 
 export function buildServiceMetadata(

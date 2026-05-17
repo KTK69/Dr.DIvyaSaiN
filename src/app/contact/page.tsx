@@ -1,53 +1,23 @@
 import type { Metadata } from "next";
 import PageWrapper from "@/components/ui/PageWrapper";
 import AppointmentForm from "@/components/contact/AppointmentForm";
-import { MapPin, Clock, Info } from "lucide-react";
+import { MapPin } from "lucide-react";
 import JsonLd from "@/components/seo/JsonLd";
 import WhatsAppSupportCard from "@/components/contact/WhatsAppSupportCard";
 import ContactPageHeader from "@/components/contact/ContactPageHeader";
 import CalendlySection from "@/components/contact/CalendlySection";
 import LocationCard from "@/components/contact/LocationCard";
 import { getEditablePageMetadata } from "@/lib/page-metadata";
+import { buildSiteIdentityJsonLd } from "@/lib/seo";
 
 export async function generateMetadata(): Promise<Metadata> {
   return getEditablePageMetadata("contact");
 }
 
-const localBusinessJsonLd = {
-  "@context": "https://schema.org",
-  "@type": "MedicalBusiness",
-  name: "Dr. Divya Sai Narsingam – Plastic & Reconstructive Surgery",
-  description:
-    "Consultant Plastic & Reconstructive Surgeon at AIG Hospitals, Banjara Hills, Hyderabad.",
-  url: "https://drdivyaplasticsurgeon.com",
-  address: {
-    "@type": "PostalAddress",
-    streetAddress:
-      "Room No. 20, 1st Floor, AIG Hospitals",
-    addressLocality: "Banjara Hills",
-    addressRegion: "Telangana",
-    postalCode: "500034",
-    addressCountry: "IN",
-  },
-  geo: {
-    "@type": "GeoCoordinates",
-    latitude: "17.4403",
-    longitude: "78.3489",
-  },
-  openingHoursSpecification: [
-    {
-      "@type": "OpeningHoursSpecification",
-      dayOfWeek: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
-      opens: "09:00",
-      closes: "17:00",
-    },
-  ],
-};
-
 export default function ContactPage() {
   return (
     <PageWrapper>
-      <JsonLd data={localBusinessJsonLd} />
+      <JsonLd data={buildSiteIdentityJsonLd()} />
 
       <div className="pt-28 pb-16 border-b border-(--border) bg-(--bg-surface)">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

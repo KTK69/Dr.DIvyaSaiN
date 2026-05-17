@@ -4,7 +4,7 @@ export const WHATSAPP_DEFAULT_MESSAGE =
   "Hello Dr. Divya Sai Narsingam, I would like to book a consultation.";
 
 export function buildWhatsAppLink(message = WHATSAPP_DEFAULT_MESSAGE) {
-  return `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
+  return `https://api.whatsapp.com/send?phone=${WHATSAPP_NUMBER}&text=${encodeURIComponent(message)}`;
 }
 
 export const WHATSAPP_INSTANT_REPLY_NOTE =

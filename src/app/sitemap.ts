@@ -1,0 +1,67 @@
+import type { MetadataRoute } from "next";
+import { fetchBlogs, fetchServices } from "@/lib/api";
+import { SITE_URL } from "@/lib/seo";
+
+export const revalidate = 300;
+
+const staticRoutes: MetadataRoute.Sitemap = [
+  {
+    url: SITE_URL,
+    changeFrequency: "monthly",
+    priority: 1,
+  },
+  {
+    url: `${SITE_URL}/aboutus`,
+    changeFrequency: "monthly",
+    priority: 0.8,
+  },
+  {
+    url: `${SITE_URL}/experience`,
+    changeFrequency: "monthly",
+    priority: 0.8,
+  },
+  {
+    url: `${SITE_URL}/drvideo`,
+    changeFrequency: "monthly",
+    priority: 0.8,
+  },
+  {
+    url: `${SITE_URL}/reviews`,
+    changeFrequency: "monthly",
+    priority: 0.8,
+  },
+  {
+    url: `${SITE_URL}/blog`,
+    changeFrequency: "weekly",
+    priority: 0.8,
+  },
+  {
+    url: `${SITE_URL}/services`,
+    changeFrequency: "monthly",
+    priority: 0.8,
+  },
+  {
+    url: `${SITE_URL}/contactus`,
+    changeFrequency: "monthly",
+    priority: 0.8,
+  },
+];
+
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
+  const [blogs, services] = await Promise.all([fetchBlogs(), fetchServices()]);
+
+  return [
+    ...staticRoutes,
+    ...services.map((service) => ({
+      url: `${SITE_URL}/services/${service.slug}`,
+      changeFrequency: "monthly" as const,
+      priority: 0.7,
+    })),
+    ...blogs.map((blog) => ({
+      url: `${SITE_URL}/blog/${blog.slug}`,
+      lastModified: new Date(blog.updated_at ?? blog.published_at),
+      changeFrequency: "monthly" as const,
+      priority: 0.64,
+    })),
+  ];
+}
