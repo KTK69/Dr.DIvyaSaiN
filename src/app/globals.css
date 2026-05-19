@@ -25,6 +25,7 @@
 
 html {
   scroll-behavior: smooth;
+  font-size: clamp(16px, 15.2px + 0.35vw, 18px);
 }
 
 body {
@@ -34,6 +35,7 @@ body {
   line-height: 1.7;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
 }
 
 h1, h2, h3, h4, h5 {
