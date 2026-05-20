@@ -53,8 +53,7 @@ export async function POST(request: Request) {
     return NextResponse.json(
       {
         ok: false,
-        message:
-          "Persistence is not configured. Add BLOB_READ_WRITE_TOKEN in Vercel to save admin changes.",
+        message: "Persistence is not configured for this deployment.",
         diagnostics: getSiteContentPersistenceDiagnostics(),
       },
       { status: 500 },
@@ -94,7 +93,7 @@ export async function POST(request: Request) {
     return NextResponse.json(
       {
         ok: false,
-        message: `Blob save failed: ${message}`,
+        message: `Site content save failed: ${message}`,
         diagnostics: getSiteContentPersistenceDiagnostics(),
       },
       { status: 500 },

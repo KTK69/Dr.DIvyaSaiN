@@ -17,11 +17,17 @@ function hasBlobToken() {
   return Boolean(process.env.BLOB_READ_WRITE_TOKEN);
 }
 
+function shouldUseBlobStorage() {
+  return hasBlobToken() && process.env.STORAGE_PROVIDER !== "local";
+}
+
 export function getSiteContentPersistenceDiagnostics() {
   return {
     nodeEnv: process.env.NODE_ENV ?? "unknown",
     vercelEnv: process.env.VERCEL_ENV ?? "unknown",
     hasBlobToken: hasBlobToken(),
+    storageProvider: shouldUseBlobStorage() ? "vercel-blob" : "local-file",
+    localFilePath: LOCAL_FILE_PATH,
     vercelProjectProductionUrl:
       process.env.VERCEL_PROJECT_PRODUCTION_URL ?? null,
     vercelUrl: process.env.VERCEL_URL ?? null,
@@ -96,7 +102,7 @@ async function writeToLocalFile(envelope: SiteContentEnvelope) {
 
 export async function getStoredSiteContent(): Promise<SiteContentEnvelope> {
   try {
-    const envelope = hasBlobToken()
+    const envelope = shouldUseBlobStorage()
       ? await readFromBlob()
       : await readFromLocalFile();
 
@@ -111,7 +117,7 @@ export async function saveStoredSiteContent(
 ): Promise<SiteContentEnvelope> {
   const envelope = createEnvelope(withDefaults(content));
 
-  if (hasBlobToken()) {
+  if (shouldUseBlobStorage()) {
     await writeToBlob(envelope);
   } else {
     await writeToLocalFile(envelope);
@@ -157,5 +163,5 @@ function revalidateSiteContent(content: SiteContent) {
 }
 
 export function isSiteContentPersistenceConfigured() {
-  return hasBlobToken() || process.env.NODE_ENV !== "production";
+  return true;
 }
