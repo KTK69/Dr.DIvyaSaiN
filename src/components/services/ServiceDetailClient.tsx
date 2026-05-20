@@ -77,7 +77,7 @@ export default function ServiceDetailClient({ slug, serverService }: Props) {
               Dr. Narsingam believes every aesthetic concern deserves a thoughtful, unhurried consultation. She reviews your goals, examines your anatomy, and explains realistic outcomes before any procedure is recommended.
             </p>
             <Link href="/contact" className="inline-flex items-center gap-2 px-6 py-3 rounded-lg bg-(--accent-gold) text-(--background) text-sm font-medium hover:bg-(--accent-gold-light) transition-colors">
-              Book Consultation <ArrowRight size={15} />
+              Book Video Consultation <ArrowRight size={15} />
             </Link>
           </section>
 
@@ -132,7 +132,7 @@ export default function ServiceDetailClient({ slug, serverService }: Props) {
 
           <div className="glass-card rounded-xl p-6">
             <h3 className="text-xs font-semibold uppercase tracking-widest text-(--foreground-muted) mb-3">Location</h3>
-            <p className="text-sm text-(--foreground-muted) leading-relaxed">Room No. 20, 1st Floor,<br/>AIG Hospitals, Banjara Hills,<br/>Hyderabad – 500034</p>
+            <p className="text-sm text-(--foreground-muted) leading-relaxed">Room No. 20, 1st Floor,<br/>AIG Hospitals, Banjara Hills,<br/>Hyderabad – 500034<br/>CARE Hospitals, Hitec City, Hyderabad</p>
           </div>
         </aside>
       </div>

@@ -8,17 +8,17 @@ export default function LocationCard() {
   const contactPage = content.contactPage;
   
   return (
-    <div className="glass-card rounded-xl p-6">
-      <div className="flex items-center gap-2 mb-4">
-        <MapPin size={16} className="text-(--accent-gold)" />
+    <div className="glass-card rounded-2xl p-7">
+      <div className="flex items-center gap-3 mb-5">
+        <MapPin size={18} className="text-(--accent-gold)" />
         <h2
-          className="text-base font-medium text-(--foreground)"
+          className="text-xl font-medium text-(--foreground)"
           style={{ fontFamily: "var(--font-serif)" }}
         >
           {contactPage.locationHeading}
         </h2>
       </div>
-      <address className="not-italic text-sm text-(--foreground-muted) leading-relaxed">
+      <address className="not-italic text-base text-(--foreground-muted) leading-8 whitespace-pre-line">
         {contactPage.locationAddress || content.footer.contactLocation}
       </address>
     </div>

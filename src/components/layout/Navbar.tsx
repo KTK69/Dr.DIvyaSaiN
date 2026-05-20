@@ -4,7 +4,7 @@ import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
-import { Menu, X, ChevronDown } from "lucide-react";
+import { Menu, X, ChevronDown, Video } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useSiteContent } from "@/components/site/SiteContentProvider";
 
@@ -44,26 +44,26 @@ export default function Navbar() {
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
         scrolled
           ? "bg-(--bg-glass) backdrop-blur-md border-b border-(--border)"
-          : "bg-transparent"
+          : "bg-(--bg-surface) lg:bg-transparent"
       }`}
-      style={{ backdropFilter: scrolled ? "blur(12px)" : "none" }}
+      style={{ backdropFilter: scrolled ? "blur(12px)" : undefined }}
     >
       <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-16 lg:h-20">
+        <div className="flex items-center justify-between gap-3 h-18 lg:h-20">
           {/* Logo */}
-          <Link href="/" className="flex flex-col leading-tight group">
-            <div className="flex items-center gap-3">
-              <div className="relative h-11 w-11 overflow-hidden rounded-full border border-(--border) bg-(--bg-card)">
+          <Link href="/" className="flex min-w-0 flex-1 flex-col leading-tight group">
+            <div className="flex items-center gap-2.5 sm:gap-3 min-w-0">
+              <div className="relative h-10 w-10 sm:h-11 sm:w-11 shrink-0 overflow-hidden rounded-full border border-(--border) bg-(--bg-card)">
                 <Image src={LOGO} alt="Dr. Divya Sai Narsingam logo" fill className="object-cover" />
               </div>
-              <div className="leading-tight">
+              <div className="min-w-0 leading-tight">
                 <span
-                  className="block text-base font-semibold text-(--foreground) tracking-tight group-hover:text-(--accent-gold-light) transition-colors"
+                  className="block truncate text-sm sm:text-base font-semibold text-(--accent-gold-light) tracking-tight"
                   style={{ fontFamily: "var(--font-serif)" }}
                 >
                   Dr. Divya Sai Narsingam
                 </span>
-                <span className="block text-xs text-(--foreground-muted) font-light tracking-wide">
+                <span className="block truncate text-[11px] sm:text-xs text-(--foreground) font-semibold tracking-wide opacity-90">
                   MCh Plastic Surgery · CARE Hospitals, Hyderabad
                 </span>
               </div>
@@ -159,15 +159,16 @@ export default function Navbar() {
 
             <Link
               href="/contactus"
-              className="ml-2 px-4 py-2 text-sm rounded-lg border border-(--accent-gold) text-(--accent-gold-light) hover:bg-(--accent-gold) hover:text-(--background) transition-all duration-200"
+              className="ml-2 inline-flex items-center gap-2 px-4 py-2.5 text-sm rounded-xl bg-(--accent-gold) text-(--background) shadow-lg shadow-black/20 hover:bg-(--accent-gold-light) transition-all duration-200"
             >
-              Book Consultation
+              <Video size={16} />
+              Book Video Consultation
             </Link>
           </div>
 
           {/* Mobile toggle */}
           <button
-            className="lg:hidden p-2 text-(--foreground-muted) hover:text-(--foreground)"
+            className="lg:hidden shrink-0 p-2 text-(--foreground) hover:text-(--accent-gold-light)"
             onClick={() => setMobileOpen(!mobileOpen)}
             aria-label="Toggle menu"
           >
@@ -231,9 +232,10 @@ export default function Navbar() {
               <div className="pt-4">
                 <Link
                   href="/contactus"
-                  className="block text-center px-4 py-2.5 text-sm rounded-lg border border-(--accent-gold) text-(--accent-gold-light)"
+                  className="flex items-center justify-center gap-2 px-4 py-3 text-sm rounded-xl bg-(--accent-gold) text-(--background) font-medium shadow-lg shadow-black/20"
                 >
-                  Book Consultation
+                  <Video size={16} />
+                  Book Video Consultation
                 </Link>
               </div>
             </div>

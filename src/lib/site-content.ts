@@ -465,7 +465,7 @@ export const DEFAULT_SITE_CONTENT: SiteContent = {
       emphasis: "Compassionate",
       summary:
         "Dr. Divya Sai Narsingam is a board-certified Plastic & Reconstructive Surgeon with over 14 years of clinical experience. Consultant at CARE Hospitals, Gachibowli, Hyderabad.",
-      ctaPrimary: { label: "Book Consultation", href: "/contactus" },
+      ctaPrimary: { label: "Book Video Consultation", href: "/contactus" },
       ctaSecondary: { label: "About the Doctor", href: "/aboutus" },
     },
     aboutPreview: {
@@ -489,7 +489,7 @@ export const DEFAULT_SITE_CONTENT: SiteContent = {
       title: "Ready to discuss your concerns?",
       summary:
         "Schedule a consultation with Dr. Narsingam at AIG Hospitals, Banjara Hills.",
-      appointmentLabel: "Request an Appointment",
+      appointmentLabel: "Book Video Consultation",
       appointmentHref: "/contactus",
       whatsappLabel: "WhatsApp Us",
       servicesLabel: "Explore Procedures",
@@ -579,7 +579,7 @@ export const DEFAULT_SITE_CONTENT: SiteContent = {
   },
 
   contactPage: {
-    heading: "Book a Consultation",
+    heading: "Book a Video Consultation",
     subheading:
       "Pick a slot directly from the calendar below, or use the form to send a consultation request. Our team will confirm your appointment and send any pre-visit instructions.",
     calendarHeading: "Choose an Available Slot",

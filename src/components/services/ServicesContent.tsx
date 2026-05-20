@@ -49,7 +49,7 @@ export default function ServicesContent() {
         <div className="mt-16 pt-10 border-t border-(--border) text-center">
           <p className="text-sm text-(--foreground-muted) mb-4">Not sure which procedure is right for you?</p>
           <Link href="/contactus" className="inline-flex items-center gap-2 px-6 py-3 rounded-lg bg-(--accent-gold) text-(--background) text-sm font-medium hover:bg-(--accent-gold-light) transition-colors duration-200">
-            Book a Consultation
+            Book Video Consultation
           </Link>
           <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 text-left">
             {[

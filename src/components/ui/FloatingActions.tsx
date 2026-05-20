@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { X, Calendar, MessageCircle } from "lucide-react";
 import { buildWhatsAppLink, WHATSAPP_DEFAULT_MESSAGE } from "@/lib/communication";
-const CALENDLY_URL = "https://calendly.com/frg-venom45/30min";
+const CALENDLY_URL = "https://calendly.com/drdivyaplasticsurgeon/30min";
 
 // ─── WhatsApp pulse button ────────────────────────────────────────────────────
 function WhatsAppButton() {
@@ -79,7 +79,7 @@ function CalendlyModal({ open, onClose }: { open: boolean; onClose: () => void }
             transition={{ type: "spring", stiffness: 300, damping: 28 }}
             role="dialog"
             aria-modal="true"
-            aria-label="Book Appointment"
+            aria-label="Book Video Consultation"
             className="fixed inset-0 z-999 flex items-center justify-center p-4 sm:p-6"
           >
             <div
@@ -104,7 +104,7 @@ function CalendlyModal({ open, onClose }: { open: boolean; onClose: () => void }
                   </div>
                   <div>
                     <p className="text-sm font-semibold" style={{ color: "var(--foreground)", fontFamily: "var(--font-serif)" }}>
-                      Book an Appointment
+                      Book Video Consultation
                     </p>
                     <p className="text-xs" style={{ color: "var(--foreground-muted)" }}>
                       Dr. Divya Sai Narsingam · CARE Hospitals, Hyderabad
@@ -147,16 +147,19 @@ function BookButton({ onClick }: { onClick: () => void }) {
   return (
     <motion.button
       onClick={onClick}
-      aria-label="Book Appointment"
+      aria-label="Book Video Consultation"
       initial={{ scale: 0, opacity: 0 }}
       animate={{ scale: 1, opacity: 1 }}
       transition={{ type: "spring", stiffness: 260, damping: 20, delay: 1.5 }}
       whileHover={{ scale: 1.1 }}
       whileTap={{ scale: 0.95 }}
-      className="flex items-center justify-center w-14 h-14 rounded-full shadow-2xl focus:outline-none focus-visible:ring-2 focus-visible:ring-(--accent-gold)"
+      className="flex items-center justify-center gap-2 h-14 px-4 md:px-0 md:w-14 rounded-full md:rounded-full shadow-2xl focus:outline-none focus-visible:ring-2 focus-visible:ring-(--accent-gold)"
       style={{ background: "var(--accent-gold)" }}
     >
       <Calendar size={22} color="var(--background)" />
+      <span className="text-sm font-semibold text-(--background) md:hidden whitespace-nowrap">
+        Video Consult
+      </span>
     </motion.button>
   );
 }
@@ -189,7 +192,7 @@ export default function FloatingActions() {
                 className="rounded-lg px-3 py-1.5 text-xs font-medium shadow-lg"
                 style={{ background: "var(--bg-card)", color: "var(--foreground)", border: "1px solid var(--border)" }}
               >
-                Book Appointment
+                Book Video Consultation
               </span>
               <span
                 className="rounded-lg px-3 py-1.5 text-xs font-medium shadow-lg"

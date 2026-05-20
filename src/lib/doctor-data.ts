@@ -127,13 +127,13 @@ export const conferences = [
 ];
 
 export const contactInfo = {
-  hospital: "AIG Hospitals",
+  hospital: "AIG Hospitals and CARE Hospitals, Hitec City",
   roomNo: "Room No. 20, 1st Floor",
   street: "AIG Hospitals",
   area: "Banjara Hills",
   city: "Hyderabad – 500034",
   fullAddress:
-    "Room No. 20, 1st Floor, AIG Hospitals, Banjara Hills, Hyderabad – 500034",
+    "Room No. 20, 1st Floor, AIG Hospitals, Banjara Hills, Hyderabad – 500034\nCARE Hospitals, Hitec City, Hyderabad",
 };
 
 export const reconstructiveServices = [

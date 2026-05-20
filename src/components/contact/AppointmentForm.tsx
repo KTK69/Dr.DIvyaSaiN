@@ -45,30 +45,29 @@ export default function AppointmentForm() {
   };
 
   const inputClass =
-    "w-full px-4 py-3 rounded-lg bg-[var(--bg-card)] border border-[var(--border)] text-[var(--foreground)] text-sm placeholder:text-[var(--foreground-subtle)] focus:outline-none focus:border-[var(--accent-gold)] transition-colors";
+    "w-full px-5 py-4 rounded-xl bg-[var(--bg-card)] border border-[var(--border)] text-[var(--foreground)] text-base placeholder:text-[var(--foreground-subtle)] focus:outline-none focus:border-[var(--accent-gold)] transition-colors";
 
   const labelClass =
-    "block text-xs font-medium text-[var(--foreground-muted)] uppercase tracking-wide mb-2";
+    "block text-sm font-medium text-[var(--foreground-muted)] uppercase tracking-wide mb-3";
 
-  const errorClass = "text-xs text-red-400 mt-1";
+  const errorClass = "text-sm text-red-400 mt-2";
 
   if (submitted) {
     return (
-      <div className="glass-card rounded-xl p-10 text-center">
-        <CheckCircle size={40} className="text-[var(--accent-gold)] mx-auto mb-4" />
+      <div className="glass-card rounded-2xl p-12 text-center">
+        <CheckCircle size={48} className="text-[var(--accent-gold)] mx-auto mb-5" />
         <h3
-          className="text-xl font-medium text-[var(--foreground)] mb-2"
+          className="text-2xl font-medium text-[var(--foreground)] mb-3"
           style={{ fontFamily: "var(--font-serif)" }}
         >
           Request Received
         </h3>
-        <p className="text-sm text-[var(--foreground-muted)] max-w-sm mx-auto">
-          Thank you for reaching out. Our team at CARE Hospitals will get in
-          touch with you to confirm your appointment.
+        <p className="text-base text-[var(--foreground-muted)] max-w-md mx-auto leading-relaxed">
+          Thank you for reaching out. Our team will get in touch with you soon.
         </p>
         <button
           onClick={() => setSubmitted(false)}
-          className="mt-6 text-xs text-[var(--foreground-subtle)] hover:text-[var(--accent-gold-light)] transition-colors"
+          className="mt-7 text-sm text-[var(--foreground-subtle)] hover:text-[var(--accent-gold-light)] transition-colors"
         >
           Submit another request
         </button>
@@ -79,11 +78,11 @@ export default function AppointmentForm() {
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
-      className="glass-card rounded-xl p-8 space-y-6"
+      className="glass-card rounded-2xl p-8 md:p-10 space-y-8"
       noValidate
       aria-label="Appointment request form"
     >
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-7">
         <div>
           <label htmlFor="fullName" className={labelClass}>
             Full Name <span className="text-[var(--accent-gold)]">*</span>
@@ -154,7 +153,7 @@ export default function AppointmentForm() {
         </label>
         <textarea
           id="concern"
-          rows={4}
+          rows={5}
           placeholder="Please briefly describe your concern or the procedure you're enquiring about…"
           className={`${inputClass} resize-none`}
           {...register("concern")}
@@ -168,7 +167,7 @@ export default function AppointmentForm() {
         )}
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-7">
         <div>
           <label htmlFor="preferredTime" className={labelClass}>
             Preferred Time (optional)
@@ -206,25 +205,25 @@ export default function AppointmentForm() {
 
       <div className="pt-2">
         {submitError && (
-          <p className="mb-3 text-xs text-red-400" role="alert">
+          <p className="mb-4 text-sm text-red-400" role="alert">
             {submitError}
           </p>
         )}
         <button
           type="submit"
           disabled={isSubmitting}
-          className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-8 py-3.5 rounded-lg bg-[var(--accent-gold)] text-[var(--background)] text-sm font-medium hover:bg-[var(--accent-gold-light)] disabled:opacity-60 disabled:cursor-not-allowed transition-colors duration-200"
+          className="w-full sm:w-auto inline-flex items-center justify-center gap-2.5 px-10 py-4 rounded-xl bg-[var(--accent-gold)] text-[var(--background)] text-base font-medium hover:bg-[var(--accent-gold-light)] disabled:opacity-60 disabled:cursor-not-allowed transition-colors duration-200"
         >
           {isSubmitting ? (
             "Sending…"
           ) : (
             <>
               Submit Request
-              <Send size={15} />
+              <Send size={18} />
             </>
           )}
         </button>
-        <p className="mt-3 text-xs text-[var(--foreground-subtle)]">
+        <p className="mt-4 text-sm text-[var(--foreground-subtle)] leading-relaxed">
           Your information is kept confidential and is used only to schedule
           your appointment.
         </p>

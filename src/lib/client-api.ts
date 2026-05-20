@@ -15,9 +15,15 @@ export async function submitAppointment(
   });
 
   if (!response.ok) {
+    const errorPayload = (await response.json().catch(() => null)) as
+      | AppointmentResponse
+      | null;
+
     return {
       ok: false,
-      message: "Unable to save appointment request.",
+      message:
+        errorPayload?.message ??
+        "Unable to submit appointment request.",
     };
   }
 

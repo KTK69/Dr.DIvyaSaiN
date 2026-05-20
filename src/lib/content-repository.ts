@@ -55,6 +55,6 @@ export async function saveAppointment(
   return {
     ok: true,
     id,
-    message: "Appointment request saved successfully.",
+    message: "Appointment request submitted successfully.",
   };
 }

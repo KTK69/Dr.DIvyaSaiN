@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import PageWrapper from "@/components/ui/PageWrapper";
 import AppointmentForm from "@/components/contact/AppointmentForm";
-import { MapPin } from "lucide-react";
 import JsonLd from "@/components/seo/JsonLd";
 import WhatsAppSupportCard from "@/components/contact/WhatsAppSupportCard";
 import ContactPageHeader from "@/components/contact/ContactPageHeader";
@@ -19,7 +18,7 @@ export default function ContactPage() {
     <PageWrapper>
       <JsonLd data={buildSiteIdentityJsonLd()} />
 
-      <div className="pt-28 pb-16 border-b border-(--border) bg-(--bg-surface)">
+      <div className="pt-32 pb-20 border-b border-(--border) bg-(--bg-surface)">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <ContactPageHeader />
         </div>
@@ -28,11 +27,11 @@ export default function ContactPage() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 section-padding">
 
         {/* ── Calendly inline booking ──────────────────────────────────────── */}
-        <section className="mb-16" aria-labelledby="calendly-heading">
+        <section className="mb-20" aria-labelledby="calendly-heading">
           <CalendlySection />
         </section>
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-14 xl:gap-16">
           {/* Form */}
           <div className="lg:col-span-2">
             <AppointmentForm />
@@ -44,18 +43,6 @@ export default function ContactPage() {
 
             {/* Location */}
             <LocationCard />
-
-            <div className="glass-card rounded-xl overflow-hidden">
-              <div
-                className="aspect-4/3 bg-linear-to-br from-(--bg-card) to-(--bg-surface) flex flex-col items-center justify-center"
-                aria-label="Clinic location map"
-              >
-                <div className="text-center">
-                  <MapPin size={28} className="mx-auto text-(--foreground-muted) mb-2" />
-                  <p className="text-sm text-(--foreground-muted)">Clinic location</p>
-                </div>
-              </div>
-            </div>
           </aside>
         </div>
       </div>

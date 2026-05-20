@@ -234,7 +234,7 @@ export default function DoctorsTalkContent() {
           href="/contactus"
           className="inline-flex items-center gap-2 px-6 py-3 rounded-lg bg-(--accent-gold) text-(--background) text-sm font-medium hover:bg-(--accent-gold-light) transition-colors"
         >
-          Book a Consultation <ArrowRight size={15} />
+          Book Video Consultation <ArrowRight size={15} />
         </Link>
       </div>
 

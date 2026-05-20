@@ -8,16 +8,16 @@ export default function ContactPageHeader() {
   
   return (
     <>
-      <p className="text-xs font-semibold uppercase tracking-widest text-(--accent-gold) mb-3">
+      <p className="text-sm font-semibold uppercase tracking-[0.22em] text-(--accent-gold) mb-4">
         Appointments
       </p>
       <h1
-        className="text-4xl md:text-5xl font-medium text-(--foreground) max-w-2xl"
+        className="text-5xl md:text-6xl font-medium text-(--foreground) max-w-3xl"
         style={{ fontFamily: "var(--font-serif)" }}
       >
         {contactPage.heading}
       </h1>
-      <p className="mt-4 text-base text-(--foreground-muted) max-w-xl">
+      <p className="mt-5 text-lg md:text-xl text-(--foreground-muted) max-w-2xl leading-relaxed">
         {contactPage.subheading}
       </p>
     </>
