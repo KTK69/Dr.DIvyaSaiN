@@ -19,10 +19,10 @@ export default function NotFound() {
           className="text-2xl font-medium text-[var(--foreground)] mb-3"
           style={{ fontFamily: "var(--font-serif)" }}
         >
-          Page not found
+          Oops, couldn&apos;t find the page you are looking for
         </h1>
         <p className="text-sm text-[var(--foreground-muted)] mb-8">
-          The page you are looking for does not exist or has been moved.
+          The URL may be incorrect, or the page may have been moved.
         </p>
         <Link
           href="/"
