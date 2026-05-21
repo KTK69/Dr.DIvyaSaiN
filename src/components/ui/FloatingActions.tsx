@@ -2,9 +2,10 @@
 
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { X, Calendar, MessageCircle } from "lucide-react";
+import { X, Calendar, MessageCircle, Instagram } from "lucide-react";
 import { buildWhatsAppLink, WHATSAPP_DEFAULT_MESSAGE } from "@/lib/communication";
 const CALENDLY_URL = "https://calendly.com/drdivyaplasticsurgeon/30min";
+const INSTAGRAM_URL = "https://www.instagram.com/drreconstruct";
 
 // ─── WhatsApp pulse button ────────────────────────────────────────────────────
 function WhatsAppButton() {
@@ -40,6 +41,33 @@ function WhatsAppButton() {
       <span className="pointer-events-none absolute right-16 top-1/2 -translate-y-1/2 whitespace-nowrap rounded-lg px-3 py-1.5 text-xs font-medium text-white opacity-0 group-hover:opacity-100 transition-opacity duration-200 shadow-xl"
         style={{ background: "#1a1a2e" }}>
         Chat on WhatsApp
+      </span>
+    </motion.a>
+  );
+}
+
+// ─── Instagram button ───────────────────────────────────────────────────────
+function InstagramButton() {
+  return (
+    <motion.a
+      href={INSTAGRAM_URL}
+      target="_blank"
+      rel="noopener noreferrer"
+      aria-label="Visit Instagram"
+      initial={{ scale: 0, opacity: 0 }}
+      animate={{ scale: 1, opacity: 1 }}
+      transition={{ type: "spring", stiffness: 260, damping: 20, delay: 1.35 }}
+      whileHover={{ scale: 1.1 }}
+      whileTap={{ scale: 0.95 }}
+      className="group relative flex items-center justify-center w-14 h-14 rounded-full shadow-2xl focus:outline-none focus-visible:ring-2"
+      style={{ background: "linear-gradient(135deg, #F58529 0%, #DD2A7B 45%, #8134AF 100%)" }}
+    >
+      <Instagram size={22} color="white" aria-hidden="true" />
+      <span
+        className="pointer-events-none absolute right-16 top-1/2 -translate-y-1/2 whitespace-nowrap rounded-lg px-3 py-1.5 text-xs font-medium text-white opacity-0 group-hover:opacity-100 transition-opacity duration-200 shadow-xl"
+        style={{ background: "#1a1a2e" }}
+      >
+        Visit Instagram
       </span>
     </motion.a>
   );
@@ -200,6 +228,12 @@ export default function FloatingActions() {
               >
                 WhatsApp Us
               </span>
+              <span
+                className="rounded-lg px-3 py-1.5 text-xs font-medium shadow-lg"
+                style={{ background: "var(--bg-card)", color: "var(--foreground)", border: "1px solid var(--border)" }}
+              >
+                Instagram
+              </span>
             </motion.div>
           )}
         </AnimatePresence>
@@ -208,6 +242,7 @@ export default function FloatingActions() {
         <div className="flex flex-col items-center gap-3">
           <BookButton onClick={() => setCalendlyOpen(true)} />
           <WhatsAppButton />
+          <InstagramButton />
         </div>
       </div>
 

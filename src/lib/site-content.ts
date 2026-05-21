@@ -287,6 +287,7 @@ export const DEFAULT_SITE_CONTENT: SiteContent = {
       { label: "Testimonials", href: "/reviews" },
       { label: "Blog", href: "/blog" },
       { label: "Contact", href: "/contactus" },
+      { label: "Privacy Policy", href: "/privacy-policy" },
     ],
     copyright: "Dr. Divya Sai Narsingam. All rights reserved.",
   },

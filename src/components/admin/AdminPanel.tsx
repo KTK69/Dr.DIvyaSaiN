@@ -548,7 +548,7 @@ export default function AdminPanel() {
                       <Field label="Content" value={item.content ?? ""} onChange={(value) => updateItem({ ...item, content: value })} multiline className="md:col-span-2" />
                     ) : null}
                     {itemType === "video" ? (
-                      <Field label="YouTube URL" value={item.youtubeUrl ?? ""} onChange={(value) => updateItem({ ...item, youtubeUrl: value })} className="md:col-span-2" />
+                      <Field label="Video URL (YouTube or Instagram Reel)" value={item.youtubeUrl ?? ""} onChange={(value) => updateItem({ ...item, youtubeUrl: value })} className="md:col-span-2" />
                     ) : null}
                   </div>
                 );

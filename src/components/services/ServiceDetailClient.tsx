@@ -4,6 +4,7 @@ import React from "react";
 import { CheckCircle, ArrowRight } from "lucide-react";
 import Link from "next/link";
 import { useSiteContent } from "@/components/site/SiteContentProvider";
+import RichText from "@/components/ui/RichText";
 import type { Service } from "@/types/content";
 
 export type LegacyService = {
@@ -52,7 +53,10 @@ export default function ServiceDetailClient({ slug, serverService }: Props) {
             <h2 id="overview-heading" className="text-2xl font-medium text-(--foreground) mb-5" style={{ fontFamily: "var(--font-serif)" }}>
               Overview
             </h2>
-            <p className="text-base text-(--foreground-muted) leading-relaxed">{"content" in service ? service.content : service.description}</p>
+            <RichText
+              value={"content" in service ? service.content : service.description}
+              className="text-base text-(--foreground-muted) leading-relaxed"
+            />
           </section>
 
           <section aria-labelledby="keypoints-heading">

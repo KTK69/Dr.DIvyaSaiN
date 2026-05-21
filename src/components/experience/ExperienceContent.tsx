@@ -24,8 +24,8 @@ export default function ExperienceContent() {
           <div className="relative">
             <div className="absolute left-4 top-2 bottom-2 w-px bg-(--border)" aria-hidden="true" />
             <ol className="space-y-8 pl-12">
-              {experience.map((exp) => (
-                <li key={exp.role} className="relative">
+              {experience.map((exp, index) => (
+                <li key={`${exp.role}-${exp.institution}-${exp.period}-${index}`} className="relative">
                   <div
                     className={`absolute -left-8 top-1.5 w-3 h-3 rounded-full border-2 ${
                       exp.current ? "bg-(--accent-gold) border-(--accent-gold)" : "bg-(--bg-card) border-(--border)"

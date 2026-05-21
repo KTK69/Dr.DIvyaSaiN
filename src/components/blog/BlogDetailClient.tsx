@@ -3,6 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import JsonLd from "@/components/seo/JsonLd";
+import RichText from "@/components/ui/RichText";
 import { useSiteContent } from "@/components/site/SiteContentProvider";
 import { buildBlogJsonLd } from "@/lib/seo";
 import type { Blog } from "@/types/content";
@@ -102,9 +103,10 @@ export default function BlogDetailClient({ slug, serverBlog }: Props) {
           />
         </div>
 
-        <div className="mt-10 prose prose-invert max-w-none text-(--foreground-muted) leading-relaxed">
-          <p>{blog.content}</p>
-        </div>
+        <RichText
+          value={blog.content}
+          className="mt-10 max-w-none text-(--foreground-muted) leading-relaxed"
+        />
       </article>
     </>
   );

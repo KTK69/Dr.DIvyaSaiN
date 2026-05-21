@@ -2,8 +2,10 @@
 
 import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
+import Script from "next/script";
 import { ArrowRight, Calendar, Play, X } from "lucide-react";
 import { useSiteContent } from "@/components/site/SiteContentProvider";
+import RichText from "@/components/ui/RichText";
 import type { DoctorTalkItem } from "@/lib/site-content";
 
 function resolveType(item: DoctorTalkItem) {
@@ -65,15 +67,90 @@ function getYouTubeEmbedUrl(url?: string) {
   return `https://www.youtube.com/embed/${id}?rel=0&modestbranding=1`;
 }
 
-function splitParagraphs(value?: string) {
-  if (!value) {
-    return [] as string[];
+type InstagramWindow = Window & {
+  instgrm?: {
+    Embeds?: {
+      process?: () => void;
+    };
+  };
+};
+
+function runInstagramEmbeds() {
+  if (typeof window === "undefined") {
+    return;
   }
 
-  return value
-    .split(/\n\s*\n/)
-    .map((paragraph) => paragraph.trim())
-    .filter(Boolean);
+  const instgrm = (window as InstagramWindow).instgrm;
+  instgrm?.Embeds?.process?.();
+}
+
+function extractInstagramReelId(url: string) {
+  const trimmed = url.trim();
+  if (!trimmed) {
+    return null;
+  }
+
+  const match = trimmed.match(/instagram\.com\/(?:reel|reels)\/([A-Za-z0-9_-]{5,})/i);
+  if (match?.[1]) {
+    return match[1];
+  }
+
+  if (/^[A-Za-z0-9_-]{5,}$/.test(trimmed)) {
+    return trimmed;
+  }
+
+  return null;
+}
+
+function getInstagramPermalink(url?: string) {
+  if (!url) {
+    return null;
+  }
+
+  const id = extractInstagramReelId(url);
+  if (!id) {
+    return null;
+  }
+
+  return `https://www.instagram.com/reel/${id}/`;
+}
+
+function getVideoEmbed(url?: string) {
+  const youtube = getYouTubeEmbedUrl(url);
+  if (youtube) {
+    return { type: "youtube" as const, url: youtube };
+  }
+
+  const instagram = getInstagramPermalink(url);
+  if (instagram) {
+    return { type: "instagram" as const, url: instagram };
+  }
+
+  return null;
+}
+
+function InstagramEmbed({ permalink, title }: { permalink: string; title: string }) {
+  useEffect(() => {
+    runInstagramEmbeds();
+  }, [permalink]);
+
+  return (
+    <>
+      <Script
+        src="https://www.instagram.com/embed.js"
+        strategy="lazyOnload"
+        onLoad={runInstagramEmbeds}
+      />
+      <blockquote
+        className="instagram-media"
+        data-instgrm-permalink={permalink}
+        data-instgrm-version="14"
+        style={{ width: "100%", margin: 0 }}
+      >
+        <a href={permalink}>{title}</a>
+      </blockquote>
+    </>
+  );
 }
 
 export default function DoctorsTalkContent() {
@@ -102,7 +179,7 @@ export default function DoctorsTalkContent() {
     return () => window.removeEventListener("keydown", handleKey);
   }, [activeArticle]);
 
-  const activeBody = splitParagraphs(activeArticle?.content);
+  const hasArticleContent = Boolean(activeArticle?.content?.trim());
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 section-padding">
@@ -172,22 +249,31 @@ export default function DoctorsTalkContent() {
         {videos.length ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
             {videos.map((video, index) => {
-              const embedUrl = getYouTubeEmbedUrl(video.youtubeUrl);
+              const embed = getVideoEmbed(video.youtubeUrl);
+              const embedClass =
+                embed?.type === "instagram"
+                  ? "min-h-[360px] md:min-h-[480px]"
+                  : "aspect-video";
 
               return (
                 <div
                   key={video.id || `${video.title}-${index}`}
                   className="glass-card rounded-xl overflow-hidden group"
                 >
-                  <div className="aspect-video border-b border-(--border) bg-linear-to-br from-(--bg-card) to-(--bg-surface)">
-                    {embedUrl ? (
+                  <div className={`${embedClass} border-b border-(--border) bg-linear-to-br from-(--bg-card) to-(--bg-surface)`}>
+                    {embed ? (
+                      embed.type === "instagram" ? (
+                        <InstagramEmbed permalink={embed.url} title={video.title} />
+                      ) : (
                       <iframe
                         title={video.title}
-                        src={embedUrl}
+                        src={embed.url}
                         className="w-full h-full"
-                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                        allowFullScreen
+                        allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"
+                        allowFullScreen={embed.type === "youtube"}
+                        loading="lazy"
                       />
+                      )
                     ) : (
                       <div className="w-full h-full flex items-center justify-center">
                         <div className="w-12 h-12 rounded-full border border-(--border) flex items-center justify-center group-hover:border-(--accent-gold) transition-colors">
@@ -275,13 +361,16 @@ export default function DoctorsTalkContent() {
                 {activeArticle.description}
               </p>
             ) : null}
-            <div className="space-y-4 text-sm text-(--foreground-muted) leading-relaxed">
-              {activeBody.length ? (
-                activeBody.map((paragraph) => <p key={paragraph}>{paragraph}</p>)
-              ) : (
-                <p>Full article content will be published soon.</p>
-              )}
-            </div>
+            {hasArticleContent ? (
+              <RichText
+                value={activeArticle?.content}
+                className="text-sm text-(--foreground-muted) leading-relaxed"
+              />
+            ) : (
+              <p className="text-sm text-(--foreground-muted) leading-relaxed">
+                Full article content will be published soon.
+              </p>
+            )}
           </div>
         </div>
       ) : null}
