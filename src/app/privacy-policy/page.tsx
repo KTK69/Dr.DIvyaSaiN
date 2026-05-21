@@ -82,8 +82,8 @@ export default function PrivacyPolicyPage() {
 
           <h2>Security</h2>
           <p>
-            We take reasonable measures to protect your information. However, no
-            online transmission is completely secure.
+            We take reasonable measures to protect your information and review
+            our safeguards regularly.
           </p>
 
           <h2>Your choices</h2>
