@@ -10,6 +10,20 @@ import type { AboutContent, Blog, Review, Service } from "@/types/content";
 export type NavLink = { label: string; href: string };
 
 // Section types
+type GalleryImageSlot = { src: string; alt: string; label: string };
+type BeforeAfterProcedure = {
+  procedureName: string;
+  description: string;
+  before: {
+    front: GalleryImageSlot;
+    back: GalleryImageSlot;
+  };
+  after: {
+    front: GalleryImageSlot;
+    back: GalleryImageSlot;
+  };
+};
+
 export type HomeContent = {
   hero: {
     eyebrow: string;
@@ -38,7 +52,8 @@ export type HomeContent = {
     eyebrow: string;
     title: string;
     subtitle: string;
-    images: Array<{ src: string; alt: string; label: string }>;
+    description: string;
+    procedures: Array<BeforeAfterProcedure>;
   };
   awardsSummary: {
     title: string;
@@ -563,26 +578,120 @@ export const DEFAULT_SITE_CONTENT: SiteContent = {
       eyebrow: "Before & After",
       title: "Before & After Gallery",
       subtitle: "",
-      images: [
+      description:
+        "Select a procedure card to open its own before and after view. Each procedure can be edited independently in the admin panel.",
+      procedures: [
         {
-          src: "/images/img/about.jpeg",
-          alt: "Breast reconstruction treatment gallery",
-          label: "Breast reconstruction",
+          procedureName: "Breast reconstruction",
+          description: "Procedure-specific comparison set for breast reconstruction.",
+          before: {
+            front: {
+              src: "/images/img/Dr Divya Plastic Surgeon - Home Banner.jpg",
+              alt: "Before front view for breast reconstruction",
+              label: "Before front",
+            },
+            back: {
+              src: "/images/img/gallery-2.jpg",
+              alt: "Before back view for breast reconstruction",
+              label: "Before back",
+            },
+          },
+          after: {
+            front: {
+              src: "/images/img/Dr Divya Plastic Surgeon home.jpg",
+              alt: "After front view for breast reconstruction",
+              label: "After front",
+            },
+            back: {
+              src: "/images/img/hero-bg.jpg",
+              alt: "After back view for breast reconstruction",
+              label: "After back",
+            },
+          },
         },
         {
-          src: "/images/img/about.jpeg",
-          alt: "Breast lift treatment gallery",
-          label: "Breast lift",
+          procedureName: "Breast lift",
+          description: "Procedure-specific comparison set for breast lift.",
+          before: {
+            front: {
+              src: "/images/img/Dr Divya Plastic Surgeon - Home Banner (1).jpg",
+              alt: "Before front view for breast lift",
+              label: "Before front",
+            },
+            back: {
+              src: "/images/img/slider.jpeg",
+              alt: "Before back view for breast lift",
+              label: "Before back",
+            },
+          },
+          after: {
+            front: {
+              src: "/images/img/testimonials-4.jpg",
+              alt: "After front view for breast lift",
+              label: "After front",
+            },
+            back: {
+              src: "/images/img/DR Divya.jpeg",
+              alt: "After back view for breast lift",
+              label: "After back",
+            },
+          },
         },
         {
-          src: "/images/img/about.jpeg",
-          alt: "Rhinoplasty treatment gallery",
-          label: "Rhinoplasty",
+          procedureName: "Rhinoplasty",
+          description: "Procedure-specific comparison set for rhinoplasty.",
+          before: {
+            front: {
+              src: "/images/img/about.jpeg",
+              alt: "Before front view for rhinoplasty",
+              label: "Before front",
+            },
+            back: {
+              src: "/images/img/logo.jpeg",
+              alt: "Before back view for rhinoplasty",
+              label: "Before back",
+            },
+          },
+          after: {
+            front: {
+              src: "/images/img/logo1.jpeg",
+              alt: "After front view for rhinoplasty",
+              label: "After front",
+            },
+            back: {
+              src: "/images/img/Dr Divya Logo Circle.png",
+              alt: "After back view for rhinoplasty",
+              label: "After back",
+            },
+          },
         },
         {
-          src: "/images/img/about.jpeg",
-          alt: "Body contouring treatment gallery",
-          label: "Body contouring",
+          procedureName: "Body contouring",
+          description: "Procedure-specific comparison set for body contouring.",
+          before: {
+            front: {
+              src: "/images/img/Dr Divya Plastic Surgeon.png",
+              alt: "Before front view for body contouring",
+              label: "Before front",
+            },
+            back: {
+              src: "/images/img/Dr Divya Plastic Surgeon - Home Banner.jpg",
+              alt: "Before back view for body contouring",
+              label: "Before back",
+            },
+          },
+          after: {
+            front: {
+              src: "/images/img/gallery-2.jpg",
+              alt: "After front view for body contouring",
+              label: "After front",
+            },
+            back: {
+              src: "/images/img/hero-bg.jpg",
+              alt: "After back view for body contouring",
+              label: "After back",
+            },
+          },
         },
       ],
     },

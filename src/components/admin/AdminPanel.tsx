@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useRef, useState } from "react";
+import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useSiteContent } from "@/components/site/SiteContentProvider";
 import RichTextEditor from "@/components/ui/RichTextEditor";
@@ -14,7 +15,7 @@ type BlogItem = SiteContent["blog"][number];
 type ServiceItem = SiteContent["services"][number];
 type ExperienceItem = SiteContent["experience"]["experience"][number];
 type NavLink = { label: string; href: string };
-type GalleryImage = { src: string; alt: string; label: string };
+type GalleryProcedure = SiteContent["home"]["beforeAfterGallery"]["procedures"][number];
 type PageSeoKey = keyof SiteContent["pageSeo"];
 type BanjaraHillsServiceCard = SiteContent["banjaraHillsPage"]["cosmeticServices"][number];
 type BanjaraHillsBenefitCard = SiteContent["banjaraHillsPage"]["aigBenefits"][number];
@@ -455,38 +456,43 @@ export default function AdminPanel() {
                   <Field label="Gallery eyebrow" value={content.home.beforeAfterGallery.eyebrow} onChange={(value) => update("home", { ...content.home, beforeAfterGallery: { ...content.home.beforeAfterGallery, eyebrow: value } })} />
                   <Field label="Gallery title" value={content.home.beforeAfterGallery.title} onChange={(value) => update("home", { ...content.home, beforeAfterGallery: { ...content.home.beforeAfterGallery, title: value } })} />
                   <Field label="Gallery subtitle" value={content.home.beforeAfterGallery.subtitle} onChange={(value) => update("home", { ...content.home, beforeAfterGallery: { ...content.home.beforeAfterGallery, subtitle: value } })} multiline className="md:col-span-2" />
+                  <Field label="Gallery description" value={content.home.beforeAfterGallery.description} onChange={(value) => update("home", { ...content.home, beforeAfterGallery: { ...content.home.beforeAfterGallery, description: value } })} multiline className="md:col-span-2" />
                 </div>
 
-                <ListEditor<GalleryImage>
-                  items={content.home.beforeAfterGallery.images}
-                  onAdd={() => {
-                    const nextImage = {
-                      src: "/images/img/about.jpeg",
-                      alt: "Before and after gallery placeholder",
-                      label: "Before & After",
-                    };
+                <ListEditor<GalleryProcedure>
+                  items={content.home.beforeAfterGallery.procedures}
+                  onAdd={() =>
                     update("home", {
                       ...content.home,
                       beforeAfterGallery: {
                         ...content.home.beforeAfterGallery,
-                        images: [...content.home.beforeAfterGallery.images, nextImage],
+                        procedures: [
+                          ...content.home.beforeAfterGallery.procedures,
+                          createDefaultGalleryProcedure(content.home.beforeAfterGallery.procedures.length + 1),
+                        ],
                       },
-                    });
-                  }}
-                  onRemove={(index) => {
-                    const updated = content.home.beforeAfterGallery.images.filter((_, itemIndex) => itemIndex !== index);
+                    })
+                  }
+                  onRemove={(index) =>
                     update("home", {
                       ...content.home,
-                      beforeAfterGallery: { ...content.home.beforeAfterGallery, images: updated },
-                    });
-                  }}
-                  onChange={(images) => update("home", { ...content.home, beforeAfterGallery: { ...content.home.beforeAfterGallery, images } })}
+                      beforeAfterGallery: {
+                        ...content.home.beforeAfterGallery,
+                        procedures: content.home.beforeAfterGallery.procedures.filter((_, itemIndex) => itemIndex !== index),
+                      },
+                    })
+                  }
+                  onChange={(items) =>
+                    update("home", {
+                      ...content.home,
+                      beforeAfterGallery: {
+                        ...content.home.beforeAfterGallery,
+                        procedures: items,
+                      },
+                    })
+                  }
                   renderItem={(item, _index, updateItem) => (
-                    <div className="grid gap-4 md:grid-cols-2">
-                      <Field label="Label" value={item.label} onChange={(value) => updateItem({ ...item, label: value })} />
-                      <ImageField label="Image" value={item.src} onChange={(value) => updateItem({ ...item, src: value })} />
-                      <Field label="Alt text" value={item.alt} onChange={(value) => updateItem({ ...item, alt: value })} className="md:col-span-2" />
-                    </div>
+                    <GalleryProcedureEditor item={item} onChange={updateItem} />
                   )}
                 />
               </div>
@@ -1016,10 +1022,10 @@ function Field({ label, value, onChange, multiline = false, className = "" }: { 
 
 function RichTextField({ label, value, onChange, className = "", height = 260 }: { label: string; value: string; onChange: (value: string) => void; className?: string; height?: number; }) {
   return (
-    <label className={`block text-sm text-(--foreground-muted) ${className}`}>
+    <div className={`block text-sm text-(--foreground-muted) ${className}`}>
       <span className="mb-1 block">{label}</span>
       <RichTextEditor value={value} onChange={onChange} height={height} />
-    </label>
+    </div>
   );
 }
 
@@ -1101,6 +1107,184 @@ function ListEditor<T>({
           })}
         </div>
       ))}
+    </div>
+  );
+}
+
+const GALLERY_PROCEDURE_PRESETS: Array<GalleryProcedure> = [
+  {
+    procedureName: "Breast reconstruction",
+    description: "Procedure-specific comparison set for breast reconstruction.",
+    before: {
+      front: {
+        src: "/images/img/Dr Divya Plastic Surgeon - Home Banner.jpg",
+        alt: "Before front view for breast reconstruction",
+        label: "Before front",
+      },
+      back: {
+        src: "/images/img/gallery-2.jpg",
+        alt: "Before back view for breast reconstruction",
+        label: "Before back",
+      },
+    },
+    after: {
+      front: {
+        src: "/images/img/Dr Divya Plastic Surgeon home.jpg",
+        alt: "After front view for breast reconstruction",
+        label: "After front",
+      },
+      back: {
+        src: "/images/img/hero-bg.jpg",
+        alt: "After back view for breast reconstruction",
+        label: "After back",
+      },
+    },
+  },
+  {
+    procedureName: "Breast lift",
+    description: "Procedure-specific comparison set for breast lift.",
+    before: {
+      front: {
+        src: "/images/img/Dr Divya Plastic Surgeon - Home Banner (1).jpg",
+        alt: "Before front view for breast lift",
+        label: "Before front",
+      },
+      back: {
+        src: "/images/img/slider.jpeg",
+        alt: "Before back view for breast lift",
+        label: "Before back",
+      },
+    },
+    after: {
+      front: {
+        src: "/images/img/testimonials-4.jpg",
+        alt: "After front view for breast lift",
+        label: "After front",
+      },
+      back: {
+        src: "/images/img/DR Divya.jpeg",
+        alt: "After back view for breast lift",
+        label: "After back",
+      },
+    },
+  },
+  {
+    procedureName: "Rhinoplasty",
+    description: "Procedure-specific comparison set for rhinoplasty.",
+    before: {
+      front: {
+        src: "/images/img/about.jpeg",
+        alt: "Before front view for rhinoplasty",
+        label: "Before front",
+      },
+      back: {
+        src: "/images/img/logo.jpeg",
+        alt: "Before back view for rhinoplasty",
+        label: "Before back",
+      },
+    },
+    after: {
+      front: {
+        src: "/images/img/logo1.jpeg",
+        alt: "After front view for rhinoplasty",
+        label: "After front",
+      },
+      back: {
+        src: "/images/img/Dr Divya Logo Circle.png",
+        alt: "After back view for rhinoplasty",
+        label: "After back",
+      },
+    },
+  },
+  {
+    procedureName: "Body contouring",
+    description: "Procedure-specific comparison set for body contouring.",
+    before: {
+      front: {
+        src: "/images/img/Dr Divya Plastic Surgeon.png",
+        alt: "Before front view for body contouring",
+        label: "Before front",
+      },
+      back: {
+        src: "/images/img/Dr Divya Plastic Surgeon - Home Banner.jpg",
+        alt: "Before back view for body contouring",
+        label: "Before back",
+      },
+    },
+    after: {
+      front: {
+        src: "/images/img/gallery-2.jpg",
+        alt: "After front view for body contouring",
+        label: "After front",
+      },
+      back: {
+        src: "/images/img/hero-bg.jpg",
+        alt: "After back view for body contouring",
+        label: "After back",
+      },
+    },
+  },
+];
+
+function createDefaultGalleryProcedure(index = 0): GalleryProcedure {
+  return GALLERY_PROCEDURE_PRESETS[index % GALLERY_PROCEDURE_PRESETS.length];
+}
+
+function GalleryProcedureEditor({
+  item,
+  onChange,
+}: {
+  item: GalleryProcedure;
+  onChange: (value: GalleryProcedure) => void;
+}) {
+  return (
+    <div className="space-y-5">
+      <div className="grid gap-4 md:grid-cols-2">
+        <Field label="Procedure name" value={item.procedureName} onChange={(value) => onChange({ ...item, procedureName: value })} />
+        <Field label="Procedure description" value={item.description} onChange={(value) => onChange({ ...item, description: value })} multiline className="md:col-span-2" />
+      </div>
+
+      <div className="grid gap-4 lg:grid-cols-2">
+        <GallerySlotEditor
+          title="Before front"
+          value={item.before.front}
+          onChange={(value) => onChange({ ...item, before: { ...item.before, front: value } })}
+        />
+        <GallerySlotEditor
+          title="Before back"
+          value={item.before.back}
+          onChange={(value) => onChange({ ...item, before: { ...item.before, back: value } })}
+        />
+        <GallerySlotEditor
+          title="After front"
+          value={item.after.front}
+          onChange={(value) => onChange({ ...item, after: { ...item.after, front: value } })}
+        />
+        <GallerySlotEditor
+          title="After back"
+          value={item.after.back}
+          onChange={(value) => onChange({ ...item, after: { ...item.after, back: value } })}
+        />
+      </div>
+    </div>
+  );
+}
+
+function GallerySlotEditor({
+  title,
+  value,
+  onChange,
+}: {
+  title: string;
+  value: { src: string; alt: string; label: string };
+  onChange: (value: { src: string; alt: string; label: string }) => void;
+}) {
+  return (
+    <div className="rounded-xl border border-(--border) p-4 space-y-4">
+      <p className="text-sm font-semibold text-(--foreground)">{title}</p>
+      <ImageField label={`${title} image`} value={value.src} onChange={(src) => onChange({ ...value, src })} />
+      <Field label={`${title} alt text`} value={value.alt} onChange={(alt) => onChange({ ...value, alt })} />
+      <Field label={`${title} label`} value={value.label} onChange={(label) => onChange({ ...value, label })} />
     </div>
   );
 }
@@ -1355,7 +1539,18 @@ function ImageField({ label, value, onChange, className = "" }: { label: string;
       <div className="space-y-2">
         <input value={value} onChange={(event) => onChange(event.target.value)} className="w-full rounded-lg border border-(--border) bg-transparent px-3 py-2 text-(--foreground)" />
         <input type="file" accept="image/*" onChange={handleFileChange} className="w-full rounded-lg border border-(--border) bg-transparent px-3 py-2 text-(--foreground)" />
-        {value ? <img src={value} alt={`${label} preview`} className="h-24 w-auto rounded-md border border-(--border) object-cover" /> : null}
+        {value ? (
+          <div className="relative h-24 overflow-hidden rounded-md border border-(--border)">
+            <Image
+              src={value}
+              alt={`${label} preview`}
+              fill
+              className="object-cover"
+              unoptimized={value.startsWith("data:") || value.startsWith("blob:")}
+              sizes="96px"
+            />
+          </div>
+        ) : null}
       </div>
     </label>
   );

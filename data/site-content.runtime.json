@@ -399,26 +399,63 @@
         "eyebrow": "Before & After",
         "title": "Before & After Gallery",
         "subtitle": "",
-        "images": [
+        "description": "Use the admin panel to update the comparison text and the four image slots shown in the expanded gallery view.",
+        "procedures": [
           {
-            "src": "/images/img/about.jpeg",
-            "alt": "Breast reconstruction treatment gallery",
-            "label": "Breast reconstruction"
+            "procedureName": "Breast reconstruction",
+            "description": "Use the admin panel to update the comparison text and the four image slots shown in the expanded gallery view.",
+            "before": {
+              "front": {
+                "src": "/images/img/Dr Divya Plastic Surgeon - Home Banner.jpg",
+                "alt": "Before front view for breast reconstruction",
+                "label": "Front view"
+              },
+              "back": {
+                "src": "/images/img/gallery-2.jpg",
+                "alt": "Before back view for breast reconstruction",
+                "label": "Back view"
+              }
+            },
+            "after": {
+              "front": {
+                "src": "/images/img/Dr Divya Plastic Surgeon home.jpg",
+                "alt": "After front view for breast reconstruction",
+                "label": "Front view"
+              },
+              "back": {
+                "src": "/images/img/hero-bg.jpg",
+                "alt": "After back view for breast reconstruction",
+                "label": "Back view"
+              }
+            }
           },
           {
-            "src": "/images/img/about.jpeg",
-            "alt": "Breast lift treatment gallery",
-            "label": "Breast lift"
-          },
-          {
-            "src": "/images/img/about.jpeg",
-            "alt": "Rhinoplasty treatment gallery",
-            "label": "Rhinoplasty"
-          },
-          {
-            "src": "/images/img/about.jpeg",
-            "alt": "Body contouring treatment gallery",
-            "label": "Body contouring"
+            "procedureName": "Rhinoplasty",
+            "description": "Procedure-specific comparison set for rhinoplasty.",
+            "before": {
+              "front": {
+                "src": "/images/img/about.jpeg",
+                "alt": "Before front view for rhinoplasty",
+                "label": "Before front"
+              },
+              "back": {
+                "src": "/images/img/logo.jpeg",
+                "alt": "Before back view for rhinoplasty",
+                "label": "Before back"
+              }
+            },
+            "after": {
+              "front": {
+                "src": "/images/img/logo1.jpeg",
+                "alt": "After front view for rhinoplasty",
+                "label": "After front"
+              },
+              "back": {
+                "src": "/images/img/Dr Divya Logo Circle.png",
+                "alt": "After back view for rhinoplasty",
+                "label": "After back"
+              }
+            }
           }
         ]
       },
@@ -829,35 +866,11 @@
     ],
     "blog": [
       {
-        "id": "blog-why-dimple-creation-is-popular",
-        "slug": "why-dimple-creation-is-popular",
-        "title": "Why Dimple Creation Is Popular",
-        "excerpt": "Why Dimple Creation Is Popular with practical guidance for patients planning treatment in Hyderabad.",
-        "content": "<div style=\"text-align: center;\">ZWhy Dimple Creation Is Popular explains what patients should know before consultation, the common surgical considerations, and how recovery is typically planned with Dr. Divya Sai Narsingam.&nbsp;</div>",
-        "image": "/images/img/about.jpeg",
-        "published_at": "2026-03-18",
-        "category": "cosmetic",
-        "meta_title": "Why Dimple Creation Is Popular | Dr. Divya Sai Narsingam",
-        "meta_description": "Patient guidance on why dimple creation is popular from Dr. Divya Sai Narsingam in Hyderabad."
-      },
-      {
-        "id": "blog-modern-face-sculpting-options",
-        "slug": "modern-face-sculpting-options",
-        "title": "Modern Face Sculpting Options",
-        "excerpt": "Modern Face Sculpting Options with practical guidance for patients planning treatment in Hyderabad.",
-        "content": "Modern Face Sculpting Options explains what patients should know before consultation, the common surgical considerations, and how recovery is typically planned with Dr. Divya Sai Narsingam.",
-        "image": "/images/img/about.jpeg",
-        "published_at": "2026-03-18",
-        "category": "cosmetic",
-        "meta_title": "Modern Face Sculpting Options | Dr. Divya Sai Narsingam",
-        "meta_description": "Patient guidance on modern face sculpting options from Dr. Divya Sai Narsingam in Hyderabad."
-      },
-      {
         "id": "blog-buccal-fat-removal-explained",
         "slug": "buccal-fat-removal-explained",
         "title": "Buccal Fat Removal Explained",
         "excerpt": "Buccal Fat Removal Explained with practical guidance for patients planning treatment in Hyderabad.",
-        "content": "Buccal Fat Removal Explained explains what patients should know before consultation, the common surgical considerations, and how recovery is typically planned with Dr. Divya Sai Narsingam.",
+        "content": "<p>Buccal Fat Remo<u><span class=\"ql-cursor\">﻿</span></u>val Explained explains what patients should know before consultation, the common surgical considerations, and how recovery is typically planned with Dr. Divya Sai <u>Narsingam.</u></p><p><br></p><p><br></p><p><br></p><ol><li data-list=\"ordered\"><span class=\"ql-ui\" contenteditable=\"false\"></span><br></li></ol>",
         "image": "/images/img/about.jpeg",
         "published_at": "2026-03-18",
         "category": "cosmetic",
@@ -869,7 +882,7 @@
         "slug": "natural-vs-artificial-dimples-differences",
         "title": "Natural Vs Artificial Dimples Differences",
         "excerpt": "Natural Vs Artificial Dimples Differences with practical guidance for patients planning treatment in Hyderabad.",
-        "content": "Natural Vs Artificial Dimples Differences explains what patients should know before consultation, the common surgical considerations, and how recovery is typically planned with Dr. Divya Sai Narsingam.",
+        "content": "<p>Natural Vs Artificial Dimples Differences explains what patients should know before consultation, the common surgical considerations, and how recovery is typically planned with Dr. Divya Sai Narsingam.</p><p><span class=\"ql-cursor\">﻿</span></p><p><br></p><p><strong>Thank You</strong></p>",
         "image": "/images/img/about.jpeg",
         "published_at": "2026-03-18",
         "category": "cosmetic",
@@ -917,7 +930,7 @@
         "slug": "top-benefits-of-getting-a-tummy-tuck-in-hyderabad",
         "title": "Top Benefits Of Getting A Tummy Tuck In Hyderabad",
         "excerpt": "Top Benefits Of Getting A Tummy Tuck In Hyderabad with practical guidance for patients planning treatment in Hyderabad.",
-        "content": "Top Benefits Of Getting A Tummy Tuck In Hyderabad explains what patients should know before consultation, the common surgical considerations, and how recovery is typically planned with Dr. Divya Sai Narsingam.",
+        "content": "<h3>Top Benefits Of Getting A Tummy Tuck In Hyderabad explains what patients should know before consultation, the common surgical considerations, and how recovery is typically planned with Dr. Divya Sai Narsingam.</h3><h1><br></h1><h2>hisdsddsd</h2>",
         "image": "/images/img/about.jpeg",
         "published_at": "2026-03-18",
         "category": "cosmetic",
@@ -1049,7 +1062,7 @@
         "slug": "what-sets-board-certified-plastic-surgeons-apart",
         "title": "What Sets Board Certified Plastic Surgeons Apart",
         "excerpt": "What Sets Board Certified Plastic Surgeons Apart with practical guidance for patients planning treatment in Hyderabad.",
-        "content": "What Sets Board Certified Plastic Surgeons Apart explains what patients should know before consultation, the common surgical considerations, and how recovery is typically planned with Dr. Divya Sai Narsingam.",
+        "content": "<p class=\"my-3\"><span style=\"white-space: pre-wrap;\">What Sets Board Certified Plastic Surgeons Apart explains what patients should know before consultation, the common surgical considerations, and how recovery is typically planned with Dr. Divya Sai Narsingam.</span></p>",
         "image": "/images/img/about.jpeg",
         "published_at": "2026-03-18",
         "category": "cosmetic",
@@ -1061,7 +1074,7 @@
         "slug": "why-does-choosing-a-board-certified-plastic-surgeon-really-matter",
         "title": "Why Does Choosing A Board Certified Plastic Surgeon Really Matter",
         "excerpt": "Why Does Choosing A Board Certified Plastic Surgeon Really Matter with practical guidance for patients planning treatment in Hyderabad.",
-        "content": "Why Does Choosing A Board Certified Plastic Surgeon Really Matter explains what patients should know before consultation, the common surgical considerations, and how recovery is typically planned with Dr. Divya Sai Narsingam.",
+        "content": "<p class=\"my-3\"><span style=\"white-space: pre-wrap;\">Why Does Choosing A Board Certified Plastic Surgeon Really Matter explains what patients should know before consultation, the common surgical considerations, and how recovery is typically planned with Dr. Divya Sai Narsingam.</span></p>",
         "image": "/images/img/about.jpeg",
         "published_at": "2026-03-18",
         "category": "cosmetic",
@@ -1073,7 +1086,7 @@
         "slug": "why-should-you-choose-a-board-certified-plastic-surgeon",
         "title": "Why Should You Choose A Board Certified Plastic Surgeon",
         "excerpt": "Why Should You Choose A Board Certified Plastic Surgeon with practical guidance for patients planning treatment in Hyderabad.",
-        "content": "Why Should You Choose A Board Certified Plastic Surgeon explains what patients should know before consultation, the common surgical considerations, and how recovery is typically planned with Dr. Divya Sai Narsingam.",
+        "content": "<p class=\"my-3\"><span style=\"white-space: pre-wrap;\">Why Should You Choose A Board Certified Plastic Surgeon explains what patients should know before consultation, the common surgical considerations, and how recovery is typically planned with Dr. Divya Sai Narsingam.</span></p>",
         "image": "/images/img/about.jpeg",
         "published_at": "2026-03-18",
         "category": "cosmetic",
@@ -1524,5 +1537,5 @@
       "hospital": "AIG Hospitals and CARE Hospitals, Hitec City"
     }
   },
-  "updatedAt": "2026-06-03T17:16:07.300Z"
+  "updatedAt": "2026-06-03T19:11:45.634Z"
 }

@@ -9,6 +9,7 @@ import React, {
   useRef,
   useState,
 } from "react";
+import { useRouter } from "next/navigation";
 import { DEFAULT_SITE_CONTENT, type SiteContent } from "@/lib/site-content";
 import type { SiteContentEnvelope } from "@/lib/site-content-utils";
 
@@ -37,6 +38,7 @@ type SiteContentContextValue = {
 };
 
 const SiteContentContext = createContext<SiteContentContextValue | null>(null);
+const CONTENT_UPDATED_EVENT = "site-content:updated";
 
 async function fetchSiteContentEnvelope(): Promise<SiteContentApiPayload | null> {
   const response = await fetch("/api/site-content", { cache: "no-store" });
@@ -70,12 +72,14 @@ async function postSiteContentEnvelope(
 }
 
 export function SiteContentProvider({ children }: { children: React.ReactNode }) {
+  const router = useRouter();
   const [content, setContentState] = useState(DEFAULT_SITE_CONTENT);
   const [hasLocalEdits, setHasLocalEdits] = useState(false);
   const [saving, setSaving] = useState(false);
   const [lastSyncedAt, setLastSyncedAt] = useState<string | null>(null);
   const hasLocalEditsRef = useRef(false);
   const contentRef = useRef(content);
+  const broadcastChannelRef = useRef<BroadcastChannel | null>(null);
 
   useEffect(() => {
     hasLocalEditsRef.current = hasLocalEdits;
@@ -113,8 +117,30 @@ export function SiteContentProvider({ children }: { children: React.ReactNode })
     }
   }, []);
 
+  const notifyContentUpdated = useCallback(() => {
+    if (typeof window === "undefined") {
+      return;
+    }
+
+    window.dispatchEvent(new Event(CONTENT_UPDATED_EVENT));
+    broadcastChannelRef.current?.postMessage({ type: CONTENT_UPDATED_EVENT });
+  }, []);
+
   useEffect(() => {
     void refreshContent();
+
+    const onContentUpdated = () => {
+      if (!hasLocalEditsRef.current) {
+        void refreshContent();
+      }
+    };
+
+    const channel =
+      typeof window !== "undefined" && "BroadcastChannel" in window
+        ? new BroadcastChannel(CONTENT_UPDATED_EVENT)
+        : null;
+
+    broadcastChannelRef.current = channel;
 
     const interval = window.setInterval(() => {
       void refreshContent();
@@ -128,11 +154,17 @@ export function SiteContentProvider({ children }: { children: React.ReactNode })
 
     window.addEventListener("focus", refreshOnFocus);
     document.addEventListener("visibilitychange", refreshOnFocus);
+    window.addEventListener(CONTENT_UPDATED_EVENT, onContentUpdated);
+    channel?.addEventListener("message", onContentUpdated);
 
     return () => {
       window.clearInterval(interval);
       window.removeEventListener("focus", refreshOnFocus);
       document.removeEventListener("visibilitychange", refreshOnFocus);
+      window.removeEventListener(CONTENT_UPDATED_EVENT, onContentUpdated);
+      channel?.removeEventListener("message", onContentUpdated);
+      channel?.close();
+      broadcastChannelRef.current = null;
     };
   }, [refreshContent]);
 
@@ -153,6 +185,8 @@ export function SiteContentProvider({ children }: { children: React.ReactNode })
       setContentState(payload.content ?? contentToSave);
       setHasLocalEdits(false);
       setLastSyncedAt(payload.updatedAt ?? null);
+      notifyContentUpdated();
+      router.refresh();
       return { ok: true };
     } catch {
       return {
@@ -162,7 +196,7 @@ export function SiteContentProvider({ children }: { children: React.ReactNode })
     } finally {
       setSaving(false);
     }
-  }, []);
+  }, [notifyContentUpdated, router]);
 
   const value = useMemo<SiteContentContextValue>(
     () => ({
