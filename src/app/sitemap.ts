@@ -50,6 +50,11 @@ const staticRoutes: MetadataRoute.Sitemap = [
     changeFrequency: "yearly",
     priority: 0.3,
   },
+  {
+    url: `${SITE_URL}/plastic-surgeon-banjarahills`,
+    changeFrequency: "monthly",
+    priority: 0.8,
+  },
 ];
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {

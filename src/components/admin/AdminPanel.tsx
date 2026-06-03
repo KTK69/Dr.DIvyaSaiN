@@ -3,9 +3,10 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useSiteContent } from "@/components/site/SiteContentProvider";
+import RichTextEditor from "@/components/ui/RichTextEditor";
 import type { SiteContent } from "@/lib/site-content";
 
-type Section = "navigation" | "footer" | "siteSeo" | "pageSeo" | "home" | "aboutPage" | "experiencePage" | "testimonialsPage" | "blogPage" | "servicesPage" | "doctorTalkPage" | "contactPage" | "about" | "experience" | "doctorTalk" | "testimonials" | "blog" | "services" | "contact";
+type Section = "navigation" | "footer" | "siteSeo" | "pageSeo" | "home" | "aboutPage" | "experiencePage" | "testimonialsPage" | "blogPage" | "servicesPage" | "doctorTalkPage" | "contactPage" | "banjaraHillsPage" | "about" | "experience" | "doctorTalk" | "testimonials" | "blog" | "services" | "contact";
 
 type DoctorTalkItem = SiteContent["doctorTalk"][number];
 type TestimonialItem = { id: string; patient_name: string; procedure: string; quote: string; rating: number };
@@ -15,6 +16,9 @@ type ExperienceItem = SiteContent["experience"]["experience"][number];
 type NavLink = { label: string; href: string };
 type GalleryImage = { src: string; alt: string; label: string };
 type PageSeoKey = keyof SiteContent["pageSeo"];
+type BanjaraHillsServiceCard = SiteContent["banjaraHillsPage"]["cosmeticServices"][number];
+type BanjaraHillsBenefitCard = SiteContent["banjaraHillsPage"]["aigBenefits"][number];
+type BanjaraHillsFaqItem = SiteContent["banjaraHillsPage"]["faqItems"][number];
 
 const navItems: Array<{ key: Section; label: string }> = [
   { key: "navigation", label: "Navigation" },
@@ -29,6 +33,7 @@ const navItems: Array<{ key: Section; label: string }> = [
   { key: "servicesPage", label: "Services Page" },
   { key: "doctorTalkPage", label: "Doctor's Talk Page" },
   { key: "contactPage", label: "Contact Page" },
+  { key: "banjaraHillsPage", label: "Banjara Hills Page" },
   { key: "about", label: "About Data" },
   { key: "experience", label: "Experience Data" },
   { key: "doctorTalk", label: "Doctor's Talk Data" },
@@ -51,6 +56,7 @@ const pageSeoItems: Array<{ key: PageSeoKey; label: string }> = [
   { key: "services", label: "Services (/services)" },
   { key: "contact", label: "Contact (/contact)" },
   { key: "contactUs", label: "Contact Us (/contactus)" },
+  { key: "banjaraHills", label: "Banjara Hills (/plastic-surgeon-banjarahills)" },
 ];
 
 type SessionResponse = { authenticated?: boolean };
@@ -545,7 +551,7 @@ export default function AdminPanel() {
                     ) : null}
                     <Field label="Description" value={item.description ?? ""} onChange={(value) => updateItem({ ...item, description: value })} multiline className="md:col-span-2" />
                     {itemType === "article" ? (
-                      <Field label="Content" value={item.content ?? ""} onChange={(value) => updateItem({ ...item, content: value })} multiline className="md:col-span-2" />
+                      <RichTextField label="Content" value={item.content ?? ""} onChange={(value) => updateItem({ ...item, content: value })} className="md:col-span-2" height={240} />
                     ) : null}
                     {itemType === "video" ? (
                       <Field label="Video URL (YouTube or Instagram Reel)" value={item.youtubeUrl ?? ""} onChange={(value) => updateItem({ ...item, youtubeUrl: value })} className="md:col-span-2" />
@@ -585,7 +591,7 @@ export default function AdminPanel() {
                   <Field label="Slug" value={item.slug} onChange={(value) => updateItem({ ...item, slug: value })} />
                   <ImageField label="Image" value={item.image} onChange={(value) => updateItem({ ...item, image: value })} className="md:col-span-2" />
                   <Field label="Excerpt" value={item.excerpt} onChange={(value) => updateItem({ ...item, excerpt: value })} multiline />
-                  <Field label="Content" value={item.content} onChange={(value) => updateItem({ ...item, content: value })} multiline />
+                  <RichTextField label="Content" value={item.content} onChange={(value) => updateItem({ ...item, content: value })} height={320} />
                 </div>
               )}
             />
@@ -982,6 +988,13 @@ export default function AdminPanel() {
               </div>
             </div>
           ) : null}
+
+          {activeSection === "banjaraHillsPage" ? (
+            <BanjaraHillsPageForm
+              value={content.banjaraHillsPage}
+              onChange={(value) => update("banjaraHillsPage", value)}
+            />
+          ) : null}
         </section>
       </div>
     </div>
@@ -997,6 +1010,15 @@ function Field({ label, value, onChange, multiline = false, className = "" }: { 
       ) : (
         <input value={value} onChange={(event) => onChange(event.target.value)} className="w-full rounded-lg border border-(--border) bg-transparent px-3 py-2 text-(--foreground)" />
       )}
+    </label>
+  );
+}
+
+function RichTextField({ label, value, onChange, className = "", height = 260 }: { label: string; value: string; onChange: (value: string) => void; className?: string; height?: number; }) {
+  return (
+    <label className={`block text-sm text-(--foreground-muted) ${className}`}>
+      <span className="mb-1 block">{label}</span>
+      <RichTextEditor value={value} onChange={onChange} height={height} />
     </label>
   );
 }
@@ -1083,6 +1105,170 @@ function ListEditor<T>({
   );
 }
 
+function BanjaraHillsPageForm({
+  value,
+  onChange,
+}: {
+  value: SiteContent["banjaraHillsPage"];
+  onChange: (value: SiteContent["banjaraHillsPage"]) => void;
+}) {
+  return (
+    <div className="space-y-8">
+      <div className="grid gap-6 md:grid-cols-2">
+        <Field label="Hero Eyebrow" value={value.heroEyebrow} onChange={(next) => onChange({ ...value, heroEyebrow: next })} />
+        <Field label="Hero Title" value={value.heroTitle} onChange={(next) => onChange({ ...value, heroTitle: next })} />
+        <Field label="Hero Summary" value={value.heroSummary} onChange={(next) => onChange({ ...value, heroSummary: next })} multiline className="md:col-span-2" />
+        <Field label="Contact Card Title" value={value.contactCardTitle} onChange={(next) => onChange({ ...value, contactCardTitle: next })} />
+        <KeywordField label="Contact Card Items (one per line)" values={value.contactCardItems} onChange={(next) => onChange({ ...value, contactCardItems: next })} className="md:col-span-2" />
+      </div>
+
+      <div className="border-t border-(--border) pt-6 space-y-6">
+        <div className="grid gap-6 md:grid-cols-2">
+          <Field label="Qualifications Eyebrow" value={value.qualificationsEyebrow} onChange={(next) => onChange({ ...value, qualificationsEyebrow: next })} />
+          <Field label="Qualifications Title" value={value.qualificationsTitle} onChange={(next) => onChange({ ...value, qualificationsTitle: next })} />
+          <Field label="Qualifications Subtitle" value={value.qualificationsSubtitle} onChange={(next) => onChange({ ...value, qualificationsSubtitle: next })} multiline className="md:col-span-2" />
+          <KeywordField label="Qualification Points (one per line)" values={value.qualificationPoints} onChange={(next) => onChange({ ...value, qualificationPoints: next })} className="md:col-span-2" />
+        </div>
+      </div>
+
+      <div className="border-t border-(--border) pt-6 space-y-6">
+        <div className="grid gap-6 md:grid-cols-2">
+          <Field label="Cosmetic Eyebrow" value={value.cosmeticEyebrow} onChange={(next) => onChange({ ...value, cosmeticEyebrow: next })} />
+          <Field label="Cosmetic Title" value={value.cosmeticTitle} onChange={(next) => onChange({ ...value, cosmeticTitle: next })} />
+          <Field label="Cosmetic Subtitle" value={value.cosmeticSubtitle} onChange={(next) => onChange({ ...value, cosmeticSubtitle: next })} multiline className="md:col-span-2" />
+        </div>
+
+        <ListEditor<BanjaraHillsServiceCard>
+          items={value.cosmeticServices}
+          onAdd={() =>
+            onChange({
+              ...value,
+              cosmeticServices: [...value.cosmeticServices, { title: "", description: "", href: "", cta: "" }],
+            })
+          }
+          onRemove={(index) =>
+            onChange({
+              ...value,
+              cosmeticServices: value.cosmeticServices.filter((_, itemIndex) => itemIndex !== index),
+            })
+          }
+          onChange={(items) => onChange({ ...value, cosmeticServices: items })}
+          renderItem={(item, _index, updateItem) => (
+            <div className="grid gap-4 md:grid-cols-2">
+              <Field label="Title" value={item.title} onChange={(next) => updateItem({ ...item, title: next })} />
+              <Field label="Link" value={item.href} onChange={(next) => updateItem({ ...item, href: next })} />
+              <Field label="CTA Label" value={item.cta} onChange={(next) => updateItem({ ...item, cta: next })} />
+              <Field label="Description" value={item.description} onChange={(next) => updateItem({ ...item, description: next })} multiline className="md:col-span-2" />
+            </div>
+          )}
+        />
+      </div>
+
+      <div className="border-t border-(--border) pt-6 space-y-6">
+        <div className="grid gap-6 md:grid-cols-2">
+          <Field label="Reconstructive Eyebrow" value={value.reconstructiveEyebrow} onChange={(next) => onChange({ ...value, reconstructiveEyebrow: next })} />
+          <Field label="Reconstructive Title" value={value.reconstructiveTitle} onChange={(next) => onChange({ ...value, reconstructiveTitle: next })} />
+          <Field label="Reconstructive Subtitle" value={value.reconstructiveSubtitle} onChange={(next) => onChange({ ...value, reconstructiveSubtitle: next })} multiline className="md:col-span-2" />
+        </div>
+
+        <ListEditor<BanjaraHillsServiceCard>
+          items={value.reconstructiveServices}
+          onAdd={() =>
+            onChange({
+              ...value,
+              reconstructiveServices: [...value.reconstructiveServices, { title: "", description: "", href: "", cta: "" }],
+            })
+          }
+          onRemove={(index) =>
+            onChange({
+              ...value,
+              reconstructiveServices: value.reconstructiveServices.filter((_, itemIndex) => itemIndex !== index),
+            })
+          }
+          onChange={(items) => onChange({ ...value, reconstructiveServices: items })}
+          renderItem={(item, _index, updateItem) => (
+            <div className="grid gap-4 md:grid-cols-2">
+              <Field label="Title" value={item.title} onChange={(next) => updateItem({ ...item, title: next })} />
+              <Field label="Link" value={item.href} onChange={(next) => updateItem({ ...item, href: next })} />
+              <Field label="CTA Label" value={item.cta} onChange={(next) => updateItem({ ...item, cta: next })} />
+              <Field label="Description" value={item.description} onChange={(next) => updateItem({ ...item, description: next })} multiline className="md:col-span-2" />
+            </div>
+          )}
+        />
+      </div>
+
+      <div className="border-t border-(--border) pt-6 space-y-6">
+        <div className="grid gap-6 md:grid-cols-2">
+          <Field label="AIG Eyebrow" value={value.aigEyebrow} onChange={(next) => onChange({ ...value, aigEyebrow: next })} />
+          <Field label="AIG Title" value={value.aigTitle} onChange={(next) => onChange({ ...value, aigTitle: next })} />
+          <Field label="AIG Subtitle" value={value.aigSubtitle} onChange={(next) => onChange({ ...value, aigSubtitle: next })} multiline className="md:col-span-2" />
+        </div>
+
+        <ListEditor<BanjaraHillsBenefitCard>
+          items={value.aigBenefits}
+          onAdd={() =>
+            onChange({
+              ...value,
+              aigBenefits: [...value.aigBenefits, { title: "", description: "" }],
+            })
+          }
+          onRemove={(index) =>
+            onChange({
+              ...value,
+              aigBenefits: value.aigBenefits.filter((_, itemIndex) => itemIndex !== index),
+            })
+          }
+          onChange={(items) => onChange({ ...value, aigBenefits: items })}
+          renderItem={(item, _index, updateItem) => (
+            <div className="grid gap-4 md:grid-cols-2">
+              <Field label="Title" value={item.title} onChange={(next) => updateItem({ ...item, title: next })} />
+              <Field label="Description" value={item.description} onChange={(next) => updateItem({ ...item, description: next })} multiline className="md:col-span-2" />
+            </div>
+          )}
+        />
+      </div>
+
+      <div className="border-t border-(--border) pt-6 space-y-6">
+        <div className="grid gap-6 md:grid-cols-2">
+          <Field label="FAQ Eyebrow" value={value.faqEyebrow} onChange={(next) => onChange({ ...value, faqEyebrow: next })} />
+          <Field label="FAQ Title" value={value.faqTitle} onChange={(next) => onChange({ ...value, faqTitle: next })} />
+        </div>
+
+        <ListEditor<BanjaraHillsFaqItem>
+          items={value.faqItems}
+          onAdd={() =>
+            onChange({
+              ...value,
+              faqItems: [...value.faqItems, { question: "", answer: "" }],
+            })
+          }
+          onRemove={(index) =>
+            onChange({
+              ...value,
+              faqItems: value.faqItems.filter((_, itemIndex) => itemIndex !== index),
+            })
+          }
+          onChange={(items) => onChange({ ...value, faqItems: items })}
+          renderItem={(item, _index, updateItem) => (
+            <div className="grid gap-4 md:grid-cols-2">
+              <Field label="Question" value={item.question} onChange={(next) => updateItem({ ...item, question: next })} className="md:col-span-2" />
+              <Field label="Answer" value={item.answer} onChange={(next) => updateItem({ ...item, answer: next })} multiline className="md:col-span-2" />
+            </div>
+          )}
+        />
+      </div>
+
+      <div className="border-t border-(--border) pt-6">
+        <div className="grid gap-6 md:grid-cols-2">
+          <Field label="CTA Eyebrow" value={value.ctaEyebrow} onChange={(next) => onChange({ ...value, ctaEyebrow: next })} />
+          <Field label="CTA Title" value={value.ctaTitle} onChange={(next) => onChange({ ...value, ctaTitle: next })} />
+          <Field label="CTA Summary" value={value.ctaSummary} onChange={(next) => onChange({ ...value, ctaSummary: next })} multiline className="md:col-span-2" />
+        </div>
+      </div>
+    </div>
+  );
+}
+
 function ServiceForm({ item, onChange }: { item: ServiceItem; onChange: (value: ServiceItem) => void }) {
   return (
     <div className="space-y-6">
@@ -1100,7 +1286,7 @@ function ServiceForm({ item, onChange }: { item: ServiceItem; onChange: (value: 
         />
         <ImageField label="Image" value={item.image} onChange={(value) => onChange({ ...item, image: value })} />
         <Field label="Summary" value={item.summary} onChange={(value) => onChange({ ...item, summary: value })} multiline className="md:col-span-2" />
-        <Field label="Content" value={item.content} onChange={(value) => onChange({ ...item, content: value })} multiline className="md:col-span-2" />
+        <RichTextField label="Content" value={item.content} onChange={(value) => onChange({ ...item, content: value })} className="md:col-span-2" height={280} />
         <Field label="Meta title" value={item.meta_title} onChange={(value) => onChange({ ...item, meta_title: value })} />
         <Field label="Meta description" value={item.meta_description} onChange={(value) => onChange({ ...item, meta_description: value })} multiline className="md:col-span-2" />
       </div>

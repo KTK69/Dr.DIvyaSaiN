@@ -123,6 +123,53 @@ export type ContactPageContent = {
   };
 };
 
+export type BanjaraHillsServiceCard = {
+  title: string;
+  description: string;
+  href: string;
+  cta: string;
+};
+
+export type BanjaraHillsBenefitCard = {
+  title: string;
+  description: string;
+};
+
+export type BanjaraHillsFaqItem = {
+  question: string;
+  answer: string;
+};
+
+export type BanjaraHillsPageContent = {
+  heroEyebrow: string;
+  heroTitle: string;
+  heroSummary: string;
+  contactCardTitle: string;
+  contactCardItems: string[];
+  qualificationsEyebrow: string;
+  qualificationsTitle: string;
+  qualificationsSubtitle: string;
+  qualificationPoints: string[];
+  cosmeticEyebrow: string;
+  cosmeticTitle: string;
+  cosmeticSubtitle: string;
+  cosmeticServices: BanjaraHillsServiceCard[];
+  reconstructiveEyebrow: string;
+  reconstructiveTitle: string;
+  reconstructiveSubtitle: string;
+  reconstructiveServices: BanjaraHillsServiceCard[];
+  aigEyebrow: string;
+  aigTitle: string;
+  aigSubtitle: string;
+  aigBenefits: BanjaraHillsBenefitCard[];
+  faqEyebrow: string;
+  faqTitle: string;
+  faqItems: BanjaraHillsFaqItem[];
+  ctaEyebrow: string;
+  ctaTitle: string;
+  ctaSummary: string;
+};
+
 export type NavigationContent = {
   links: NavLink[];
   services: {
@@ -176,6 +223,7 @@ export type PageSeoContent = {
   services: PageSeoEntry;
   contact: PageSeoEntry;
   contactUs: PageSeoEntry;
+  banjaraHills: PageSeoEntry;
 };
 
 export type SiteContent = {
@@ -194,6 +242,7 @@ export type SiteContent = {
   servicesPage: ServicesPageContent;
   doctorTalkPage: DoctorTalkPageContent;
   contactPage: ContactPageContent;
+  banjaraHillsPage: BanjaraHillsPageContent;
   
   // Dynamic content
   about: AboutContent & {
@@ -456,6 +505,19 @@ export const DEFAULT_SITE_CONTENT: SiteContent = {
       ],
       canonicalPath: "/contactus",
     },
+    banjaraHills: {
+      title: "Plastic Surgeon in Banjara Hills, Hyderabad | Dr. Divya Sai Narsingam | AIG Hospitals",
+      description:
+        "Consult Dr. Divya Sai Narsingam, MCh Plastic Surgeon, at AIG Hospitals Banjara Hills. Expert care for rhinoplasty, breast surgery, liposuction, reconstructive procedures, and more.",
+      keywords: [
+        "plastic surgeon Banjara Hills",
+        "plastic surgeon in Banjara Hills Hyderabad",
+        "AIG Hospitals plastic surgeon",
+        "cosmetic surgeon Banjara Hills",
+        "reconstructive surgeon Banjara Hills",
+      ],
+      canonicalPath: "/plastic-surgeon-banjarahills",
+    },
   },
 
   // Page content
@@ -598,6 +660,210 @@ export const DEFAULT_SITE_CONTENT: SiteContent = {
       howDidYouHear: "How did you hear about us?",
       submit: "Submit Request",
     },
+  },
+
+  banjaraHillsPage: {
+    heroEyebrow: "AIG Hospitals, Banjara Hills, Hyderabad",
+    heroTitle: "Plastic Surgeon in Banjara Hills, Hyderabad",
+    heroSummary:
+      "Looking for an experienced and trusted plastic surgeon in Banjara Hills, Hyderabad? Dr. Divya Sai Narsingam offers plastic and reconstructive surgery consultations at AIG Hospitals with a focus on personalised, evidence-based care across cosmetic and reconstructive procedures.",
+    contactCardTitle: "Consultation details",
+    contactCardItems: [
+      "MCh Plastic and Reconstructive Surgery",
+      "AIG Hospitals, Banjara Hills",
+      "Monday to Saturday, 4:00 PM to 5:00 PM",
+      "Call: +91 99001 35489",
+    ],
+    qualificationsEyebrow: "About",
+    qualificationsTitle: "Qualifications and surgical approach",
+    qualificationsSubtitle:
+      "Advanced training across cosmetic and reconstructive plastic surgery, with care centered on natural-looking outcomes, careful planning, and clear communication.",
+    qualificationPoints: [
+      "MBBS and MCh in Plastic Surgery",
+      "Training across reconstructive microsurgery, cosmetic surgery, hand surgery, burn management, and onco reconstruction",
+      "Consulting at AIG Hospitals, Banjara Hills, Hyderabad",
+      "Patient-first, evidence-based treatment planning with clear communication",
+    ],
+    cosmeticEyebrow: "Cosmetic Surgery",
+    cosmeticTitle: "Cosmetic surgery services in Banjara Hills",
+    cosmeticSubtitle:
+      "A broad range of aesthetic procedures designed to enhance appearance, restore confidence, and align outcomes with each patient's anatomy and goals.",
+    cosmeticServices: [
+      {
+        title: "Rhinoplasty (Nose Reshaping)",
+        description:
+          "Rhinoplasty refines the size, shape, and symmetry of the nose to improve appearance and, where needed, breathing function. Open and closed rhinoplasty techniques are selected based on anatomy and the desired outcome.",
+        href: "/services/facial-plastic-surgery",
+        cta: "Learn about Facial Plastic Surgery",
+      },
+      {
+        title: "Breast Augmentation",
+        description:
+          "Breast augmentation enhances breast volume and contour using carefully selected implants or fat transfer techniques, with planning tailored to the patient's frame and preferences.",
+        href: "/services/breast-augmentation",
+        cta: "Learn about Breast Augmentation",
+      },
+      {
+        title: "Breast Reduction",
+        description:
+          "Breast reduction surgery reduces excess volume to relieve neck, shoulder, and back discomfort while also reshaping and lifting the breast for a proportionate result.",
+        href: "/services/breast-reduction",
+        cta: "Learn about Breast Reduction",
+      },
+      {
+        title: "Tummy Tuck (Abdominoplasty)",
+        description:
+          "A tummy tuck removes excess abdominal skin and tightens weakened or separated abdominal muscles, which is especially helpful after major weight loss or pregnancy.",
+        href: "/services/tummy-tuck",
+        cta: "Learn about Tummy Tuck",
+      },
+      {
+        title: "Liposuction and Body Contouring",
+        description:
+          "Liposuction targets stubborn fat deposits in areas such as the abdomen, flanks, thighs, arms, and chin to create a smoother, more contoured silhouette.",
+        href: "/services/body-lipocontouring",
+        cta: "Learn about Body Lipocontouring",
+      },
+      {
+        title: "Gynecomastia Reduction",
+        description:
+          "Gynecomastia surgery removes excess glandular tissue and fat through minimally visible incisions to restore a flatter, more masculine chest contour.",
+        href: "/services/gynecomastia-reduction",
+        cta: "Learn about Gynecomastia Reduction",
+      },
+      {
+        title: "Facial Rejuvenation and Non-Surgical Treatments",
+        description:
+          "For subtle enhancement without surgery, Botox and dermal fillers can soften lines, restore volume, and refine facial contours with minimal downtime.",
+        href: "/services/facial-plastic-surgery",
+        cta: "Explore Facial Procedures",
+      },
+    ],
+    reconstructiveEyebrow: "Reconstructive Surgery",
+    reconstructiveTitle: "Reconstructive surgery in Banjara Hills",
+    reconstructiveSubtitle:
+      "Reconstructive plastic surgery focuses on restoring form and function after trauma, cancer treatment, burns, or congenital conditions with technically precise and compassionate care.",
+    reconstructiveServices: [
+      {
+        title: "Onco Reconstruction",
+        description:
+          "Following cancer surgery, including breast, oral, and skin cancer resections, reconstruction helps restore appearance and, wherever possible, normal function through coordinated surgical planning.",
+        href: "/services/onco-reconstruction",
+        cta: "Learn about Onco Reconstruction",
+      },
+      {
+        title: "Breast Reconstruction",
+        description:
+          "Breast reconstruction rebuilds the breast mound after mastectomy or lumpectomy using implant-based or autologous tissue techniques, including flap procedures where appropriate.",
+        href: "/services/breast-reconstruction",
+        cta: "Learn about Breast Reconstruction",
+      },
+      {
+        title: "Trauma Reconstruction",
+        description:
+          "Complex wounds, fractures, and soft-tissue defects following trauma often require expert reconstructive surgery to restore both function and form over the long term.",
+        href: "/services/trauma-reconstruction",
+        cta: "Learn about Trauma Reconstruction",
+      },
+      {
+        title: "Hand Surgery",
+        description:
+          "Hand surgery addresses tendon injuries, nerve damage, fractures, congenital hand differences, and other conditions that affect grip, dexterity, and sensation.",
+        href: "/services/hand-surgery",
+        cta: "Learn about Hand Surgery",
+      },
+      {
+        title: "Microvascular Surgery",
+        description:
+          "Microvascular free-flap surgery transfers living tissue with its blood supply from one part of the body to another for reconstruction of complex defects.",
+        href: "/services/microvascular-surgery",
+        cta: "Learn about Microvascular Surgery",
+      },
+      {
+        title: "Burn Reconstruction and Scar Revision",
+        description:
+          "Burn injuries can leave contractures, hypertrophic scars, and functional impairment that may require staged procedures such as skin grafting, tissue expansion, and scar revision.",
+        href: "/services/facial-plastic-surgery",
+        cta: "Learn about Burn and Scar Revision",
+      },
+    ],
+    aigEyebrow: "Why AIG",
+    aigTitle: "Why consult at AIG Hospitals, Banjara Hills?",
+    aigSubtitle:
+      "Hospital infrastructure, accessibility, peri-operative support, and diagnostic access are key advantages for patients consulting in Banjara Hills.",
+    aigBenefits: [
+      {
+        title: "NABH-accredited facility",
+        description:
+          "AIG Hospitals meets national standards for patient safety, hygiene, and clinical quality.",
+      },
+      {
+        title: "Advanced OT infrastructure",
+        description:
+          "State-of-the-art operation theatres support complex plastic, reconstructive, and microsurgical procedures.",
+      },
+      {
+        title: "Dedicated ICU and post-op care",
+        description:
+          "A multidisciplinary team and high-dependency care support recovery after major surgery.",
+      },
+      {
+        title: "Convenient Banjara Hills location",
+        description:
+          "The hospital is easily accessible from Jubilee Hills, Kondapur, Madhapur, Gachibowli, and surrounding areas.",
+      },
+      {
+        title: "Comprehensive diagnostics",
+        description:
+          "On-site imaging, pathology, and pre-operative assessment help streamline surgical planning.",
+      },
+      {
+        title: "Insurance and cashless support",
+        description:
+          "Eligible reconstructive procedures may be covered through major insurance providers, subject to plan terms.",
+      },
+    ],
+    faqEyebrow: "FAQ",
+    faqTitle: "Frequently asked questions",
+    faqItems: [
+      {
+        question:
+          "What is the consultation fee for Dr. Divya Sai Narsingam at AIG Hospitals, Banjara Hills?",
+        answer:
+          "Consultation fees may vary. Please call +91 99001 35489 or contact AIG Hospitals, Banjara Hills directly to confirm the current consultation charge.",
+      },
+      {
+        question: "What is the recovery time after plastic surgery?",
+        answer:
+          "Recovery depends on the procedure. Non-surgical treatments usually involve minimal downtime, smaller procedures may take a few days, and major surgeries such as tummy tuck, breast reconstruction, or microvascular surgery may take several weeks.",
+      },
+      {
+        question:
+          "Does Dr. Divya Sai Narsingam perform both cosmetic and reconstructive surgery?",
+        answer:
+          "Yes. Care spans cosmetic procedures such as rhinoplasty, liposuction, breast surgery, and body contouring, along with reconstructive care including onco reconstruction, trauma reconstruction, hand surgery, microvascular surgery, and burn reconstruction.",
+      },
+      {
+        question:
+          "How do I book an appointment with the plastic surgeon at AIG Hospitals, Banjara Hills?",
+        answer:
+          "Appointments can be requested by calling +91 99001 35489, emailing drdivyaplasticsurgeon@gmail.com, or using the online appointment form. Consultation hours are Monday to Saturday, 4:00 PM to 5:00 PM.",
+      },
+      {
+        question: "Is plastic surgery covered by health insurance?",
+        answer:
+          "Reconstructive procedures such as trauma repair, burn reconstruction, hand surgery, and cancer reconstruction are often more likely to qualify for coverage than purely cosmetic procedures. Final eligibility depends on your insurance policy.",
+      },
+      {
+        question: "Can I choose a non-surgical aesthetic treatment instead of surgery?",
+        answer:
+          "Yes. Botox and dermal fillers may be suitable for selected concerns involving fine lines, volume loss, and facial contour refinement without surgery.",
+      },
+    ],
+    ctaEyebrow: "Book consultation",
+    ctaTitle: "Consult Dr. Divya Sai Narsingam at AIG Hospitals, Banjara Hills",
+    ctaSummary:
+      "Use the contact page, WhatsApp, or phone to request an appointment. Consultation hours are Monday to Saturday, 4:00 PM to 5:00 PM.",
   },
 
   // Dynamic content

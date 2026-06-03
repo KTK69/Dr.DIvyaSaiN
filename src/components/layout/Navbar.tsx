@@ -34,15 +34,14 @@ export default function Navbar() {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
-  useEffect(() => {
-    setMobileOpen(false);
-    setServicesOpen(false);
-  }, [pathname]);
-
   const isActive = (href: string) =>
     href === "/" ? pathname === "/" : pathname.startsWith(href);
 
   const navLinks = content.navigation.links;
+  const closeMenus = () => {
+    setMobileOpen(false);
+    setServicesOpen(false);
+  };
 
   return (
     <header
@@ -54,21 +53,24 @@ export default function Navbar() {
       style={{ backdropFilter: scrolled ? "blur(12px)" : undefined }}
     >
       <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between gap-3 h-18 lg:h-20">
+        <div className="flex min-w-0 items-center justify-between gap-2 sm:gap-3 h-18 lg:h-20">
           {/* Logo */}
-          <Link href="/" className="flex min-w-0 flex-1 flex-col leading-tight group">
+          <Link
+            href="/"
+            className="flex min-w-0 flex-1 max-w-[calc(100%-3.5rem)] flex-col overflow-hidden leading-tight group sm:max-w-none"
+          >
             <div className="flex items-center gap-2.5 sm:gap-3 min-w-0">
               <div className="relative h-10 w-10 sm:h-11 sm:w-11 shrink-0 overflow-hidden rounded-full border border-(--border) bg-(--bg-card)">
                 <Image src={LOGO} alt="Dr. Divya Sai Narsingam logo" fill className="object-cover" />
               </div>
               <div className="min-w-0 leading-tight">
                 <span
-                  className="block truncate text-sm sm:text-base font-semibold text-(--accent-gold-light) tracking-tight"
+                  className="block truncate text-[13px] sm:text-base font-semibold text-(--accent-gold-light) tracking-tight"
                   style={{ fontFamily: "var(--font-serif)" }}
                 >
                   Dr. Divya Sai Narsingam
                 </span>
-                <span className="block truncate text-[11px] sm:text-xs text-(--foreground) font-semibold tracking-wide opacity-90">
+                <span className="block truncate text-[10px] leading-tight sm:text-xs text-(--foreground) font-semibold tracking-wide opacity-90">
                   MCh Plastic Surgery · CARE Hospitals, Hyderabad
                 </span>
               </div>
@@ -81,6 +83,7 @@ export default function Navbar() {
               <Link
                 key={href}
                 href={href}
+                onClick={closeMenus}
                 className={`text-sm transition-colors duration-200 ${
                   isActive(href)
                     ? "text-(--accent-gold-light)"
@@ -128,6 +131,7 @@ export default function Navbar() {
                           <Link
                             key={href}
                             href={href}
+                            onClick={closeMenus}
                             className="block py-1.5 text-sm text-(--foreground-muted) hover:text-(--foreground) transition-colors"
                           >
                             {label}
@@ -142,6 +146,7 @@ export default function Navbar() {
                           <Link
                             key={href}
                             href={href}
+                            onClick={closeMenus}
                             className="block py-1.5 text-sm text-(--foreground-muted) hover:text-(--foreground) transition-colors"
                           >
                             {label}
@@ -152,6 +157,7 @@ export default function Navbar() {
                     <div className="mt-5 pt-4 border-t border-(--border)">
                       <Link
                         href="/services"
+                        onClick={closeMenus}
                         className="text-xs text-(--foreground-muted) hover:text-(--accent-gold-light) transition-colors"
                       >
                         View all services →
@@ -164,6 +170,7 @@ export default function Navbar() {
 
             <Link
               href="/contactus"
+              onClick={closeMenus}
               className="ml-2 inline-flex items-center gap-2 px-4 py-2.5 text-sm rounded-xl bg-(--accent-gold) text-(--background) shadow-lg shadow-black/20 hover:bg-(--accent-gold-light) transition-all duration-200"
             >
               <Video size={16} />
@@ -192,11 +199,12 @@ export default function Navbar() {
             transition={{ duration: 0.25 }}
             className="lg:hidden overflow-hidden bg-(--bg-surface) border-b border-(--border)"
           >
-            <div className="px-4 py-6 space-y-1">
+            <div className="max-w-full overflow-x-hidden px-4 py-6 space-y-1">
               {navLinks.map(({ href, label }) => (
                 <Link
                   key={href}
                   href={href}
+                  onClick={closeMenus}
                   className={`block py-2 text-sm ${
                     isActive(href)
                       ? "text-(--accent-gold-light)"
@@ -214,6 +222,7 @@ export default function Navbar() {
                   <Link
                     key={href}
                     href={href}
+                    onClick={closeMenus}
                     className="block py-1.5 text-sm text-(--foreground-muted) pl-3"
                   >
                     {label}
@@ -228,6 +237,7 @@ export default function Navbar() {
                   <Link
                     key={href}
                     href={href}
+                    onClick={closeMenus}
                     className="block py-1.5 text-sm text-(--foreground-muted) pl-3"
                   >
                     {label}
@@ -237,6 +247,7 @@ export default function Navbar() {
               <div className="pt-4">
                 <Link
                   href="/contactus"
+                  onClick={closeMenus}
                   className="flex items-center justify-center gap-2 px-4 py-3 text-sm rounded-xl bg-(--accent-gold) text-(--background) font-medium shadow-lg shadow-black/20"
                 >
                   <Video size={16} />

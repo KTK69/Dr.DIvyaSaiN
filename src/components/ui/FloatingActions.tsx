@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { X, Calendar, MessageCircle, Instagram } from "lucide-react";
+import { X, Calendar, Instagram } from "lucide-react";
 import { buildWhatsAppLink, WHATSAPP_DEFAULT_MESSAGE } from "@/lib/communication";
 const CALENDLY_URL = "https://calendly.com/drdivyaplasticsurgeon/30min";
 const INSTAGRAM_URL = "https://www.instagram.com/drreconstruct";
@@ -181,11 +181,11 @@ function BookButton({ onClick }: { onClick: () => void }) {
       transition={{ type: "spring", stiffness: 260, damping: 20, delay: 1.5 }}
       whileHover={{ scale: 1.1 }}
       whileTap={{ scale: 0.95 }}
-      className="flex items-center justify-center gap-2 h-14 px-4 md:px-0 md:w-14 rounded-full md:rounded-full shadow-2xl focus:outline-none focus-visible:ring-2 focus-visible:ring-(--accent-gold)"
+      className="flex max-w-full items-center justify-center gap-2 h-14 px-3 md:px-0 md:w-14 rounded-full md:rounded-full shadow-2xl focus:outline-none focus-visible:ring-2 focus-visible:ring-(--accent-gold)"
       style={{ background: "var(--accent-gold)" }}
     >
       <Calendar size={22} color="var(--background)" />
-      <span className="text-sm font-semibold text-(--background) md:hidden whitespace-nowrap">
+      <span className="text-xs font-semibold text-(--background) md:hidden">
         Video Consult
       </span>
     </motion.button>
@@ -201,7 +201,7 @@ export default function FloatingActions() {
     <>
       {/* Sticky column — bottom-right */}
       <div
-        className="fixed bottom-6 right-6 z-900 flex flex-col items-end gap-3"
+        className="fixed bottom-4 right-3 md:bottom-6 md:right-6 z-900 flex max-w-[calc(100vw-0.75rem)] flex-col items-end gap-3"
         onMouseEnter={() => setShowLabels(true)}
         onMouseLeave={() => setShowLabels(false)}
       >

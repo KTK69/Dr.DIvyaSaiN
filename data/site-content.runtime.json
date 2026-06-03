@@ -1,0 +1,1528 @@
+{
+  "content": {
+    "navigation": {
+      "links": [
+        {
+          "label": "Home",
+          "href": "/"
+        },
+        {
+          "label": "About",
+          "href": "/aboutus"
+        },
+        {
+          "label": "Experience",
+          "href": "/experience"
+        },
+        {
+          "label": "Doctor's Talk",
+          "href": "/drvideo"
+        },
+        {
+          "label": "Testimonials",
+          "href": "/reviews"
+        },
+        {
+          "label": "Blog",
+          "href": "/blog"
+        },
+        {
+          "label": "Contact",
+          "href": "/contactus"
+        }
+      ],
+      "services": {
+        "reconstructive": [
+          {
+            "label": "Onco Reconstruction",
+            "href": "/services/onco-reconstruction"
+          },
+          {
+            "label": "Breast Reconstruction",
+            "href": "/services/breast-reconstruction"
+          },
+          {
+            "label": "Trauma Reconstruction",
+            "href": "/services/trauma-reconstruction"
+          },
+          {
+            "label": "Hand Surgery",
+            "href": "/services/hand-surgery"
+          },
+          {
+            "label": "Microvascular Surgery",
+            "href": "/services/microvascular-surgery"
+          },
+          {
+            "label": "Maxillofacial Trauma",
+            "href": "/services/maxillofacial-trauma"
+          },
+          {
+            "label": "Facial Plastic Surgery",
+            "href": "/services/facial-plastic-surgery"
+          }
+        ],
+        "cosmetic": [
+          {
+            "label": "Breast Augmentation",
+            "href": "/services/breast-augmentation"
+          },
+          {
+            "label": "Breast Reduction",
+            "href": "/services/breast-reduction"
+          },
+          {
+            "label": "Breast Lift",
+            "href": "/services/breast-lift"
+          },
+          {
+            "label": "Rhinoplasty",
+            "href": "/services/rhinoplasty"
+          },
+          {
+            "label": "Tummy Tuck",
+            "href": "/services/tummy-tuck"
+          },
+          {
+            "label": "Body Lipocontouring",
+            "href": "/services/body-lipocontouring"
+          },
+          {
+            "label": "Gynecomastia Reduction",
+            "href": "/services/gynecomastia-reduction"
+          }
+        ]
+      }
+    },
+    "footer": {
+      "bio": "Consultant Plastic & Reconstructive Surgeon at CARE Hospitals, Gachibowli, Hyderabad. Specialising in aesthetic and reconstructive plastic surgery with over 14 years of clinical experience.",
+      "qualifications": "MCh Plastic Surgery · Board-Certified",
+      "servicesTitle": "Services",
+      "services": [
+        {
+          "label": "Onco Reconstruction",
+          "href": "/services/onco-reconstruction"
+        },
+        {
+          "label": "Breast Reconstruction",
+          "href": "/services/breast-reconstruction"
+        },
+        {
+          "label": "Microvascular Surgery",
+          "href": "/services/microvascular-surgery"
+        },
+        {
+          "label": "Breast Augmentation",
+          "href": "/services/breast-augmentation"
+        },
+        {
+          "label": "Breast Lift",
+          "href": "/services/breast-lift"
+        },
+        {
+          "label": "Rhinoplasty",
+          "href": "/services/rhinoplasty"
+        },
+        {
+          "label": "Body Lipocontouring",
+          "href": "/services/body-lipocontouring"
+        },
+        {
+          "label": "Gynecomastia",
+          "href": "/services/gynecomastia-reduction"
+        }
+      ],
+      "contactTitle": "Contact",
+      "contactLocation": "Room No. 20, 1st Floor, AIG Hospitals, Banjara Hills, Hyderabad – 500034",
+      "contactEmail": "Appointments via AIG Hospitals",
+      "linksTitle": "Links",
+      "links": [
+        {
+          "label": "Home",
+          "href": "/"
+        },
+        {
+          "label": "About",
+          "href": "/aboutus"
+        },
+        {
+          "label": "Services",
+          "href": "/services"
+        },
+        {
+          "label": "Experience",
+          "href": "/experience"
+        },
+        {
+          "label": "Testimonials",
+          "href": "/reviews"
+        },
+        {
+          "label": "Blog",
+          "href": "/blog"
+        },
+        {
+          "label": "Contact",
+          "href": "/contactus"
+        },
+        {
+          "label": "Privacy Policy",
+          "href": "/privacy-policy"
+        }
+      ],
+      "copyright": "Dr. Divya Sai Narsingam. All rights reserved."
+    },
+    "siteSeo": {
+      "titleDefault": "Dr. Divya Sai Narsingam | Plastic & Reconstructive Surgeon Hyderabad",
+      "titleTemplate": "%s | Dr. Divya Sai Narsingam",
+      "description": "Dr. Divya Sai Narsingam – Board-certified Plastic & Reconstructive Surgeon at CARE Hospitals, Gachibowli, Hyderabad. MCh Plastic Surgery. Expert in cosmetic surgery, breast reconstruction, and microvascular surgery.",
+      "keywords": [
+        "Plastic Surgeon in Hyderabad",
+        "Reconstructive Surgeon Gachibowli",
+        "Breast Reconstruction Surgeon Hyderabad",
+        "Dr Divya Sai Narsingam",
+        "CARE Hospitals Hyderabad plastic surgery",
+        "cosmetic surgeon Hyderabad",
+        "MCh Plastic Surgery Hyderabad"
+      ],
+      "openGraph": {
+        "type": "website",
+        "locale": "en_IN",
+        "siteName": "Dr. Divya Sai Narsingam – Plastic Surgeon"
+      }
+    },
+    "pageSeo": {
+      "home": {
+        "title": "Plastic & Reconstructive Surgeon in Hyderabad | Dr. Divya Sai Narsingam",
+        "description": "Dr. Divya Sai Narsingam – MCh Plastic Surgery. Consultant at CARE Hospitals Gachibowli, Hyderabad. 14+ years experience in reconstructive and cosmetic surgery.",
+        "keywords": [
+          "plastic surgeon Hyderabad",
+          "reconstructive surgeon Hyderabad",
+          "cosmetic surgeon Hyderabad",
+          "CARE Hospitals Gachibowli"
+        ],
+        "canonicalPath": "/"
+      },
+      "about": {
+        "title": "About Dr. Divya Sai Narsingam | Plastic Surgeon Hyderabad",
+        "description": "Learn about Dr. Divya Sai Narsingam – MCh Plastic Surgery, University Topper, Consultant at CARE Hospitals Gachibowli. 14+ years of reconstructive and cosmetic surgery experience in Hyderabad.",
+        "keywords": [
+          "Dr Divya Sai Narsingam biography",
+          "MCh Plastic Surgery Hyderabad",
+          "CARE Hospitals plastic surgeon",
+          "plastic surgeon Gachibowli"
+        ],
+        "canonicalPath": "/aboutus"
+      },
+      "aboutUs": {
+        "title": "About Dr. Divya Sai Narsingam | Plastic Surgeon Hyderabad",
+        "description": "Learn about Dr. Divya Sai Narsingam – qualifications, experience, and patient-centered reconstructive and cosmetic surgery practice in Hyderabad.",
+        "keywords": [
+          "about Dr Divya Sai Narsingam",
+          "plastic surgeon Hyderabad profile",
+          "CARE Hospitals doctor biography"
+        ],
+        "canonicalPath": "/aboutus"
+      },
+      "experience": {
+        "title": "Experience & Academics | Dr. Divya Sai Narsingam",
+        "description": "Academic and professional timeline of Dr. Divya Sai Narsingam – publications, research, conference presentations, and career experience at CARE Hospitals Hyderabad.",
+        "keywords": [
+          "Dr Divya Sai experience",
+          "plastic surgeon academic profile Hyderabad",
+          "CARE Hospitals surgeon publications"
+        ],
+        "canonicalPath": "/experience"
+      },
+      "doctorsTalk": {
+        "title": "Doctor's Talk | Articles & Videos by Dr. Divya Sai Narsingam",
+        "description": "Educational articles, clinical insights, and video content by Dr. Divya Sai Narsingam – Plastic & Reconstructive Surgeon at CARE Hospitals, Hyderabad.",
+        "keywords": [
+          "doctor talk plastic surgery",
+          "plastic surgery education Hyderabad",
+          "Dr Divya articles and videos"
+        ],
+        "canonicalPath": "/drvideo"
+      },
+      "drVideo": {
+        "title": "Doctor Videos & Educational Talks | Dr. Divya Sai Narsingam",
+        "description": "Explore doctor talk videos and educational patient guidance from Dr. Divya Sai Narsingam.",
+        "keywords": [
+          "plastic surgery videos Hyderabad",
+          "Dr Divya educational videos",
+          "patient guidance plastic surgeon"
+        ],
+        "canonicalPath": "/drvideo"
+      },
+      "testimonials": {
+        "title": "Testimonials & Video Reviews | Dr. Divya Sai Narsingam",
+        "description": "Read patient testimonials and watch video reviews for reconstructive and cosmetic plastic surgery with Dr. Divya Sai Narsingam at CARE Hospitals, Hyderabad.",
+        "keywords": [
+          "plastic surgery testimonials Hyderabad",
+          "video testimonials plastic surgeon",
+          "Dr Divya Sai Narsingam testimonials"
+        ],
+        "canonicalPath": "/reviews"
+      },
+      "reviews": {
+        "title": "Patient Reviews & Testimonials | Dr. Divya Sai Narsingam",
+        "description": "Read patient reviews for reconstructive and cosmetic procedures by Dr. Divya Sai Narsingam at CARE Hospitals, Hyderabad.",
+        "keywords": [
+          "patient reviews plastic surgeon Hyderabad",
+          "cosmetic surgery reviews Hyderabad",
+          "reconstructive surgery testimonials"
+        ],
+        "canonicalPath": "/reviews"
+      },
+      "blog": {
+        "title": "Plastic Surgery Blog | Dr. Divya Sai Narsingam",
+        "description": "Clinical insights, patient education, and treatment explainers by Dr. Divya Sai Narsingam.",
+        "keywords": [
+          "plastic surgery blog Hyderabad",
+          "patient education plastic surgeon",
+          "Dr Divya articles"
+        ],
+        "canonicalPath": "/blog"
+      },
+      "services": {
+        "title": "Plastic Surgery Services Hyderabad | Reconstructive & Cosmetic",
+        "description": "Comprehensive plastic and reconstructive surgery services by Dr. Divya Sai Narsingam at CARE Hospitals, Gachibowli, Hyderabad. Breast reconstruction, onco reconstruction, cosmetic procedures and more.",
+        "keywords": [
+          "plastic surgery services Hyderabad",
+          "breast reconstruction Hyderabad",
+          "onco reconstruction Hyderabad",
+          "cosmetic surgery Gachibowli",
+          "microvascular surgery Hyderabad",
+          "gynecomastia reduction Hyderabad",
+          "tummy tuck Hyderabad",
+          "facial plastic surgery Hyderabad"
+        ],
+        "canonicalPath": "/services"
+      },
+      "contact": {
+        "title": "Book Appointment | Dr. Divya Sai Narsingam – AIG Hospitals Banjara Hills",
+        "description": "Book a consultation with Dr. Divya Sai Narsingam at AIG Hospitals, Banjara Hills, Hyderabad. Plastic & Reconstructive Surgeon – MCh (Plastic Surgery).",
+        "keywords": [
+          "book appointment plastic surgeon Hyderabad",
+          "contact Dr Divya Sai Narsingam",
+          "AIG Hospitals Banjara Hills consultation"
+        ],
+        "canonicalPath": "/contactus"
+      },
+      "contactUs": {
+        "title": "Contact and Appointment Booking | Dr. Divya Sai Narsingam",
+        "description": "Book appointments and contact Dr. Divya Sai Narsingam for reconstructive and cosmetic surgery consultations in Hyderabad.",
+        "keywords": [
+          "appointment booking plastic surgeon Hyderabad",
+          "contact reconstructive surgeon Hyderabad",
+          "cosmetic surgery consultation Hyderabad"
+        ],
+        "canonicalPath": "/contactus"
+      },
+      "banjaraHills": {
+        "title": "Plastic Surgeon in Banjara Hills, Hyderabad | Dr. Divya Sai Narsingam | AIG Hospitals",
+        "description": "Consult Dr. Divya Sai Narsingam, MCh Plastic Surgeon, at AIG Hospitals Banjara Hills. Expert care for rhinoplasty, breast surgery, liposuction, reconstructive procedures, and more.",
+        "keywords": [
+          "plastic surgeon Banjara Hills",
+          "plastic surgeon in Banjara Hills Hyderabad",
+          "AIG Hospitals plastic surgeon",
+          "cosmetic surgeon Banjara Hills",
+          "reconstructive surgeon Banjara Hills"
+        ],
+        "canonicalPath": "/plastic-surgeon-banjarahills"
+      }
+    },
+    "home": {
+      "hero": {
+        "eyebrow": "Plastic & Reconstructive Surgery · Hyderabad",
+        "title": "Precision Surgery.",
+        "emphasis": "Compassionate",
+        "summary": "Dr. Divya Sai Narsingam is a board-certified Plastic & Reconstructive Surgeon with over 14 years of clinical experience. Consultant at CARE Hospitals, Gachibowli, Hyderabad.",
+        "ctaPrimary": {
+          "label": "Book Video Consultation",
+          "href": "/contactus"
+        },
+        "ctaSecondary": {
+          "label": "About the Doctor",
+          "href": "/aboutus"
+        }
+      },
+      "aboutPreview": {
+        "quote": "Surgery is as much about listening as it is about operating. Every patient brings a unique story, unique anatomy, and unique expectations.",
+        "summary": "Dr. Divya Sai Narsingam holds an MCh in Plastic Surgery and practices as a Consultant at CARE Hospitals, Gachibowli.",
+        "highlights": [
+          {
+            "title": "Reconstructive Surgery",
+            "desc": "Onco, breast, trauma, head & neck"
+          },
+          {
+            "title": "Aesthetic Surgery",
+            "desc": "Face, body, breast procedures"
+          },
+          {
+            "title": "Microvascular",
+            "desc": "Free flap and perforator flaps"
+          },
+          {
+            "title": "Burns & Scars",
+            "desc": "Grafting and scar revision"
+          },
+          {
+            "title": "Trauma",
+            "desc": "Acute injury and complex wound care"
+          },
+          {
+            "title": "Craniomaxillofacial Trauma",
+            "desc": "Facial bone and soft tissue repair"
+          },
+          {
+            "title": "Complex Lower Limb Trauma Reconstruction",
+            "desc": "Limb salvage and coverage planning"
+          },
+          {
+            "title": "Hand Surgery",
+            "desc": "Tendon, nerve, and functional restoration"
+          }
+        ]
+      },
+      "cta": {
+        "eyebrow": "AIG Hospitals, Banjara Hills",
+        "title": "Ready to discuss your concerns?",
+        "summary": "Schedule a consultation with Dr. Narsingam at AIG Hospitals, Banjara Hills.",
+        "appointmentLabel": "Book Video Consultation",
+        "appointmentHref": "/contactus",
+        "whatsappLabel": "WhatsApp Us",
+        "servicesLabel": "Explore Procedures",
+        "hospitalLocation": "Room No. 20, 1st Floor, AIG Hospitals, Banjara Hills, Hyderabad – 500034"
+      },
+      "beforeAfterGallery": {
+        "eyebrow": "Before & After",
+        "title": "Before & After Gallery",
+        "subtitle": "",
+        "images": [
+          {
+            "src": "/images/img/about.jpeg",
+            "alt": "Breast reconstruction treatment gallery",
+            "label": "Breast reconstruction"
+          },
+          {
+            "src": "/images/img/about.jpeg",
+            "alt": "Breast lift treatment gallery",
+            "label": "Breast lift"
+          },
+          {
+            "src": "/images/img/about.jpeg",
+            "alt": "Rhinoplasty treatment gallery",
+            "label": "Rhinoplasty"
+          },
+          {
+            "src": "/images/img/about.jpeg",
+            "alt": "Body contouring treatment gallery",
+            "label": "Body contouring"
+          }
+        ]
+      },
+      "awardsSummary": {
+        "title": "Recognition & Awards",
+        "subtitle": "Clinical excellence and contributions to plastic surgery"
+      }
+    },
+    "aboutPage": {
+      "heading": "Dr. Divya Sai Narsingam",
+      "qualifications": "MBBS · MS (General Surgery) · MCh (Plastic Surgery)",
+      "pageDescription": "Your Doctor"
+    },
+    "experiencePage": {
+      "heading": "Clinical Experience & Expertise",
+      "summary": "14+ years of clinical practice in reconstructive and cosmetic surgery"
+    },
+    "testimonialsPage": {
+      "heading": "Patient Testimonials",
+      "subheading": "Real feedback from patients who trust our care",
+      "video": {
+        "eyebrow": "Video Testimonial",
+        "title": "Patient Video Story",
+        "subtitle": "Watch a patient share their experience, treatment journey, and recovery.",
+        "youtubeUrl": "https://www.youtube.com/embed/ysz5S6PUM-U",
+        "videoTitle": "Featured Patient Experience",
+        "videoNote": "Shared with consent."
+      },
+      "written": {
+        "eyebrow": "Written Testimonials",
+        "title": "Patient Reviews",
+        "subtitle": "Experiences shared by patients following reconstructive and cosmetic procedures."
+      }
+    },
+    "blogPage": {
+      "heading": "Blog and patient education",
+      "subheading": "Practical medical guidance for patients exploring reconstructive and cosmetic treatment options."
+    },
+    "servicesPage": {
+      "heading": "Services",
+      "subheading": "Comprehensive plastic and reconstructive surgery solutions",
+      "categoryCosmeticTitle": "Cosmetic Surgery",
+      "categoryReconstructiveTitle": "Reconstructive Surgery"
+    },
+    "doctorTalkPage": {
+      "heading": "Doctor's Talk",
+      "subheading": "Educational video insights on procedures and patient care"
+    },
+    "contactPage": {
+      "heading": "Book a Video Consultation",
+      "subheading": "Pick a slot directly from the calendar below, or use the form to send a consultation request. Our team will confirm your appointment and send any pre-visit instructions.",
+      "calendarHeading": "Choose an Available Slot",
+      "calendarSubheading": "Instantly book your consultation — select a date & time that works for you.",
+      "formHeading": "Consultation Request",
+      "locationHeading": "Location",
+      "locationAddress": "Room No. 20, 1st Floor, AIG Hospitals, Banjara Hills, Hyderabad – 500034\nCARE Hospitals, Hitec City, Hyderabad",
+      "formLabels": {
+        "fullName": "Full Name",
+        "phone": "Phone Number",
+        "email": "Email Address",
+        "concern": "Describe Your Concern",
+        "preferredTime": "Preferred Time",
+        "howDidYouHear": "How did you hear about us?",
+        "submit": "Submit Request"
+      }
+    },
+    "banjaraHillsPage": {
+      "heroEyebrow": "AIG Hospitals, Banjara Hills, Hyderabad",
+      "heroTitle": "Plastic Surgeon in Banjara Hills, Hyderabad",
+      "heroSummary": "Looking for an experienced and trusted plastic surgeon in Banjara Hills, Hyderabad? Dr. Divya Sai Narsingam offers plastic and reconstructive surgery consultations at AIG Hospitals with a focus on personalised, evidence-based care across cosmetic and reconstructive procedures.",
+      "contactCardTitle": "Consultation details",
+      "contactCardItems": [
+        "MCh Plastic and Reconstructive Surgery",
+        "AIG Hospitals, Banjara Hills",
+        "Monday to Saturday, 4:00 PM to 5:00 PM",
+        "Call: +91 99001 35489"
+      ],
+      "qualificationsEyebrow": "About",
+      "qualificationsTitle": "Qualifications and surgical approach",
+      "qualificationsSubtitle": "Advanced training across cosmetic and reconstructive plastic surgery, with care centered on natural-looking outcomes, careful planning, and clear communication.",
+      "qualificationPoints": [
+        "MBBS and MCh in Plastic Surgery",
+        "Training across reconstructive microsurgery, cosmetic surgery, hand surgery, burn management, and onco reconstruction",
+        "Consulting at AIG Hospitals, Banjara Hills, Hyderabad",
+        "Patient-first, evidence-based treatment planning with clear communication"
+      ],
+      "cosmeticEyebrow": "Cosmetic Surgery",
+      "cosmeticTitle": "Cosmetic surgery services in Banjara Hills",
+      "cosmeticSubtitle": "A broad range of aesthetic procedures designed to enhance appearance, restore confidence, and align outcomes with each patient's anatomy and goals.",
+      "cosmeticServices": [
+        {
+          "title": "Rhinoplasty (Nose Reshaping)",
+          "description": "Rhinoplasty refines the size, shape, and symmetry of the nose to improve appearance and, where needed, breathing function. Open and closed rhinoplasty techniques are selected based on anatomy and the desired outcome.",
+          "href": "/services/facial-plastic-surgery",
+          "cta": "Learn about Facial Plastic Surgery"
+        },
+        {
+          "title": "Breast Augmentation",
+          "description": "Breast augmentation enhances breast volume and contour using carefully selected implants or fat transfer techniques, with planning tailored to the patient's frame and preferences.",
+          "href": "/services/breast-augmentation",
+          "cta": "Learn about Breast Augmentation"
+        },
+        {
+          "title": "Breast Reduction",
+          "description": "Breast reduction surgery reduces excess volume to relieve neck, shoulder, and back discomfort while also reshaping and lifting the breast for a proportionate result.",
+          "href": "/services/breast-reduction",
+          "cta": "Learn about Breast Reduction"
+        },
+        {
+          "title": "Tummy Tuck (Abdominoplasty)",
+          "description": "A tummy tuck removes excess abdominal skin and tightens weakened or separated abdominal muscles, which is especially helpful after major weight loss or pregnancy.",
+          "href": "/services/tummy-tuck",
+          "cta": "Learn about Tummy Tuck"
+        },
+        {
+          "title": "Liposuction and Body Contouring",
+          "description": "Liposuction targets stubborn fat deposits in areas such as the abdomen, flanks, thighs, arms, and chin to create a smoother, more contoured silhouette.",
+          "href": "/services/body-lipocontouring",
+          "cta": "Learn about Body Lipocontouring"
+        },
+        {
+          "title": "Gynecomastia Reduction",
+          "description": "Gynecomastia surgery removes excess glandular tissue and fat through minimally visible incisions to restore a flatter, more masculine chest contour.",
+          "href": "/services/gynecomastia-reduction",
+          "cta": "Learn about Gynecomastia Reduction"
+        },
+        {
+          "title": "Facial Rejuvenation and Non-Surgical Treatments",
+          "description": "For subtle enhancement without surgery, Botox and dermal fillers can soften lines, restore volume, and refine facial contours with minimal downtime.",
+          "href": "/services/facial-plastic-surgery",
+          "cta": "Explore Facial Procedures"
+        }
+      ],
+      "reconstructiveEyebrow": "Reconstructive Surgery",
+      "reconstructiveTitle": "Reconstructive surgery in Banjara Hills",
+      "reconstructiveSubtitle": "Reconstructive plastic surgery focuses on restoring form and function after trauma, cancer treatment, burns, or congenital conditions with technically precise and compassionate care.",
+      "reconstructiveServices": [
+        {
+          "title": "Onco Reconstruction",
+          "description": "Following cancer surgery, including breast, oral, and skin cancer resections, reconstruction helps restore appearance and, wherever possible, normal function through coordinated surgical planning.",
+          "href": "/services/onco-reconstruction",
+          "cta": "Learn about Onco Reconstruction"
+        },
+        {
+          "title": "Breast Reconstruction",
+          "description": "Breast reconstruction rebuilds the breast mound after mastectomy or lumpectomy using implant-based or autologous tissue techniques, including flap procedures where appropriate.",
+          "href": "/services/breast-reconstruction",
+          "cta": "Learn about Breast Reconstruction"
+        },
+        {
+          "title": "Trauma Reconstruction",
+          "description": "Complex wounds, fractures, and soft-tissue defects following trauma often require expert reconstructive surgery to restore both function and form over the long term.",
+          "href": "/services/trauma-reconstruction",
+          "cta": "Learn about Trauma Reconstruction"
+        },
+        {
+          "title": "Hand Surgery",
+          "description": "Hand surgery addresses tendon injuries, nerve damage, fractures, congenital hand differences, and other conditions that affect grip, dexterity, and sensation.",
+          "href": "/services/hand-surgery",
+          "cta": "Learn about Hand Surgery"
+        },
+        {
+          "title": "Microvascular Surgery",
+          "description": "Microvascular free-flap surgery transfers living tissue with its blood supply from one part of the body to another for reconstruction of complex defects.",
+          "href": "/services/microvascular-surgery",
+          "cta": "Learn about Microvascular Surgery"
+        },
+        {
+          "title": "Burn Reconstruction and Scar Revision",
+          "description": "Burn injuries can leave contractures, hypertrophic scars, and functional impairment that may require staged procedures such as skin grafting, tissue expansion, and scar revision.",
+          "href": "/services/facial-plastic-surgery",
+          "cta": "Learn about Burn and Scar Revision"
+        }
+      ],
+      "aigEyebrow": "Why AIG",
+      "aigTitle": "Why consult at AIG Hospitals, Banjara Hills?",
+      "aigSubtitle": "Hospital infrastructure, accessibility, peri-operative support, and diagnostic access are key advantages for patients consulting in Banjara Hills.",
+      "aigBenefits": [
+        {
+          "title": "NABH-accredited facility",
+          "description": "AIG Hospitals meets national standards for patient safety, hygiene, and clinical quality."
+        },
+        {
+          "title": "Advanced OT infrastructure",
+          "description": "State-of-the-art operation theatres support complex plastic, reconstructive, and microsurgical procedures."
+        },
+        {
+          "title": "Dedicated ICU and post-op care",
+          "description": "A multidisciplinary team and high-dependency care support recovery after major surgery."
+        },
+        {
+          "title": "Convenient Banjara Hills location",
+          "description": "The hospital is easily accessible from Jubilee Hills, Kondapur, Madhapur, Gachibowli, and surrounding areas."
+        },
+        {
+          "title": "Comprehensive diagnostics",
+          "description": "On-site imaging, pathology, and pre-operative assessment help streamline surgical planning."
+        },
+        {
+          "title": "Insurance and cashless support",
+          "description": "Eligible reconstructive procedures may be covered through major insurance providers, subject to plan terms."
+        }
+      ],
+      "faqEyebrow": "FAQ",
+      "faqTitle": "Frequently asked questions",
+      "faqItems": [
+        {
+          "question": "What is the consultation fee for Dr. Divya Sai Narsingam at AIG Hospitals, Banjara Hills?",
+          "answer": "Consultation fees may vary. Please call +91 99001 35489 or contact AIG Hospitals, Banjara Hills directly to confirm the current consultation charge."
+        },
+        {
+          "question": "What is the recovery time after plastic surgery?",
+          "answer": "Recovery depends on the procedure. Non-surgical treatments usually involve minimal downtime, smaller procedures may take a few days, and major surgeries such as tummy tuck, breast reconstruction, or microvascular surgery may take several weeks."
+        },
+        {
+          "question": "Does Dr. Divya Sai Narsingam perform both cosmetic and reconstructive surgery?",
+          "answer": "Yes. Care spans cosmetic procedures such as rhinoplasty, liposuction, breast surgery, and body contouring, along with reconstructive care including onco reconstruction, trauma reconstruction, hand surgery, microvascular surgery, and burn reconstruction."
+        },
+        {
+          "question": "How do I book an appointment with the plastic surgeon at AIG Hospitals, Banjara Hills?",
+          "answer": "Appointments can be requested by calling +91 99001 35489, emailing drdivyaplasticsurgeon@gmail.com, or using the online appointment form. Consultation hours are Monday to Saturday, 4:00 PM to 5:00 PM."
+        },
+        {
+          "question": "Is plastic surgery covered by health insurance?",
+          "answer": "Reconstructive procedures such as trauma repair, burn reconstruction, hand surgery, and cancer reconstruction are often more likely to qualify for coverage than purely cosmetic procedures. Final eligibility depends on your insurance policy."
+        },
+        {
+          "question": "Can I choose a non-surgical aesthetic treatment instead of surgery?",
+          "answer": "Yes. Botox and dermal fillers may be suitable for selected concerns involving fine lines, volume loss, and facial contour refinement without surgery."
+        }
+      ],
+      "ctaEyebrow": "Book consultation",
+      "ctaTitle": "Consult Dr. Divya Sai Narsingam at AIG Hospitals, Banjara Hills",
+      "ctaSummary": "Use the contact page, WhatsApp, or phone to request an appointment. Consultation hours are Monday to Saturday, 4:00 PM to 5:00 PM."
+    },
+    "about": {
+      "heading": "About Dr. Divya Sai Narsingam",
+      "summary": "Dr. Divya Sai Narsingam is a board-certified Plastic and Reconstructive Surgeon with over 14 years of clinical experience, including 9 years as a specialist. She is currently practicing as a Consultant at CARE Hospitals, Gachibowli, Hyderabad. She is known for delivering safe, natural-looking results in both aesthetic and reconstructive plastic surgery, combining surgical precision with compassionate care.",
+      "meta_title": "About Dr. Divya Sai Narsingam | Plastic Surgeon Hyderabad",
+      "meta_description": "Learn about qualifications, experience, and clinical approach of Dr. Divya Sai Narsingam in Hyderabad.",
+      "bio": "Dr. Divya Sai Narsingam is a board-certified Plastic and Reconstructive Surgeon with over 14 years of clinical experience, including 9 years as a specialist. She is currently practicing as a Consultant at CARE Hospitals, Gachibowli, Hyderabad. She is known for delivering safe, natural-looking results in both aesthetic and reconstructive plastic surgery, combining surgical precision with compassionate care.",
+      "qualifications": "MBBS, MS (General Surgery), MCh (Plastic Surgery)",
+      "currentPosition": "Consultant Plastic & Reconstructive Surgeon",
+      "experienceSummary": "14+ years clinical · 9+ years specialist",
+      "philosophy": "Surgery is as much about listening as it is about operating. Every patient brings a unique story, unique anatomy, and unique expectations. My role is to understand that story fully — and then use every tool at my disposal to help write a better chapter.",
+      "education": [
+        {
+          "degree": "MCh (Plastic Surgery)",
+          "institution": "MS Ramaiah Medical College, Bangalore",
+          "period": "2014 – 2017",
+          "note": "University Topper | Best Outgoing Student (Superspecialty)"
+        },
+        {
+          "degree": "MS (General Surgery)",
+          "institution": "Mediciti Institute of Medical Sciences, Hyderabad",
+          "period": "2010 – 2013"
+        },
+        {
+          "degree": "MBBS",
+          "institution": "Gandhi Medical College, Secunderabad",
+          "period": "2003 – 2008"
+        }
+      ],
+      "expertise": [
+        "Cosmetic surgery (face, body, and breast procedures)",
+        "Microvascular and flap reconstruction",
+        "Post-trauma and burn reconstruction",
+        "Scar revision and skin grafting"
+      ],
+      "awards": [
+        {
+          "year": "2017",
+          "title": "University Topper",
+          "detail": "MCh Plastic Surgery, MS Ramaiah Medical College"
+        },
+        {
+          "year": "2017",
+          "title": "Best Outgoing Student (Superspecialty)",
+          "detail": "MS Ramaiah Medical College, Bangalore"
+        },
+        {
+          "year": "2011",
+          "title": "Best Poster Award",
+          "detail": "Association of Surgeons of India"
+        }
+      ]
+    },
+    "experience": {
+      "experience": [
+        {
+          "role": "Consultant Plastic & Reconstructive Surgeon",
+          "institution": "CARE Hospitals, Gachibowli, Hyderabad",
+          "period": "2024 – Present",
+          "current": true
+        },
+        {
+          "role": "Consultant Plastic & Reconstructive Surgeon",
+          "institution": "CARE Hospitals, Banjara Hills, Hyderabad",
+          "period": "2018 – 2024",
+          "current": false
+        },
+        {
+          "role": "Senior Resident – Plastic Surgery",
+          "institution": "MNJ Institute of Oncology & Regional Cancer Centre",
+          "period": "Dec 2017 – June 2018",
+          "current": false
+        },
+        {
+          "role": "Assistant Professor – General Surgery",
+          "institution": "Malla Reddy Hospital",
+          "period": "May 2013 – Feb 2014",
+          "current": false
+        }
+      ],
+      "publications": [
+        {
+          "authors": "Srinivas Y, Prasad PK, Sai ND.",
+          "title": "Prevalence and impact of Helicobacter pylori in dyspepsia.",
+          "journal": "International Surgery Journal",
+          "citation": "2016;3:305–309"
+        },
+        {
+          "authors": "Mohan Kumaraswamy, Divya S Narsingam, Roshan N Shetty.",
+          "title": "Propeller flaps in reconstruction of leg and foot defects.",
+          "journal": "Chirurgia Plastyczna, Oparzenia",
+          "citation": "2018;6(4):101–106"
+        }
+      ],
+      "research": [
+        {
+          "title": "Role of Helicobacter pylori in dyspeptic patients through antral biopsies on UGI endoscopy",
+          "period": "2010 – 2012"
+        },
+        {
+          "title": "Cadaveric dissection studies to understand vascular anatomy patterns of the Sartorius muscle",
+          "period": "2014 – 2015"
+        }
+      ],
+      "conferences": [
+        {
+          "event": "State Conference, Association of Surgeons of India",
+          "year": "2011",
+          "presentations": [
+            "Hysterectomy in Male"
+          ]
+        },
+        {
+          "event": "APSICON Mumbai",
+          "year": "2015",
+          "presentations": [
+            "Perforators of Sartorius muscle flap: anatomical study and clinical implications",
+            "Clinical predictor of skin graft uptake – Moriarty's sign"
+          ]
+        }
+      ],
+      "awards": [
+        {
+          "year": "2017",
+          "title": "University Topper",
+          "detail": "MCh Plastic Surgery, MS Ramaiah Medical College"
+        },
+        {
+          "year": "2017",
+          "title": "Best Outgoing Student (Superspecialty)",
+          "detail": "MS Ramaiah Medical College, Bangalore"
+        },
+        {
+          "year": "2011",
+          "title": "Best Poster Award",
+          "detail": "Association of Surgeons of India"
+        }
+      ]
+    },
+    "doctorTalk": [
+      {
+        "id": "talk-article-1",
+        "type": "article",
+        "title": "Why consultation matters",
+        "description": "How a careful consultation shapes safer, more natural results.",
+        "content": "Consultation is where goals, anatomy, and safety meet. A structured discussion clarifies what is achievable and how to plan recovery.\n\nDr. Narsingam reviews medical history, explains surgical options, and aligns expectations before any procedure is recommended.",
+        "category": "Reconstructive",
+        "date": "February 2026",
+        "readTime": "4 min read"
+      },
+      {
+        "id": "talk-video-1",
+        "type": "video",
+        "title": "Introduction to Plastic and Reconstructive Surgery",
+        "description": "An overview of common procedures, safety, and recovery planning.",
+        "youtubeUrl": "https://www.instagram.com/reel/DYmdzoDhEi-/"
+      }
+    ],
+    "testimonials": [
+      {
+        "id": "review-1",
+        "patient_name": "Patient",
+        "procedure": "Breast reconstruction",
+        "quote": "The treatment journey was clearly explained and follow-up care was highly supportive.",
+        "rating": 5
+      },
+      {
+        "id": "review-2",
+        "patient_name": "Patient",
+        "procedure": "Gynecomastia reduction",
+        "quote": "Consultation was thoughtful and the surgical result aligned with expectations.",
+        "rating": 5
+      }
+    ],
+    "blog": [
+      {
+        "id": "blog-why-dimple-creation-is-popular",
+        "slug": "why-dimple-creation-is-popular",
+        "title": "Why Dimple Creation Is Popular",
+        "excerpt": "Why Dimple Creation Is Popular with practical guidance for patients planning treatment in Hyderabad.",
+        "content": "<div style=\"text-align: center;\">ZWhy Dimple Creation Is Popular explains what patients should know before consultation, the common surgical considerations, and how recovery is typically planned with Dr. Divya Sai Narsingam.&nbsp;</div>",
+        "image": "/images/img/about.jpeg",
+        "published_at": "2026-03-18",
+        "category": "cosmetic",
+        "meta_title": "Why Dimple Creation Is Popular | Dr. Divya Sai Narsingam",
+        "meta_description": "Patient guidance on why dimple creation is popular from Dr. Divya Sai Narsingam in Hyderabad."
+      },
+      {
+        "id": "blog-modern-face-sculpting-options",
+        "slug": "modern-face-sculpting-options",
+        "title": "Modern Face Sculpting Options",
+        "excerpt": "Modern Face Sculpting Options with practical guidance for patients planning treatment in Hyderabad.",
+        "content": "Modern Face Sculpting Options explains what patients should know before consultation, the common surgical considerations, and how recovery is typically planned with Dr. Divya Sai Narsingam.",
+        "image": "/images/img/about.jpeg",
+        "published_at": "2026-03-18",
+        "category": "cosmetic",
+        "meta_title": "Modern Face Sculpting Options | Dr. Divya Sai Narsingam",
+        "meta_description": "Patient guidance on modern face sculpting options from Dr. Divya Sai Narsingam in Hyderabad."
+      },
+      {
+        "id": "blog-buccal-fat-removal-explained",
+        "slug": "buccal-fat-removal-explained",
+        "title": "Buccal Fat Removal Explained",
+        "excerpt": "Buccal Fat Removal Explained with practical guidance for patients planning treatment in Hyderabad.",
+        "content": "Buccal Fat Removal Explained explains what patients should know before consultation, the common surgical considerations, and how recovery is typically planned with Dr. Divya Sai Narsingam.",
+        "image": "/images/img/about.jpeg",
+        "published_at": "2026-03-18",
+        "category": "cosmetic",
+        "meta_title": "Buccal Fat Removal Explained | Dr. Divya Sai Narsingam",
+        "meta_description": "Patient guidance on buccal fat removal explained from Dr. Divya Sai Narsingam in Hyderabad."
+      },
+      {
+        "id": "blog-natural-vs-artificial-dimples-differences",
+        "slug": "natural-vs-artificial-dimples-differences",
+        "title": "Natural Vs Artificial Dimples Differences",
+        "excerpt": "Natural Vs Artificial Dimples Differences with practical guidance for patients planning treatment in Hyderabad.",
+        "content": "Natural Vs Artificial Dimples Differences explains what patients should know before consultation, the common surgical considerations, and how recovery is typically planned with Dr. Divya Sai Narsingam.",
+        "image": "/images/img/about.jpeg",
+        "published_at": "2026-03-18",
+        "category": "cosmetic",
+        "meta_title": "Natural Vs Artificial Dimples Differences | Dr. Divya Sai Narsingam",
+        "meta_description": "Patient guidance on natural vs artificial dimples differences from Dr. Divya Sai Narsingam in Hyderabad."
+      },
+      {
+        "id": "blog-face-slimming-without-filters-buccal-fat-removal-gachibowli",
+        "slug": "face-slimming-without-filters-buccal-fat-removal-gachibowli",
+        "title": "Face Slimming Without Filters Buccal Fat Removal Gachibowli",
+        "excerpt": "Face Slimming Without Filters Buccal Fat Removal Gachibowli with practical guidance for patients planning treatment in Hyderabad.",
+        "content": "Face Slimming Without Filters Buccal Fat Removal Gachibowli explains what patients should know before consultation, the common surgical considerations, and how recovery is typically planned with Dr. Divya Sai Narsingam.",
+        "image": "/images/img/about.jpeg",
+        "published_at": "2026-03-18",
+        "category": "cosmetic",
+        "meta_title": "Face Slimming Without Filters Buccal Fat Removal Gachibowli | Dr. Divya Sai Narsingam",
+        "meta_description": "Patient guidance on face slimming without filters buccal fat removal gachibowli from Dr. Divya Sai Narsingam in Hyderabad."
+      },
+      {
+        "id": "blog-buccal-fat-removal-hyderabad-gachibowli",
+        "slug": "buccal-fat-removal-hyderabad-gachibowli",
+        "title": "Buccal Fat Removal Hyderabad Gachibowli",
+        "excerpt": "Buccal Fat Removal Hyderabad Gachibowli with practical guidance for patients planning treatment in Hyderabad.",
+        "content": "Buccal Fat Removal Hyderabad Gachibowli explains what patients should know before consultation, the common surgical considerations, and how recovery is typically planned with Dr. Divya Sai Narsingam.",
+        "image": "/images/img/about.jpeg",
+        "published_at": "2026-03-18",
+        "category": "cosmetic",
+        "meta_title": "Buccal Fat Removal Hyderabad Gachibowli | Dr. Divya Sai Narsingam",
+        "meta_description": "Patient guidance on buccal fat removal hyderabad gachibowli from Dr. Divya Sai Narsingam in Hyderabad."
+      },
+      {
+        "id": "blog-lip-reduction-surgery-hyderabad-gachibowli-guide",
+        "slug": "lip-reduction-surgery-hyderabad-gachibowli-guide",
+        "title": "Lip Reduction Surgery Hyderabad Gachibowli Guide",
+        "excerpt": "Lip Reduction Surgery Hyderabad Gachibowli Guide with practical guidance for patients planning treatment in Hyderabad.",
+        "content": "Lip Reduction Surgery Hyderabad Gachibowli Guide explains what patients should know before consultation, the common surgical considerations, and how recovery is typically planned with Dr. Divya Sai Narsingam.",
+        "image": "/images/img/about.jpeg",
+        "published_at": "2026-03-18",
+        "category": "cosmetic",
+        "meta_title": "Lip Reduction Surgery Hyderabad Gachibowli Guide | Dr. Divya Sai Narsingam",
+        "meta_description": "Patient guidance on lip reduction surgery hyderabad gachibowli guide from Dr. Divya Sai Narsingam in Hyderabad."
+      },
+      {
+        "id": "blog-top-benefits-of-getting-a-tummy-tuck-in-hyderabad",
+        "slug": "top-benefits-of-getting-a-tummy-tuck-in-hyderabad",
+        "title": "Top Benefits Of Getting A Tummy Tuck In Hyderabad",
+        "excerpt": "Top Benefits Of Getting A Tummy Tuck In Hyderabad with practical guidance for patients planning treatment in Hyderabad.",
+        "content": "Top Benefits Of Getting A Tummy Tuck In Hyderabad explains what patients should know before consultation, the common surgical considerations, and how recovery is typically planned with Dr. Divya Sai Narsingam.",
+        "image": "/images/img/about.jpeg",
+        "published_at": "2026-03-18",
+        "category": "cosmetic",
+        "meta_title": "Top Benefits Of Getting A Tummy Tuck In Hyderabad | Dr. Divya Sai Narsingam",
+        "meta_description": "Patient guidance on top benefits of getting a tummy tuck in hyderabad from Dr. Divya Sai Narsingam in Hyderabad."
+      },
+      {
+        "id": "blog-top-advances-in-onco-reconstructive-surgery",
+        "slug": "top-advances-in-onco-reconstructive-surgery",
+        "title": "Top Advances In Onco Reconstructive Surgery",
+        "excerpt": "Top Advances In Onco Reconstructive Surgery with practical guidance for patients planning treatment in Hyderabad.",
+        "content": "Top Advances In Onco Reconstructive Surgery explains what patients should know before consultation, the common surgical considerations, and how recovery is typically planned with Dr. Divya Sai Narsingam.",
+        "image": "/images/img/about.jpeg",
+        "published_at": "2026-03-18",
+        "category": "reconstructive",
+        "meta_title": "Top Advances In Onco Reconstructive Surgery | Dr. Divya Sai Narsingam",
+        "meta_description": "Patient guidance on top advances in onco reconstructive surgery from Dr. Divya Sai Narsingam in Hyderabad."
+      },
+      {
+        "id": "blog-how-to-choose-right-gynecomastia-surgeon-in-hyderabad",
+        "slug": "how-to-choose-right-gynecomastia-surgeon-in-hyderabad",
+        "title": "How To Choose Right Gynecomastia Surgeon In Hyderabad",
+        "excerpt": "How To Choose Right Gynecomastia Surgeon In Hyderabad with practical guidance for patients planning treatment in Hyderabad.",
+        "content": "How To Choose Right Gynecomastia Surgeon In Hyderabad explains what patients should know before consultation, the common surgical considerations, and how recovery is typically planned with Dr. Divya Sai Narsingam.",
+        "image": "/images/img/about.jpeg",
+        "published_at": "2026-03-18",
+        "category": "cosmetic",
+        "meta_title": "How To Choose Right Gynecomastia Surgeon In Hyderabad | Dr. Divya Sai Narsingam",
+        "meta_description": "Patient guidance on how to choose right gynecomastia surgeon in hyderabad from Dr. Divya Sai Narsingam in Hyderabad."
+      },
+      {
+        "id": "blog-plastic-surgery-treatments-hyderabad",
+        "slug": "plastic-surgery-treatments-hyderabad",
+        "title": "Plastic Surgery Treatments Hyderabad",
+        "excerpt": "Plastic Surgery Treatments Hyderabad with practical guidance for patients planning treatment in Hyderabad.",
+        "content": "Plastic Surgery Treatments Hyderabad explains what patients should know before consultation, the common surgical considerations, and how recovery is typically planned with Dr. Divya Sai Narsingam.",
+        "image": "/images/img/about.jpeg",
+        "published_at": "2026-03-18",
+        "category": "cosmetic",
+        "meta_title": "Plastic Surgery Treatments Hyderabad | Dr. Divya Sai Narsingam",
+        "meta_description": "Patient guidance on plastic surgery treatments hyderabad from Dr. Divya Sai Narsingam in Hyderabad."
+      },
+      {
+        "id": "blog-plastic-surgery-cost-guide-hyderabad",
+        "slug": "plastic-surgery-cost-guide-hyderabad",
+        "title": "Plastic Surgery Cost Guide Hyderabad",
+        "excerpt": "Plastic Surgery Cost Guide Hyderabad with practical guidance for patients planning treatment in Hyderabad.",
+        "content": "Plastic Surgery Cost Guide Hyderabad explains what patients should know before consultation, the common surgical considerations, and how recovery is typically planned with Dr. Divya Sai Narsingam.",
+        "image": "/images/img/about.jpeg",
+        "published_at": "2026-03-18",
+        "category": "cosmetic",
+        "meta_title": "Plastic Surgery Cost Guide Hyderabad | Dr. Divya Sai Narsingam",
+        "meta_description": "Patient guidance on plastic surgery cost guide hyderabad from Dr. Divya Sai Narsingam in Hyderabad."
+      },
+      {
+        "id": "blog-Comprehensive-Guide-to-Breast-Reconstruction-with-DrDivya",
+        "slug": "Comprehensive-Guide-to-Breast-Reconstruction-with-DrDivya",
+        "title": "Comprehensive Guide To Breast Reconstruction With Dr Divya",
+        "excerpt": "Comprehensive Guide To Breast Reconstruction With Dr Divya with practical guidance for patients planning treatment in Hyderabad.",
+        "content": "Comprehensive Guide To Breast Reconstruction With Dr Divya explains what patients should know before consultation, the common surgical considerations, and how recovery is typically planned with Dr. Divya Sai Narsingam.",
+        "image": "/images/img/about.jpeg",
+        "published_at": "2026-03-18",
+        "category": "reconstructive",
+        "meta_title": "Comprehensive Guide To Breast Reconstruction With Dr Divya | Dr. Divya Sai Narsingam",
+        "meta_description": "Patient guidance on comprehensive guide to breast reconstruction with dr divya from Dr. Divya Sai Narsingam in Hyderabad."
+      },
+      {
+        "id": "blog-living-light-how-breast-reduction-surgery-with-dr-divya-can-transform-your-life",
+        "slug": "living-light-how-breast-reduction-surgery-with-dr-divya-can-transform-your-life",
+        "title": "Living Light How Breast Reduction Surgery With Dr Divya Can Transform Your Life",
+        "excerpt": "Living Light How Breast Reduction Surgery With Dr Divya Can Transform Your Life with practical guidance for patients planning treatment in Hyderabad.",
+        "content": "Living Light How Breast Reduction Surgery With Dr Divya Can Transform Your Life explains what patients should know before consultation, the common surgical considerations, and how recovery is typically planned with Dr. Divya Sai Narsingam.",
+        "image": "/images/img/about.jpeg",
+        "published_at": "2026-03-18",
+        "category": "cosmetic",
+        "meta_title": "Living Light How Breast Reduction Surgery With Dr Divya Can Transform Your Life | Dr. Divya Sai Narsingam",
+        "meta_description": "Patient guidance on living light how breast reduction surgery with dr divya can transform your life from Dr. Divya Sai Narsingam in Hyderabad."
+      },
+      {
+        "id": "blog-beyond-beauty-how-tummy-tucks-relieve-discomfort-and-improve-quality-of-life-insights-from-dr-divya-expert-plastic-surgeon-gachibowli",
+        "slug": "beyond-beauty-how-tummy-tucks-relieve-discomfort-and-improve-quality-of-life-insights-from-dr-divya-expert-plastic-surgeon-gachibowli",
+        "title": "Beyond Beauty How Tummy Tucks Relieve Discomfort And Improve Quality Of Life Insights From Dr Divya Expert Plastic Surgeon Gachibowli",
+        "excerpt": "Beyond Beauty How Tummy Tucks Relieve Discomfort And Improve Quality Of Life Insights From Dr Divya Expert Plastic Surgeon Gachibowli with practical guidance for patients planning treatment in Hyderabad.",
+        "content": "Beyond Beauty How Tummy Tucks Relieve Discomfort And Improve Quality Of Life Insights From Dr Divya Expert Plastic Surgeon Gachibowli explains what patients should know before consultation, the common surgical considerations, and how recovery is typically planned with Dr. Divya Sai Narsingam.",
+        "image": "/images/img/about.jpeg",
+        "published_at": "2026-03-18",
+        "category": "cosmetic",
+        "meta_title": "Beyond Beauty How Tummy Tucks Relieve Discomfort And Improve Quality Of Life Insights From Dr Divya Expert Plastic Surgeon Gachibowli | Dr. Divya Sai Narsingam",
+        "meta_description": "Patient guidance on beyond beauty how tummy tucks relieve discomfort and improve quality of life insights from dr divya expert plastic surgeon gachibowli from Dr. Divya Sai Narsingam in Hyderabad."
+      },
+      {
+        "id": "blog-breast-reduction-minimal-scarring-hyderabad",
+        "slug": "breast-reduction-minimal-scarring-hyderabad",
+        "title": "Breast Reduction Minimal Scarring Hyderabad",
+        "excerpt": "Breast Reduction Minimal Scarring Hyderabad with practical guidance for patients planning treatment in Hyderabad.",
+        "content": "Breast Reduction Minimal Scarring Hyderabad explains what patients should know before consultation, the common surgical considerations, and how recovery is typically planned with Dr. Divya Sai Narsingam.",
+        "image": "/images/img/about.jpeg",
+        "published_at": "2026-03-18",
+        "category": "cosmetic",
+        "meta_title": "Breast Reduction Minimal Scarring Hyderabad | Dr. Divya Sai Narsingam",
+        "meta_description": "Patient guidance on breast reduction minimal scarring hyderabad from Dr. Divya Sai Narsingam in Hyderabad."
+      },
+      {
+        "id": "blog-how-breast-augmentation-with-fat-grafting-can-help-you-sculpt-your-dream-shape-safely-and-permanently",
+        "slug": "how-breast-augmentation-with-fat-grafting-can-help-you-sculpt-your-dream-shape-safely-and-permanently",
+        "title": "How Breast Augmentation With Fat Grafting Can Help You Sculpt Your Dream Shape Safely And Permanently",
+        "excerpt": "How Breast Augmentation With Fat Grafting Can Help You Sculpt Your Dream Shape Safely And Permanently with practical guidance for patients planning treatment in Hyderabad.",
+        "content": "How Breast Augmentation With Fat Grafting Can Help You Sculpt Your Dream Shape Safely And Permanently explains what patients should know before consultation, the common surgical considerations, and how recovery is typically planned with Dr. Divya Sai Narsingam.",
+        "image": "/images/img/about.jpeg",
+        "published_at": "2026-03-18",
+        "category": "cosmetic",
+        "meta_title": "How Breast Augmentation With Fat Grafting Can Help You Sculpt Your Dream Shape Safely And Permanently | Dr. Divya Sai Narsingam",
+        "meta_description": "Patient guidance on how breast augmentation with fat grafting can help you sculpt your dream shape safely and permanently from Dr. Divya Sai Narsingam in Hyderabad."
+      },
+      {
+        "id": "blog-say-goodbye-to-bulky-thighs-expert-liposuction-by-dr-divya-sai-leading-female-plastic-surgeon-in-hyderabad",
+        "slug": "say-goodbye-to-bulky-thighs-expert-liposuction-by-dr-divya-sai-leading-female-plastic-surgeon-in-hyderabad",
+        "title": "Say Goodbye To Bulky Thighs Expert Liposuction By Dr Divya Sai Leading Female Plastic Surgeon In Hyderabad",
+        "excerpt": "Say Goodbye To Bulky Thighs Expert Liposuction By Dr Divya Sai Leading Female Plastic Surgeon In Hyderabad with practical guidance for patients planning treatment in Hyderabad.",
+        "content": "Say Goodbye To Bulky Thighs Expert Liposuction By Dr Divya Sai Leading Female Plastic Surgeon In Hyderabad explains what patients should know before consultation, the common surgical considerations, and how recovery is typically planned with Dr. Divya Sai Narsingam.",
+        "image": "/images/img/about.jpeg",
+        "published_at": "2026-03-18",
+        "category": "cosmetic",
+        "meta_title": "Say Goodbye To Bulky Thighs Expert Liposuction By Dr Divya Sai Leading Female Plastic Surgeon In Hyderabad | Dr. Divya Sai Narsingam",
+        "meta_description": "Patient guidance on say goodbye to bulky thighs expert liposuction by dr divya sai leading female plastic surgeon in hyderabad from Dr. Divya Sai Narsingam in Hyderabad."
+      },
+      {
+        "id": "blog-what-sets-board-certified-plastic-surgeons-apart",
+        "slug": "what-sets-board-certified-plastic-surgeons-apart",
+        "title": "What Sets Board Certified Plastic Surgeons Apart",
+        "excerpt": "What Sets Board Certified Plastic Surgeons Apart with practical guidance for patients planning treatment in Hyderabad.",
+        "content": "What Sets Board Certified Plastic Surgeons Apart explains what patients should know before consultation, the common surgical considerations, and how recovery is typically planned with Dr. Divya Sai Narsingam.",
+        "image": "/images/img/about.jpeg",
+        "published_at": "2026-03-18",
+        "category": "cosmetic",
+        "meta_title": "What Sets Board Certified Plastic Surgeons Apart | Dr. Divya Sai Narsingam",
+        "meta_description": "Patient guidance on what sets board certified plastic surgeons apart from Dr. Divya Sai Narsingam in Hyderabad."
+      },
+      {
+        "id": "blog-why-does-choosing-a-board-certified-plastic-surgeon-really-matter",
+        "slug": "why-does-choosing-a-board-certified-plastic-surgeon-really-matter",
+        "title": "Why Does Choosing A Board Certified Plastic Surgeon Really Matter",
+        "excerpt": "Why Does Choosing A Board Certified Plastic Surgeon Really Matter with practical guidance for patients planning treatment in Hyderabad.",
+        "content": "Why Does Choosing A Board Certified Plastic Surgeon Really Matter explains what patients should know before consultation, the common surgical considerations, and how recovery is typically planned with Dr. Divya Sai Narsingam.",
+        "image": "/images/img/about.jpeg",
+        "published_at": "2026-03-18",
+        "category": "cosmetic",
+        "meta_title": "Why Does Choosing A Board Certified Plastic Surgeon Really Matter | Dr. Divya Sai Narsingam",
+        "meta_description": "Patient guidance on why does choosing a board certified plastic surgeon really matter from Dr. Divya Sai Narsingam in Hyderabad."
+      },
+      {
+        "id": "blog-why-should-you-choose-a-board-certified-plastic-surgeon",
+        "slug": "why-should-you-choose-a-board-certified-plastic-surgeon",
+        "title": "Why Should You Choose A Board Certified Plastic Surgeon",
+        "excerpt": "Why Should You Choose A Board Certified Plastic Surgeon with practical guidance for patients planning treatment in Hyderabad.",
+        "content": "Why Should You Choose A Board Certified Plastic Surgeon explains what patients should know before consultation, the common surgical considerations, and how recovery is typically planned with Dr. Divya Sai Narsingam.",
+        "image": "/images/img/about.jpeg",
+        "published_at": "2026-03-18",
+        "category": "cosmetic",
+        "meta_title": "Why Should You Choose A Board Certified Plastic Surgeon | Dr. Divya Sai Narsingam",
+        "meta_description": "Patient guidance on why should you choose a board certified plastic surgeon from Dr. Divya Sai Narsingam in Hyderabad."
+      }
+    ],
+    "services": [
+      {
+        "id": "service-onco-reconstruction",
+        "slug": "onco-reconstruction",
+        "name": "Onco Reconstruction",
+        "summary": "Surgical restoration following cancer resection, preserving function and form.",
+        "content": "Oncoplastic and reconstructive surgery following tumor resection in breast, head and neck, skin, and soft tissue cancers. Dr. Narsingam works closely with oncology teams to plan resection margins and simultaneous or staged reconstruction, restoring both function and appearance.",
+        "image": "/images/img/about.jpeg",
+        "category": "reconstructive",
+        "key_points": [
+          "Immediate and delayed breast reconstruction post-mastectomy",
+          "Skin and soft tissue coverage after wide local excision",
+          "Head and neck reconstruction following tumour removal",
+          "Coordination with oncosurgery teams for optimal outcomes"
+        ],
+        "faq": [
+          {
+            "question": "Who is a good candidate for Onco Reconstruction?",
+            "answer": "Surgical restoration following cancer resection, preserving function and form. A detailed consultation is required to confirm suitability and treatment plan."
+          },
+          {
+            "question": "What does Onco Reconstruction typically include?",
+            "answer": "Immediate and delayed breast reconstruction post-mastectomy Skin and soft tissue coverage after wide local excision Head and neck reconstruction following tumour removal Coordination with oncosurgery teams for optimal outcomes"
+          },
+          {
+            "question": "Where is Onco Reconstruction performed?",
+            "answer": "Procedures are planned in coordination with CARE Hospitals, Gachibowli, Hyderabad."
+          }
+        ],
+        "meta_title": "Onco Reconstruction in Hyderabad | Dr. Divya Sai Narsingam",
+        "meta_description": "Surgical restoration following cancer resection, preserving function and form. Specialist reconstructive surgery by Dr. Divya Sai Narsingam at CARE Hospitals, Gachibowli, Hyderabad."
+      },
+      {
+        "id": "service-breast-reconstruction",
+        "slug": "breast-reconstruction",
+        "name": "Breast Reconstruction",
+        "summary": "Restoring breast shape and symmetry after mastectomy or lumpectomy.",
+        "content": "Breast reconstruction is a deeply personal procedure that restores the breast mound following mastectomy or significant lumpectomy. Options include implant-based reconstruction, autologous tissue reconstruction using flaps (TRAM, DIEP, LD), and oncoplastic techniques that combine cancer resection with volume replacement.",
+        "image": "/images/img/about.jpeg",
+        "category": "reconstructive",
+        "key_points": [
+          "Implant-based (tissue expander to implant) reconstruction",
+          "Autologous flap reconstruction (LD, TRAM)",
+          "Nipple and areola reconstruction",
+          "Symmetry correction of the opposite breast"
+        ],
+        "faq": [
+          {
+            "question": "Who is a good candidate for Breast Reconstruction?",
+            "answer": "Restoring breast shape and symmetry after mastectomy or lumpectomy. A detailed consultation is required to confirm suitability and treatment plan."
+          },
+          {
+            "question": "What does Breast Reconstruction typically include?",
+            "answer": "Implant-based (tissue expander to implant) reconstruction Autologous flap reconstruction (LD, TRAM) Nipple and areola reconstruction Symmetry correction of the opposite breast"
+          },
+          {
+            "question": "Where is Breast Reconstruction performed?",
+            "answer": "Procedures are planned in coordination with CARE Hospitals, Gachibowli, Hyderabad."
+          }
+        ],
+        "meta_title": "Breast Reconstruction in Hyderabad | Dr. Divya Sai Narsingam",
+        "meta_description": "Restoring breast shape and symmetry after mastectomy or lumpectomy. Specialist reconstructive surgery by Dr. Divya Sai Narsingam at CARE Hospitals, Gachibowli, Hyderabad."
+      },
+      {
+        "id": "service-trauma-reconstruction",
+        "slug": "trauma-reconstruction",
+        "name": "Trauma Reconstruction",
+        "summary": "Restoring tissue and function following accidents, burns, or injuries.",
+        "content": "Traumatic wounds — whether from road accidents, industrial injuries, burns, or degloving — often require complex reconstructive approaches. Dr. Narsingam specialises in acute wound management, skin grafting, local and regional flap coverage, and staged reconstruction to restore function and minimise deformity.",
+        "image": "/images/img/about.jpeg",
+        "category": "reconstructive",
+        "key_points": [
+          "Acute traumatic wound management",
+          "Split-thickness and full-thickness skin grafting",
+          "Local and pedicled flap coverage",
+          "Burn contracture release and resurfacing"
+        ],
+        "faq": [
+          {
+            "question": "Who is a good candidate for Trauma Reconstruction?",
+            "answer": "Restoring tissue and function following accidents, burns, or injuries. A detailed consultation is required to confirm suitability and treatment plan."
+          },
+          {
+            "question": "What does Trauma Reconstruction typically include?",
+            "answer": "Acute traumatic wound management Split-thickness and full-thickness skin grafting Local and pedicled flap coverage Burn contracture release and resurfacing"
+          },
+          {
+            "question": "Where is Trauma Reconstruction performed?",
+            "answer": "Procedures are planned in coordination with CARE Hospitals, Gachibowli, Hyderabad."
+          }
+        ],
+        "meta_title": "Trauma Reconstruction in Hyderabad | Dr. Divya Sai Narsingam",
+        "meta_description": "Restoring tissue and function following accidents, burns, or injuries. Specialist reconstructive surgery by Dr. Divya Sai Narsingam at CARE Hospitals, Gachibowli, Hyderabad."
+      },
+      {
+        "id": "service-hand-surgery",
+        "slug": "hand-surgery",
+        "name": "Hand Surgery",
+        "summary": "Reconstructive and functional surgery of the hand and upper extremity.",
+        "content": "The hand is one of the most complex and functionally critical parts of the body. Hand surgery addresses traumatic injuries (tendon, nerve, and vessel lacerations), congenital anomalies, infections, and functional deficits following crush injuries or replantation.",
+        "image": "/images/img/about.jpeg",
+        "category": "reconstructive",
+        "key_points": [
+          "Tendon repair and reconstruction",
+          "Nerve repair and grafting",
+          "Fingertip and composite tissue injuries",
+          "Post-traumatic hand rehabilitation planning"
+        ],
+        "faq": [
+          {
+            "question": "Who is a good candidate for Hand Surgery?",
+            "answer": "Reconstructive and functional surgery of the hand and upper extremity. A detailed consultation is required to confirm suitability and treatment plan."
+          },
+          {
+            "question": "What does Hand Surgery typically include?",
+            "answer": "Tendon repair and reconstruction Nerve repair and grafting Fingertip and composite tissue injuries Post-traumatic hand rehabilitation planning"
+          },
+          {
+            "question": "Where is Hand Surgery performed?",
+            "answer": "Procedures are planned in coordination with CARE Hospitals, Gachibowli, Hyderabad."
+          }
+        ],
+        "meta_title": "Hand Surgery in Hyderabad | Dr. Divya Sai Narsingam",
+        "meta_description": "Reconstructive and functional surgery of the hand and upper extremity. Specialist reconstructive surgery by Dr. Divya Sai Narsingam at CARE Hospitals, Gachibowli, Hyderabad."
+      },
+      {
+        "id": "service-microvascular-surgery",
+        "slug": "microvascular-surgery",
+        "name": "Microvascular Surgery",
+        "summary": "Free flap tissue transfer using operating microscope for complex reconstruction.",
+        "content": "Microvascular surgery involves the transfer of tissue — skin, muscle, or bone — from one part of the body to another, using tiny blood vessel anastomoses performed under a surgical microscope. This technique allows reconstruction of complex defects where simpler methods are inadequate.",
+        "image": "/images/img/about.jpeg",
+        "category": "reconstructive",
+        "key_points": [
+          "Free flap transfer for head, neck, and limb defects",
+          "Perforator flap design and harvest",
+          "Anastomosis under surgical microscopy",
+          "Postoperative flap monitoring and salvage"
+        ],
+        "faq": [
+          {
+            "question": "Who is a good candidate for Microvascular Surgery?",
+            "answer": "Free flap tissue transfer using operating microscope for complex reconstruction. A detailed consultation is required to confirm suitability and treatment plan."
+          },
+          {
+            "question": "What does Microvascular Surgery typically include?",
+            "answer": "Free flap transfer for head, neck, and limb defects Perforator flap design and harvest Anastomosis under surgical microscopy Postoperative flap monitoring and salvage"
+          },
+          {
+            "question": "Where is Microvascular Surgery performed?",
+            "answer": "Procedures are planned in coordination with CARE Hospitals, Gachibowli, Hyderabad."
+          }
+        ],
+        "meta_title": "Microvascular Surgery in Hyderabad | Dr. Divya Sai Narsingam",
+        "meta_description": "Free flap tissue transfer using operating microscope for complex reconstruction. Specialist reconstructive surgery by Dr. Divya Sai Narsingam at CARE Hospitals, Gachibowli, Hyderabad."
+      },
+      {
+        "id": "service-maxillofacial-trauma",
+        "slug": "maxillofacial-trauma",
+        "name": "Maxillofacial Trauma",
+        "summary": "Surgical management of facial bone fractures and soft tissue injuries.",
+        "content": "Maxillofacial trauma encompasses injuries to the bones and soft tissues of the face — including orbital fractures, nasal fractures, mandibular fractures, and complex panfacial injuries. Timely and accurate repair restores normal facial contour, occlusion, and eye protection.",
+        "image": "/images/img/about.jpeg",
+        "category": "reconstructive",
+        "key_points": [
+          "Orbital floor and rim fracture repair",
+          "Nasal bone and septal fracture reduction",
+          "Mandibular fracture open reduction and fixation",
+          "Soft tissue laceration repair and scar management"
+        ],
+        "faq": [
+          {
+            "question": "Who is a good candidate for Maxillofacial Trauma?",
+            "answer": "Surgical management of facial bone fractures and soft tissue injuries. A detailed consultation is required to confirm suitability and treatment plan."
+          },
+          {
+            "question": "What does Maxillofacial Trauma typically include?",
+            "answer": "Orbital floor and rim fracture repair Nasal bone and septal fracture reduction Mandibular fracture open reduction and fixation Soft tissue laceration repair and scar management"
+          },
+          {
+            "question": "Where is Maxillofacial Trauma performed?",
+            "answer": "Procedures are planned in coordination with CARE Hospitals, Gachibowli, Hyderabad."
+          }
+        ],
+        "meta_title": "Maxillofacial Trauma in Hyderabad | Dr. Divya Sai Narsingam",
+        "meta_description": "Surgical management of facial bone fractures and soft tissue injuries. Specialist reconstructive surgery by Dr. Divya Sai Narsingam at CARE Hospitals, Gachibowli, Hyderabad."
+      },
+      {
+        "id": "service-facial-plastic-surgery",
+        "slug": "facial-plastic-surgery",
+        "name": "Facial Plastic Surgery",
+        "summary": "Reconstructive and aesthetic procedures of the face and facial structures.",
+        "content": "Facial plastic surgery encompasses both reconstructive procedures — scar revision, correction of post-traumatic deformity, eyelid surgery — and aesthetic enhancements performed with natural results as the priority. Every facial procedure is tailored to the individual's anatomy and goals.",
+        "image": "/images/img/about.jpeg",
+        "category": "reconstructive",
+        "key_points": [
+          "Scar revision and resurfacing",
+          "Blepharoplasty (eyelid correction)",
+          "Rhinoplasty (nose reshaping)",
+          "Ear correction (otoplasty)"
+        ],
+        "faq": [
+          {
+            "question": "Who is a good candidate for Facial Plastic Surgery?",
+            "answer": "Reconstructive and aesthetic procedures of the face and facial structures. A detailed consultation is required to confirm suitability and treatment plan."
+          },
+          {
+            "question": "What does Facial Plastic Surgery typically include?",
+            "answer": "Scar revision and resurfacing Blepharoplasty (eyelid correction) Rhinoplasty (nose reshaping) Ear correction (otoplasty)"
+          },
+          {
+            "question": "Where is Facial Plastic Surgery performed?",
+            "answer": "Procedures are planned in coordination with CARE Hospitals, Gachibowli, Hyderabad."
+          }
+        ],
+        "meta_title": "Facial Plastic Surgery in Hyderabad | Dr. Divya Sai Narsingam",
+        "meta_description": "Reconstructive and aesthetic procedures of the face and facial structures. Specialist reconstructive surgery by Dr. Divya Sai Narsingam at CARE Hospitals, Gachibowli, Hyderabad."
+      },
+      {
+        "id": "service-breast-augmentation",
+        "slug": "breast-augmentation",
+        "name": "Breast Augmentation",
+        "summary": "Enhancing breast volume and shape using implants or fat transfer.",
+        "content": "Breast augmentation increases breast size and improves symmetry using silicone gel or cohesive implants placed in a precise surgical pocket. Dr. Narsingam takes a conservative, patient-centred approach — the goal is a natural, proportionate outcome that suits the individual's frame.",
+        "image": "/images/img/about.jpeg",
+        "category": "cosmetic",
+        "key_points": [
+          "Silicone gel implant selection and sizing",
+          "Submuscular and dual-plane placement",
+          "Scar minimisation with inframammary or periareolar incisions",
+          "Fat transfer augmentation for modest size change"
+        ],
+        "faq": [
+          {
+            "question": "Who is a good candidate for Breast Augmentation?",
+            "answer": "Enhancing breast volume and shape using implants or fat transfer. A detailed consultation is required to confirm suitability and treatment plan."
+          },
+          {
+            "question": "What does Breast Augmentation typically include?",
+            "answer": "Silicone gel implant selection and sizing Submuscular and dual-plane placement Scar minimisation with inframammary or periareolar incisions Fat transfer augmentation for modest size change"
+          },
+          {
+            "question": "Where is Breast Augmentation performed?",
+            "answer": "Procedures are planned in coordination with CARE Hospitals, Gachibowli, Hyderabad."
+          }
+        ],
+        "meta_title": "Breast Augmentation in Hyderabad | Dr. Divya Sai Narsingam",
+        "meta_description": "Enhancing breast volume and shape using implants or fat transfer. Specialist cosmetic surgery by Dr. Divya Sai Narsingam at CARE Hospitals, Gachibowli, Hyderabad."
+      },
+      {
+        "id": "service-breast-reduction",
+        "slug": "breast-reduction",
+        "name": "Breast Reduction",
+        "summary": "Reducing breast size to relieve physical symptoms and improve proportions.",
+        "content": "Symptomatic macromastia — neck pain, back pain, skin rashes, and restricted activity — is a genuine medical condition. Breast reduction surgery removes excess glandular tissue, fat, and skin, reshaping the breast to a comfortable, proportionate size while preserving sensation and, where possible, breastfeeding ability.",
+        "image": "/images/img/about.jpeg",
+        "category": "cosmetic",
+        "key_points": [
+          "Vertical and Wise-pattern reduction techniques",
+          "Preservation of nipple sensation and blood supply",
+          "Simultaneous uplift (mastopexy) as needed",
+          "Significant improvement in posture and quality of life"
+        ],
+        "faq": [
+          {
+            "question": "Who is a good candidate for Breast Reduction?",
+            "answer": "Reducing breast size to relieve physical symptoms and improve proportions. A detailed consultation is required to confirm suitability and treatment plan."
+          },
+          {
+            "question": "What does Breast Reduction typically include?",
+            "answer": "Vertical and Wise-pattern reduction techniques Preservation of nipple sensation and blood supply Simultaneous uplift (mastopexy) as needed Significant improvement in posture and quality of life"
+          },
+          {
+            "question": "Where is Breast Reduction performed?",
+            "answer": "Procedures are planned in coordination with CARE Hospitals, Gachibowli, Hyderabad."
+          }
+        ],
+        "meta_title": "Breast Reduction in Hyderabad | Dr. Divya Sai Narsingam",
+        "meta_description": "Reducing breast size to relieve physical symptoms and improve proportions. Specialist cosmetic surgery by Dr. Divya Sai Narsingam at CARE Hospitals, Gachibowli, Hyderabad."
+      },
+      {
+        "id": "service-breast-lift",
+        "slug": "breast-lift",
+        "name": "Breast Lift (Mastopexy)",
+        "summary": "Lifting and reshaping the breasts for a firmer, more youthful contour.",
+        "content": "A breast lift reshapes and elevates the breast tissue to restore a higher position and improved contour. The procedure can be tailored to mild or significant droop, and may be combined with augmentation or reduction depending on goals.",
+        "image": "/images/img/about.jpeg",
+        "category": "cosmetic",
+        "key_points": [
+          "Restores breast position and improves contour",
+          "Repositions the nipple-areola complex",
+          "Can be combined with augmentation or reduction",
+          "Scar pattern tailored to the degree of ptosis"
+        ],
+        "faq": [
+          {
+            "question": "Who is a good candidate for Breast Lift (Mastopexy)?",
+            "answer": "Lifting and reshaping the breasts for a firmer, more youthful contour. A detailed consultation is required to confirm suitability and treatment plan."
+          },
+          {
+            "question": "What does Breast Lift (Mastopexy) typically include?",
+            "answer": "Restores breast position and improves contour Repositions the nipple-areola complex Can be combined with augmentation or reduction Scar pattern tailored to the degree of ptosis"
+          },
+          {
+            "question": "Where is Breast Lift (Mastopexy) performed?",
+            "answer": "Procedures are planned in coordination with CARE Hospitals, Gachibowli, Hyderabad."
+          }
+        ],
+        "meta_title": "Breast Lift (Mastopexy) in Hyderabad | Dr. Divya Sai Narsingam",
+        "meta_description": "Lifting and reshaping the breasts for a firmer, more youthful contour. Specialist cosmetic surgery by Dr. Divya Sai Narsingam at CARE Hospitals, Gachibowli, Hyderabad."
+      },
+      {
+        "id": "service-rhinoplasty",
+        "slug": "rhinoplasty",
+        "name": "Rhinoplasty",
+        "summary": "Refining nasal shape and proportion while preserving breathing function.",
+        "content": "Rhinoplasty balances nasal shape with facial proportions while maintaining or improving nasal airflow. Surgical planning considers the bridge, tip, and nostrils, with techniques chosen to deliver natural-looking results.",
+        "image": "/images/img/about.jpeg",
+        "category": "cosmetic",
+        "key_points": [
+          "Shape refinement for bridge, tip, and nostrils",
+          "Functional assessment of the nasal airway",
+          "Open or closed technique based on anatomy",
+          "Natural, balanced facial proportions"
+        ],
+        "faq": [
+          {
+            "question": "Who is a good candidate for Rhinoplasty?",
+            "answer": "Refining nasal shape and proportion while preserving breathing function. A detailed consultation is required to confirm suitability and treatment plan."
+          },
+          {
+            "question": "What does Rhinoplasty typically include?",
+            "answer": "Shape refinement for bridge, tip, and nostrils Functional assessment of the nasal airway Open or closed technique based on anatomy Natural, balanced facial proportions"
+          },
+          {
+            "question": "Where is Rhinoplasty performed?",
+            "answer": "Procedures are planned in coordination with CARE Hospitals, Gachibowli, Hyderabad."
+          }
+        ],
+        "meta_title": "Rhinoplasty in Hyderabad | Dr. Divya Sai Narsingam",
+        "meta_description": "Refining nasal shape and proportion while preserving breathing function. Specialist cosmetic surgery by Dr. Divya Sai Narsingam at CARE Hospitals, Gachibowli, Hyderabad."
+      },
+      {
+        "id": "service-tummy-tuck",
+        "slug": "tummy-tuck",
+        "name": "Tummy Tuck (Abdominoplasty)",
+        "summary": "Removing excess abdominal skin and tightening the abdominal wall.",
+        "content": "Abdominoplasty addresses excess skin and fat in the abdomen — a concern commonly following significant weight loss or post-pregnancy changes. The procedure tightens the rectus muscles if diastasis (separation) exists, removes the lower abdominal apron, and repositions the umbilicus for a smooth, firm contour.",
+        "image": "/images/img/about.jpeg",
+        "category": "cosmetic",
+        "key_points": [
+          "Full, mini, and extended abdominoplasty options",
+          "Rectus muscle plication for diastasis repair",
+          "Combined with liposuction for optimal contouring",
+          "Low, concealable scar placement"
+        ],
+        "faq": [
+          {
+            "question": "Who is a good candidate for Tummy Tuck (Abdominoplasty)?",
+            "answer": "Removing excess abdominal skin and tightening the abdominal wall. A detailed consultation is required to confirm suitability and treatment plan."
+          },
+          {
+            "question": "What does Tummy Tuck (Abdominoplasty) typically include?",
+            "answer": "Full, mini, and extended abdominoplasty options Rectus muscle plication for diastasis repair Combined with liposuction for optimal contouring Low, concealable scar placement"
+          },
+          {
+            "question": "Where is Tummy Tuck (Abdominoplasty) performed?",
+            "answer": "Procedures are planned in coordination with CARE Hospitals, Gachibowli, Hyderabad."
+          }
+        ],
+        "meta_title": "Tummy Tuck (Abdominoplasty) in Hyderabad | Dr. Divya Sai Narsingam",
+        "meta_description": "Removing excess abdominal skin and tightening the abdominal wall. Specialist cosmetic surgery by Dr. Divya Sai Narsingam at CARE Hospitals, Gachibowli, Hyderabad."
+      },
+      {
+        "id": "service-body-lipocontouring",
+        "slug": "body-lipocontouring",
+        "name": "Body Lipocontouring",
+        "summary": "Precise fat removal and reshaping of body contours through liposuction.",
+        "content": "Lipocontouring uses tumescent liposuction to selectively remove stubborn fat deposits that are resistant to diet and exercise. It is a body sculpting procedure — not a weight loss treatment — and works best when performed with attention to the body's natural curves and proportions.",
+        "image": "/images/img/about.jpeg",
+        "category": "cosmetic",
+        "key_points": [
+          "Abdomen, flanks, thighs, arms, and neck",
+          "Tumescent technique for safety and precision",
+          "High-definition contouring where appropriate",
+          "Fat transfer (lipofilling) to areas needing volume"
+        ],
+        "faq": [
+          {
+            "question": "Who is a good candidate for Body Lipocontouring?",
+            "answer": "Precise fat removal and reshaping of body contours through liposuction. A detailed consultation is required to confirm suitability and treatment plan."
+          },
+          {
+            "question": "What does Body Lipocontouring typically include?",
+            "answer": "Abdomen, flanks, thighs, arms, and neck Tumescent technique for safety and precision High-definition contouring where appropriate Fat transfer (lipofilling) to areas needing volume"
+          },
+          {
+            "question": "Where is Body Lipocontouring performed?",
+            "answer": "Procedures are planned in coordination with CARE Hospitals, Gachibowli, Hyderabad."
+          }
+        ],
+        "meta_title": "Body Lipocontouring in Hyderabad | Dr. Divya Sai Narsingam",
+        "meta_description": "Precise fat removal and reshaping of body contours through liposuction. Specialist cosmetic surgery by Dr. Divya Sai Narsingam at CARE Hospitals, Gachibowli, Hyderabad."
+      },
+      {
+        "id": "service-gynecomastia-reduction",
+        "slug": "gynecomastia-reduction",
+        "name": "Gynecomastia Reduction",
+        "summary": "Surgical correction of enlarged male breast tissue for a flatter chest.",
+        "content": "Gynecomastia — the development of glandular breast tissue in males — can cause significant psychological distress. After excluding hormonal or pharmacological causes, surgical treatment combines glandular excision with liposuction to achieve a flat, masculine chest contour.",
+        "image": "/images/img/about.jpeg",
+        "category": "cosmetic",
+        "key_points": [
+          "Thorough endocrine and pharmacological workup",
+          "Glandular excision via periareolar incision",
+          "Liposuction for adipose component",
+          "Skin tightening for severe cases with skin excess"
+        ],
+        "faq": [
+          {
+            "question": "Who is a good candidate for Gynecomastia Reduction?",
+            "answer": "Surgical correction of enlarged male breast tissue for a flatter chest. A detailed consultation is required to confirm suitability and treatment plan."
+          },
+          {
+            "question": "What does Gynecomastia Reduction typically include?",
+            "answer": "Thorough endocrine and pharmacological workup Glandular excision via periareolar incision Liposuction for adipose component Skin tightening for severe cases with skin excess"
+          },
+          {
+            "question": "Where is Gynecomastia Reduction performed?",
+            "answer": "Procedures are planned in coordination with CARE Hospitals, Gachibowli, Hyderabad."
+          }
+        ],
+        "meta_title": "Gynecomastia Reduction in Hyderabad | Dr. Divya Sai Narsingam",
+        "meta_description": "Surgical correction of enlarged male breast tissue for a flatter chest. Specialist cosmetic surgery by Dr. Divya Sai Narsingam at CARE Hospitals, Gachibowli, Hyderabad."
+      }
+    ],
+    "contact": {
+      "phone": "+91 99001 35489",
+      "email": "appointments@example.com",
+      "address": "Room No. 20, 1st Floor, AIG Hospitals, Banjara Hills, Hyderabad – 500034\nCARE Hospitals, Hitec City, Hyderabad",
+      "hospital": "AIG Hospitals and CARE Hospitals, Hitec City"
+    }
+  },
+  "updatedAt": "2026-06-03T17:16:07.300Z"
+}
