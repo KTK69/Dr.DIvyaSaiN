@@ -186,6 +186,7 @@ export function SiteContentProvider({ children }: { children: React.ReactNode })
       setHasLocalEdits(false);
       setLastSyncedAt(payload.updatedAt ?? null);
       notifyContentUpdated();
+      await refreshContent();
       router.refresh();
       return { ok: true };
     } catch {
@@ -196,7 +197,7 @@ export function SiteContentProvider({ children }: { children: React.ReactNode })
     } finally {
       setSaving(false);
     }
-  }, [notifyContentUpdated, router]);
+  }, [notifyContentUpdated, refreshContent, router]);
 
   const value = useMemo<SiteContentContextValue>(
     () => ({
