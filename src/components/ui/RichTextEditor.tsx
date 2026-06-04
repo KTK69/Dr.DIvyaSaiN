@@ -472,12 +472,12 @@ export default function RichTextEditor({
         quill.clipboard.dangerouslyPasteHTML(index, sanitizedHtml, "user");
       };
 
-      quill.root.addEventListener("paste", handlePaste, true);
+      container.addEventListener("paste", handlePaste, true);
 
       return () => {
         quill.off("text-change", handleTextChange);
         quill.off("selection-change", handleSelectionChange);
-        quill.root.removeEventListener("paste", handlePaste, true);
+        container.removeEventListener("paste", handlePaste, true);
       };
     };
 
