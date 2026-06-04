@@ -460,6 +460,7 @@ export default function RichTextEditor({
         }
 
         event.preventDefault();
+        event.stopImmediatePropagation();
         const selection = quill.getSelection(true);
         const index = selection?.index ?? Math.max(0, quill.getLength() - 1);
         const length = selection?.length ?? 0;
@@ -471,12 +472,12 @@ export default function RichTextEditor({
         quill.clipboard.dangerouslyPasteHTML(index, sanitizedHtml, "user");
       };
 
-      quill.root.addEventListener("paste", handlePaste);
+      quill.root.addEventListener("paste", handlePaste, true);
 
       return () => {
         quill.off("text-change", handleTextChange);
         quill.off("selection-change", handleSelectionChange);
-        quill.root.removeEventListener("paste", handlePaste);
+        quill.root.removeEventListener("paste", handlePaste, true);
       };
     };
 
