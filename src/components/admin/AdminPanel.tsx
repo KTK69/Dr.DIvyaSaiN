@@ -62,6 +62,19 @@ const pageSeoItems: Array<{ key: PageSeoKey; label: string }> = [
 
 type SessionResponse = { authenticated?: boolean };
 
+function sortBlogsByPublishedDate(items: BlogItem[], direction: "asc" | "desc") {
+  return [...items].sort((first, second) => {
+    const firstTime = Date.parse(first.published_at || "");
+    const secondTime = Date.parse(second.published_at || "");
+    const safeFirstTime = Number.isNaN(firstTime) ? 0 : firstTime;
+    const safeSecondTime = Number.isNaN(secondTime) ? 0 : secondTime;
+
+    return direction === "asc"
+      ? safeFirstTime - safeSecondTime
+      : safeSecondTime - safeFirstTime;
+  });
+}
+
 export default function AdminPanel() {
   const router = useRouter();
   const {
@@ -586,21 +599,38 @@ export default function AdminPanel() {
           ) : null}
 
           {activeSection === "blog" ? (
-            <ListEditor<BlogItem>
-              items={content.blog}
-              onAdd={() => addItem("blog")}
-              onRemove={(index) => removeItem("blog", index)}
-              onChange={(items) => update("blog", items)}
-              renderItem={(item, index, updateItem) => (
-                <div className="grid gap-4 md:grid-cols-2">
-                  <Field label="Title" value={item.title} onChange={(value) => updateItem({ ...item, title: value })} />
-                  <Field label="Slug" value={item.slug} onChange={(value) => updateItem({ ...item, slug: value })} />
-                  <ImageField label="Image" value={item.image} onChange={(value) => updateItem({ ...item, image: value })} className="md:col-span-2" />
-                  <Field label="Excerpt" value={item.excerpt} onChange={(value) => updateItem({ ...item, excerpt: value })} multiline />
-                  <RichTextField label="Content" value={item.content} onChange={(value) => updateItem({ ...item, content: value })} height={320} />
-                </div>
-              )}
-            />
+            <div className="space-y-4">
+              <div className="flex flex-wrap gap-2">
+                <button
+                  onClick={() => update("blog", sortBlogsByPublishedDate(content.blog, "desc"))}
+                  className="rounded-lg border border-(--border) px-4 py-2 text-sm text-(--foreground-muted) hover:text-(--foreground)"
+                >
+                  Sort newest first
+                </button>
+                <button
+                  onClick={() => update("blog", sortBlogsByPublishedDate(content.blog, "asc"))}
+                  className="rounded-lg border border-(--border) px-4 py-2 text-sm text-(--foreground-muted) hover:text-(--foreground)"
+                >
+                  Sort oldest first
+                </button>
+              </div>
+              <ListEditor<BlogItem>
+                items={content.blog}
+                onAdd={() => addItem("blog")}
+                onRemove={(index) => removeItem("blog", index)}
+                onChange={(items) => update("blog", items)}
+                renderItem={(item, _index, updateItem) => (
+                  <div className="grid gap-4 md:grid-cols-2">
+                    <Field label="Title" value={item.title} onChange={(value) => updateItem({ ...item, title: value })} />
+                    <Field label="Slug" value={item.slug} onChange={(value) => updateItem({ ...item, slug: value })} />
+                    <Field label="Published date" value={item.published_at ?? ""} onChange={(value) => updateItem({ ...item, published_at: value })} />
+                    <ImageField label="Image" value={item.image} onChange={(value) => updateItem({ ...item, image: value })} className="md:col-span-2" />
+                    <Field label="Excerpt" value={item.excerpt} onChange={(value) => updateItem({ ...item, excerpt: value })} multiline />
+                    <RichTextField label="Content" value={item.content} onChange={(value) => updateItem({ ...item, content: value })} height={320} />
+                  </div>
+                )}
+              />
+            </div>
           ) : null}
 
           {activeSection === "services" ? (
@@ -1087,6 +1117,17 @@ function ListEditor<T>({
   onRemove: (index: number) => void;
   onChange: (items: T[]) => void;
 }) {
+  function moveItem(fromIndex: number, toIndex: number) {
+    if (toIndex < 0 || toIndex >= items.length) {
+      return;
+    }
+
+    const nextItems = [...items];
+    const [movedItem] = nextItems.splice(fromIndex, 1);
+    nextItems.splice(toIndex, 0, movedItem);
+    onChange(nextItems);
+  }
+
   return (
     <div className="space-y-4">
       <button onClick={onAdd} className="rounded-lg bg-(--accent-gold) px-4 py-2 text-sm font-medium text-(--background)">
@@ -1096,9 +1137,25 @@ function ListEditor<T>({
         <div key={index} className="rounded-xl border border-(--border) p-4 space-y-4">
           <div className="flex items-center justify-between gap-4">
             <p className="text-sm font-medium text-(--foreground)">Item {index + 1}</p>
-            <button onClick={() => onRemove(index)} className="text-sm text-red-400">
-              Remove
-            </button>
+            <div className="flex flex-wrap items-center justify-end gap-2">
+              <button
+                onClick={() => moveItem(index, index - 1)}
+                disabled={index === 0}
+                className="rounded-md border border-(--border) px-3 py-1 text-xs text-(--foreground-muted) disabled:cursor-not-allowed disabled:opacity-40"
+              >
+                Up
+              </button>
+              <button
+                onClick={() => moveItem(index, index + 1)}
+                disabled={index === items.length - 1}
+                className="rounded-md border border-(--border) px-3 py-1 text-xs text-(--foreground-muted) disabled:cursor-not-allowed disabled:opacity-40"
+              >
+                Down
+              </button>
+              <button onClick={() => onRemove(index)} className="text-sm text-red-400">
+                Remove
+              </button>
+            </div>
           </div>
           {renderItem(item, index, (nextItem) => {
             const nextItems = [...items];
