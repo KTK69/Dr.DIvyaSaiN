@@ -5,6 +5,7 @@ import Link from "next/link";
 import SectionHeading from "@/components/ui/SectionHeading";
 import { useSiteContent } from "@/components/site/SiteContentProvider";
 import { getBlogCardHref } from "@/lib/blog-links";
+import { getBlogDisplayTitle, getBlogPreviewText } from "@/lib/blog-preview";
 
 function formatDate(value?: string) {
   if (!value) {
@@ -57,17 +58,19 @@ export default function BlogListingClient() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-10">
           {blogs.map((post) => {
             const href = getBlogCardHref(post);
+            const displayTitle = getBlogDisplayTitle(post.title, post.slug, post.content);
+            const previewText = getBlogPreviewText(post.excerpt, post.content);
 
             return (
               <article
                 key={post.id}
                 className="glass-card rounded-xl overflow-hidden border border-(--border)"
               >
-                <Link href={href} aria-label={`Read ${post.title}`}>
+                <Link href={href} aria-label={`Read ${displayTitle}`}>
                   <div className="relative aspect-16/10">
                     <Image
                       src={post.image}
-                      alt={post.title}
+                      alt={displayTitle}
                       fill
                       className="object-cover"
                       unoptimized={post.image.startsWith("data:") || post.image.startsWith("blob:")}
@@ -85,11 +88,13 @@ export default function BlogListingClient() {
                     className="text-lg font-medium text-(--foreground)"
                     style={{ fontFamily: "var(--font-serif)" }}
                   >
-                    <Link href={href}>{post.title}</Link>
+                    <Link href={href}>{displayTitle}</Link>
                   </h2>
-                  <p className="mt-3 text-sm leading-relaxed text-(--foreground-muted)">
-                    {post.excerpt}
-                  </p>
+                  {previewText ? (
+                    <p className="mt-3 text-sm leading-relaxed text-(--foreground-muted)">
+                      {previewText}
+                    </p>
+                  ) : null}
                 </div>
               </article>
             );

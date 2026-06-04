@@ -6,6 +6,7 @@ import JsonLd from "@/components/seo/JsonLd";
 import RichText from "@/components/ui/RichText";
 import { useSiteContent } from "@/components/site/SiteContentProvider";
 import { getBlogRouteSlug, normalizeBlogSlug } from "@/lib/blog-links";
+import { getBlogDisplayTitle, getBlogPreviewText } from "@/lib/blog-preview";
 import { buildBlogJsonLd } from "@/lib/seo";
 import type { Blog } from "@/types/content";
 
@@ -70,6 +71,8 @@ export default function BlogDetailClient({ slug, serverBlog }: Props) {
   }
 
   const publishedAt = formatDate(blog.published_at);
+  const displayTitle = getBlogDisplayTitle(blog.title, blog.slug, blog.content);
+  const previewText = getBlogPreviewText(blog.excerpt, blog.content);
 
   return (
     <>
@@ -86,17 +89,19 @@ export default function BlogDetailClient({ slug, serverBlog }: Props) {
           className="text-4xl md:text-5xl font-medium text-(--foreground) leading-tight"
           style={{ fontFamily: "var(--font-serif)" }}
         >
-          {blog.title}
+          {displayTitle}
         </h1>
 
-        <p className="mt-5 text-base text-(--foreground-muted) leading-relaxed">
-          {blog.excerpt}
-        </p>
+        {previewText ? (
+          <p className="mt-5 text-base text-(--foreground-muted) leading-relaxed">
+            {previewText}
+          </p>
+        ) : null}
 
         <div className="relative aspect-video mt-8 rounded-2xl overflow-hidden border border-(--border)">
           <Image
             src={blog.image}
-            alt={blog.title}
+            alt={displayTitle}
             fill
             className="object-cover"
             unoptimized={blog.image.startsWith("data:") || blog.image.startsWith("blob:")}

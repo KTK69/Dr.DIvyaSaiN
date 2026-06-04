@@ -543,6 +543,7 @@ export default function AdminPanel() {
           {activeSection === "doctorTalk" ? (
             <ListEditor<DoctorTalkItem>
               items={content.doctorTalk}
+              getItemKey={(item) => item.id}
               onAdd={() => addItem("doctorTalk")}
               onRemove={(index) => removeItem("doctorTalk", index)}
               onChange={(items) => update("doctorTalk", items)}
@@ -584,6 +585,7 @@ export default function AdminPanel() {
           {activeSection === "testimonials" ? (
             <ListEditor<TestimonialItem>
               items={content.testimonials}
+              getItemKey={(item) => item.id}
               onAdd={() => addItem("testimonials")}
               onRemove={(index) => removeItem("testimonials", index)}
               onChange={(items) => update("testimonials", items)}
@@ -616,6 +618,7 @@ export default function AdminPanel() {
               </div>
               <ListEditor<BlogItem>
                 items={content.blog}
+                getItemKey={(item) => item.id}
                 onAdd={() => addItem("blog")}
                 onRemove={(index) => removeItem("blog", index)}
                 onChange={(items) => update("blog", items)}
@@ -636,6 +639,7 @@ export default function AdminPanel() {
           {activeSection === "services" ? (
             <ListEditor<ServiceItem>
               items={content.services}
+              getItemKey={(item) => item.id}
               onAdd={() => addItem("services")}
               onRemove={(index) => removeItem("services", index)}
               onChange={(items) => update("services", items)}
@@ -1110,12 +1114,14 @@ function ListEditor<T>({
   onAdd,
   onRemove,
   onChange,
+  getItemKey,
 }: {
   items: T[];
   renderItem: (item: T, index: number, updateItem: (item: T) => void) => React.ReactNode;
   onAdd: () => void;
   onRemove: (index: number) => void;
   onChange: (items: T[]) => void;
+  getItemKey?: (item: T, index: number) => string;
 }) {
   function moveItem(fromIndex: number, toIndex: number) {
     if (toIndex < 0 || toIndex >= items.length) {
@@ -1134,7 +1140,7 @@ function ListEditor<T>({
         Add item
       </button>
       {items.map((item, index) => (
-        <div key={index} className="rounded-xl border border-(--border) p-4 space-y-4">
+        <div key={getItemKey?.(item, index) ?? index} className="rounded-xl border border-(--border) p-4 space-y-4">
           <div className="flex items-center justify-between gap-4">
             <p className="text-sm font-medium text-(--foreground)">Item {index + 1}</p>
             <div className="flex flex-wrap items-center justify-end gap-2">
