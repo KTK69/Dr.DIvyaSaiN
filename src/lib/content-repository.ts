@@ -1,6 +1,7 @@
 import "server-only";
 
 import { getStoredSiteContent } from "@/lib/site-content-store";
+import { getBlogRouteSlug, normalizeBlogSlug } from "@/lib/blog-links";
 import {
   DEFAULT_ABOUT_CONTENT,
   DEFAULT_BLOGS,
@@ -23,7 +24,8 @@ export async function getBlogs(): Promise<Blog[]> {
 
 export async function getBlogBySlug(slug: string): Promise<Blog | null> {
   const blogs = await getBlogs();
-  return blogs.find((blog) => blog.slug === slug) ?? null;
+  const normalizedSlug = normalizeBlogSlug(slug);
+  return blogs.find((blog) => getBlogRouteSlug(blog) === normalizedSlug) ?? null;
 }
 
 export async function getServices(): Promise<Service[]> {

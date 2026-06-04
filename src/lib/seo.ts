@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import type { cosmeticServices, reconstructiveServices } from "@/lib/doctor-data";
 import type { Blog, Service } from "@/types/content";
 import type { PageSeoEntry } from "@/lib/site-content";
+import { getBlogRouteSlug } from "@/lib/blog-links";
 import { contactInfo, doctor, education } from "@/lib/doctor-data";
 
 export type ReconstructiveService = (typeof reconstructiveServices)[number];
@@ -280,7 +281,7 @@ export function buildEditablePageMetadata(page: PageSeoEntry): Metadata {
 }
 
 export function buildBlogMetadata(blog: Blog): Metadata {
-  const canonical = `${SITE_URL}/blog/${blog.slug}`;
+  const canonical = `${SITE_URL}/blog/${getBlogRouteSlug(blog)}`;
   const keywords = uniqueKeywords([
     blog.title,
     `${blog.title} Hyderabad`,
@@ -329,7 +330,7 @@ export function buildBlogJsonLd(blog: Blog) {
     image: blog.image,
     datePublished: blog.published_at,
     dateModified: blog.updated_at ?? blog.published_at,
-    mainEntityOfPage: `${SITE_URL}/blog/${blog.slug}`,
+    mainEntityOfPage: `${SITE_URL}/blog/${getBlogRouteSlug(blog)}`,
     author: {
       "@type": "Person",
       name: "Dr. Divya Sai Narsingam",

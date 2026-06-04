@@ -3,6 +3,7 @@ import PageWrapper from "@/components/ui/PageWrapper";
 import JsonLd from "@/components/seo/JsonLd";
 import BlogDetailClient from "@/components/blog/BlogDetailClient";
 import { fetchBlogBySlug, fetchBlogs } from "@/lib/api";
+import { getBlogRouteSlug } from "@/lib/blog-links";
 import { buildBlogJsonLd, buildBlogMetadata } from "@/lib/seo";
 
 interface Props {
@@ -13,7 +14,10 @@ export const revalidate = 300;
 
 export async function generateStaticParams() {
   const blogs = await fetchBlogs();
-  return blogs.map((blog) => ({ slug: blog.slug }));
+  return blogs
+    .map((blog) => getBlogRouteSlug(blog))
+    .filter(Boolean)
+    .map((slug) => ({ slug }));
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {

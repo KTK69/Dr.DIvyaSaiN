@@ -9,6 +9,7 @@ import {
   mergeWithDefaults,
   type SiteContentEnvelope,
 } from "@/lib/site-content-utils";
+import { getBlogRouteSlug } from "@/lib/blog-links";
 
 const BLOB_PATHNAME = "site-content/content.json";
 const LOCAL_FILE_PATH = path.join(process.cwd(), "data", "site-content.runtime.json");
@@ -149,8 +150,9 @@ function revalidateSiteContent(content: SiteContent) {
   }
 
   for (const blog of content.blog) {
-    if (blog.slug) {
-      revalidatePath(`/blog/${blog.slug}`);
+    const routeSlug = getBlogRouteSlug(blog);
+    if (routeSlug) {
+      revalidatePath(`/blog/${routeSlug}`);
     }
   }
 

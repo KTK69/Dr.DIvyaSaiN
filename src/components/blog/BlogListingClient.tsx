@@ -4,6 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import SectionHeading from "@/components/ui/SectionHeading";
 import { useSiteContent } from "@/components/site/SiteContentProvider";
+import { getBlogCardHref } from "@/lib/blog-links";
 
 function formatDate(value?: string) {
   if (!value) {
@@ -54,41 +55,45 @@ export default function BlogListingClient() {
         />
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-10">
-          {blogs.map((post) => (
-            <article
-              key={post.id}
-              className="glass-card rounded-xl overflow-hidden border border-(--border)"
-            >
-              <Link href={`/blog/${post.slug}`} aria-label={`Read ${post.title}`}>
-                <div className="relative aspect-16/10">
-                  <Image
-                    src={post.image}
-                    alt={post.title}
-                    fill
-                    className="object-cover"
-                    unoptimized={post.image.startsWith("data:") || post.image.startsWith("blob:")}
-                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                  />
-                </div>
-              </Link>
-              <div className="p-5">
-                {post.published_at ? (
-                  <p className="text-xs uppercase tracking-widest text-(--foreground-subtle) mb-2">
-                    {formatDate(post.published_at)}
+          {blogs.map((post) => {
+            const href = getBlogCardHref(post);
+
+            return (
+              <article
+                key={post.id}
+                className="glass-card rounded-xl overflow-hidden border border-(--border)"
+              >
+                <Link href={href} aria-label={`Read ${post.title}`}>
+                  <div className="relative aspect-16/10">
+                    <Image
+                      src={post.image}
+                      alt={post.title}
+                      fill
+                      className="object-cover"
+                      unoptimized={post.image.startsWith("data:") || post.image.startsWith("blob:")}
+                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                    />
+                  </div>
+                </Link>
+                <div className="p-5">
+                  {post.published_at ? (
+                    <p className="text-xs uppercase tracking-widest text-(--foreground-subtle) mb-2">
+                      {formatDate(post.published_at)}
+                    </p>
+                  ) : null}
+                  <h2
+                    className="text-lg font-medium text-(--foreground)"
+                    style={{ fontFamily: "var(--font-serif)" }}
+                  >
+                    <Link href={href}>{post.title}</Link>
+                  </h2>
+                  <p className="mt-3 text-sm leading-relaxed text-(--foreground-muted)">
+                    {post.excerpt}
                   </p>
-                ) : null}
-                <h2
-                  className="text-lg font-medium text-(--foreground)"
-                  style={{ fontFamily: "var(--font-serif)" }}
-                >
-                  <Link href={`/blog/${post.slug}`}>{post.title}</Link>
-                </h2>
-                <p className="mt-3 text-sm leading-relaxed text-(--foreground-muted)">
-                  {post.excerpt}
-                </p>
-              </div>
-            </article>
-          ))}
+                </div>
+              </article>
+            );
+          })}
         </div>
       </div>
     </>

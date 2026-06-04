@@ -5,6 +5,7 @@ import Link from "next/link";
 import JsonLd from "@/components/seo/JsonLd";
 import RichText from "@/components/ui/RichText";
 import { useSiteContent } from "@/components/site/SiteContentProvider";
+import { getBlogRouteSlug, normalizeBlogSlug } from "@/lib/blog-links";
 import { buildBlogJsonLd } from "@/lib/seo";
 import type { Blog } from "@/types/content";
 
@@ -60,7 +61,8 @@ function NotFoundBlock() {
 
 export default function BlogDetailClient({ slug, serverBlog }: Props) {
   const { content } = useSiteContent();
-  const localBlog = content.blog.find((item) => item.slug === slug);
+  const normalizedSlug = normalizeBlogSlug(slug);
+  const localBlog = content.blog.find((item) => getBlogRouteSlug(item) === normalizedSlug);
   const blog = localBlog ?? serverBlog ?? null;
 
   if (!blog) {
