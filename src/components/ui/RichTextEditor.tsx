@@ -37,6 +37,7 @@ const QUILL_CSS_URL = "https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.snow.
 const QUILL_SCRIPT_URL = "https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.js";
 const COLOR_OPTIONS = ["#e8edf3", "#8a95a3", "#b8972a", "#d4af4a", "#3b82f6", "#22c55e", "#f97316", "#ef4444", "#ffffff", "#111827"];
 const BACKGROUND_OPTIONS = ["#131920", "#1f2937", "#312e1d", "#102235", "#123025", "#3b1d1d", "#ffffff", "#fef3c7", "#dbeafe", "#dcfce7"];
+const FONT_SIZE_OPTIONS = ["14px", "16px", "18px", "20px", "24px", "28px", "32px", "40px"];
 
 let quillAssetsPromise: Promise<void> | null = null;
 let quillFormatsRegistered = false;
@@ -109,8 +110,10 @@ function registerQuillFormats() {
     return;
   }
 
+  const SizeStyle = window.Quill.import("attributors/style/size") as { whitelist: string[] };
   const Block = window.Quill.import("blots/block") as QuillBlotConstructor;
   const BlockEmbed = window.Quill.import("blots/block/embed") as QuillBlotConstructor;
+  SizeStyle.whitelist = FONT_SIZE_OPTIONS;
 
   class DividerBlot extends BlockEmbed {
     static blotName = "divider";
@@ -167,6 +170,7 @@ function registerQuillFormats() {
     }
   }
 
+  window.Quill.register(SizeStyle, true);
   window.Quill.register(DividerBlot, true);
   window.Quill.register(ShapeDividerBlot, true);
   window.Quill.register(CalloutBlot, true);
@@ -249,9 +253,17 @@ function sanitizePastedHtml(value: string) {
     "STRONG",
     "SUB",
     "SUP",
+    "TABLE",
+    "TBODY",
+    "TD",
+    "TFOOT",
+    "TH",
+    "THEAD",
+    "TR",
     "U",
     "UL",
   ]);
+  const tableCellTags = new Set(["TD", "TH"]);
 
   documentValue.querySelectorAll("script, style, meta, link, xml").forEach((node) => node.remove());
 
@@ -278,6 +290,9 @@ function sanitizePastedHtml(value: string) {
         continue;
       }
       if ((name === "data-shape" || name === "data-tone") && /\bcontent-(shape-divider|callout)\b/.test(element.className)) {
+        continue;
+      }
+      if (tableCellTags.has(element.tagName) && /^(colspan|rowspan)$/i.test(name) && /^[1-9]\d{0,2}$/.test(attribute.value)) {
         continue;
       }
       element.removeAttribute(attribute.name);
@@ -538,10 +553,12 @@ export default function RichTextEditor({
             <option value="">Normal</option>
           </select>
           <select className="ql-size" defaultValue="">
-            <option value="small">Small</option>
-            <option value="">Normal</option>
-            <option value="large">Large</option>
-            <option value="huge">Huge</option>
+            <option value="">Size</option>
+            {FONT_SIZE_OPTIONS.map((size) => (
+              <option key={size} value={size}>
+                {size}
+              </option>
+            ))}
           </select>
         </span>
 

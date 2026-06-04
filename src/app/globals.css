@@ -123,19 +123,28 @@ a {
   margin-bottom: 0.5rem;
 }
 
+.rich-text h1,
+.ql-editor h1 {
+  font-size: 2rem;
+  line-height: 1.2;
+}
+
 .rich-text h2,
 .ql-editor h2 {
   font-size: 1.5rem;
+  line-height: 1.25;
 }
 
 .rich-text h3,
 .ql-editor h3 {
   font-size: 1.25rem;
+  line-height: 1.3;
 }
 
 .rich-text h4,
 .ql-editor h4 {
   font-size: 1.125rem;
+  line-height: 1.35;
 }
 
 .rich-text ul,
@@ -336,8 +345,53 @@ a {
 }
 
 .ql-toolbar.ql-snow .ql-shapeDivider,
-.ql-toolbar.ql-snow .ql-callout {
+.ql-toolbar.ql-snow .ql-callout,
+.ql-toolbar.ql-snow .ql-size {
   min-width: 5.25rem;
+}
+
+.ql-toolbar.ql-snow .ql-size .ql-picker-label::before {
+  content: "Size";
+}
+
+.ql-toolbar.ql-snow .ql-size .ql-picker-label[data-value="14px"]::before,
+.ql-toolbar.ql-snow .ql-size .ql-picker-item[data-value="14px"]::before {
+  content: "14px";
+}
+
+.ql-toolbar.ql-snow .ql-size .ql-picker-label[data-value="16px"]::before,
+.ql-toolbar.ql-snow .ql-size .ql-picker-item[data-value="16px"]::before {
+  content: "16px";
+}
+
+.ql-toolbar.ql-snow .ql-size .ql-picker-label[data-value="18px"]::before,
+.ql-toolbar.ql-snow .ql-size .ql-picker-item[data-value="18px"]::before {
+  content: "18px";
+}
+
+.ql-toolbar.ql-snow .ql-size .ql-picker-label[data-value="20px"]::before,
+.ql-toolbar.ql-snow .ql-size .ql-picker-item[data-value="20px"]::before {
+  content: "20px";
+}
+
+.ql-toolbar.ql-snow .ql-size .ql-picker-label[data-value="24px"]::before,
+.ql-toolbar.ql-snow .ql-size .ql-picker-item[data-value="24px"]::before {
+  content: "24px";
+}
+
+.ql-toolbar.ql-snow .ql-size .ql-picker-label[data-value="28px"]::before,
+.ql-toolbar.ql-snow .ql-size .ql-picker-item[data-value="28px"]::before {
+  content: "28px";
+}
+
+.ql-toolbar.ql-snow .ql-size .ql-picker-label[data-value="32px"]::before,
+.ql-toolbar.ql-snow .ql-size .ql-picker-item[data-value="32px"]::before {
+  content: "32px";
+}
+
+.ql-toolbar.ql-snow .ql-size .ql-picker-label[data-value="40px"]::before,
+.ql-toolbar.ql-snow .ql-size .ql-picker-item[data-value="40px"]::before {
+  content: "40px";
 }
 
 .ql-toolbar.ql-snow .ql-shapeDivider .ql-picker-label::before {
@@ -419,12 +473,15 @@ a {
   right: 1rem;
 }
 
+.rich-text table,
 .ql-editor table {
   border-collapse: collapse;
   margin-top: 1rem;
   width: 100%;
 }
 
+.rich-text td,
+.rich-text th,
 .ql-editor td,
 .ql-editor th {
   border: 1px solid var(--border);
@@ -432,6 +489,7 @@ a {
   vertical-align: top;
 }
 
+.rich-text th,
 .ql-editor th {
   background: var(--bg-surface);
   color: var(--foreground);
