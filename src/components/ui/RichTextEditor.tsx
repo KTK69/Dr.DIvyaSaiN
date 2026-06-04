@@ -350,6 +350,11 @@ function formatCalloutBlock(quill: QuillInstance, value: string) {
   quill.formatLine(index, length, "callout", value, "user");
 }
 
+function replaceEditorHtml(quill: QuillInstance, html: string) {
+  quill.deleteText(0, quill.getLength(), "silent");
+  quill.clipboard.dangerouslyPasteHTML(0, html, "silent");
+}
+
 export default function RichTextEditor({
   value,
   onChange,
@@ -404,7 +409,7 @@ export default function RichTextEditor({
       quillRef.current = quill;
 
       const initialHtml = htmlFromValue(initialValueRef.current);
-      quill.clipboard.dangerouslyPasteHTML(0, initialHtml, "silent");
+      replaceEditorHtml(quill, initialHtml);
       lastSyncedHtmlRef.current = normalizeHtml(quill.root.innerHTML);
       quill.enable(!initialReadOnlyRef.current);
       setReady(true);
@@ -482,6 +487,11 @@ export default function RichTextEditor({
     };
 
     void setupEditor().then((maybeCleanup) => {
+      if (!active) {
+        maybeCleanup?.();
+        return;
+      }
+
       cleanup = maybeCleanup;
     });
 
@@ -513,7 +523,7 @@ export default function RichTextEditor({
     }
 
     const currentSelection = selectionRef.current ?? quill.getSelection(true);
-    quill.clipboard.dangerouslyPasteHTML(0, htmlFromValue(value), "silent");
+    replaceEditorHtml(quill, htmlFromValue(value));
     lastSyncedHtmlRef.current = normalizeHtml(quill.root.innerHTML);
 
     if (currentSelection) {
