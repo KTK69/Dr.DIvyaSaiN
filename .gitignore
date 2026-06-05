@@ -36,6 +36,10 @@ yarn-error.log*
 # CMS content — lives on the server only; never commit or push
 data/site-content.runtime.json
 
+# Uploaded images — live on the server only; keep directory, not contents
+/public/uploads/*
+!/public/uploads/.gitkeep
+
 # vercel
 .vercel
 

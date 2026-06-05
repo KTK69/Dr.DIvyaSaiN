@@ -171,7 +171,7 @@ export default function AdminPanel() {
       }
 
       setMessage(result.message ?? "Unable to save changes.");
-    }, 800);
+    }, 1200);
 
     return () => {
       window.clearTimeout(timeoutId);
@@ -643,6 +643,14 @@ export default function AdminPanel() {
                 <button
                   type="button"
                   disabled={saving}
+                  onClick={() => void saveBlogItems(content.blog, "All blogs saved successfully.")}
+                  className="rounded-lg bg-(--accent-gold) px-4 py-2 text-sm font-medium text-(--background) disabled:opacity-50"
+                >
+                  {saving ? "Saving..." : "Save Now"}
+                </button>
+                <button
+                  type="button"
+                  disabled={saving}
                   onClick={() => void sortAndSaveBlogs("desc")}
                   className="rounded-lg border border-(--border) px-4 py-2 text-sm text-(--foreground-muted) hover:text-(--foreground) disabled:opacity-50"
                 >
@@ -657,6 +665,7 @@ export default function AdminPanel() {
                   Sort oldest first
                 </button>
               </div>
+              <p className="text-xs text-(--foreground-subtle)">Tip: Fill in all fields, then click <strong>Save Now</strong> to persist the blog. Auto-save also runs 1 second after each change.</p>
               <ListEditor<BlogItem>
                 items={content.blog}
                 getItemKey={(item) => item.id}
@@ -1624,46 +1633,91 @@ function ServiceForm({ item, onChange }: { item: ServiceItem; onChange: (value: 
   );
 }
 
-function readFileAsDataUrl(file: File): Promise<string> {
-  return new Promise((resolve, reject) => {
-    const reader = new FileReader();
-    reader.onload = () => resolve(String(reader.result || ""));
-    reader.onerror = () => reject(new Error("Failed to read file"));
-    reader.readAsDataURL(file);
-  });
-}
-
 function ImageField({ label, value, onChange, className = "" }: { label: string; value: string; onChange: (value: string) => void; className?: string; }) {
+  const [uploading, setUploading] = useState(false);
+  const [uploadError, setUploadError] = useState("");
+
   const handleFileChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
-    if (!file) {
-      return;
-    }
+    if (!file) return;
+
+    setUploading(true);
+    setUploadError("");
 
     try {
-      const dataUrl = await readFileAsDataUrl(file);
-      onChange(dataUrl);
+      const formData = new FormData();
+      formData.append("file", file);
+
+      const response = await fetch("/api/admin/upload", {
+        method: "POST",
+        body: formData,
+      });
+
+      const result = (await response.json()) as { ok: boolean; url?: string; message?: string };
+
+      if (!result.ok || !result.url) {
+        setUploadError(result.message ?? "Upload failed. Please try again.");
+        return;
+      }
+
+      onChange(result.url);
     } catch {
-      return;
+      setUploadError("Upload failed. Check your connection and try again.");
     } finally {
+      setUploading(false);
       event.target.value = "";
     }
   };
+
+  const isBase64 = value.startsWith("data:");
 
   return (
     <div className={`block text-sm text-(--foreground-muted) ${className}`}>
       <span className="mb-1 block">{label}</span>
       <div className="space-y-2">
-        <input value={value} onChange={(event) => onChange(event.target.value)} className="w-full rounded-lg border border-(--border) bg-transparent px-3 py-2 text-(--foreground)" />
-        <input type="file" accept="image/*" onChange={handleFileChange} className="w-full rounded-lg border border-(--border) bg-transparent px-3 py-2 text-(--foreground)" />
-        {value ? (
+        <input
+          value={value}
+          onChange={(event) => onChange(event.target.value)}
+          placeholder="/uploads/image.jpg or paste a URL"
+          className="w-full rounded-lg border border-(--border) bg-transparent px-3 py-2 text-(--foreground)"
+        />
+        <div className="flex items-center gap-3">
+          <input
+            type="file"
+            accept="image/jpeg,image/jpg,image/png,image/webp,image/gif,image/avif"
+            onChange={handleFileChange}
+            disabled={uploading}
+            className="flex-1 rounded-lg border border-(--border) bg-transparent px-3 py-2 text-(--foreground) disabled:opacity-50"
+          />
+          {uploading ? (
+            <span className="text-xs text-(--accent-gold) whitespace-nowrap animate-pulse">Uploading…</span>
+          ) : null}
+        </div>
+        {uploadError ? (
+          <p className="text-xs text-red-400">{uploadError}</p>
+        ) : null}
+        {isBase64 ? (
+          <p className="text-xs text-amber-400">⚠ This image is stored as base64. Re-upload it using the file picker above to save it properly as a URL.</p>
+        ) : null}
+        {value && !isBase64 ? (
           <div className="relative h-24 overflow-hidden rounded-md border border-(--border)">
             <Image
               src={value}
               alt={`${label} preview`}
               fill
               className="object-cover"
-              unoptimized={value.startsWith("data:") || value.startsWith("blob:")}
+              unoptimized={value.startsWith("blob:")}
+              sizes="96px"
+            />
+          </div>
+        ) : isBase64 ? (
+          <div className="relative h-24 overflow-hidden rounded-md border border-(--border) opacity-60">
+            <Image
+              src={value}
+              alt={`${label} preview`}
+              fill
+              className="object-cover"
+              unoptimized
               sizes="96px"
             />
           </div>
