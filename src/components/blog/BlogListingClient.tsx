@@ -101,7 +101,9 @@ export default function BlogListingClient({
                         fill
                         className="object-cover"
                         unoptimized={
-                          post.image.startsWith("data:") || post.image.startsWith("blob:")
+                          post.image.startsWith("data:") ||
+                          post.image.startsWith("blob:") ||
+                          post.image.startsWith("/uploads/")
                         }
                         sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                       />

@@ -121,7 +121,11 @@ function GalleryPreview({
           alt={procedure.before.front.alt}
           fill
           className="object-cover transition-transform duration-500 group-hover:scale-[1.03]"
-          unoptimized={procedure.before.front.src.startsWith("data:") || procedure.before.front.src.startsWith("blob:")}
+          unoptimized={
+            procedure.before.front.src.startsWith("data:") ||
+            procedure.before.front.src.startsWith("blob:") ||
+            procedure.before.front.src.startsWith("/uploads/")
+          }
           sizes="(max-width: 1024px) 100vw, 25vw"
         />
       </div>
@@ -149,7 +153,11 @@ function GalleryImageCard({
           alt={image.alt}
           fill
           className="object-cover"
-          unoptimized={image.src.startsWith("data:") || image.src.startsWith("blob:")}
+          unoptimized={
+            image.src.startsWith("data:") ||
+            image.src.startsWith("blob:") ||
+            image.src.startsWith("/uploads/")
+          }
           sizes="(max-width: 768px) 100vw, 50vw"
         />
       </div>

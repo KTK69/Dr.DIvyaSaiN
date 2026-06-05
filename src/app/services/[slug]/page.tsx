@@ -105,6 +105,11 @@ export default async function ServiceDetailPage({ params }: Props) {
                 alt={service.name}
                 fill
                 className="object-cover"
+                unoptimized={
+                  service.image.startsWith("data:") ||
+                  service.image.startsWith("blob:") ||
+                  service.image.startsWith("/uploads/")
+                }
                 sizes="(max-width: 1024px) 100vw, 66vw"
               />
             </div>

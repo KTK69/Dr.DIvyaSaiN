@@ -104,7 +104,11 @@ export default function BlogDetailClient({ slug, serverBlog }: Props) {
             alt={displayTitle}
             fill
             className="object-cover"
-            unoptimized={blog.image.startsWith("data:") || blog.image.startsWith("blob:")}
+            unoptimized={
+              blog.image.startsWith("data:") ||
+              blog.image.startsWith("blob:") ||
+              blog.image.startsWith("/uploads/")
+            }
             priority
             sizes="(max-width: 1024px) 100vw, 900px"
           />
