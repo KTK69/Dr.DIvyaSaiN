@@ -147,6 +147,7 @@ a {
   line-height: 1.35;
 }
 
+/* Standard ul/ol (fallback for plain HTML lists) */
 .rich-text ul,
 .rich-text ol,
 .ql-editor ul,
@@ -166,20 +167,43 @@ a {
   list-style-type: decimal;
 }
 
-.rich-text ul ul,
-.ql-editor ul ul {
-  list-style-type: circle;
-}
-
-.rich-text ul ul ul,
-.ql-editor ul ul ul {
-  list-style-type: square;
-}
-
 .rich-text li,
 .ql-editor li {
   margin-top: 0.4rem;
   display: list-item;
+}
+
+/* ── Quill 2.x list fix ─────────────────────────────────────────────────────
+   Quill 2 renders ALL lists as <ol> with data-list="bullet" or "ordered".
+   We must reset Quill's counter-based rendering and apply the correct markers.
+*/
+.rich-text ol,
+.ql-editor ol {
+  /* reset so we can drive style per item */
+  list-style: none;
+  counter-reset: none;
+  padding-left: 1.75rem;
+}
+
+/* Bullet items → disc */
+.rich-text li[data-list="bullet"],
+.ql-editor li[data-list="bullet"] {
+  list-style-type: disc;
+  display: list-item;
+}
+
+/* Ordered / numbered items → decimal */
+.rich-text li[data-list="ordered"],
+.ql-editor li[data-list="ordered"] {
+  list-style-type: decimal;
+  display: list-item;
+}
+
+/* Quill hides ::before pseudo-element by default — force it off */
+.rich-text li[data-list]::before,
+.ql-editor li[data-list]::before {
+  display: none !important;
+  content: none !important;
 }
 
 .rich-text strong,
