@@ -3,9 +3,13 @@ import "server-only";
 import { mkdir, readFile, rename, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { revalidatePath } from "next/cache";
-import { DEFAULT_SITE_CONTENT, type SiteContent } from "@/lib/site-content";
 import {
-  mergeWithDefaults,
+  CLIENT_FALLBACK_SITE_CONTENT,
+  DEFAULT_SITE_CONTENT,
+  type SiteContent,
+} from "@/lib/site-content";
+import {
+  mergeStoredSiteContent,
   type SiteContentEnvelope,
 } from "@/lib/site-content-utils";
 import { getBlogRouteSlug } from "@/lib/blog-links";
@@ -31,8 +35,12 @@ function createEnvelope(content: SiteContent): SiteContentEnvelope {
   };
 }
 
-function withDefaults(content: unknown): SiteContent {
-  return mergeWithDefaults(DEFAULT_SITE_CONTENT, content);
+function withStoredContent(content: unknown): SiteContent {
+  return mergeStoredSiteContent(DEFAULT_SITE_CONTENT, content);
+}
+
+function emptyPublicContent(): SiteContent {
+  return mergeStoredSiteContent(DEFAULT_SITE_CONTENT, CLIENT_FALLBACK_SITE_CONTENT);
 }
 
 async function readFromLocalFile(): Promise<SiteContentEnvelope | null> {
@@ -42,12 +50,12 @@ async function readFromLocalFile(): Promise<SiteContentEnvelope | null> {
 
     if ("content" in parsed && parsed.content) {
       return {
-        content: withDefaults(parsed.content),
+        content: withStoredContent(parsed.content),
         updatedAt: parsed.updatedAt ?? new Date().toISOString(),
       };
     }
 
-    return createEnvelope(withDefaults(parsed));
+    return createEnvelope(withStoredContent(parsed));
   } catch {
     return null;
   }
@@ -60,21 +68,30 @@ async function writeToLocalFile(envelope: SiteContentEnvelope) {
 
   await writeFile(tempPath, payload, "utf8");
   await rename(tempPath, LOCAL_FILE_PATH);
+
+  const verified = await readFromLocalFile();
+  if (!verified) {
+    throw new Error(`Site content was written but could not be read back from ${LOCAL_FILE_PATH}`);
+  }
+
+  if (verified.updatedAt !== envelope.updatedAt) {
+    throw new Error("Site content read-back verification failed (timestamp mismatch).");
+  }
 }
 
 export async function getStoredSiteContent(): Promise<SiteContentEnvelope> {
   try {
     const envelope = await readFromLocalFile();
-    return envelope ?? createEnvelope(DEFAULT_SITE_CONTENT);
+    return envelope ?? createEnvelope(emptyPublicContent());
   } catch {
-    return createEnvelope(DEFAULT_SITE_CONTENT);
+    return createEnvelope(emptyPublicContent());
   }
 }
 
 export async function saveStoredSiteContent(
   content: SiteContent,
 ): Promise<SiteContentEnvelope> {
-  const envelope = createEnvelope(withDefaults(content));
+  const envelope = createEnvelope(withStoredContent(content));
   await writeToLocalFile(envelope);
   revalidateSiteContent(envelope.content);
   return envelope;

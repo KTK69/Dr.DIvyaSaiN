@@ -10,7 +10,10 @@ import React, {
   useState,
 } from "react";
 import { usePathname, useRouter } from "next/navigation";
-import { DEFAULT_SITE_CONTENT, type SiteContent } from "@/lib/site-content";
+import {
+  CLIENT_FALLBACK_SITE_CONTENT,
+  type SiteContent,
+} from "@/lib/site-content";
 import type { SiteContentEnvelope } from "@/lib/site-content-utils";
 
 type SiteContentApiPayload = SiteContentEnvelope & {
@@ -27,6 +30,7 @@ type SiteContentApiPayload = SiteContentEnvelope & {
 type SiteContentContextValue = {
   content: SiteContent;
   setContent: React.Dispatch<React.SetStateAction<SiteContent>>;
+  replaceContent: (nextContent: SiteContent) => void;
   saveContent: (
     nextContent?: SiteContent,
   ) => Promise<{ ok: boolean; message?: string }>;
@@ -40,9 +44,23 @@ type SiteContentContextValue = {
 const SiteContentContext = createContext<SiteContentContextValue | null>(null);
 const CONTENT_UPDATED_EVENT = "site-content:updated";
 
+function isNewerOrEqualTimestamp(incoming: string | null, current: string | null) {
+  if (!incoming) {
+    return false;
+  }
+  if (!current) {
+    return true;
+  }
+  return incoming >= current;
+}
+
 async function fetchSiteContentEnvelope(): Promise<SiteContentApiPayload | null> {
   const response = await fetch(`/api/site-content?ts=${Date.now()}`, {
     cache: "no-store",
+    headers: {
+      Pragma: "no-cache",
+      "Cache-Control": "no-cache",
+    },
   });
 
   if (!response.ok) {
@@ -59,6 +77,7 @@ async function postSiteContentEnvelope(
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ content: nextContent }),
+    cache: "no-store",
   });
 
   const payload = (await response.json()) as SiteContentApiPayload;
@@ -86,7 +105,7 @@ export function SiteContentProvider({
   const pathname = usePathname();
   const isAdminRoute = pathname?.startsWith("/admin") ?? false;
   const [content, setContentState] = useState(
-    initialEnvelope?.content ?? DEFAULT_SITE_CONTENT,
+    initialEnvelope?.content ?? CLIENT_FALLBACK_SITE_CONTENT,
   );
   const [hasLocalEdits, setHasLocalEdits] = useState(false);
   const [saving, setSaving] = useState(false);
@@ -96,7 +115,9 @@ export function SiteContentProvider({
   const [contentReady, setContentReady] = useState(Boolean(initialEnvelope));
   const hasLocalEditsRef = useRef(false);
   const contentRef = useRef(content);
+  const lastSyncedAtRef = useRef(lastSyncedAt);
   const broadcastChannelRef = useRef<BroadcastChannel | null>(null);
+  const hasServerSnapshotRef = useRef(Boolean(initialEnvelope));
 
   useEffect(() => {
     hasLocalEditsRef.current = hasLocalEdits;
@@ -105,6 +126,10 @@ export function SiteContentProvider({
   useEffect(() => {
     contentRef.current = content;
   }, [content]);
+
+  useEffect(() => {
+    lastSyncedAtRef.current = lastSyncedAt;
+  }, [lastSyncedAt]);
 
   const setContent = useCallback<React.Dispatch<React.SetStateAction<SiteContent>>>(
     (update) => {
@@ -116,10 +141,32 @@ export function SiteContentProvider({
     [],
   );
 
+  const replaceContent = useCallback((nextContent: SiteContent) => {
+    setContentState(nextContent);
+  }, []);
+
+  const applyRemoteEnvelope = useCallback((payload: SiteContentEnvelope) => {
+    if (!payload.content) {
+      return;
+    }
+
+    if (
+      hasServerSnapshotRef.current &&
+      !isNewerOrEqualTimestamp(payload.updatedAt ?? null, lastSyncedAtRef.current)
+    ) {
+      return;
+    }
+
+    setContentState(payload.content);
+    setLastSyncedAt(payload.updatedAt ?? null);
+    setContentReady(true);
+    hasServerSnapshotRef.current = true;
+  }, []);
+
   const refreshContent = useCallback(async () => {
     try {
       const payload = await fetchSiteContentEnvelope();
-      if (!payload) {
+      if (!payload?.content) {
         return;
       }
 
@@ -127,13 +174,11 @@ export function SiteContentProvider({
         return;
       }
 
-      setContentState(payload.content ?? DEFAULT_SITE_CONTENT);
-      setLastSyncedAt(payload.updatedAt ?? null);
-      setContentReady(true);
+      applyRemoteEnvelope(payload);
     } catch {
-      // Ignore background refresh failures and keep the last good snapshot.
+      // Keep last good snapshot on network errors.
     }
-  }, [isAdminRoute]);
+  }, [applyRemoteEnvelope, isAdminRoute]);
 
   const notifyContentUpdated = useCallback(() => {
     if (typeof window === "undefined") {
@@ -145,7 +190,11 @@ export function SiteContentProvider({
   }, []);
 
   useEffect(() => {
-    void refreshContent();
+    if (!initialEnvelope) {
+      void refreshContent();
+    } else {
+      setContentReady(true);
+    }
 
     const onContentUpdated = () => {
       if (!hasLocalEditsRef.current || !isAdminRoute) {
@@ -162,7 +211,7 @@ export function SiteContentProvider({
 
     const interval = window.setInterval(() => {
       void refreshContent();
-    }, 10000);
+    }, 30000);
 
     const refreshOnFocus = () => {
       if (document.visibilityState === "visible") {
@@ -184,7 +233,7 @@ export function SiteContentProvider({
       channel?.close();
       broadcastChannelRef.current = null;
     };
-  }, [refreshContent, isAdminRoute]);
+  }, [initialEnvelope, refreshContent, isAdminRoute]);
 
   const saveContent = useCallback(async (nextContent?: SiteContent) => {
     setSaving(true);
@@ -204,8 +253,8 @@ export function SiteContentProvider({
       setHasLocalEdits(false);
       setLastSyncedAt(payload.updatedAt ?? null);
       setContentReady(true);
+      hasServerSnapshotRef.current = true;
       notifyContentUpdated();
-      await refreshContent();
       router.refresh();
       return { ok: true };
     } catch {
@@ -216,20 +265,30 @@ export function SiteContentProvider({
     } finally {
       setSaving(false);
     }
-  }, [notifyContentUpdated, refreshContent, router]);
+  }, [notifyContentUpdated, router]);
 
   const value = useMemo<SiteContentContextValue>(
     () => ({
       content,
       setContent,
+      replaceContent,
       saveContent,
       refreshContent,
-      resetContent: () => setContent(DEFAULT_SITE_CONTENT),
+      resetContent: () => setContent(CLIENT_FALLBACK_SITE_CONTENT),
       saving,
       lastSyncedAt,
       contentReady,
     }),
-    [content, contentReady, lastSyncedAt, refreshContent, saveContent, saving, setContent],
+    [
+      content,
+      contentReady,
+      lastSyncedAt,
+      refreshContent,
+      replaceContent,
+      saveContent,
+      saving,
+      setContent,
+    ],
   );
 
   return <SiteContentContext.Provider value={value}>{children}</SiteContentContext.Provider>;

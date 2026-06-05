@@ -6,6 +6,14 @@ import SectionHeading from "@/components/ui/SectionHeading";
 import { useSiteContent } from "@/components/site/SiteContentProvider";
 import { getBlogCardHref } from "@/lib/blog-links";
 import { getBlogDisplayTitle, getBlogPreviewText } from "@/lib/blog-preview";
+import type { Blog } from "@/types/content";
+import type { SiteContent } from "@/lib/site-content";
+
+type BlogListingClientProps = {
+  serverBlogs: Blog[];
+  serverBlogPage: SiteContent["blogPage"];
+  serverUpdatedAt: string;
+};
 
 function formatDate(value?: string) {
   if (!value) {
@@ -24,18 +32,24 @@ function formatDate(value?: string) {
   });
 }
 
-export default function BlogListingClient() {
-  const { content, contentReady } = useSiteContent();
-  const blogs = content.blog;
-
-  if (!contentReady) {
-    return (
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 section-padding">
-        <p className="text-sm text-(--foreground-muted)">Loading articles…</p>
-      </div>
-    );
+function isNewerOrEqual(incoming: string | null, baseline: string) {
+  if (!incoming) {
+    return false;
   }
-  const blogPage = content.blogPage;
+  return incoming >= baseline;
+}
+
+export default function BlogListingClient({
+  serverBlogs,
+  serverBlogPage,
+  serverUpdatedAt,
+}: BlogListingClientProps) {
+  const { content, lastSyncedAt, contentReady } = useSiteContent();
+
+  const useClientSnapshot =
+    contentReady && isNewerOrEqual(lastSyncedAt, serverUpdatedAt);
+  const blogs = useClientSnapshot ? content.blog : serverBlogs;
+  const blogPage = useClientSnapshot ? content.blogPage : serverBlogPage;
 
   return (
     <>
@@ -63,51 +77,59 @@ export default function BlogListingClient() {
           subtitle="These articles are designed to simplify decisions and improve consultation readiness."
         />
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-10">
-          {blogs.map((post) => {
-            const href = getBlogCardHref(post);
-            const displayTitle = getBlogDisplayTitle(post.title, post.slug, post.content);
-            const previewText = getBlogPreviewText(post.excerpt, post.content);
+        {blogs.length === 0 ? (
+          <p className="mt-10 text-sm text-(--foreground-muted)">
+            No articles published yet. Please check back soon.
+          </p>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-10">
+            {blogs.map((post) => {
+              const href = getBlogCardHref(post);
+              const displayTitle = getBlogDisplayTitle(post.title, post.slug, post.content);
+              const previewText = getBlogPreviewText(post.excerpt, post.content);
 
-            return (
-              <article
-                key={post.id}
-                className="glass-card rounded-xl overflow-hidden border border-(--border)"
-              >
-                <Link href={href} aria-label={`Read ${displayTitle}`}>
-                  <div className="relative aspect-16/10">
-                    <Image
-                      src={post.image}
-                      alt={displayTitle}
-                      fill
-                      className="object-cover"
-                      unoptimized={post.image.startsWith("data:") || post.image.startsWith("blob:")}
-                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                    />
+              return (
+                <article
+                  key={post.id}
+                  className="glass-card rounded-xl overflow-hidden border border-(--border)"
+                >
+                  <Link href={href} aria-label={`Read ${displayTitle}`}>
+                    <div className="relative aspect-16/10">
+                      <Image
+                        src={post.image}
+                        alt={displayTitle}
+                        fill
+                        className="object-cover"
+                        unoptimized={
+                          post.image.startsWith("data:") || post.image.startsWith("blob:")
+                        }
+                        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                      />
+                    </div>
+                  </Link>
+                  <div className="p-5">
+                    {post.published_at ? (
+                      <p className="text-xs uppercase tracking-widest text-(--foreground-subtle) mb-2">
+                        {formatDate(post.published_at)}
+                      </p>
+                    ) : null}
+                    <h2
+                      className="text-lg font-medium text-(--foreground)"
+                      style={{ fontFamily: "var(--font-serif)" }}
+                    >
+                      <Link href={href}>{displayTitle}</Link>
+                    </h2>
+                    {previewText ? (
+                      <p className="mt-3 text-sm leading-relaxed text-(--foreground-muted)">
+                        {previewText}
+                      </p>
+                    ) : null}
                   </div>
-                </Link>
-                <div className="p-5">
-                  {post.published_at ? (
-                    <p className="text-xs uppercase tracking-widest text-(--foreground-subtle) mb-2">
-                      {formatDate(post.published_at)}
-                    </p>
-                  ) : null}
-                  <h2
-                    className="text-lg font-medium text-(--foreground)"
-                    style={{ fontFamily: "var(--font-serif)" }}
-                  >
-                    <Link href={href}>{displayTitle}</Link>
-                  </h2>
-                  {previewText ? (
-                    <p className="mt-3 text-sm leading-relaxed text-(--foreground-muted)">
-                      {previewText}
-                    </p>
-                  ) : null}
-                </div>
-              </article>
-            );
-          })}
-        </div>
+                </article>
+              );
+            })}
+          </div>
+        )}
       </div>
     </>
   );

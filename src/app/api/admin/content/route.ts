@@ -7,10 +7,12 @@ import {
   isSiteContentPersistenceConfigured,
   saveStoredSiteContent,
 } from "@/lib/site-content-store";
-import { mergeWithDefaults } from "@/lib/site-content-utils";
+import { mergeStoredSiteContent } from "@/lib/site-content-utils";
+import { SITE_CONTENT_CACHE_HEADERS } from "@/lib/site-content-headers";
 import { DEFAULT_SITE_CONTENT, type SiteContent } from "@/lib/site-content";
 
 export const dynamic = "force-dynamic";
+export const runtime = "nodejs";
 
 async function isAuthenticated() {
   const cookieStore = await cookies();
@@ -34,9 +36,7 @@ export async function GET() {
       diagnostics: getSiteContentPersistenceDiagnostics(),
     },
     {
-    headers: {
-      "Cache-Control": "no-store",
-    },
+      headers: SITE_CONTENT_CACHE_HEADERS,
     },
   );
 }
@@ -75,7 +75,7 @@ export async function POST(request: Request) {
     );
   }
 
-  const mergedContent = mergeWithDefaults(DEFAULT_SITE_CONTENT, payload.content);
+  const mergedContent = mergeStoredSiteContent(DEFAULT_SITE_CONTENT, payload.content);
   try {
     const saved = await saveStoredSiteContent(mergedContent);
 
@@ -86,9 +86,7 @@ export async function POST(request: Request) {
         diagnostics: getSiteContentPersistenceDiagnostics(),
       },
       {
-        headers: {
-          "Cache-Control": "no-store",
-        },
+        headers: SITE_CONTENT_CACHE_HEADERS,
       },
     );
   } catch (error) {

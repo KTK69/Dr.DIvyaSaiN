@@ -6,6 +6,10 @@ import { useRouter } from "next/navigation";
 import { useSiteContent } from "@/components/site/SiteContentProvider";
 import RichTextEditor from "@/components/ui/RichTextEditor";
 import type { SiteContent } from "@/lib/site-content";
+import {
+  hasBlogOrderChanged,
+  sortBlogsByPublishedDate,
+} from "@/lib/blog-sort";
 
 type Section = "navigation" | "footer" | "siteSeo" | "pageSeo" | "home" | "aboutPage" | "experiencePage" | "testimonialsPage" | "blogPage" | "servicesPage" | "doctorTalkPage" | "contactPage" | "banjaraHillsPage" | "about" | "experience" | "doctorTalk" | "testimonials" | "blog" | "services" | "contact";
 
@@ -62,24 +66,12 @@ const pageSeoItems: Array<{ key: PageSeoKey; label: string }> = [
 
 type SessionResponse = { authenticated?: boolean };
 
-function sortBlogsByPublishedDate(items: BlogItem[], direction: "asc" | "desc") {
-  return [...items].sort((first, second) => {
-    const firstTime = Date.parse(first.published_at || "");
-    const secondTime = Date.parse(second.published_at || "");
-    const safeFirstTime = Number.isNaN(firstTime) ? 0 : firstTime;
-    const safeSecondTime = Number.isNaN(secondTime) ? 0 : secondTime;
-
-    return direction === "asc"
-      ? safeFirstTime - safeSecondTime
-      : safeSecondTime - safeFirstTime;
-  });
-}
-
 export default function AdminPanel() {
   const router = useRouter();
   const {
     content,
     setContent,
+    replaceContent,
     saveContent,
     refreshContent,
     resetContent,
@@ -94,6 +86,11 @@ export default function AdminPanel() {
   const [message, setMessage] = useState("");
   const skipAutosaveRef = useRef(true);
   const previousSavedSnapshotRef = useRef("");
+  const contentRef = useRef(content);
+
+  useEffect(() => {
+    contentRef.current = content;
+  }, [content]);
 
   const sectionTitle = useMemo(() => navItems.find((item) => item.key === activeSection)?.label ?? activeSection, [activeSection]);
 
@@ -161,6 +158,10 @@ export default function AdminPanel() {
       return;
     }
 
+    if (skipAutosaveRef.current) {
+      return;
+    }
+
     const timeoutId = window.setTimeout(async () => {
       const result = await saveContent(content);
       if (result.ok) {
@@ -219,9 +220,13 @@ export default function AdminPanel() {
   }
 
   async function saveBlogItems(items: BlogItem[], messageOnSuccess: string) {
-    const nextContent = { ...content, blog: items };
-    setContent(nextContent);
+    skipAutosaveRef.current = true;
+    const nextContent = { ...contentRef.current, blog: items };
+    replaceContent(nextContent);
+
     const result = await saveContent(nextContent);
+    skipAutosaveRef.current = false;
+
     if (result.ok) {
       previousSavedSnapshotRef.current = JSON.stringify(nextContent);
       setMessage(messageOnSuccess);
@@ -229,6 +234,25 @@ export default function AdminPanel() {
     }
 
     setMessage(result.message ?? "Unable to save blog order.");
+    await refreshContent();
+  }
+
+  async function sortAndSaveBlogs(direction: "asc" | "desc") {
+    const sorted = sortBlogsByPublishedDate(contentRef.current.blog, direction);
+
+    if (!hasBlogOrderChanged(contentRef.current.blog, sorted)) {
+      setMessage(
+        "Order unchanged — posts may share the same published date. Set different dates or use Up/Down for manual order.",
+      );
+      return;
+    }
+
+    await saveBlogItems(
+      sorted,
+      direction === "desc"
+        ? "Blog list sorted newest first and saved."
+        : "Blog list sorted oldest first and saved.",
+    );
   }
 
   function updateHome(path: Array<string>, value: string) {
@@ -617,24 +641,18 @@ export default function AdminPanel() {
             <div className="space-y-4">
               <div className="flex flex-wrap gap-2">
                 <button
-                  onClick={() =>
-                    void saveBlogItems(
-                      sortBlogsByPublishedDate(content.blog, "desc"),
-                      "Blog list sorted newest first and saved.",
-                    )
-                  }
-                  className="rounded-lg border border-(--border) px-4 py-2 text-sm text-(--foreground-muted) hover:text-(--foreground)"
+                  type="button"
+                  disabled={saving}
+                  onClick={() => void sortAndSaveBlogs("desc")}
+                  className="rounded-lg border border-(--border) px-4 py-2 text-sm text-(--foreground-muted) hover:text-(--foreground) disabled:opacity-50"
                 >
                   Sort newest first
                 </button>
                 <button
-                  onClick={() =>
-                    void saveBlogItems(
-                      sortBlogsByPublishedDate(content.blog, "asc"),
-                      "Blog list sorted oldest first and saved.",
-                    )
-                  }
-                  className="rounded-lg border border-(--border) px-4 py-2 text-sm text-(--foreground-muted) hover:text-(--foreground)"
+                  type="button"
+                  disabled={saving}
+                  onClick={() => void sortAndSaveBlogs("asc")}
+                  className="rounded-lg border border-(--border) px-4 py-2 text-sm text-(--foreground-muted) hover:text-(--foreground) disabled:opacity-50"
                 >
                   Sort oldest first
                 </button>
@@ -646,6 +664,7 @@ export default function AdminPanel() {
                 onRemove={(index) => removeItem("blog", index)}
                 onChange={(items) => update("blog", items)}
                 onReorder={(items) => void saveBlogItems(items, "Blog order saved.")}
+                reorderOnly
                 renderItem={(item, _index, updateItem) => (
                   <div className="grid gap-4 md:grid-cols-2">
                     <Field label="Title" value={item.title} onChange={(value) => updateItem({ ...item, title: value })} />
@@ -1139,6 +1158,7 @@ function ListEditor<T>({
   onRemove,
   onChange,
   onReorder,
+  reorderOnly = false,
   getItemKey,
 }: {
   items: T[];
@@ -1147,6 +1167,7 @@ function ListEditor<T>({
   onRemove: (index: number) => void;
   onChange: (items: T[]) => void;
   onReorder?: (items: T[]) => void;
+  reorderOnly?: boolean;
   getItemKey?: (item: T, index: number) => string;
 }) {
   function moveItem(fromIndex: number, toIndex: number) {
@@ -1157,6 +1178,12 @@ function ListEditor<T>({
     const nextItems = [...items];
     const [movedItem] = nextItems.splice(fromIndex, 1);
     nextItems.splice(toIndex, 0, movedItem);
+
+    if (reorderOnly && onReorder) {
+      onReorder(nextItems);
+      return;
+    }
+
     onChange(nextItems);
     onReorder?.(nextItems);
   }

@@ -1024,3 +1024,9 @@ export const DEFAULT_SITE_CONTENT: SiteContent = {
     hospital: contactInfo.hospital,
   },
 };
+
+/** Client fallback — never includes seed blogs (prevents flash of template posts). */
+export const CLIENT_FALLBACK_SITE_CONTENT: SiteContent = {
+  ...DEFAULT_SITE_CONTENT,
+  blog: [],
+};

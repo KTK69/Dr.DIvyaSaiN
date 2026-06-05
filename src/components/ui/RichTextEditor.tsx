@@ -401,6 +401,9 @@ export default function RichTextEditor({
           toolbar: {
             container: toolbarRef.current,
           },
+          clipboard: {
+            matchVisual: false,
+          },
         },
         placeholder: initialPlaceholderRef.current,
         readOnly: initialReadOnlyRef.current,
@@ -465,16 +468,26 @@ export default function RichTextEditor({
         }
 
         event.preventDefault();
+        event.stopPropagation();
         event.stopImmediatePropagation();
+
         const selection = quill.getSelection(true);
         const index = selection?.index ?? Math.max(0, quill.getLength() - 1);
         const length = selection?.length ?? 0;
 
+        quill.off("text-change", handleTextChange);
+
         if (length > 0) {
-          quill.deleteText(index, length, "user");
+          quill.deleteText(index, length, "silent");
         }
 
-        quill.clipboard.dangerouslyPasteHTML(index, sanitizedHtml, "user");
+        quill.clipboard.dangerouslyPasteHTML(index, sanitizedHtml, "silent");
+
+        const nextHtml = normalizeHtml(quill.root.innerHTML);
+        lastSyncedHtmlRef.current = nextHtml;
+        onChangeRef.current(nextHtml);
+
+        quill.on("text-change", handleTextChange);
       };
 
       container.addEventListener("paste", handlePaste, true);

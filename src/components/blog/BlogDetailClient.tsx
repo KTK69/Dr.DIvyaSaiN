@@ -64,7 +64,7 @@ export default function BlogDetailClient({ slug, serverBlog }: Props) {
   const { content } = useSiteContent();
   const normalizedSlug = normalizeBlogSlug(slug);
   const localBlog = content.blog.find((item) => getBlogRouteSlug(item) === normalizedSlug);
-  const blog = localBlog ?? serverBlog ?? null;
+  const blog = serverBlog ?? localBlog ?? null;
 
   if (!blog) {
     return <NotFoundBlock />;

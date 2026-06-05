@@ -1,4 +1,5 @@
 import type { SiteContent } from "@/lib/site-content";
+import type { Blog } from "@/types/content";
 
 function isPlainObject(value: unknown): value is Record<string, unknown> {
   return Boolean(value) && typeof value === "object" && !Array.isArray(value);
@@ -49,6 +50,29 @@ function normalizeGalleryProcedure(defaultProcedure: Record<string, unknown>, st
       ),
     },
   };
+}
+
+const STORED_ARRAY_KEYS = new Set(["blog", "services", "testimonials", "doctorTalk"]);
+
+/** Merge stored CMS data without substituting seed blogs/services when arrays are empty. */
+export function mergeStoredSiteContent(
+  defaults: SiteContent,
+  stored: unknown,
+): SiteContent {
+  const merged = mergeWithDefaults(defaults, stored);
+  const storedObject = isPlainObject(stored) ? stored : {};
+
+  for (const key of STORED_ARRAY_KEYS) {
+    if (Array.isArray(storedObject[key])) {
+      (merged as Record<string, unknown>)[key] = storedObject[key];
+    }
+  }
+
+  if (Array.isArray(storedObject.blog)) {
+    merged.blog = storedObject.blog as Blog[];
+  }
+
+  return merged;
 }
 
 export function mergeWithDefaults<T>(defaults: T, stored: unknown): T {

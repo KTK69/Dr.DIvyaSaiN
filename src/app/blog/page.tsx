@@ -4,6 +4,7 @@ import BlogListingClient from "@/components/blog/BlogListingClient";
 import JsonLd from "@/components/seo/JsonLd";
 import { SITE_URL } from "@/lib/seo";
 import { getEditablePageMetadata } from "@/lib/page-metadata";
+import { getStoredSiteContent } from "@/lib/site-content-store";
 
 export const dynamic = "force-dynamic";
 
@@ -21,10 +22,16 @@ const blogListJsonLd = {
 };
 
 export default async function BlogListingPage() {
+  const { content, updatedAt } = await getStoredSiteContent();
+
   return (
     <PageWrapper>
       <JsonLd data={blogListJsonLd} />
-      <BlogListingClient />
+      <BlogListingClient
+        serverBlogs={content.blog}
+        serverBlogPage={content.blogPage}
+        serverUpdatedAt={updatedAt}
+      />
     </PageWrapper>
   );
 }
