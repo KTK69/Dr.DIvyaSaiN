@@ -68,10 +68,10 @@ export default function BeforeAfterGallery() {
           onClick={() => setSelectedIndex(null)}
         >
           <div
-            className="w-full max-w-6xl overflow-hidden rounded-[2rem] border border-white/15 bg-(--background) shadow-2xl"
+            className="w-full max-w-6xl overflow-hidden rounded-[2rem] border border-white/15 bg-(--background) shadow-2xl flex flex-col max-h-[90vh]"
             onClick={(event) => event.stopPropagation()}
           >
-            <div className="flex items-start justify-between gap-4 border-b border-(--border) px-6 py-5">
+            <div className="flex items-start justify-between gap-4 border-b border-(--border) px-6 py-5 shrink-0">
               <div>
                 <p className="text-xs uppercase tracking-[0.3em] text-(--accent-gold)">
                   Before and after
@@ -92,11 +92,16 @@ export default function BeforeAfterGallery() {
               </button>
             </div>
 
-            <div className="grid gap-4 p-6 md:grid-cols-2">
-              <GalleryImageCard image={selectedProcedure.before.front} />
-              <GalleryImageCard image={selectedProcedure.before.back} />
-              <GalleryImageCard image={selectedProcedure.after.front} />
-              <GalleryImageCard image={selectedProcedure.after.back} />
+            <div className={`grid gap-6 p-6 overflow-y-auto ${
+              selectedProcedure.images.length === 1
+                ? "grid-cols-1 max-w-xl mx-auto"
+                : selectedProcedure.images.length === 3
+                ? "grid-cols-1 md:grid-cols-3"
+                : "grid-cols-1 md:grid-cols-2 lg:grid-cols-3"
+            }`}>
+              {selectedProcedure.images.map((image, index) => (
+                <GalleryImageCard key={index} image={image} />
+              ))}
             </div>
           </div>
         </div>
@@ -110,21 +115,22 @@ function GalleryPreview({
 }: {
   procedure: {
     procedureName: string;
-    before: { front: { src: string; alt: string; label: string } };
+    previewImage: string;
   };
 }) {
+  const src = procedure.previewImage || "/images/img/about.jpeg";
   return (
     <figure className="glass-card overflow-hidden rounded-2xl border border-(--border)">
       <div className="relative aspect-video">
         <Image
-          src={procedure.before.front.src}
-          alt={procedure.before.front.alt}
+          src={src}
+          alt={procedure.procedureName}
           fill
           className="object-cover transition-transform duration-500 group-hover:scale-[1.03]"
           unoptimized={
-            procedure.before.front.src.startsWith("data:") ||
-            procedure.before.front.src.startsWith("blob:") ||
-            procedure.before.front.src.startsWith("/uploads/")
+            src.startsWith("data:") ||
+            src.startsWith("blob:") ||
+            src.startsWith("/uploads/")
           }
           sizes="(max-width: 1024px) 100vw, 25vw"
         />
@@ -146,8 +152,8 @@ function GalleryImageCard({
   };
 }) {
   return (
-    <figure className="overflow-hidden rounded-2xl border border-(--border) bg-(--bg-surface)">
-      <div className="relative aspect-[4/3]">
+    <figure className="overflow-hidden rounded-2xl border border-(--border) bg-(--bg-surface) flex flex-col">
+      <div className="relative aspect-[4/3] w-full">
         <Image
           src={image.src}
           alt={image.alt}
@@ -161,7 +167,7 @@ function GalleryImageCard({
           sizes="(max-width: 768px) 100vw, 50vw"
         />
       </div>
-      <figcaption className="px-4 py-3 text-xs uppercase tracking-[0.2em] text-(--foreground-muted)">
+      <figcaption className="px-4 py-3 text-xs uppercase tracking-[0.2em] text-(--foreground-muted) border-t border-(--border)/30">
         {image.label}
       </figcaption>
     </figure>

@@ -11,17 +11,11 @@ export type NavLink = { label: string; href: string };
 
 // Section types
 type GalleryImageSlot = { src: string; alt: string; label: string };
-type BeforeAfterProcedure = {
+export type BeforeAfterProcedure = {
   procedureName: string;
   description: string;
-  before: {
-    front: GalleryImageSlot;
-    back: GalleryImageSlot;
-  };
-  after: {
-    front: GalleryImageSlot;
-    back: GalleryImageSlot;
-  };
+  previewImage: string;
+  images: Array<GalleryImageSlot>;
 };
 
 export type HomeContent = {
@@ -584,114 +578,110 @@ export const DEFAULT_SITE_CONTENT: SiteContent = {
         {
           procedureName: "Breast reconstruction",
           description: "Procedure-specific comparison set for breast reconstruction.",
-          before: {
-            front: {
+          previewImage: "/images/img/Dr Divya Plastic Surgeon - Home Banner.jpg",
+          images: [
+            {
               src: "/images/img/Dr Divya Plastic Surgeon - Home Banner.jpg",
               alt: "Before front view for breast reconstruction",
               label: "Before front",
             },
-            back: {
+            {
               src: "/images/img/gallery-2.jpg",
               alt: "Before back view for breast reconstruction",
               label: "Before back",
             },
-          },
-          after: {
-            front: {
+            {
               src: "/images/img/Dr Divya Plastic Surgeon home.jpg",
               alt: "After front view for breast reconstruction",
               label: "After front",
             },
-            back: {
+            {
               src: "/images/img/hero-bg.jpg",
               alt: "After back view for breast reconstruction",
               label: "After back",
             },
-          },
+          ],
         },
         {
           procedureName: "Breast lift",
           description: "Procedure-specific comparison set for breast lift.",
-          before: {
-            front: {
+          previewImage: "/images/img/Dr Divya Plastic Surgeon - Home Banner (1).jpg",
+          images: [
+            {
               src: "/images/img/Dr Divya Plastic Surgeon - Home Banner (1).jpg",
               alt: "Before front view for breast lift",
               label: "Before front",
             },
-            back: {
+            {
               src: "/images/img/slider.jpeg",
               alt: "Before back view for breast lift",
               label: "Before back",
             },
-          },
-          after: {
-            front: {
+            {
               src: "/images/img/testimonials-4.jpg",
               alt: "After front view for breast lift",
               label: "After front",
             },
-            back: {
+            {
               src: "/images/img/DR Divya.jpeg",
               alt: "After back view for breast lift",
               label: "After back",
             },
-          },
+          ],
         },
         {
           procedureName: "Rhinoplasty",
           description: "Procedure-specific comparison set for rhinoplasty.",
-          before: {
-            front: {
+          previewImage: "/images/img/about.jpeg",
+          images: [
+            {
               src: "/images/img/about.jpeg",
               alt: "Before front view for rhinoplasty",
               label: "Before front",
             },
-            back: {
+            {
               src: "/images/img/logo.jpeg",
               alt: "Before back view for rhinoplasty",
               label: "Before back",
             },
-          },
-          after: {
-            front: {
+            {
               src: "/images/img/logo1.jpeg",
               alt: "After front view for rhinoplasty",
               label: "After front",
             },
-            back: {
+            {
               src: "/images/img/Dr Divya Logo Circle.png",
               alt: "After back view for rhinoplasty",
               label: "After back",
             },
-          },
+          ],
         },
         {
           procedureName: "Body contouring",
           description: "Procedure-specific comparison set for body contouring.",
-          before: {
-            front: {
+          previewImage: "/images/img/Dr Divya Plastic Surgeon.png",
+          images: [
+            {
               src: "/images/img/Dr Divya Plastic Surgeon.png",
               alt: "Before front view for body contouring",
               label: "Before front",
             },
-            back: {
+            {
               src: "/images/img/Dr Divya Plastic Surgeon - Home Banner.jpg",
               alt: "Before back view for body contouring",
               label: "Before back",
             },
-          },
-          after: {
-            front: {
+            {
               src: "/images/img/gallery-2.jpg",
               alt: "After front view for body contouring",
               label: "After front",
             },
-            back: {
+            {
               src: "/images/img/hero-bg.jpg",
               alt: "After back view for body contouring",
               label: "After back",
             },
-          },
+          ],
         },
       ],
     },

@@ -17,38 +17,48 @@ function normalizeGallerySlot(defaultSlot: Record<string, unknown>, storedSlot: 
 
 function normalizeGalleryProcedure(defaultProcedure: Record<string, unknown>, storedProcedure: unknown, fallbackName: string) {
   const storedObject = isPlainObject(storedProcedure) ? storedProcedure : {};
-  const defaultBefore = isPlainObject(defaultProcedure.before) ? defaultProcedure.before : {};
-  const defaultAfter = isPlainObject(defaultProcedure.after) ? defaultProcedure.after : {};
-  const storedBefore = isPlainObject(storedObject.before) ? storedObject.before : {};
-  const storedAfter = isPlainObject(storedObject.after) ? storedObject.after : {};
+  
+  let images: Array<{ src: string; alt: string; label: string }> = [];
+  if (Array.isArray(storedObject.images)) {
+    images = storedObject.images.map((img, i) => normalizeGallerySlot({}, img, `Image ${i + 1}`));
+  } else {
+    const storedBefore = isPlainObject(storedObject.before) ? storedObject.before : {};
+    const storedAfter = isPlainObject(storedObject.after) ? storedObject.after : {};
+    
+    if (storedBefore.front) {
+      images.push(normalizeGallerySlot({}, storedBefore.front, "Before Front"));
+    }
+    if (storedBefore.back) {
+      images.push(normalizeGallerySlot({}, storedBefore.back, "Before Back"));
+    }
+    if (storedAfter.front) {
+      images.push(normalizeGallerySlot({}, storedAfter.front, "After Front"));
+    }
+    if (storedAfter.back) {
+      images.push(normalizeGallerySlot({}, storedAfter.back, "After Back"));
+    }
+  }
+
+  if (images.length === 0 && Array.isArray(defaultProcedure.images)) {
+    images = (defaultProcedure.images as Array<any>).map((img, i) => normalizeGallerySlot({}, img, `Image ${i + 1}`));
+  }
+
+  let previewImage = String(storedObject.previewImage ?? "");
+  if (!previewImage) {
+    if (images.length > 0) {
+      previewImage = images[0].src;
+    } else {
+      const storedBefore = isPlainObject(storedObject.before) ? storedObject.before : {};
+      const frontSlot = isPlainObject(storedBefore.front) ? storedBefore.front : {};
+      previewImage = String(frontSlot.src ?? defaultProcedure.previewImage ?? "");
+    }
+  }
 
   return {
     procedureName: String(storedObject.procedureName ?? defaultProcedure.procedureName ?? fallbackName),
     description: String(storedObject.description ?? defaultProcedure.description ?? ""),
-    before: {
-      front: normalizeGallerySlot(
-        isPlainObject(defaultBefore.front) ? defaultBefore.front : {},
-        storedBefore.front,
-        "Before front",
-      ),
-      back: normalizeGallerySlot(
-        isPlainObject(defaultBefore.back) ? defaultBefore.back : {},
-        storedBefore.back,
-        "Before back",
-      ),
-    },
-    after: {
-      front: normalizeGallerySlot(
-        isPlainObject(defaultAfter.front) ? defaultAfter.front : {},
-        storedAfter.front,
-        "After front",
-      ),
-      back: normalizeGallerySlot(
-        isPlainObject(defaultAfter.back) ? defaultAfter.back : {},
-        storedAfter.back,
-        "After back",
-      ),
-    },
+    previewImage,
+    images,
   };
 }
 

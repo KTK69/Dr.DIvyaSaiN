@@ -19,6 +19,7 @@ type ServiceItem = SiteContent["services"][number];
 type ExperienceItem = SiteContent["experience"]["experience"][number];
 type NavLink = { label: string; href: string };
 type GalleryProcedure = SiteContent["home"]["beforeAfterGallery"]["procedures"][number];
+type GalleryImageSlot = { src: string; alt: string; label: string };
 type PageSeoKey = keyof SiteContent["pageSeo"];
 type BanjaraHillsServiceCard = SiteContent["banjaraHillsPage"]["cosmeticServices"][number];
 type BanjaraHillsBenefitCard = SiteContent["banjaraHillsPage"]["aigBenefits"][number];
@@ -508,7 +509,7 @@ export default function AdminPanel() {
                   <Field label="Gallery description" value={content.home.beforeAfterGallery.description} onChange={(value) => update("home", { ...content.home, beforeAfterGallery: { ...content.home.beforeAfterGallery, description: value } })} multiline className="md:col-span-2" />
                 </div>
 
-                <ListEditor<GalleryProcedure>
+                 <ListEditor<GalleryProcedure>
                   items={content.home.beforeAfterGallery.procedures}
                   onAdd={() =>
                     update("home", {
@@ -540,6 +541,8 @@ export default function AdminPanel() {
                       },
                     })
                   }
+                  getItemTitle={(item) => item.procedureName || "Untitled Procedure"}
+                  startCollapsed={true}
                   renderItem={(item, _index, updateItem) => (
                     <GalleryProcedureEditor item={item} onChange={updateItem} />
                   )}
@@ -625,6 +628,8 @@ export default function AdminPanel() {
               onAdd={() => addItem("testimonials")}
               onRemove={(index) => removeItem("testimonials", index)}
               onChange={(items) => update("testimonials", items)}
+              getItemTitle={(item) => item.patient_name ? `${item.patient_name} (${item.procedure})` : "New Testimonial"}
+              startCollapsed={true}
               renderItem={(item, index, updateItem) => (
                 <div className="grid gap-4 md:grid-cols-2">
                   <Field label="Patient name" value={item.patient_name} onChange={(value) => updateItem({ ...item, patient_name: value })} />
@@ -673,6 +678,8 @@ export default function AdminPanel() {
                 onChange={(items) => update("blog", items)}
                 onReorder={(items) => void saveBlogItems(items, "Blog order saved.")}
                 reorderOnly
+                getItemTitle={(item) => item.title || item.slug || "Untitled Blog"}
+                startCollapsed={true}
                 renderItem={(item, _index, updateItem) => (
                   <div className="grid gap-4 md:grid-cols-2">
                     <Field label="Title" value={item.title} onChange={(value) => updateItem({ ...item, title: value })} />
@@ -694,6 +701,8 @@ export default function AdminPanel() {
               onAdd={() => addItem("services")}
               onRemove={(index) => removeItem("services", index)}
               onChange={(items) => update("services", items)}
+              getItemTitle={(item) => item.name || item.slug || "Untitled Service"}
+              startCollapsed={true}
               renderItem={(item, index, updateItem) => <ServiceForm item={item} onChange={updateItem} />}
             />
           ) : null}
@@ -1168,6 +1177,8 @@ function ListEditor<T>({
   onReorder,
   reorderOnly = false,
   getItemKey,
+  getItemTitle,
+  startCollapsed = false,
 }: {
   items: T[];
   renderItem: (item: T, index: number, updateItem: (item: T) => void) => React.ReactNode;
@@ -1177,6 +1188,8 @@ function ListEditor<T>({
   onReorder?: (items: T[]) => void;
   reorderOnly?: boolean;
   getItemKey?: (item: T, index: number) => string;
+  getItemTitle?: (item: T, index: number) => string;
+  startCollapsed?: boolean;
 }) {
   function moveItem(fromIndex: number, toIndex: number) {
     if (toIndex < 0 || toIndex >= items.length) {
@@ -1240,114 +1253,110 @@ const GALLERY_PROCEDURE_PRESETS: Array<GalleryProcedure> = [
   {
     procedureName: "Breast reconstruction",
     description: "Procedure-specific comparison set for breast reconstruction.",
-    before: {
-      front: {
+    previewImage: "/images/img/Dr Divya Plastic Surgeon - Home Banner.jpg",
+    images: [
+      {
         src: "/images/img/Dr Divya Plastic Surgeon - Home Banner.jpg",
         alt: "Before front view for breast reconstruction",
         label: "Before front",
       },
-      back: {
+      {
         src: "/images/img/gallery-2.jpg",
         alt: "Before back view for breast reconstruction",
         label: "Before back",
       },
-    },
-    after: {
-      front: {
+      {
         src: "/images/img/Dr Divya Plastic Surgeon home.jpg",
         alt: "After front view for breast reconstruction",
         label: "After front",
       },
-      back: {
+      {
         src: "/images/img/hero-bg.jpg",
         alt: "After back view for breast reconstruction",
         label: "After back",
       },
-    },
+    ],
   },
   {
     procedureName: "Breast lift",
     description: "Procedure-specific comparison set for breast lift.",
-    before: {
-      front: {
+    previewImage: "/images/img/Dr Divya Plastic Surgeon - Home Banner (1).jpg",
+    images: [
+      {
         src: "/images/img/Dr Divya Plastic Surgeon - Home Banner (1).jpg",
         alt: "Before front view for breast lift",
         label: "Before front",
       },
-      back: {
+      {
         src: "/images/img/slider.jpeg",
         alt: "Before back view for breast lift",
         label: "Before back",
       },
-    },
-    after: {
-      front: {
+      {
         src: "/images/img/testimonials-4.jpg",
         alt: "After front view for breast lift",
         label: "After front",
       },
-      back: {
+      {
         src: "/images/img/DR Divya.jpeg",
         alt: "After back view for breast lift",
         label: "After back",
       },
-    },
+    ],
   },
   {
     procedureName: "Rhinoplasty",
     description: "Procedure-specific comparison set for rhinoplasty.",
-    before: {
-      front: {
+    previewImage: "/images/img/about.jpeg",
+    images: [
+      {
         src: "/images/img/about.jpeg",
         alt: "Before front view for rhinoplasty",
         label: "Before front",
       },
-      back: {
+      {
         src: "/images/img/logo.jpeg",
         alt: "Before back view for rhinoplasty",
         label: "Before back",
       },
-    },
-    after: {
-      front: {
+      {
         src: "/images/img/logo1.jpeg",
         alt: "After front view for rhinoplasty",
         label: "After front",
       },
-      back: {
+      {
         src: "/images/img/Dr Divya Logo Circle.png",
         alt: "After back view for rhinoplasty",
         label: "After back",
       },
-    },
+    ],
   },
   {
     procedureName: "Body contouring",
     description: "Procedure-specific comparison set for body contouring.",
-    before: {
-      front: {
+    previewImage: "/images/img/Dr Divya Plastic Surgeon.png",
+    images: [
+      {
         src: "/images/img/Dr Divya Plastic Surgeon.png",
         alt: "Before front view for body contouring",
         label: "Before front",
       },
-      back: {
+      {
         src: "/images/img/Dr Divya Plastic Surgeon - Home Banner.jpg",
         alt: "Before back view for body contouring",
         label: "Before back",
       },
-    },
-    after: {
-      front: {
+      {
         src: "/images/img/gallery-2.jpg",
         alt: "After front view for body contouring",
         label: "After front",
       },
-      back: {
+      {
         src: "/images/img/hero-bg.jpg",
         alt: "After back view for body contouring",
         label: "After back",
       },
-    },
+    ],
   },
 ];
 
@@ -1364,52 +1373,45 @@ function GalleryProcedureEditor({
 }) {
   return (
     <div className="space-y-5">
-      <div className="grid gap-4 md:grid-cols-2">
+      <div className="grid gap-4 md:grid-cols-2 border-b border-(--border)/30 pb-4">
         <Field label="Procedure name" value={item.procedureName} onChange={(value) => onChange({ ...item, procedureName: value })} />
         <Field label="Procedure description" value={item.description} onChange={(value) => onChange({ ...item, description: value })} multiline className="md:col-span-2" />
+        <ImageField label="Procedure preview image (shown in gallery grid)" value={item.previewImage} onChange={(value) => onChange({ ...item, previewImage: value })} className="md:col-span-2" />
       </div>
 
-      <div className="grid gap-4 lg:grid-cols-2">
-        <GallerySlotEditor
-          title="Before front"
-          value={item.before.front}
-          onChange={(value) => onChange({ ...item, before: { ...item.before, front: value } })}
-        />
-        <GallerySlotEditor
-          title="Before back"
-          value={item.before.back}
-          onChange={(value) => onChange({ ...item, before: { ...item.before, back: value } })}
-        />
-        <GallerySlotEditor
-          title="After front"
-          value={item.after.front}
-          onChange={(value) => onChange({ ...item, after: { ...item.after, front: value } })}
-        />
-        <GallerySlotEditor
-          title="After back"
-          value={item.after.back}
-          onChange={(value) => onChange({ ...item, after: { ...item.after, back: value } })}
+      <div className="space-y-4">
+        <div className="flex items-center justify-between">
+          <p className="text-sm font-semibold text-(--foreground)">Procedure Images (1 to 6)</p>
+          <span className="text-xs text-(--foreground-muted)">{(item.images || []).length} of 6 images</span>
+        </div>
+
+        <ListEditor<GalleryImageSlot>
+          items={item.images || []}
+          onAdd={() => {
+            const nextImages = [...(item.images || []), { src: "", alt: "", label: `Image ${(item.images || []).length + 1}` }];
+            if (nextImages.length <= 6) {
+              onChange({ ...item, images: nextImages });
+            }
+          }}
+          onRemove={(index) => {
+            onChange({ ...item, images: (item.images || []).filter((_, idx) => idx !== index) });
+          }}
+          onChange={(images) => {
+            if (images.length <= 6) {
+              onChange({ ...item, images });
+            }
+          }}
+          getItemTitle={(img, idx) => img.label || `Image ${idx + 1}`}
+          startCollapsed={false}
+          renderItem={(img, _index, updateImage) => (
+            <div className="grid gap-4 md:grid-cols-2">
+              <ImageField label="Image File" value={img.src} onChange={(src) => updateImage({ ...img, src })} className="md:col-span-2" />
+              <Field label="Image Label (e.g. Before Front, After)" value={img.label} onChange={(label) => updateImage({ ...img, label })} />
+              <Field label="Alt text" value={img.alt} onChange={(alt) => updateImage({ ...img, alt })} />
+            </div>
+          )}
         />
       </div>
-    </div>
-  );
-}
-
-function GallerySlotEditor({
-  title,
-  value,
-  onChange,
-}: {
-  title: string;
-  value: { src: string; alt: string; label: string };
-  onChange: (value: { src: string; alt: string; label: string }) => void;
-}) {
-  return (
-    <div className="rounded-xl border border-(--border) p-4 space-y-4">
-      <p className="text-sm font-semibold text-(--foreground)">{title}</p>
-      <ImageField label={`${title} image`} value={value.src} onChange={(src) => onChange({ ...value, src })} />
-      <Field label={`${title} alt text`} value={value.alt} onChange={(alt) => onChange({ ...value, alt })} />
-      <Field label={`${title} label`} value={value.label} onChange={(label) => onChange({ ...value, label })} />
     </div>
   );
 }
