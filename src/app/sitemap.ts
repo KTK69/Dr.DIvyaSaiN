@@ -3,7 +3,7 @@ import { fetchBlogs, fetchServices } from "@/lib/api";
 import { getBlogRouteSlug } from "@/lib/blog-links";
 import { SITE_URL } from "@/lib/seo";
 
-export const revalidate = 300;
+export const dynamic = "force-dynamic";
 
 const staticRoutes: MetadataRoute.Sitemap = [
   {

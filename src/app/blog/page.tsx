@@ -5,7 +5,7 @@ import JsonLd from "@/components/seo/JsonLd";
 import { SITE_URL } from "@/lib/seo";
 import { getEditablePageMetadata } from "@/lib/page-metadata";
 
-export const revalidate = 300;
+export const dynamic = "force-dynamic";
 
 export async function generateMetadata(): Promise<Metadata> {
   return getEditablePageMetadata("blog");

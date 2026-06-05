@@ -10,7 +10,7 @@ interface Props {
   params: Promise<{ slug: string }>;
 }
 
-export const revalidate = 300;
+export const dynamic = "force-dynamic";
 
 export async function generateStaticParams() {
   const blogs = await fetchBlogs();

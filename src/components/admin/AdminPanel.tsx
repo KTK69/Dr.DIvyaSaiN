@@ -218,6 +218,19 @@ export default function AdminPanel() {
     setContent((previous) => ({ ...previous, [key]: value }));
   }
 
+  async function saveBlogItems(items: BlogItem[], messageOnSuccess: string) {
+    const nextContent = { ...content, blog: items };
+    setContent(nextContent);
+    const result = await saveContent(nextContent);
+    if (result.ok) {
+      previousSavedSnapshotRef.current = JSON.stringify(nextContent);
+      setMessage(messageOnSuccess);
+      return;
+    }
+
+    setMessage(result.message ?? "Unable to save blog order.");
+  }
+
   function updateHome(path: Array<string>, value: string) {
     setContent((previous) => ({
       ...previous,
@@ -441,10 +454,10 @@ export default function AdminPanel() {
             </h2>
             <p className="text-sm text-(--foreground-subtle)">
               {saving
-                ? "Saving to Vercel storage..."
+                ? "Saving to server..."
                 : lastSyncedAt
                   ? `Synced ${new Date(lastSyncedAt).toLocaleString()}`
-                  : "Changes auto-save to shared storage"}
+                  : "Changes auto-save to server storage"}
             </p>
           </div>
 
@@ -604,13 +617,23 @@ export default function AdminPanel() {
             <div className="space-y-4">
               <div className="flex flex-wrap gap-2">
                 <button
-                  onClick={() => update("blog", sortBlogsByPublishedDate(content.blog, "desc"))}
+                  onClick={() =>
+                    void saveBlogItems(
+                      sortBlogsByPublishedDate(content.blog, "desc"),
+                      "Blog list sorted newest first and saved.",
+                    )
+                  }
                   className="rounded-lg border border-(--border) px-4 py-2 text-sm text-(--foreground-muted) hover:text-(--foreground)"
                 >
                   Sort newest first
                 </button>
                 <button
-                  onClick={() => update("blog", sortBlogsByPublishedDate(content.blog, "asc"))}
+                  onClick={() =>
+                    void saveBlogItems(
+                      sortBlogsByPublishedDate(content.blog, "asc"),
+                      "Blog list sorted oldest first and saved.",
+                    )
+                  }
                   className="rounded-lg border border-(--border) px-4 py-2 text-sm text-(--foreground-muted) hover:text-(--foreground)"
                 >
                   Sort oldest first
@@ -622,6 +645,7 @@ export default function AdminPanel() {
                 onAdd={() => addItem("blog")}
                 onRemove={(index) => removeItem("blog", index)}
                 onChange={(items) => update("blog", items)}
+                onReorder={(items) => void saveBlogItems(items, "Blog order saved.")}
                 renderItem={(item, _index, updateItem) => (
                   <div className="grid gap-4 md:grid-cols-2">
                     <Field label="Title" value={item.title} onChange={(value) => updateItem({ ...item, title: value })} />
@@ -1114,6 +1138,7 @@ function ListEditor<T>({
   onAdd,
   onRemove,
   onChange,
+  onReorder,
   getItemKey,
 }: {
   items: T[];
@@ -1121,6 +1146,7 @@ function ListEditor<T>({
   onAdd: () => void;
   onRemove: (index: number) => void;
   onChange: (items: T[]) => void;
+  onReorder?: (items: T[]) => void;
   getItemKey?: (item: T, index: number) => string;
 }) {
   function moveItem(fromIndex: number, toIndex: number) {
@@ -1132,6 +1158,7 @@ function ListEditor<T>({
     const [movedItem] = nextItems.splice(fromIndex, 1);
     nextItems.splice(toIndex, 0, movedItem);
     onChange(nextItems);
+    onReorder?.(nextItems);
   }
 
   return (

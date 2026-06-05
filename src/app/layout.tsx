@@ -9,6 +9,8 @@ import { getStoredSiteContent } from "@/lib/site-content-store";
 
 const GOOGLE_TAG_ID = "G-DF5TQCEYCB";
 
+export const dynamic = "force-dynamic";
+
 export async function generateMetadata(): Promise<Metadata> {
   const { content } = await getStoredSiteContent();
   const { siteSeo } = content;
@@ -40,11 +42,13 @@ export async function generateMetadata(): Promise<Metadata> {
   };
 }
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const initialEnvelope = await getStoredSiteContent();
+
   return (
     <html lang="en">
       <head>
@@ -66,7 +70,7 @@ export default function RootLayout({
         />
       </head>
       <body>
-        <SiteContentProvider>
+        <SiteContentProvider initialEnvelope={initialEnvelope}>
           <Navbar />
           <main>{children}</main>
           <Footer />

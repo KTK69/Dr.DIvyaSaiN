@@ -9,7 +9,7 @@ import React, {
   useRef,
   useState,
 } from "react";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { DEFAULT_SITE_CONTENT, type SiteContent } from "@/lib/site-content";
 import type { SiteContentEnvelope } from "@/lib/site-content-utils";
 
@@ -18,10 +18,9 @@ type SiteContentApiPayload = SiteContentEnvelope & {
   message?: string;
   diagnostics?: {
     nodeEnv?: string;
-    vercelEnv?: string;
-    hasBlobToken?: boolean;
-    vercelProjectProductionUrl?: string | null;
-    vercelUrl?: string | null;
+    storageProvider?: string;
+    localFilePath?: string;
+    dataDirectory?: string;
   };
 };
 
@@ -35,13 +34,16 @@ type SiteContentContextValue = {
   resetContent: () => void;
   saving: boolean;
   lastSyncedAt: string | null;
+  contentReady: boolean;
 };
 
 const SiteContentContext = createContext<SiteContentContextValue | null>(null);
 const CONTENT_UPDATED_EVENT = "site-content:updated";
 
 async function fetchSiteContentEnvelope(): Promise<SiteContentApiPayload | null> {
-  const response = await fetch("/api/site-content", { cache: "no-store" });
+  const response = await fetch(`/api/site-content?ts=${Date.now()}`, {
+    cache: "no-store",
+  });
 
   if (!response.ok) {
     return null;
@@ -71,12 +73,27 @@ async function postSiteContentEnvelope(
   return { ok: true, payload };
 }
 
-export function SiteContentProvider({ children }: { children: React.ReactNode }) {
+type SiteContentProviderProps = {
+  children: React.ReactNode;
+  initialEnvelope?: SiteContentEnvelope;
+};
+
+export function SiteContentProvider({
+  children,
+  initialEnvelope,
+}: SiteContentProviderProps) {
   const router = useRouter();
-  const [content, setContentState] = useState(DEFAULT_SITE_CONTENT);
+  const pathname = usePathname();
+  const isAdminRoute = pathname?.startsWith("/admin") ?? false;
+  const [content, setContentState] = useState(
+    initialEnvelope?.content ?? DEFAULT_SITE_CONTENT,
+  );
   const [hasLocalEdits, setHasLocalEdits] = useState(false);
   const [saving, setSaving] = useState(false);
-  const [lastSyncedAt, setLastSyncedAt] = useState<string | null>(null);
+  const [lastSyncedAt, setLastSyncedAt] = useState<string | null>(
+    initialEnvelope?.updatedAt ?? null,
+  );
+  const [contentReady, setContentReady] = useState(Boolean(initialEnvelope));
   const hasLocalEditsRef = useRef(false);
   const contentRef = useRef(content);
   const broadcastChannelRef = useRef<BroadcastChannel | null>(null);
@@ -106,16 +123,17 @@ export function SiteContentProvider({ children }: { children: React.ReactNode })
         return;
       }
 
-      if (hasLocalEditsRef.current) {
+      if (hasLocalEditsRef.current && isAdminRoute) {
         return;
       }
 
       setContentState(payload.content ?? DEFAULT_SITE_CONTENT);
       setLastSyncedAt(payload.updatedAt ?? null);
+      setContentReady(true);
     } catch {
       // Ignore background refresh failures and keep the last good snapshot.
     }
-  }, []);
+  }, [isAdminRoute]);
 
   const notifyContentUpdated = useCallback(() => {
     if (typeof window === "undefined") {
@@ -130,7 +148,7 @@ export function SiteContentProvider({ children }: { children: React.ReactNode })
     void refreshContent();
 
     const onContentUpdated = () => {
-      if (!hasLocalEditsRef.current) {
+      if (!hasLocalEditsRef.current || !isAdminRoute) {
         void refreshContent();
       }
     };
@@ -144,7 +162,7 @@ export function SiteContentProvider({ children }: { children: React.ReactNode })
 
     const interval = window.setInterval(() => {
       void refreshContent();
-    }, 15000);
+    }, 10000);
 
     const refreshOnFocus = () => {
       if (document.visibilityState === "visible") {
@@ -166,7 +184,7 @@ export function SiteContentProvider({ children }: { children: React.ReactNode })
       channel?.close();
       broadcastChannelRef.current = null;
     };
-  }, [refreshContent]);
+  }, [refreshContent, isAdminRoute]);
 
   const saveContent = useCallback(async (nextContent?: SiteContent) => {
     setSaving(true);
@@ -185,6 +203,7 @@ export function SiteContentProvider({ children }: { children: React.ReactNode })
       setContentState(payload.content ?? contentToSave);
       setHasLocalEdits(false);
       setLastSyncedAt(payload.updatedAt ?? null);
+      setContentReady(true);
       notifyContentUpdated();
       await refreshContent();
       router.refresh();
@@ -208,8 +227,9 @@ export function SiteContentProvider({ children }: { children: React.ReactNode })
       resetContent: () => setContent(DEFAULT_SITE_CONTENT),
       saving,
       lastSyncedAt,
+      contentReady,
     }),
-    [content, lastSyncedAt, refreshContent, saveContent, saving, setContent],
+    [content, contentReady, lastSyncedAt, refreshContent, saveContent, saving, setContent],
   );
 
   return <SiteContentContext.Provider value={value}>{children}</SiteContentContext.Provider>;
@@ -223,4 +243,3 @@ export function useSiteContent() {
 
   return context;
 }
-

@@ -2,12 +2,6 @@ import "server-only";
 
 import { getStoredSiteContent } from "@/lib/site-content-store";
 import { getBlogRouteSlug, normalizeBlogSlug } from "@/lib/blog-links";
-import {
-  DEFAULT_ABOUT_CONTENT,
-  DEFAULT_BLOGS,
-  DEFAULT_REVIEWS,
-  DEFAULT_SERVICES,
-} from "@/lib/default-content-data";
 import type {
   AboutContent,
   AppointmentRequest,
@@ -19,7 +13,7 @@ import type {
 
 export async function getBlogs(): Promise<Blog[]> {
   const { content } = await getStoredSiteContent();
-  return content.blog.length ? content.blog : DEFAULT_BLOGS;
+  return content.blog;
 }
 
 export async function getBlogBySlug(slug: string): Promise<Blog | null> {
@@ -30,7 +24,7 @@ export async function getBlogBySlug(slug: string): Promise<Blog | null> {
 
 export async function getServices(): Promise<Service[]> {
   const { content } = await getStoredSiteContent();
-  return content.services.length ? content.services : DEFAULT_SERVICES;
+  return content.services;
 }
 
 export async function getServiceBySlug(slug: string): Promise<Service | null> {
@@ -40,12 +34,12 @@ export async function getServiceBySlug(slug: string): Promise<Service | null> {
 
 export async function getReviews(): Promise<Review[]> {
   const { content } = await getStoredSiteContent();
-  return content.testimonials.length ? content.testimonials : DEFAULT_REVIEWS;
+  return content.testimonials;
 }
 
 export async function getAboutContent(): Promise<AboutContent> {
   const { content } = await getStoredSiteContent();
-  return content.about.heading ? content.about : DEFAULT_ABOUT_CONTENT;
+  return content.about;
 }
 
 export async function saveAppointment(

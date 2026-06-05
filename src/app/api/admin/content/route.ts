@@ -79,11 +79,18 @@ export async function POST(request: Request) {
   try {
     const saved = await saveStoredSiteContent(mergedContent);
 
-    return NextResponse.json({
-      ok: true,
-      ...saved,
-      diagnostics: getSiteContentPersistenceDiagnostics(),
-    });
+    return NextResponse.json(
+      {
+        ok: true,
+        ...saved,
+        diagnostics: getSiteContentPersistenceDiagnostics(),
+      },
+      {
+        headers: {
+          "Cache-Control": "no-store",
+        },
+      },
+    );
   } catch (error) {
     const message =
       error instanceof Error

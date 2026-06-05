@@ -25,8 +25,16 @@ function formatDate(value?: string) {
 }
 
 export default function BlogListingClient() {
-  const { content } = useSiteContent();
+  const { content, contentReady } = useSiteContent();
   const blogs = content.blog;
+
+  if (!contentReady) {
+    return (
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 section-padding">
+        <p className="text-sm text-(--foreground-muted)">Loading articles…</p>
+      </div>
+    );
+  }
   const blogPage = content.blogPage;
 
   return (

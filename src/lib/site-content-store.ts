@@ -1,8 +1,7 @@
 import "server-only";
 
-import { mkdir, readFile, writeFile } from "node:fs/promises";
+import { mkdir, readFile, rename, writeFile } from "node:fs/promises";
 import path from "node:path";
-import { get, put } from "@vercel/blob";
 import { revalidatePath } from "next/cache";
 import { DEFAULT_SITE_CONTENT, type SiteContent } from "@/lib/site-content";
 import {
@@ -11,27 +10,17 @@ import {
 } from "@/lib/site-content-utils";
 import { getBlogRouteSlug } from "@/lib/blog-links";
 
-const BLOB_PATHNAME = "site-content/content.json";
-const LOCAL_FILE_PATH = path.join(process.cwd(), "data", "site-content.runtime.json");
-
-function hasBlobToken() {
-  return Boolean(process.env.BLOB_READ_WRITE_TOKEN);
-}
-
-function shouldUseBlobStorage() {
-  return hasBlobToken() && process.env.STORAGE_PROVIDER !== "local";
-}
+const DATA_DIR =
+  process.env.SITE_CONTENT_DATA_DIR?.trim() ||
+  path.join(process.cwd(), "data");
+const LOCAL_FILE_PATH = path.join(DATA_DIR, "site-content.runtime.json");
 
 export function getSiteContentPersistenceDiagnostics() {
   return {
     nodeEnv: process.env.NODE_ENV ?? "unknown",
-    vercelEnv: process.env.VERCEL_ENV ?? "unknown",
-    hasBlobToken: hasBlobToken(),
-    storageProvider: shouldUseBlobStorage() ? "vercel-blob" : "local-file",
+    storageProvider: "local-file" as const,
     localFilePath: LOCAL_FILE_PATH,
-    vercelProjectProductionUrl:
-      process.env.VERCEL_PROJECT_PRODUCTION_URL ?? null,
-    vercelUrl: process.env.VERCEL_URL ?? null,
+    dataDirectory: DATA_DIR,
   };
 }
 
@@ -44,38 +33,6 @@ function createEnvelope(content: SiteContent): SiteContentEnvelope {
 
 function withDefaults(content: unknown): SiteContent {
   return mergeWithDefaults(DEFAULT_SITE_CONTENT, content);
-}
-
-async function readFromBlob(): Promise<SiteContentEnvelope | null> {
-  const result = await get(BLOB_PATHNAME, {
-    access: "private",
-    useCache: false,
-  });
-
-  if (!result || result.statusCode !== 200) {
-    return null;
-  }
-
-  const text = await new Response(result.stream).text();
-  const parsed = JSON.parse(text) as Partial<SiteContentEnvelope> | SiteContent;
-
-  if ("content" in parsed && parsed.content) {
-    return {
-      content: withDefaults(parsed.content),
-      updatedAt: parsed.updatedAt ?? new Date().toISOString(),
-    };
-  }
-
-  return createEnvelope(withDefaults(parsed));
-}
-
-async function writeToBlob(envelope: SiteContentEnvelope) {
-  await put(BLOB_PATHNAME, JSON.stringify(envelope, null, 2), {
-    access: "private",
-    addRandomSuffix: false,
-    allowOverwrite: true,
-    contentType: "application/json; charset=utf-8",
-  });
 }
 
 async function readFromLocalFile(): Promise<SiteContentEnvelope | null> {
@@ -98,15 +55,16 @@ async function readFromLocalFile(): Promise<SiteContentEnvelope | null> {
 
 async function writeToLocalFile(envelope: SiteContentEnvelope) {
   await mkdir(path.dirname(LOCAL_FILE_PATH), { recursive: true });
-  await writeFile(LOCAL_FILE_PATH, JSON.stringify(envelope, null, 2), "utf8");
+  const payload = JSON.stringify(envelope, null, 2);
+  const tempPath = `${LOCAL_FILE_PATH}.tmp`;
+
+  await writeFile(tempPath, payload, "utf8");
+  await rename(tempPath, LOCAL_FILE_PATH);
 }
 
 export async function getStoredSiteContent(): Promise<SiteContentEnvelope> {
   try {
-    const envelope = shouldUseBlobStorage()
-      ? await readFromBlob()
-      : await readFromLocalFile();
-
+    const envelope = await readFromLocalFile();
     return envelope ?? createEnvelope(DEFAULT_SITE_CONTENT);
   } catch {
     return createEnvelope(DEFAULT_SITE_CONTENT);
@@ -117,18 +75,14 @@ export async function saveStoredSiteContent(
   content: SiteContent,
 ): Promise<SiteContentEnvelope> {
   const envelope = createEnvelope(withDefaults(content));
-
-  if (shouldUseBlobStorage()) {
-    await writeToBlob(envelope);
-  } else {
-    await writeToLocalFile(envelope);
-  }
-
+  await writeToLocalFile(envelope);
   revalidateSiteContent(envelope.content);
   return envelope;
 }
 
 function revalidateSiteContent(content: SiteContent) {
+  revalidatePath("/", "layout");
+
   const staticPaths = [
     "/",
     "/about",
@@ -143,6 +97,7 @@ function revalidateSiteContent(content: SiteContent) {
     "/blog",
     "/services",
     "/plastic-surgeon-banjarahills",
+    "/admin",
   ];
 
   for (const route of staticPaths) {

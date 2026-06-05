@@ -33,6 +33,9 @@ yarn-error.log*
 # env files (can opt-in for committing if needed)
 .env*
 
+# CMS content — lives on the server only; never commit or push
+data/site-content.runtime.json
+
 # vercel
 .vercel
 
