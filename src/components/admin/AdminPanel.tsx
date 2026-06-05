@@ -1191,6 +1191,15 @@ function ListEditor<T>({
   getItemTitle?: (item: T, index: number) => string;
   startCollapsed?: boolean;
 }) {
+  const [collapsedItems, setCollapsedItems] = useState<Record<string, boolean>>({});
+
+  function toggleCollapse(itemKey: string) {
+    setCollapsedItems((prev) => ({
+      ...prev,
+      [itemKey]: !(prev[itemKey] ?? startCollapsed),
+    }));
+  }
+
   function moveItem(fromIndex: number, toIndex: number) {
     if (toIndex < 0 || toIndex >= items.length) {
       return;
@@ -1211,40 +1220,75 @@ function ListEditor<T>({
 
   return (
     <div className="space-y-4">
-      <button onClick={onAdd} className="rounded-lg bg-(--accent-gold) px-4 py-2 text-sm font-medium text-(--background)">
+      <button onClick={onAdd} className="rounded-lg bg-(--accent-gold) px-4 py-2 text-sm font-medium text-(--background) hover:opacity-90 transition-opacity">
         Add item
       </button>
-      {items.map((item, index) => (
-        <div key={getItemKey?.(item, index) ?? index} className="rounded-xl border border-(--border) p-4 space-y-4">
-          <div className="flex items-center justify-between gap-4">
-            <p className="text-sm font-medium text-(--foreground)">Item {index + 1}</p>
-            <div className="flex flex-wrap items-center justify-end gap-2">
-              <button
-                onClick={() => moveItem(index, index - 1)}
-                disabled={index === 0}
-                className="rounded-md border border-(--border) px-3 py-1 text-xs text-(--foreground-muted) disabled:cursor-not-allowed disabled:opacity-40"
+      <div className="space-y-3">
+        {items.map((item, index) => {
+          const itemKey = getItemKey?.(item, index) ?? String(index);
+          const isCollapsed = collapsedItems[itemKey] ?? startCollapsed;
+          const title = getItemTitle?.(item, index) ?? `Item ${index + 1}`;
+
+          return (
+            <div key={itemKey} className="rounded-xl border border-(--border) overflow-hidden transition-all duration-200 bg-(--bg-surface)/40">
+              <div
+                onClick={() => toggleCollapse(itemKey)}
+                className="flex items-center justify-between gap-4 p-4 cursor-pointer hover:bg-(--bg-surface)/80 transition-colors select-none"
               >
-                Up
-              </button>
-              <button
-                onClick={() => moveItem(index, index + 1)}
-                disabled={index === items.length - 1}
-                className="rounded-md border border-(--border) px-3 py-1 text-xs text-(--foreground-muted) disabled:cursor-not-allowed disabled:opacity-40"
-              >
-                Down
-              </button>
-              <button onClick={() => onRemove(index)} className="text-sm text-red-400">
-                Remove
-              </button>
+                <div className="flex items-center gap-3 min-w-0">
+                  <svg
+                    className={`w-4 h-4 text-(--foreground-muted) transition-transform duration-200 shrink-0 ${
+                      isCollapsed ? "" : "rotate-180"
+                    }`}
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                    strokeWidth={2}
+                  >
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+                  </svg>
+                  <span className="text-sm font-medium text-(--foreground) truncate">
+                    {title}
+                  </span>
+                </div>
+
+                <div onClick={(e) => e.stopPropagation()} className="flex items-center gap-2 shrink-0">
+                  <button
+                    onClick={() => moveItem(index, index - 1)}
+                    disabled={index === 0}
+                    className="rounded-md border border-(--border) px-2.5 py-1 text-xs text-(--foreground-muted) bg-(--background)/50 hover:bg-(--background) hover:text-(--foreground) disabled:cursor-not-allowed disabled:opacity-40 transition-colors"
+                  >
+                    Up
+                  </button>
+                  <button
+                    onClick={() => moveItem(index, index + 1)}
+                    disabled={index === items.length - 1}
+                    className="rounded-md border border-(--border) px-2.5 py-1 text-xs text-(--foreground-muted) bg-(--background)/50 hover:bg-(--background) hover:text-(--foreground) disabled:cursor-not-allowed disabled:opacity-40 transition-colors"
+                  >
+                    Down
+                  </button>
+                  <button
+                    onClick={() => onRemove(index)}
+                    className="rounded-md border border-red-500/20 px-2.5 py-1 text-xs text-red-400 bg-red-500/5 hover:bg-red-500/10 hover:text-red-300 transition-colors"
+                  >
+                    Remove
+                  </button>
+                </div>
+              </div>
+
+              {!isCollapsed && (
+                <div className="border-t border-(--border)/60 p-4 bg-(--background)/30 space-y-4">
+                  {renderItem(item, index, (nextItem) => {
+                    const nextItems = [...items];
+                    nextItems[index] = nextItem;
+                    onChange(nextItems);
+                  })}
+                </div>
+              )}
             </div>
-          </div>
-          {renderItem(item, index, (nextItem) => {
-            const nextItems = [...items];
-            nextItems[index] = nextItem;
-            onChange(nextItems);
-          })}
-        </div>
-      ))}
+          );
+        })}
+      </div>
     </div>
   );
 }
