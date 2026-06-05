@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useMemo, useRef, useState } from "react";
-import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useSiteContent } from "@/components/site/SiteContentProvider";
 import RichTextEditor from "@/components/ui/RichTextEditor";
@@ -1636,6 +1635,7 @@ function ServiceForm({ item, onChange }: { item: ServiceItem; onChange: (value: 
 function ImageField({ label, value, onChange, className = "" }: { label: string; value: string; onChange: (value: string) => void; className?: string; }) {
   const [uploading, setUploading] = useState(false);
   const [uploadError, setUploadError] = useState("");
+  const [uploadedUrl, setUploadedUrl] = useState("");
 
   const handleFileChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
@@ -1643,6 +1643,7 @@ function ImageField({ label, value, onChange, className = "" }: { label: string;
 
     setUploading(true);
     setUploadError("");
+    setUploadedUrl("");
 
     try {
       const formData = new FormData();
@@ -1660,6 +1661,7 @@ function ImageField({ label, value, onChange, className = "" }: { label: string;
         return;
       }
 
+      setUploadedUrl(result.url);
       onChange(result.url);
     } catch {
       setUploadError("Upload failed. Check your connection and try again.");
@@ -1670,6 +1672,7 @@ function ImageField({ label, value, onChange, className = "" }: { label: string;
   };
 
   const isBase64 = value.startsWith("data:");
+  const hasPreview = Boolean(value) && !isBase64;
 
   return (
     <div className={`block text-sm text-(--foreground-muted) ${className}`}>
@@ -1677,7 +1680,7 @@ function ImageField({ label, value, onChange, className = "" }: { label: string;
       <div className="space-y-2">
         <input
           value={value}
-          onChange={(event) => onChange(event.target.value)}
+          onChange={(event) => { setUploadedUrl(""); onChange(event.target.value); }}
           placeholder="/uploads/image.jpg or paste a URL"
           className="w-full rounded-lg border border-(--border) bg-transparent px-3 py-2 text-(--foreground)"
         />
@@ -1694,31 +1697,31 @@ function ImageField({ label, value, onChange, className = "" }: { label: string;
           ) : null}
         </div>
         {uploadError ? (
-          <p className="text-xs text-red-400">{uploadError}</p>
+          <p className="text-xs text-red-400">✗ {uploadError}</p>
+        ) : null}
+        {uploadedUrl ? (
+          <p className="text-xs text-green-400">✓ Uploaded: {uploadedUrl}</p>
         ) : null}
         {isBase64 ? (
           <p className="text-xs text-amber-400">⚠ This image is stored as base64. Re-upload it using the file picker above to save it properly as a URL.</p>
         ) : null}
-        {value && !isBase64 ? (
-          <div className="relative h-24 overflow-hidden rounded-md border border-(--border)">
-            <Image
+        {hasPreview ? (
+          <div className="h-24 overflow-hidden rounded-md border border-(--border)">
+            {/* Using plain img tag in admin panel - no optimization needed */}
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
               src={value}
               alt={`${label} preview`}
-              fill
-              className="object-cover"
-              unoptimized={value.startsWith("blob:")}
-              sizes="96px"
+              className="h-full w-full object-cover"
             />
           </div>
         ) : isBase64 ? (
-          <div className="relative h-24 overflow-hidden rounded-md border border-(--border) opacity-60">
-            <Image
+          <div className="h-24 overflow-hidden rounded-md border border-(--border) opacity-60">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
               src={value}
               alt={`${label} preview`}
-              fill
-              className="object-cover"
-              unoptimized
-              sizes="96px"
+              className="h-full w-full object-cover"
             />
           </div>
         ) : null}
