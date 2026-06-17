@@ -4,7 +4,7 @@ import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
-import { Menu, X, ChevronDown, Video } from "lucide-react";
+import { ChevronDown, Video } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useSiteContent } from "@/components/site/SiteContentProvider";
 
@@ -14,6 +14,7 @@ export default function Navbar() {
   const { content } = useSiteContent();
   const [mobileOpen, setMobileOpen] = useState(false);
   const [servicesOpen, setServicesOpen] = useState(false);
+  const [mobileServicesOpen, setMobileServicesOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const pathname = usePathname();
   const dropdownRef = useRef<HTMLDivElement>(null);
@@ -41,6 +42,7 @@ export default function Navbar() {
   const closeMenus = () => {
     setMobileOpen(false);
     setServicesOpen(false);
+    setMobileServicesOpen(false);
   };
 
   return (
@@ -53,11 +55,12 @@ export default function Navbar() {
       style={{ backdropFilter: scrolled ? "blur(12px)" : undefined }}
     >
       <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        {/* Row 1: Logo and Main CTA */}
         <div className="flex min-w-0 items-center justify-between gap-2 sm:gap-3 h-18 lg:h-20">
           {/* Logo */}
           <Link
             href="/"
-            className="flex min-w-0 flex-1 max-w-[calc(100%-3.5rem)] flex-col overflow-hidden leading-tight group sm:max-w-none"
+            className="flex min-w-0 flex-1 max-w-[calc(100%-4.5rem)] flex-col overflow-hidden leading-tight group sm:max-w-none"
           >
             <div className="flex items-center gap-2.5 sm:gap-3 min-w-0">
               <div className="relative h-10 w-10 sm:h-11 sm:w-11 shrink-0 overflow-hidden rounded-full border border-(--border) bg-(--bg-card)">
@@ -178,77 +181,232 @@ export default function Navbar() {
             </Link>
           </div>
 
-          {/* Mobile toggle */}
-          <button
-            className="lg:hidden shrink-0 p-2 text-(--foreground) hover:text-(--accent-gold-light)"
-            onClick={() => setMobileOpen(!mobileOpen)}
-            aria-label="Toggle menu"
-          >
-            {mobileOpen ? <X size={22} /> : <Menu size={22} />}
-          </button>
+          {/* Mobile Right Action Area: Book button */}
+          <div className="flex lg:hidden items-center shrink-0">
+            <Link
+              href="/contactus"
+              onClick={closeMenus}
+              className="inline-flex items-center gap-1.5 px-3 py-2 text-xs font-semibold rounded-lg bg-(--accent-gold) text-(--background) shadow-lg shadow-black/10 hover:bg-(--accent-gold-light) transition-all duration-200"
+            >
+              <Video size={13} />
+              <span>Book</span>
+            </Link>
+          </div>
+        </div>
+
+        {/* Row 2: Mobile Horizontal Navigation Strip (Non-scrollable, fits all mobile screens) */}
+        <div className="lg:hidden flex items-center justify-between border-t border-(--border)/20 -mx-4 sm:-mx-6 px-4 sm:px-6 py-2 bg-(--bg-surface)/95">
+          <div className="flex w-full items-center justify-between gap-1">
+            <Link
+              href="/"
+              onClick={closeMenus}
+              className={`text-[12px] font-semibold tracking-wide py-1 px-2.5 rounded-md transition-colors ${
+                pathname === "/"
+                  ? "text-(--accent-gold-light) bg-(--bg-card) border border-(--accent-gold)/20"
+                  : "text-(--foreground-muted) hover:text-(--foreground)"
+              }`}
+            >
+              Home
+            </Link>
+            <Link
+              href="/aboutus"
+              onClick={closeMenus}
+              className={`text-[12px] font-semibold tracking-wide py-1 px-2.5 rounded-md transition-colors ${
+                pathname.startsWith("/about") || pathname.startsWith("/aboutus")
+                  ? "text-(--accent-gold-light) bg-(--bg-card) border border-(--accent-gold)/20"
+                  : "text-(--foreground-muted) hover:text-(--foreground)"
+              }`}
+            >
+              About
+            </Link>
+            <Link
+              href="/before-after"
+              onClick={closeMenus}
+              className={`text-[12px] font-semibold tracking-wide py-1 px-2.5 rounded-md transition-colors ${
+                pathname.startsWith("/before-after")
+                  ? "text-(--accent-gold-light) bg-(--bg-card) border border-(--accent-gold)/20"
+                  : "text-(--foreground-muted) hover:text-(--foreground)"
+              }`}
+            >
+              Results
+            </Link>
+            <Link
+              href="/contactus"
+              onClick={closeMenus}
+              className={`text-[12px] font-semibold tracking-wide py-1 px-2.5 rounded-md transition-colors ${
+                pathname.startsWith("/contact") || pathname.startsWith("/contactus")
+                  ? "text-(--accent-gold-light) bg-(--bg-card) border border-(--accent-gold)/20"
+                  : "text-(--foreground-muted) hover:text-(--foreground)"
+              }`}
+            >
+              Contact
+            </Link>
+            <button
+              onClick={() => setMobileOpen(!mobileOpen)}
+              className={`flex items-center gap-0.5 text-[12px] font-semibold tracking-wide py-1 px-2.5 rounded-md transition-colors ${
+                mobileOpen
+                  ? "text-(--accent-gold-light) bg-(--bg-card) border border-(--accent-gold)/20"
+                  : "text-(--foreground-muted) hover:text-(--foreground)"
+              }`}
+            >
+              More
+              <ChevronDown
+                size={11}
+                className={`transition-transform duration-200 ${mobileOpen ? "rotate-180" : ""}`}
+              />
+            </button>
+          </div>
         </div>
       </nav>
 
-      {/* Mobile Menu */}
+      {/* Mobile "More" Menu Dropdown */}
       <AnimatePresence>
         {mobileOpen && (
           <motion.div
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: "auto" }}
             exit={{ opacity: 0, height: 0 }}
-            transition={{ duration: 0.25 }}
+            transition={{ duration: 0.25, ease: "easeInOut" }}
             className="lg:hidden overflow-hidden bg-(--bg-surface) border-b border-(--border)"
           >
-            <div className="max-w-full overflow-x-hidden px-4 py-6 space-y-1">
-              {navLinks.map(({ href, label }) => (
-                <Link
-                  key={href}
-                  href={href}
-                  onClick={closeMenus}
-                  className={`block py-2 text-sm ${
-                    isActive(href)
-                      ? "text-(--accent-gold-light)"
-                      : "text-(--foreground-muted)"
-                  }`}
+            <div className="px-5 py-6 space-y-6">
+              {/* Secondary Navigation Grid */}
+              <div>
+                <p className="text-[10px] font-semibold uppercase tracking-widest text-(--foreground-muted) mb-3">
+                  Other Pages
+                </p>
+                <div className="grid grid-cols-2 gap-3">
+                  <Link
+                    href="/experience"
+                    onClick={closeMenus}
+                    className={`py-2 px-3 rounded-lg text-sm font-medium transition-colors border border-(--border)/50 ${
+                      pathname.startsWith("/experience")
+                        ? "text-(--accent-gold-light) bg-(--bg-card) border-(--accent-gold)/25"
+                        : "text-(--foreground-muted) bg-(--bg-card)/40"
+                    }`}
+                  >
+                    Experience
+                  </Link>
+                  <Link
+                    href="/drvideo"
+                    onClick={closeMenus}
+                    className={`py-2 px-3 rounded-lg text-sm font-medium transition-colors border border-(--border)/50 ${
+                      pathname.startsWith("/drvideo") || pathname.startsWith("/doctors-talk")
+                        ? "text-(--accent-gold-light) bg-(--bg-card) border-(--accent-gold)/25"
+                        : "text-(--foreground-muted) bg-(--bg-card)/40"
+                    }`}
+                  >
+                    Doctor's Talk
+                  </Link>
+                  <Link
+                    href="/reviews"
+                    onClick={closeMenus}
+                    className={`py-2 px-3 rounded-lg text-sm font-medium transition-colors border border-(--border)/50 ${
+                      pathname.startsWith("/reviews") || pathname.startsWith("/testimonials")
+                        ? "text-(--accent-gold-light) bg-(--bg-card) border-(--accent-gold)/25"
+                        : "text-(--foreground-muted) bg-(--bg-card)/40"
+                    }`}
+                  >
+                    Testimonials
+                  </Link>
+                  <Link
+                    href="/blog"
+                    onClick={closeMenus}
+                    className={`py-2 px-3 rounded-lg text-sm font-medium transition-colors border border-(--border)/50 ${
+                      pathname.startsWith("/blog")
+                        ? "text-(--accent-gold-light) bg-(--bg-card) border-(--accent-gold)/25"
+                        : "text-(--foreground-muted) bg-(--bg-card)/40"
+                    }`}
+                  >
+                    Blog
+                  </Link>
+                </div>
+              </div>
+
+              {/* Collapsible Services Accordion */}
+              <div className="border-t border-(--border)/20 pt-5">
+                <button
+                  onClick={() => setMobileServicesOpen(!mobileServicesOpen)}
+                  className="flex items-center justify-between w-full text-sm font-semibold text-(--foreground) hover:text-(--accent-gold-light) transition-colors"
                 >
-                  {label}
-                </Link>
-              ))}
-              <div className="pt-3">
-                <p className="text-xs uppercase tracking-widest text-(--accent-gold) mb-2">
-                  Reconstructive Surgery
-                </p>
-                {content.navigation.services.reconstructive.map(({ href, label }) => (
-                  <Link
-                    key={href}
-                    href={href}
-                    onClick={closeMenus}
-                    className="block py-1.5 text-sm text-(--foreground-muted) pl-3"
-                  >
-                    {label}
-                  </Link>
-                ))}
+                  <span style={{ fontFamily: "var(--font-serif)" }}>Our Services</span>
+                  <ChevronDown
+                    size={15}
+                    className={`transition-transform duration-200 text-(--accent-gold) ${
+                      mobileServicesOpen ? "rotate-180" : ""
+                    }`}
+                  />
+                </button>
+
+                <AnimatePresence>
+                  {mobileServicesOpen && (
+                    <motion.div
+                      initial={{ opacity: 0, height: 0 }}
+                      animate={{ opacity: 1, height: "auto" }}
+                      exit={{ opacity: 0, height: 0 }}
+                      transition={{ duration: 0.25 }}
+                      className="overflow-hidden mt-3"
+                    >
+                      <div className="grid grid-cols-2 gap-4 bg-(--bg-card)/40 p-4 rounded-xl border border-(--border)/20">
+                        <div>
+                          <p className="text-[11px] font-semibold uppercase tracking-widest text-(--accent-gold) mb-2.5">
+                            Reconstructive
+                          </p>
+                          <div className="space-y-2.5">
+                            {content.navigation.services.reconstructive.map(({ href, label }) => (
+                              <Link
+                                key={href}
+                                href={href}
+                                onClick={closeMenus}
+                                className={`block text-xs leading-relaxed transition-colors ${
+                                  isActive(href) ? "text-(--accent-gold-light) font-semibold" : "text-(--foreground-muted) hover:text-(--foreground)"
+                                }`}
+                              >
+                                {label}
+                              </Link>
+                            ))}
+                          </div>
+                        </div>
+                        <div>
+                          <p className="text-[11px] font-semibold uppercase tracking-widest text-(--accent-blue) mb-2.5">
+                            Cosmetic
+                          </p>
+                          <div className="space-y-2.5">
+                            {content.navigation.services.cosmetic.map(({ href, label }) => (
+                              <Link
+                                key={href}
+                                href={href}
+                                onClick={closeMenus}
+                                className={`block text-xs leading-relaxed transition-colors ${
+                                  isActive(href) ? "text-(--accent-gold-light) font-semibold" : "text-(--foreground-muted) hover:text-(--foreground)"
+                                }`}
+                              >
+                                {label}
+                              </Link>
+                            ))}
+                          </div>
+                        </div>
+                      </div>
+                      <div className="mt-3.5 text-center">
+                        <Link
+                          href="/services"
+                          onClick={closeMenus}
+                          className="inline-block text-xs text-(--accent-gold-light) font-medium"
+                        >
+                          View all services →
+                        </Link>
+                      </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
               </div>
-              <div className="pt-3">
-                <p className="text-xs uppercase tracking-widest text-(--accent-blue) mb-2">
-                  Cosmetic Surgery
-                </p>
-                {content.navigation.services.cosmetic.map(({ href, label }) => (
-                  <Link
-                    key={href}
-                    href={href}
-                    onClick={closeMenus}
-                    className="block py-1.5 text-sm text-(--foreground-muted) pl-3"
-                  >
-                    {label}
-                  </Link>
-                ))}
-              </div>
-              <div className="pt-4">
+
+              {/* Bottom Consultation Button */}
+              <div className="border-t border-(--border)/20 pt-5">
                 <Link
                   href="/contactus"
                   onClick={closeMenus}
-                  className="flex items-center justify-center gap-2 px-4 py-3 text-sm rounded-xl bg-(--accent-gold) text-(--background) font-medium shadow-lg shadow-black/20"
+                  className="flex items-center justify-center gap-2 w-full px-4 py-3.5 text-sm rounded-xl bg-(--accent-gold) text-(--background) font-medium shadow-xl hover:bg-(--accent-gold-light) transition-all duration-200"
                 >
                   <Video size={16} />
                   Book Video Consultation
