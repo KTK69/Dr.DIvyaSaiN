@@ -57,6 +57,7 @@ export const DEFAULT_BLOGS: Blog[] = blogSeeds.map((entry) => {
     category: entry.category,
     meta_title: `${title} | Dr. Divya Sai Narsingam`,
     meta_description: `Patient guidance on ${title.toLowerCase()} from Dr. Divya Sai Narsingam in Hyderabad.`,
+    meta_keywords: [],
   };
 });
 
@@ -94,6 +95,7 @@ export const DEFAULT_SERVICES: Service[] = [
     ],
     meta_title: `${item.name} in Hyderabad | Dr. Divya Sai Narsingam`,
     meta_description: `${item.shortDesc} Specialist ${category} surgery by Dr. Divya Sai Narsingam at CARE Hospitals, Gachibowli, Hyderabad.`,
+    meta_keywords: [],
   };
 });
 

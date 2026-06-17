@@ -233,6 +233,7 @@ export type PageSeoContent = {
   contact: PageSeoEntry;
   contactUs: PageSeoEntry;
   banjaraHills: PageSeoEntry;
+  beforeAfter: PageSeoEntry;
 };
 
 export type SiteContent = {
@@ -293,6 +294,7 @@ export const DEFAULT_SITE_CONTENT: SiteContent = {
       { label: "Doctor's Talk", href: "/drvideo" },
       { label: "Testimonials", href: "/reviews" },
       { label: "Blog", href: "/blog" },
+      { label: "Before & After", href: "/before-after" },
       { label: "Contact", href: "/contactus" },
     ],
     services: {
@@ -526,6 +528,17 @@ export const DEFAULT_SITE_CONTENT: SiteContent = {
         "reconstructive surgeon Banjara Hills",
       ],
       canonicalPath: "/plastic-surgeon-banjarahills",
+    },
+    beforeAfter: {
+      title: "Before & After Gallery | Dr. Divya Sai Narsingam",
+      description:
+        "View before and after results for plastic and reconstructive surgery procedures by Dr. Divya Sai Narsingam in Hyderabad.",
+      keywords: [
+        "before after plastic surgery Hyderabad",
+        "plastic surgery results",
+        "Dr Divya Sai before after",
+      ],
+      canonicalPath: "/before-after",
     },
   },
 

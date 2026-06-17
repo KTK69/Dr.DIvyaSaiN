@@ -56,6 +56,11 @@ const staticRoutes: MetadataRoute.Sitemap = [
     changeFrequency: "monthly",
     priority: 0.8,
   },
+  {
+    url: `${SITE_URL}/before-after`,
+    changeFrequency: "monthly",
+    priority: 0.7,
+  },
 ];
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {

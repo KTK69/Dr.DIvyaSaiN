@@ -282,14 +282,16 @@ export function buildEditablePageMetadata(page: PageSeoEntry): Metadata {
 
 export function buildBlogMetadata(blog: Blog): Metadata {
   const canonical = `${SITE_URL}/blog/${getBlogRouteSlug(blog)}`;
-  const keywords = uniqueKeywords([
-    blog.title,
-    `${blog.title} Hyderabad`,
-    blog.meta_title,
-    blog.category ? `${blog.category} surgery blog` : "",
-    "Dr Divya Sai Narsingam blog",
-    "plastic surgery blog Hyderabad",
-  ]);
+  const keywords = blog.meta_keywords && blog.meta_keywords.length > 0
+    ? blog.meta_keywords
+    : uniqueKeywords([
+        blog.title,
+        `${blog.title} Hyderabad`,
+        blog.meta_title,
+        blog.category ? `${blog.category} surgery blog` : "",
+        "Dr Divya Sai Narsingam blog",
+        "plastic surgery blog Hyderabad",
+      ]);
 
   return {
     title: blog.meta_title,
@@ -344,17 +346,19 @@ export function buildBlogJsonLd(blog: Blog) {
 
 export function buildUnifiedServiceMetadata(service: Service): Metadata {
   const canonical = `${SITE_URL}/services/${service.slug}`;
-  const keywords = uniqueKeywords([
-    service.name,
-    `${service.name} Hyderabad`,
-    `${service.name} Gachibowli`,
-    service.meta_title,
-    "Dr Divya Sai Narsingam",
-    "CARE Hospitals Hyderabad",
-    ...(service.category === "reconstructive"
-      ? categoryKeywords("reconstructive")
-      : categoryKeywords("cosmetic")),
-  ]);
+  const keywords = service.meta_keywords && service.meta_keywords.length > 0
+    ? service.meta_keywords
+    : uniqueKeywords([
+        service.name,
+        `${service.name} Hyderabad`,
+        `${service.name} Gachibowli`,
+        service.meta_title,
+        "Dr Divya Sai Narsingam",
+        "CARE Hospitals Hyderabad",
+        ...(service.category === "reconstructive"
+          ? categoryKeywords("reconstructive")
+          : categoryKeywords("cosmetic")),
+      ]);
 
   return {
     title: service.meta_title,

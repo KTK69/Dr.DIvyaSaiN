@@ -3,7 +3,6 @@ import HeroSection from "@/components/home/HeroSection";
 import ServicesPreview from "@/components/home/ServicesPreview";
 import AboutPreview from "@/components/home/AboutPreview";
 import AwardsStrip from "@/components/home/AwardsStrip";
-import BeforeAfterGallery from "@/components/home/BeforeAfterGallery";
 import CTASection from "@/components/home/CTASection";
 import JsonLd from "@/components/seo/JsonLd";
 import { getEditablePageMetadata } from "@/lib/page-metadata";
@@ -21,7 +20,6 @@ export default function HomePage() {
       <AwardsStrip />
       <AboutPreview />
       <ServicesPreview />
-      <BeforeAfterGallery />
       <CTASection />
     </>
   );

@@ -62,6 +62,7 @@ const pageSeoItems: Array<{ key: PageSeoKey; label: string }> = [
   { key: "contact", label: "Contact (/contact)" },
   { key: "contactUs", label: "Contact Us (/contactus)" },
   { key: "banjaraHills", label: "Banjara Hills (/plastic-surgeon-banjarahills)" },
+  { key: "beforeAfter", label: "Before & After (/before-after)" },
 ];
 
 type SessionResponse = { authenticated?: boolean };
@@ -335,6 +336,7 @@ export default function AdminPanel() {
               published_at: new Date().toISOString().slice(0, 10),
               meta_title: "",
               meta_description: "",
+              meta_keywords: [],
             },
           ],
         };
@@ -356,6 +358,7 @@ export default function AdminPanel() {
             faq: [],
             meta_title: "",
             meta_description: "",
+            meta_keywords: [],
           },
         ],
       };
@@ -688,6 +691,14 @@ export default function AdminPanel() {
                     <ImageField label="Image" value={item.image} onChange={(value) => updateItem({ ...item, image: value })} className="md:col-span-2" />
                     <Field label="Excerpt" value={item.excerpt} onChange={(value) => updateItem({ ...item, excerpt: value })} multiline />
                     <RichTextField label="Content" value={item.content} onChange={(value) => updateItem({ ...item, content: value })} height={320} />
+                    <div className="md:col-span-2 border-t border-(--border) pt-4 mt-2">
+                      <h4 className="text-sm font-semibold text-(--foreground) mb-3">SEO Fields</h4>
+                      <div className="grid gap-4 md:grid-cols-2">
+                        <Field label="Meta Title" value={item.meta_title} onChange={(value) => updateItem({ ...item, meta_title: value })} />
+                        <Field label="Meta Description" value={item.meta_description} onChange={(value) => updateItem({ ...item, meta_description: value })} multiline />
+                        <KeywordField label="Keywords (one per line)" values={item.meta_keywords ?? []} onChange={(value) => updateItem({ ...item, meta_keywords: value })} className="md:col-span-2" />
+                      </div>
+                    </div>
                   </div>
                 )}
               />
@@ -1644,6 +1655,7 @@ function ServiceForm({ item, onChange }: { item: ServiceItem; onChange: (value: 
         <RichTextField label="Content" value={item.content} onChange={(value) => onChange({ ...item, content: value })} className="md:col-span-2" height={280} />
         <Field label="Meta title" value={item.meta_title} onChange={(value) => onChange({ ...item, meta_title: value })} />
         <Field label="Meta description" value={item.meta_description} onChange={(value) => onChange({ ...item, meta_description: value })} multiline className="md:col-span-2" />
+        <KeywordField label="Keywords (one per line)" values={item.meta_keywords ?? []} onChange={(value) => onChange({ ...item, meta_keywords: value })} className="md:col-span-2" />
       </div>
 
       <div className="border-t border-(--border) pt-6">

@@ -18,6 +18,7 @@ export interface Blog extends SeoFields {
   published_at: string;
   updated_at?: string;
   category?: string;
+  meta_keywords: string[];
 }
 
 export interface Service extends SeoFields {
@@ -30,6 +31,7 @@ export interface Service extends SeoFields {
   category: "reconstructive" | "cosmetic";
   key_points: string[];
   faq: FaqItem[];
+  meta_keywords: string[];
 }
 
 export interface Review {
