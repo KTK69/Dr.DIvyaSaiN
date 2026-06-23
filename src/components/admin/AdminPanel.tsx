@@ -9,6 +9,7 @@ import {
   hasBlogOrderChanged,
   sortBlogsByPublishedDate,
 } from "@/lib/blog-sort";
+import { extractPdfContent, type PdfExtractionResult } from "@/lib/pdf-extract";
 
 type Section = "navigation" | "footer" | "siteSeo" | "pageSeo" | "home" | "aboutPage" | "experiencePage" | "testimonialsPage" | "blogPage" | "servicesPage" | "doctorTalkPage" | "contactPage" | "banjaraHillsPage" | "about" | "experience" | "doctorTalk" | "testimonials" | "blog" | "services" | "contact";
 
@@ -690,7 +691,13 @@ export default function AdminPanel() {
                     <Field label="Published date" value={item.published_at ?? ""} onChange={(value) => updateItem({ ...item, published_at: value })} />
                     <ImageField label="Image" value={item.image} onChange={(value) => updateItem({ ...item, image: value })} className="md:col-span-2" />
                     <Field label="Excerpt" value={item.excerpt} onChange={(value) => updateItem({ ...item, excerpt: value })} multiline />
-                    <RichTextField label="Content" value={item.content} onChange={(value) => updateItem({ ...item, content: value })} height={320} />
+                    <div className="md:col-span-2">
+                      <PdfImportButton
+                        currentContent={item.content}
+                        onImport={(html) => updateItem({ ...item, content: html })}
+                      />
+                      <RichTextField label="Content" value={item.content} onChange={(value) => updateItem({ ...item, content: value })} height={320} />
+                    </div>
                     <div className="md:col-span-2 border-t border-(--border) pt-4 mt-2">
                       <h4 className="text-sm font-semibold text-(--foreground) mb-3">SEO Fields</h4>
                       <div className="grid gap-4 md:grid-cols-2">
@@ -1652,7 +1659,13 @@ function ServiceForm({ item, onChange }: { item: ServiceItem; onChange: (value: 
         />
         <ImageField label="Image" value={item.image} onChange={(value) => onChange({ ...item, image: value })} />
         <Field label="Summary" value={item.summary} onChange={(value) => onChange({ ...item, summary: value })} multiline className="md:col-span-2" />
-        <RichTextField label="Content" value={item.content} onChange={(value) => onChange({ ...item, content: value })} className="md:col-span-2" height={280} />
+        <div className="md:col-span-2">
+          <PdfImportButton
+            currentContent={item.content}
+            onImport={(html) => onChange({ ...item, content: html })}
+          />
+          <RichTextField label="Content" value={item.content} onChange={(value) => onChange({ ...item, content: value })} height={280} />
+        </div>
         <Field label="Meta title" value={item.meta_title} onChange={(value) => onChange({ ...item, meta_title: value })} />
         <Field label="Meta description" value={item.meta_description} onChange={(value) => onChange({ ...item, meta_description: value })} multiline className="md:col-span-2" />
         <KeywordField label="Keywords (one per line)" values={item.meta_keywords ?? []} onChange={(value) => onChange({ ...item, meta_keywords: value })} className="md:col-span-2" />
@@ -1687,6 +1700,177 @@ function ServiceForm({ item, onChange }: { item: ServiceItem; onChange: (value: 
         />
       </div>
     </div>
+  );
+}
+
+function PdfImportButton({ currentContent, onImport }: { currentContent: string; onImport: (html: string) => void }) {
+  const inputRef = useRef<HTMLInputElement | null>(null);
+  const [status, setStatus] = useState<"idle" | "extracting" | "preview" | "error">("idle");
+  const [result, setResult] = useState<PdfExtractionResult | null>(null);
+  const [errorMessage, setErrorMessage] = useState("");
+  const [replaceMode, setReplaceMode] = useState(false);
+  const [editedHtml, setEditedHtml] = useState("");
+  const [previewTab, setPreviewTab] = useState<"visual" | "html">("visual");
+
+  async function handleFileChange(event: React.ChangeEvent<HTMLInputElement>) {
+    const file = event.target.files?.[0];
+    event.target.value = "";
+    if (!file) return;
+
+    if (!file.name.toLowerCase().endsWith(".pdf") && file.type !== "application/pdf") {
+      setErrorMessage("Please select a PDF file.");
+      setStatus("error");
+      return;
+    }
+
+    setStatus("extracting");
+    setErrorMessage("");
+    setResult(null);
+
+    try {
+      const extracted = await extractPdfContent(file);
+      if (!extracted.html.trim()) {
+        setErrorMessage("No text content found in this PDF. It may be a scanned image.");
+        setStatus("error");
+        return;
+      }
+      setResult(extracted);
+      setEditedHtml(extracted.html);
+      setPreviewTab("visual");
+      setReplaceMode(!currentContent.trim());
+      setStatus("preview");
+    } catch (err) {
+      setErrorMessage(err instanceof Error ? err.message : "Failed to extract PDF content.");
+      setStatus("error");
+    }
+  }
+
+  function handleInsert() {
+    if (!result) return;
+    const finalHtml = replaceMode ? editedHtml : (currentContent + editedHtml);
+    onImport(finalHtml);
+    setStatus("idle");
+    setResult(null);
+  }
+
+  function handleCancel() {
+    setStatus("idle");
+    setResult(null);
+    setErrorMessage("");
+  }
+
+  return (
+    <>
+      <input
+        ref={inputRef}
+        type="file"
+        accept=".pdf,application/pdf"
+        className="hidden"
+        onChange={handleFileChange}
+      />
+
+      <div className="flex items-center gap-3 mb-2">
+        <button
+          type="button"
+          onClick={() => inputRef.current?.click()}
+          disabled={status === "extracting"}
+          className="inline-flex items-center gap-2 rounded-lg border border-dashed border-(--accent-gold)/40 bg-(--accent-gold)/5 px-3 py-1.5 text-xs font-medium text-(--accent-gold) hover:bg-(--accent-gold)/10 hover:border-(--accent-gold)/70 transition-all disabled:opacity-50"
+        >
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+            <polyline points="14 2 14 8 20 8" />
+            <line x1="12" y1="18" x2="12" y2="12" />
+            <line x1="9" y1="15" x2="15" y2="15" />
+          </svg>
+          {status === "extracting" ? "Extracting PDF…" : "Import from PDF"}
+        </button>
+
+        {status === "extracting" && (
+          <span className="text-xs text-(--accent-gold) animate-pulse">Reading pages…</span>
+        )}
+
+        {status === "error" && (
+          <span className="text-xs text-red-400">✗ {errorMessage}</span>
+        )}
+      </div>
+
+      {status === "preview" && result && (
+        <div className="mb-3 rounded-xl border border-(--accent-gold)/30 bg-(--bg-surface) overflow-hidden">
+          <div className="flex items-center justify-between px-4 py-2.5 border-b border-(--border) bg-(--accent-gold)/5">
+            <div className="flex items-center gap-2">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-(--accent-gold)">
+                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+                <polyline points="14 2 14 8 20 8" />
+              </svg>
+              <span className="text-sm font-medium text-(--foreground)">PDF Preview</span>
+              <span className="text-xs text-(--foreground-subtle)">({result.pageCount} {result.pageCount === 1 ? "page" : "pages"})</span>
+            </div>
+            <button type="button" onClick={handleCancel} className="text-xs text-(--foreground-muted) hover:text-(--foreground) transition-colors">✕ Close</button>
+          </div>
+
+          <div className="flex border-b border-(--border) bg-(--bg-surface) px-4 py-1.5 gap-2 text-xs">
+            <button
+              type="button"
+              onClick={() => setPreviewTab("visual")}
+              className={`px-2.5 py-1 rounded font-medium transition-colors ${previewTab === "visual" ? "bg-(--accent-gold)/15 text-(--accent-gold)" : "text-(--foreground-muted) hover:text-(--foreground)"}`}
+            >
+              Visual Preview
+            </button>
+            <button
+              type="button"
+              onClick={() => setPreviewTab("html")}
+              className={`px-2.5 py-1 rounded font-medium transition-colors ${previewTab === "html" ? "bg-(--accent-gold)/15 text-(--accent-gold)" : "text-(--foreground-muted) hover:text-(--foreground)"}`}
+            >
+              Edit HTML
+            </button>
+          </div>
+
+          <div className="max-h-72 overflow-y-auto text-sm text-(--foreground)">
+            {previewTab === "visual" ? (
+              <div
+                className="px-4 py-3 prose-preview"
+                dangerouslySetInnerHTML={{ __html: editedHtml }}
+              />
+            ) : (
+              <textarea
+                value={editedHtml}
+                onChange={(e) => setEditedHtml(e.target.value)}
+                className="w-full h-64 p-3 bg-(--bg-surface) text-(--foreground) border-0 outline-0 font-mono text-xs resize-y"
+                placeholder="Edit HTML directly..."
+              />
+            )}
+          </div>
+
+          <div className="flex items-center justify-between px-4 py-2.5 border-t border-(--border) bg-(--bg-surface)">
+            <label className="flex items-center gap-2 text-xs text-(--foreground-muted) cursor-pointer select-none">
+              <input
+                type="checkbox"
+                checked={replaceMode}
+                onChange={(e) => setReplaceMode(e.target.checked)}
+                className="rounded"
+              />
+              Replace existing content
+            </label>
+            <div className="flex gap-2">
+              <button
+                type="button"
+                onClick={handleCancel}
+                className="rounded-lg border border-(--border) px-3 py-1.5 text-xs text-(--foreground-muted) hover:text-(--foreground) transition-colors"
+              >
+                Cancel
+              </button>
+              <button
+                type="button"
+                onClick={handleInsert}
+                className="rounded-lg bg-(--accent-gold) px-4 py-1.5 text-xs font-medium text-(--background) hover:brightness-110 transition-all"
+              >
+                {replaceMode ? "Replace Content" : "Append to Content"}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+    </>
   );
 }
 

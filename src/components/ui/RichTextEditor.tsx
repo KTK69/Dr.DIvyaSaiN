@@ -3,6 +3,19 @@
 import { useEffect, useRef, useState } from "react";
 
 type QuillSelection = { index: number; length: number } | null;
+type QuillTableModule = {
+  insertTable: (rows: number, cols: number) => void;
+  insertRowAbove: () => void;
+  insertRowBelow: () => void;
+  insertColumnLeft: () => void;
+  insertColumnRight: () => void;
+  deleteRow: () => void;
+  deleteColumn: () => void;
+  deleteTable: () => void;
+};
+type QuillToolbarModule = {
+  addHandler: (name: string, handler: (value?: string) => void) => void;
+};
 type QuillInstance = {
   root: HTMLElement;
   enable: (enabled: boolean) => void;
@@ -16,9 +29,7 @@ type QuillInstance = {
     dangerouslyPasteHTML: (index: number, html: string, source?: "api" | "silent" | "user") => void;
   };
   insertEmbed: (index: number, type: string, value: string, source?: "api" | "silent" | "user") => void;
-  getModule: (name: string) => {
-    addHandler: (name: string, handler: (value?: string) => void) => void;
-  } | null;
+  getModule: (name: string) => QuillTableModule | QuillToolbarModule | Record<string, unknown> | null;
   on: (event: "text-change" | "selection-change", handler: (...args: Array<unknown>) => void) => void;
   off: (event: "text-change" | "selection-change", handler: (...args: Array<unknown>) => void) => void;
 };
@@ -374,6 +385,7 @@ export default function RichTextEditor({
   const initialReadOnlyRef = useRef(readOnly);
   const readOnlyRef = useRef(readOnly);
   const [ready, setReady] = useState(false);
+  const [isSourceMode, setIsSourceMode] = useState(false);
 
   useEffect(() => {
     onChangeRef.current = onChange;
@@ -401,6 +413,7 @@ export default function RichTextEditor({
           toolbar: {
             container: toolbarRef.current,
           },
+          table: true,
           clipboard: {
             matchVisual: false,
           },
@@ -435,7 +448,7 @@ export default function RichTextEditor({
       quill.on("selection-change", handleSelectionChange);
       selectionRef.current = quill.getSelection();
 
-      const toolbar = quill.getModule("toolbar");
+      const toolbar = quill.getModule("toolbar") as QuillToolbarModule | null;
       toolbar?.addHandler("image", () => {
         inputRef.current?.click();
       });
@@ -447,6 +460,25 @@ export default function RichTextEditor({
       });
       toolbar?.addHandler("callout", (value) => {
         formatCalloutBlock(quill, value || "gold");
+      });
+
+      // Table toolbar handlers
+      const tableModule = quill.getModule("table") as QuillTableModule | null;
+      toolbar?.addHandler("tableInsert", () => {
+        tableModule?.insertTable(3, 3);
+      });
+      toolbar?.addHandler("tableRowAbove", (value) => {
+        if (value === "above") tableModule?.insertRowAbove();
+        else if (value === "below") tableModule?.insertRowBelow();
+      });
+      toolbar?.addHandler("tableColLeft", (value) => {
+        if (value === "left") tableModule?.insertColumnLeft();
+        else if (value === "right") tableModule?.insertColumnRight();
+      });
+      toolbar?.addHandler("tableDeleteRow", (value) => {
+        if (value === "row") tableModule?.deleteRow();
+        else if (value === "col") tableModule?.deleteColumn();
+        else if (value === "table") tableModule?.deleteTable();
       });
 
       const handlePaste = (event: ClipboardEvent) => {
@@ -526,7 +558,7 @@ export default function RichTextEditor({
 
   useEffect(() => {
     const quill = quillRef.current;
-    if (!quill) {
+    if (!quill || isSourceMode) {
       return;
     }
 
@@ -543,7 +575,7 @@ export default function RichTextEditor({
       const nextIndex = Math.min(currentSelection.index, Math.max(0, quill.getLength() - 1));
       quill.setSelection(nextIndex, currentSelection.length, "silent");
     }
-  }, [value]);
+  }, [value, isSourceMode]);
 
   async function handleImageChange(event: React.ChangeEvent<HTMLInputElement>) {
     const file = event.target.files?.[0];
@@ -566,9 +598,14 @@ export default function RichTextEditor({
   }
 
   return (
-    <div className="rounded-xl border border-(--border) bg-(--bg-surface) overflow-hidden">
+    <div className="rounded-xl border border-(--border) bg-(--bg-surface) overflow-hidden flex flex-col">
       <input ref={inputRef} type="file" accept="image/*" className="hidden" onChange={handleImageChange} />
-      <div ref={toolbarRef} className="ql-toolbar ql-snow rich-editor-toolbar">
+      
+      {/* Visual Toolbar: hidden in source mode */}
+      <div 
+        ref={toolbarRef} 
+        className={`ql-toolbar ql-snow rich-editor-toolbar ${isSourceMode ? "!hidden" : ""}`}
+      >
         <span className="ql-formats">
           <select className="ql-header" defaultValue="">
             <option value="1">Heading 1</option>
@@ -650,17 +687,80 @@ export default function RichTextEditor({
         </span>
 
         <span className="ql-formats">
+          <button className="ql-tableInsert rich-editor-text-button" title="Insert 3×3 table" type="button">
+            Table
+          </button>
+          <select className="ql-tableRowAbove" defaultValue="">
+            <option value="">+ Row</option>
+            <option value="above">Row above</option>
+            <option value="below">Row below</option>
+          </select>
+          <select className="ql-tableColLeft" defaultValue="">
+            <option value="">+ Col</option>
+            <option value="left">Column left</option>
+            <option value="right">Column right</option>
+          </select>
+          <select className="ql-tableDeleteRow" defaultValue="">
+            <option value="">Delete</option>
+            <option value="row">Delete row</option>
+            <option value="col">Delete column</option>
+            <option value="table">Delete table</option>
+          </select>
+        </span>
+
+        <span className="ql-formats">
           <button className="ql-clean" title="Clear formatting" />
         </span>
+
+        <span className="ql-formats !mr-0 float-right">
+          <button
+            type="button"
+            onClick={() => setIsSourceMode(true)}
+            className="rich-editor-text-button !w-auto !px-2.5 text-xs font-semibold text-(--accent-gold) hover:bg-(--accent-gold)/10 rounded"
+            title="Switch to HTML Source Editor"
+            style={{ float: "right" }}
+          >
+            HTML
+          </button>
+        </span>
       </div>
-      <div
-        ref={editorRef}
-        className="min-h-[240px]"
-        style={{
-          minHeight: `${height}px`,
-          opacity: ready ? 1 : 0.75,
-        }}
-      />
+
+      {/* HTML Source Mode Toolbar */}
+      {isSourceMode && (
+        <div className="flex items-center justify-between border-b border-(--border) bg-(--bg-surface) px-4 py-2 text-xs">
+          <span className="font-medium text-(--foreground-subtle)">HTML Source Editor</span>
+          <button
+            type="button"
+            onClick={() => setIsSourceMode(false)}
+            className="rounded border border-(--border) bg-(--bg-surface) px-2.5 py-1 font-semibold text-(--accent-gold) hover:bg-(--accent-gold)/10 transition-colors"
+          >
+            Visual Editor
+          </button>
+        </div>
+      )}
+
+      {/* Visual Editor container: kept in DOM to preserve Quill instance bindings */}
+      <div className={isSourceMode ? "hidden" : "block"}>
+        <div
+          ref={editorRef}
+          className="min-h-[240px]"
+          style={{
+            minHeight: `${height}px`,
+            opacity: ready ? 1 : 0.75,
+          }}
+        />
+      </div>
+
+      {/* Raw HTML Textarea: only visible in source mode */}
+      {isSourceMode && (
+        <textarea
+          value={value}
+          onChange={(e) => onChange(e.target.value)}
+          className="w-full p-4 font-mono text-xs bg-(--bg-surface) text-(--foreground) border-0 outline-0 min-h-[240px] resize-y"
+          style={{ minHeight: `${height}px` }}
+          placeholder="Edit HTML Source directly..."
+        />
+      )}
     </div>
   );
 }
