@@ -111,7 +111,7 @@ export default function ServiceDetailClient({ slug, serverService }: Props) {
             <h3 className="text-base font-medium text-(--foreground) mb-4" style={{ fontFamily: "var(--font-serif)" }}>Your Surgeon</h3>
             <p className="text-sm font-medium text-(--foreground)">Dr. Divya Sai Narsingam</p>
             <p className="text-xs text-(--accent-gold-light) mt-0.5">MCh (Plastic Surgery)</p>
-            <p className="text-xs text-(--foreground-muted) mt-3 leading-relaxed">Consultant at CARE Hospitals, Gachibowli, Hyderabad. 14+ years of reconstructive and aesthetic surgery experience.</p>
+            <p className="text-xs text-(--foreground-muted) mt-3 leading-relaxed">Consultant at AIG Hospitals & CARE Hospitals, Hyderabad. 14+ years of reconstructive and aesthetic surgery experience.</p>
             <Link href="/about" className="mt-4 inline-flex text-xs text-(--foreground-subtle) hover:text-(--accent-gold-light) transition-colors">Full biography →</Link>
           </div>
 
@@ -136,7 +136,14 @@ export default function ServiceDetailClient({ slug, serverService }: Props) {
 
           <div className="glass-card rounded-xl p-6">
             <h3 className="text-xs font-semibold uppercase tracking-widest text-(--foreground-muted) mb-3">Location</h3>
-            <p className="text-sm text-(--foreground-muted) leading-relaxed">Room No. 20, 1st Floor,<br/>AIG Hospitals, Banjara Hills,<br/>Hyderabad – 500034<br/>CARE Hospitals, Hitec City, Hyderabad</p>
+            <p className="text-sm text-(--foreground-muted) leading-relaxed">
+              Room No. 20, 1st Floor,<br/>
+              AIG Hospitals, Banjara Hills,<br/>
+              Hyderabad – 500034
+              <br/><br/>
+              Room No 212<br/>
+              CARE Hospitals — Gachibowli, Hyderabad
+            </p>
           </div>
         </aside>
       </div>

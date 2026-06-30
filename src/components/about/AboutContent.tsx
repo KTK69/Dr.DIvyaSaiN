@@ -56,8 +56,8 @@ export default function AboutContent() {
                     Current Position
                   </p>
                   <p className="text-sm text-(--foreground)">{about.currentPosition}</p>
-                  <p className="text-xs text-(--accent-gold-light) mt-0.5">
-                    CARE Hospitals, Gachibowli, Hyderabad
+                  <p className="text-xs text-(--accent-gold-light) mt-0.5 leading-relaxed">
+                    AIG Hospitals, Banjara Hills & CARE Hospitals, Gachibowli, Hyderabad
                   </p>
                 </div>
                 <div className="border-t border-(--border) pt-4">

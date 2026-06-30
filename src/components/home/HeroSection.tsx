@@ -119,7 +119,7 @@ export default function HeroSection() {
               <div className="w-full aspect-3/4 max-w-xs mx-auto rounded-xl overflow-hidden border border-(--border) relative mb-6">
                 <Image
                   src={HERO_IMAGE}
-                  alt="Dr. Divya Sai Narsingam – Plastic & Reconstructive Surgeon, CARE Hospitals Hyderabad"
+                  alt="Dr. Divya Sai Narsingam – Plastic & Reconstructive Surgeon, AIG & CARE Hospitals Hyderabad"
                   fill
                   className="object-cover object-top"
                   priority
@@ -137,7 +137,7 @@ export default function HeroSection() {
                   MBBS, MS, MCh (Plastic Surgery)
                 </p>
                 <p className="text-xs text-(--foreground-muted)">
-                  Consultant, CARE Hospitals — Gachibowli, Hyderabad
+                  Consultant · AIG Hospitals, Banjara Hills & CARE Hospitals, Gachibowli
                 </p>
               </div>
 

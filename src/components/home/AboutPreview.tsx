@@ -66,8 +66,7 @@ export default function AboutPreview() {
               {about.summary}
             </p>
             <p className="text-base text-(--foreground-muted) leading-relaxed mb-8">
-              She currently practices as a Consultant at CARE Hospitals,
-              Gachibowli — one of Hyderabad&apos;s leading private healthcare institutions.
+              She currently practises as a Consultant at AIG Hospitals, Banjara Hills and CARE Hospitals, Gachibowli — two of Hyderabad&apos;s leading private healthcare institutions.
             </p>
 
             <div className="grid grid-cols-2 gap-4 mb-8">

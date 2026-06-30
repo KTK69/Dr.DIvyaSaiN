@@ -328,7 +328,7 @@ export const DEFAULT_SITE_CONTENT: SiteContent = {
 
   // Footer
   footer: {
-    bio: "Consultant Plastic & Reconstructive Surgeon at CARE Hospitals, Gachibowli, Hyderabad. Specialising in aesthetic and reconstructive plastic surgery with over 14 years of clinical experience.",
+    bio: "Consultant Plastic & Reconstructive Surgeon at AIG Hospitals, Banjara Hills & CARE Hospitals, Gachibowli, Hyderabad. Specialising in aesthetic and reconstructive plastic surgery with over 14 years of clinical experience.",
     qualifications: "MCh Plastic Surgery · Board-Certified",
     servicesTitle: "Services",
     services: [
@@ -343,8 +343,8 @@ export const DEFAULT_SITE_CONTENT: SiteContent = {
     ],
     contactTitle: "Contact",
     contactLocation:
-      "Room No. 20, 1st Floor, AIG Hospitals, Banjara Hills, Hyderabad – 500034",
-    contactEmail: "Appointments via AIG Hospitals",
+      "Room No. 20, 1st Floor, AIG Hospitals, Banjara Hills, Hyderabad – 500034 / Room No 212  CARE Hospitals — Gachibowli, Hyderabad",
+    contactEmail: "Appointments via AIG & CARE Hospitals",
     linksTitle: "Links",
     links: [
       { label: "Home", href: "/" },
@@ -364,7 +364,7 @@ export const DEFAULT_SITE_CONTENT: SiteContent = {
       "Dr. Divya Sai Narsingam | Plastic & Reconstructive Surgeon Hyderabad",
     titleTemplate: "%s | Dr. Divya Sai Narsingam",
     description:
-      "Dr. Divya Sai Narsingam – Board-certified Plastic & Reconstructive Surgeon at CARE Hospitals, Gachibowli, Hyderabad. MCh Plastic Surgery. Expert in cosmetic surgery, breast reconstruction, and microvascular surgery.",
+      "Dr. Divya Sai Narsingam – Board-certified Plastic & Reconstructive Surgeon at AIG Hospitals, Banjara Hills & CARE Hospitals, Gachibowli, Hyderabad. MCh Plastic Surgery. Expert in cosmetic surgery, breast reconstruction, and microvascular surgery.",
     keywords: [
       "Plastic Surgeon in Hyderabad",
       "Reconstructive Surgeon Gachibowli",
