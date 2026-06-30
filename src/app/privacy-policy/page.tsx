@@ -3,9 +3,9 @@ import Link from "next/link";
 import PageWrapper from "@/components/ui/PageWrapper";
 
 export const metadata: Metadata = {
-  title: "Privacy Policy | Dr. Divya Sai Narsingam",
+  title: "Privacy Policy - Dr. Divya Sai Narsingam, Hyderabad",
   description:
-    "How we collect, use, and protect your information when you visit our site or request a consultation.",
+    "Read the privacy policy for Dr. Divya Sai Narsingam's practice and patient communication.",
 };
 
 const LAST_UPDATED = "May 21, 2026";

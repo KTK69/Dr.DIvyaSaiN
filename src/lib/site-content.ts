@@ -11,11 +11,18 @@ export type NavLink = { label: string; href: string };
 
 // Section types
 type GalleryImageSlot = { src: string; alt: string; label: string };
+export type PatientGallery = {
+  id: string;
+  name: string;
+  images: Array<GalleryImageSlot>;
+};
+
 export type BeforeAfterProcedure = {
   procedureName: string;
   description: string;
   previewImage: string;
-  images: Array<GalleryImageSlot>;
+  images?: Array<GalleryImageSlot>;
+  patients?: Array<PatientGallery>;
 };
 
 export type HomeContent = {

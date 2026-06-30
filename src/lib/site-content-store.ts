@@ -115,6 +115,7 @@ function revalidateSiteContent(content: SiteContent) {
     "/services",
     "/plastic-surgeon-banjarahills",
     "/admin",
+    "/before-after",
   ];
 
   for (const route of staticPaths) {

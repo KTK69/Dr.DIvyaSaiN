@@ -555,28 +555,6 @@ a {
   right: 1rem;
 }
 
-.rich-text table,
-.ql-editor table {
-  border-collapse: collapse;
-  margin-top: 1rem;
-  width: 100%;
-}
-
-.rich-text td,
-.rich-text th,
-.ql-editor td,
-.ql-editor th {
-  border: 1px solid var(--border);
-  padding: 0.75rem;
-  vertical-align: top;
-}
-
-.rich-text th,
-.ql-editor th {
-  background: var(--bg-surface);
-  color: var(--foreground);
-  font-weight: 600;
-}
 
 .ql-editor img {
   display: block;
@@ -596,14 +574,6 @@ a {
 .rich-text {
   word-break: break-word;
   overflow-wrap: break-word;
-}
-
-/* Responsive table wrapper */
-.rich-text table {
-  display: block;
-  max-width: 100%;
-  overflow-x: auto;
-  -webkit-overflow-scrolling: touch;
 }
 
 /* Responsive heading sizes inside rich text on mobile */
@@ -637,7 +607,16 @@ a {
   display: none;
 }
 
-/* PDF import preview panel */
+/* PDF / Word import preview panel */
+.prose-preview h1 {
+  font-family: var(--font-serif);
+  font-weight: 600;
+  line-height: 1.25;
+  margin-top: 1.5rem;
+  margin-bottom: 0.5rem;
+  color: var(--foreground);
+  font-size: 1.65rem;
+}
 .prose-preview h2,
 .prose-preview h3 {
   font-family: var(--font-serif);
@@ -649,41 +628,178 @@ a {
 }
 .prose-preview h2 { font-size: 1.35rem; }
 .prose-preview h3 { font-size: 1.15rem; }
+.prose-preview h4 {
+  font-family: var(--font-serif);
+  font-weight: 500;
+  font-size: 1.05rem;
+  margin-top: 1rem;
+  margin-bottom: 0.3rem;
+  color: var(--foreground);
+}
 .prose-preview p {
   margin-top: 0.5rem;
   line-height: 1.65;
 }
-.prose-preview ul {
-  list-style-type: disc;
+.prose-preview ul,
+.prose-preview ol {
   padding-left: 1.5rem;
   margin-top: 0.5rem;
 }
+.prose-preview ul { list-style-type: disc; }
+.prose-preview ol { list-style-type: decimal; }
 .prose-preview li {
   margin-top: 0.25rem;
 }
 .prose-preview > :first-child {
   margin-top: 0;
 }
-.prose-preview table {
-  border-collapse: collapse;
-  margin-top: 0.75rem;
-  width: 100%;
-  font-size: 0.875rem;
-}
-.prose-preview th,
-.prose-preview td {
-  border: 1px solid var(--border);
-  padding: 0.5rem 0.65rem;
-  vertical-align: top;
-  text-align: left;
-}
-.prose-preview th {
-  background: var(--bg-surface);
+.prose-preview strong {
   color: var(--foreground);
   font-weight: 600;
 }
-.prose-preview tr:nth-child(even) td {
-  background: rgba(255, 255, 255, 0.02);
+.prose-preview em {
+  font-style: italic;
+}
+.prose-preview blockquote {
+  margin: 0.75rem 0;
+  border-left: 3px solid var(--accent-gold);
+  background: rgba(184, 151, 42, 0.08);
+  padding: 0.6rem 0.85rem;
+  color: var(--foreground);
 }
 
+/* ── Table styles for prose-preview (import preview) ────────────────────── */
+.prose-preview table {
+  border-collapse: collapse;
+  margin-top: 0.75rem;
+  margin-bottom: 0.75rem;
+  width: 100%;
+  font-size: 0.875rem;
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  border-radius: 0.5rem;
+  overflow: hidden;
+  display: table;
+  max-width: 100%;
+}
+.prose-preview th,
+.prose-preview td {
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  padding: 0.55rem 0.75rem;
+  vertical-align: top;
+  text-align: left;
+  line-height: 1.5;
+}
+.prose-preview th {
+  background: rgba(184, 151, 42, 0.12);
+  color: var(--foreground);
+  font-weight: 600;
+  font-size: 0.8125rem;
+  text-transform: none;
+  letter-spacing: 0.01em;
+  border-bottom: 2px solid rgba(184, 151, 42, 0.3);
+}
+.prose-preview thead th {
+  background: rgba(184, 151, 42, 0.15);
+  border-bottom: 2px solid rgba(184, 151, 42, 0.35);
+}
+.prose-preview tr:nth-child(even) td {
+  background: rgba(255, 255, 255, 0.03);
+}
+.prose-preview tr:hover td {
+  background: rgba(255, 255, 255, 0.05);
+}
+.prose-preview caption {
+  caption-side: bottom;
+  padding: 0.5rem;
+  font-size: 0.8rem;
+  color: var(--foreground-muted);
+}
 
+/* ── Enhanced table styles for rich-text (public-facing) ───────────────── */
+.rich-text table,
+.ql-editor table {
+  border-collapse: collapse;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+  width: 100%;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 0.5rem;
+  overflow: hidden;
+}
+.rich-text td,
+.rich-text th,
+.ql-editor td,
+.ql-editor th {
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  padding: 0.75rem 0.85rem;
+  vertical-align: top;
+  line-height: 1.55;
+}
+.rich-text th,
+.ql-editor th {
+  background: rgba(184, 151, 42, 0.1);
+  color: var(--foreground);
+  font-weight: 600;
+  font-size: 0.9em;
+  border-bottom: 2px solid rgba(184, 151, 42, 0.3);
+}
+.rich-text thead th,
+.ql-editor thead th {
+  background: rgba(184, 151, 42, 0.14);
+  border-bottom: 2px solid rgba(184, 151, 42, 0.35);
+}
+.rich-text tr:nth-child(even) td,
+.ql-editor tr:nth-child(even) td {
+  background: rgba(255, 255, 255, 0.025);
+}
+.rich-text tr:hover td,
+.ql-editor tr:hover td {
+  background: rgba(255, 255, 255, 0.04);
+}
+
+/* Word-imported table class */
+.rich-text table.docx-table,
+.prose-preview table.docx-table,
+.ql-editor table.docx-table {
+  border: 1px solid rgba(255, 255, 255, 0.25);
+}
+.rich-text table.docx-table td,
+.rich-text table.docx-table th,
+.prose-preview table.docx-table td,
+.prose-preview table.docx-table th,
+.ql-editor table.docx-table td,
+.ql-editor table.docx-table th {
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  padding: 0.6rem 0.8rem;
+}
+.rich-text table.docx-table th,
+.prose-preview table.docx-table th,
+.ql-editor table.docx-table th {
+  background: rgba(184, 151, 42, 0.15);
+  font-weight: 600;
+  border-bottom: 2px solid rgba(184, 151, 42, 0.35);
+}
+
+/* Responsive table wrapper for rich-text */
+.rich-text table {
+  display: table;
+  max-width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* ── Word document title / subtitle styles ────────────────────────────── */
+.rich-text h1.doc-title,
+.prose-preview h1.doc-title {
+  font-size: 1.85rem;
+  font-weight: 700;
+  margin-bottom: 0.25rem;
+}
+.rich-text h2.doc-subtitle,
+.prose-preview h2.doc-subtitle {
+  font-size: 1.15rem;
+  font-weight: 400;
+  color: var(--foreground-muted);
+  margin-top: 0;
+  margin-bottom: 1rem;
+}

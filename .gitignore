@@ -46,3 +46,9 @@ data/site-content.runtime.json
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# local SEO import files
+*.xlsx
+*.xls
+*.py
+

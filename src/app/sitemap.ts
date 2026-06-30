@@ -12,6 +12,11 @@ const staticRoutes: MetadataRoute.Sitemap = [
     priority: 1,
   },
   {
+    url: `${SITE_URL}/about`,
+    changeFrequency: "monthly",
+    priority: 0.8,
+  },
+  {
     url: `${SITE_URL}/aboutus`,
     changeFrequency: "monthly",
     priority: 0.8,
@@ -19,12 +24,17 @@ const staticRoutes: MetadataRoute.Sitemap = [
   {
     url: `${SITE_URL}/experience`,
     changeFrequency: "monthly",
-    priority: 0.8,
+    priority: 0.7,
   },
   {
     url: `${SITE_URL}/drvideo`,
     changeFrequency: "monthly",
     priority: 0.8,
+  },
+  {
+    url: `${SITE_URL}/doctors-talk`,
+    changeFrequency: "monthly",
+    priority: 0.7,
   },
   {
     url: `${SITE_URL}/reviews`,

@@ -15,50 +15,79 @@ function normalizeGallerySlot(defaultSlot: Record<string, unknown>, storedSlot: 
   };
 }
 
+function normalizePatientGallery(storedPatient: unknown, fallbackId: string, fallbackName: string): any {
+  const source = isPlainObject(storedPatient) ? storedPatient : {};
+  const id = String(source.id ?? fallbackId);
+  const name = String(source.name ?? fallbackName);
+  let images: Array<{ src: string; alt: string; label: string }> = [];
+  if (Array.isArray(source.images)) {
+    images = source.images.map((img, i) => normalizeGallerySlot({}, img, `Image ${i + 1}`));
+  }
+  return { id, name, images };
+}
+
 function normalizeGalleryProcedure(defaultProcedure: Record<string, unknown>, storedProcedure: unknown, fallbackName: string) {
   const storedObject = isPlainObject(storedProcedure) ? storedProcedure : {};
   
-  let images: Array<{ src: string; alt: string; label: string }> = [];
-  if (Array.isArray(storedObject.images)) {
-    images = storedObject.images.map((img, i) => normalizeGallerySlot({}, img, `Image ${i + 1}`));
+  let patients: Array<any> = [];
+  
+  if (Array.isArray(storedObject.patients)) {
+    patients = storedObject.patients.map((p, i) => normalizePatientGallery(p, `patient-${i + 1}`, `Patient ${i + 1}`));
+  } else if (Array.isArray(storedObject.images) && storedObject.images.length > 0) {
+    const images = storedObject.images.map((img, i) => normalizeGallerySlot({}, img, `Image ${i + 1}`));
+    patients = [{
+      id: "patient-1",
+      name: "Patient 1",
+      images
+    }];
   } else {
     const storedBefore = isPlainObject(storedObject.before) ? storedObject.before : {};
     const storedAfter = isPlainObject(storedObject.after) ? storedObject.after : {};
+    const legacyImages = [];
+    if (storedBefore.front) legacyImages.push(normalizeGallerySlot({}, storedBefore.front, "Before Front"));
+    if (storedBefore.back) legacyImages.push(normalizeGallerySlot({}, storedBefore.back, "Before Back"));
+    if (storedAfter.front) legacyImages.push(normalizeGallerySlot({}, storedAfter.front, "After Front"));
+    if (storedAfter.back) legacyImages.push(normalizeGallerySlot({}, storedAfter.back, "After Back"));
     
-    if (storedBefore.front) {
-      images.push(normalizeGallerySlot({}, storedBefore.front, "Before Front"));
-    }
-    if (storedBefore.back) {
-      images.push(normalizeGallerySlot({}, storedBefore.back, "Before Back"));
-    }
-    if (storedAfter.front) {
-      images.push(normalizeGallerySlot({}, storedAfter.front, "After Front"));
-    }
-    if (storedAfter.back) {
-      images.push(normalizeGallerySlot({}, storedAfter.back, "After Back"));
+    if (legacyImages.length > 0) {
+      patients = [{
+        id: "patient-1",
+        name: "Patient 1",
+        images: legacyImages
+      }];
     }
   }
 
-  if (images.length === 0 && Array.isArray(defaultProcedure.images)) {
-    images = (defaultProcedure.images as Array<any>).map((img, i) => normalizeGallerySlot({}, img, `Image ${i + 1}`));
+  if (patients.length === 0 && isPlainObject(defaultProcedure)) {
+    if (Array.isArray(defaultProcedure.patients)) {
+      patients = (defaultProcedure.patients as Array<any>).map((p, i) => normalizePatientGallery(p, `patient-${i + 1}`, `Patient ${i + 1}`));
+    } else if (Array.isArray(defaultProcedure.images)) {
+      const images = (defaultProcedure.images as Array<any>).map((img, i) => normalizeGallerySlot({}, img, `Image ${i + 1}`));
+      patients = [{
+        id: "patient-1",
+        name: "Patient 1",
+        images
+      }];
+    }
   }
 
   let previewImage = String(storedObject.previewImage ?? "");
   if (!previewImage) {
-    if (images.length > 0) {
-      previewImage = images[0].src;
+    if (patients.length > 0 && patients[0].images.length > 0) {
+      previewImage = patients[0].images[0].src;
     } else {
-      const storedBefore = isPlainObject(storedObject.before) ? storedObject.before : {};
-      const frontSlot = isPlainObject(storedBefore.front) ? storedBefore.front : {};
-      previewImage = String(frontSlot.src ?? defaultProcedure.previewImage ?? "");
+      previewImage = String(defaultProcedure.previewImage ?? "");
     }
   }
+
+  const legacyImagesList = patients.length > 0 ? patients[0].images : [];
 
   return {
     procedureName: String(storedObject.procedureName ?? defaultProcedure.procedureName ?? fallbackName),
     description: String(storedObject.description ?? defaultProcedure.description ?? ""),
     previewImage,
-    images,
+    images: legacyImagesList,
+    patients,
   };
 }
 

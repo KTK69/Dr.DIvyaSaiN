@@ -231,15 +231,15 @@ export default function Navbar() {
               Results
             </Link>
             <Link
-              href="/contactus"
+              href="/blog"
               onClick={closeMenus}
               className={`text-[12px] font-semibold tracking-wide py-1 px-2.5 rounded-md transition-colors ${
-                pathname.startsWith("/contact") || pathname.startsWith("/contactus")
+                pathname.startsWith("/blog")
                   ? "text-(--accent-gold-light) bg-(--bg-card) border border-(--accent-gold)/20"
                   : "text-(--foreground-muted) hover:text-(--foreground)"
               }`}
             >
-              Contact
+              Blog
             </Link>
             <button
               onClick={() => setMobileOpen(!mobileOpen)}
@@ -277,17 +277,6 @@ export default function Navbar() {
                 </p>
                 <div className="grid grid-cols-2 gap-3">
                   <Link
-                    href="/experience"
-                    onClick={closeMenus}
-                    className={`py-2 px-3 rounded-lg text-sm font-medium transition-colors border border-(--border)/50 ${
-                      pathname.startsWith("/experience")
-                        ? "text-(--accent-gold-light) bg-(--bg-card) border-(--accent-gold)/25"
-                        : "text-(--foreground-muted) bg-(--bg-card)/40"
-                    }`}
-                  >
-                    Experience
-                  </Link>
-                  <Link
                     href="/drvideo"
                     onClick={closeMenus}
                     className={`py-2 px-3 rounded-lg text-sm font-medium transition-colors border border-(--border)/50 ${
@@ -308,17 +297,6 @@ export default function Navbar() {
                     }`}
                   >
                     Testimonials
-                  </Link>
-                  <Link
-                    href="/blog"
-                    onClick={closeMenus}
-                    className={`py-2 px-3 rounded-lg text-sm font-medium transition-colors border border-(--border)/50 ${
-                      pathname.startsWith("/blog")
-                        ? "text-(--accent-gold-light) bg-(--bg-card) border-(--accent-gold)/25"
-                        : "text-(--foreground-muted) bg-(--bg-card)/40"
-                    }`}
-                  >
-                    Blog
                   </Link>
                 </div>
               </div>

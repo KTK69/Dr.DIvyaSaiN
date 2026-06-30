@@ -558,12 +558,36 @@ export default function RichTextEditor({
 
   useEffect(() => {
     const quill = quillRef.current;
-    if (!quill || isSourceMode) {
+    if (!quill) {
       return;
     }
 
+    // When switching from source mode to visual, always sync
+    if (!isSourceMode) {
+      const nextHtml = normalizeHtml(value);
+      const currentHtml = normalizeHtml(quill.root.innerHTML);
+
+      if (nextHtml !== currentHtml) {
+        const currentSelection = selectionRef.current ?? quill.getSelection(true);
+        replaceEditorHtml(quill, htmlFromValue(value));
+        lastSyncedHtmlRef.current = normalizeHtml(quill.root.innerHTML);
+
+        if (currentSelection) {
+          const nextIndex = Math.min(currentSelection.index, Math.max(0, quill.getLength() - 1));
+          quill.setSelection(nextIndex, currentSelection.length, "silent");
+        }
+        return;
+      }
+    }
+
+    // Normal external value sync (skip if value matches what we last synced)
     const nextHtml = normalizeHtml(value);
     if (nextHtml === lastSyncedHtmlRef.current) {
+      return;
+    }
+
+    // Skip sync if editor is focused (user is actively typing)
+    if (!isSourceMode && quill.root === document.activeElement) {
       return;
     }
 

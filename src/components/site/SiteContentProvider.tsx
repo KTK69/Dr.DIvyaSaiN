@@ -118,6 +118,7 @@ export function SiteContentProvider({
   const lastSyncedAtRef = useRef(lastSyncedAt);
   const broadcastChannelRef = useRef<BroadcastChannel | null>(null);
   const hasServerSnapshotRef = useRef(Boolean(initialEnvelope));
+  const savingRef = useRef(false);
 
   useEffect(() => {
     hasLocalEditsRef.current = hasLocalEdits;
@@ -197,6 +198,7 @@ export function SiteContentProvider({
     }
 
     const onContentUpdated = () => {
+      if (savingRef.current) return;
       if (!hasLocalEditsRef.current || !isAdminRoute) {
         void refreshContent();
       }
@@ -237,6 +239,7 @@ export function SiteContentProvider({
 
   const saveContent = useCallback(async (nextContent?: SiteContent) => {
     setSaving(true);
+    savingRef.current = true;
 
     try {
       const contentToSave = nextContent ?? contentRef.current;
@@ -249,15 +252,28 @@ export function SiteContentProvider({
       }
 
       const payload = result.payload;
-      setContentState(payload.content ?? contentToSave);
+      const savedContent = payload.content ?? contentToSave;
+      const savedTimestamp = payload.updatedAt ?? null;
+
+      // Update timestamp first so any incoming refresh sees us as current
+      setLastSyncedAt(savedTimestamp);
+      setContentState(savedContent);
       setHasLocalEdits(false);
-      setLastSyncedAt(payload.updatedAt ?? null);
       setContentReady(true);
       hasServerSnapshotRef.current = true;
+
+      // Notify other tabs but not ourselves during the save window
       notifyContentUpdated();
+
+      // Small delay before allowing self-refresh to avoid race
+      setTimeout(() => {
+        savingRef.current = false;
+      }, 500);
+
       router.refresh();
       return { ok: true };
     } catch {
+      savingRef.current = false;
       return {
         ok: false,
         message: "Unable to reach the content save endpoint.",

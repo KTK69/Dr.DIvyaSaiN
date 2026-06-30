@@ -3,8 +3,7 @@
 import React from "react";
 import Image from "next/image";
 import PageWrapper from "@/components/ui/PageWrapper";
-import { GraduationCap, Award, Stethoscope, Quote } from "lucide-react";
-import Link from "next/link";
+import { GraduationCap, Award, Stethoscope, Quote, Briefcase, BookOpen, FlaskConical, Mic } from "lucide-react";
 import { useSiteContent } from "@/components/site/SiteContentProvider";
 
 const ABOUT_PORTRAIT = "/images/img/about.jpeg";
@@ -12,6 +11,7 @@ const ABOUT_PORTRAIT = "/images/img/about.jpeg";
 export default function AboutContent() {
   const { content } = useSiteContent();
   const { about } = content;
+  const { experience: experienceItems, publications, research, conferences } = content.experience;
 
   return (
     <PageWrapper>
@@ -182,13 +182,119 @@ export default function AboutContent() {
           </div>
         </section>
 
-        {/* CTA */}
-        <div className="text-center pt-6 border-t border-(--border)">
-          <p className="text-sm text-(--foreground-muted) mb-4">To review Dr. Narsingam&apos;s academic work and publications:</p>
-          <Link href="/experience" className="inline-flex items-center gap-2 text-sm text-(--accent-gold-light) hover:underline">
-            View Experience &amp; Publications →
-          </Link>
-        </div>
+        {/* Career Timeline */}
+        <section className="mb-20" aria-labelledby="career-heading">
+          <div className="flex items-center gap-3 mb-10">
+            <Briefcase size={20} className="text-(--accent-gold)" />
+            <h2 id="career-heading" className="text-2xl font-medium text-(--foreground)" style={{ fontFamily: "var(--font-serif)" }}>
+              Career Timeline
+            </h2>
+          </div>
+          <div className="relative">
+            <div className="absolute left-4 top-2 bottom-2 w-px bg-(--border)" aria-hidden="true" />
+            <ol className="space-y-8 pl-12">
+              {experienceItems.map((exp, index) => (
+                <li key={`${exp.role}-${exp.institution}-${exp.period}-${index}`} className="relative">
+                  <div
+                    className={`absolute -left-8 top-1.5 w-3 h-3 rounded-full border-2 ${
+                      exp.current ? "bg-(--accent-gold) border-(--accent-gold)" : "bg-(--bg-card) border-(--border)"
+                    }`}
+                  />
+                  <div className="glass-card rounded-xl p-6">
+                    <div className="flex flex-wrap items-start justify-between gap-3">
+                      <div>
+                        <p className="text-base font-medium text-(--foreground)" style={{ fontFamily: "var(--font-serif)" }}>
+                          {exp.role}
+                        </p>
+                        <p className="text-sm text-(--foreground-muted) mt-0.5">{exp.institution}</p>
+                      </div>
+                      <div className="flex items-center gap-2 shrink-0">
+                        {exp.current && (
+                          <span className="text-xs px-2 py-0.5 rounded-full bg-(--accent-gold) bg-opacity-20 text-(--accent-gold-light)">Current</span>
+                        )}
+                        <span className="text-xs text-(--foreground-subtle) px-3 py-1 rounded-full border border-(--border)">{exp.period}</span>
+                      </div>
+                    </div>
+                  </div>
+                </li>
+              ))}
+            </ol>
+          </div>
+        </section>
+
+        {/* Publications */}
+        <section className="mb-20" aria-labelledby="publications-heading">
+          <div className="flex items-center gap-3 mb-8">
+            <BookOpen size={20} className="text-(--accent-gold)" />
+            <h2 id="publications-heading" className="text-2xl font-medium text-(--foreground)" style={{ fontFamily: "var(--font-serif)" }}>
+              Publications
+            </h2>
+          </div>
+          <div className="space-y-5">
+            {publications.map((pub, i) => (
+              <article key={pub.title} className="glass-card rounded-xl p-6" aria-label={`Publication ${i + 1}`}>
+                <div className="flex items-start gap-4">
+                  <span className="text-2xl font-medium text-(--accent-gold) opacity-30 shrink-0" aria-hidden="true" style={{ fontFamily: "var(--font-serif)" }}>
+                    {String(i + 1).padStart(2, "0")}
+                  </span>
+                  <div>
+                    <p className="text-base font-medium text-(--foreground) mb-1" style={{ fontFamily: "var(--font-serif)" }}>
+                      &ldquo;{pub.title}&rdquo;
+                    </p>
+                    <p className="text-sm text-(--foreground-muted) mb-1">{pub.authors}</p>
+                    <p className="text-sm text-(--accent-gold-light)">{pub.journal}, <span className="text-(--foreground-subtle)">{pub.citation}</span></p>
+                  </div>
+                </div>
+              </article>
+            ))}
+          </div>
+        </section>
+
+        {/* Research */}
+        <section className="mb-20" aria-labelledby="research-heading">
+          <div className="flex items-center gap-3 mb-8">
+            <FlaskConical size={20} className="text-(--accent-gold)" />
+            <h2 id="research-heading" className="text-2xl font-medium text-(--foreground)" style={{ fontFamily: "var(--font-serif)" }}>
+              Research Work
+            </h2>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+            {research.map((r) => (
+              <div key={r.title} className="glass-card rounded-xl p-6">
+                <p className="text-sm font-medium text-(--foreground) mb-2" style={{ fontFamily: "var(--font-serif)" }}>{r.title}</p>
+                <span className="text-xs text-(--foreground-subtle) px-3 py-1 rounded-full border border-(--border)">{r.period}</span>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        {/* Conference Presentations */}
+        <section className="mb-20" aria-labelledby="conferences-heading">
+          <div className="flex items-center gap-3 mb-8">
+            <Mic size={20} className="text-(--accent-gold)" />
+            <h2 id="conferences-heading" className="text-2xl font-medium text-(--foreground)" style={{ fontFamily: "var(--font-serif)" }}>
+              Conference Presentations
+            </h2>
+          </div>
+          <div className="space-y-5">
+            {conferences.map((conf) => (
+              <div key={conf.event} className="glass-card rounded-xl p-6">
+                <div className="flex flex-wrap items-center gap-3 mb-4">
+                  <p className="text-base font-medium text-(--foreground)" style={{ fontFamily: "var(--font-serif)" }}>{conf.event}</p>
+                  <span className="text-xs px-2 py-0.5 rounded-full border border-(--border) text-(--foreground-subtle)">{conf.year}</span>
+                </div>
+                <ul className="space-y-2">
+                  {conf.presentations.map((pres) => (
+                    <li key={pres} className="flex items-start gap-3">
+                      <div className="w-1.5 h-1.5 rounded-full bg-(--accent-gold) mt-2 shrink-0" />
+                      <p className="text-sm text-(--foreground-muted)">{pres}</p>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ))}
+          </div>
+        </section>
       </div>
     </PageWrapper>
   );

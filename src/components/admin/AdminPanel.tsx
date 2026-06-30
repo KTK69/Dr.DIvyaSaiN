@@ -4,7 +4,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useSiteContent } from "@/components/site/SiteContentProvider";
 import RichTextEditor from "@/components/ui/RichTextEditor";
-import type { SiteContent } from "@/lib/site-content";
+import type { SiteContent, PatientGallery } from "@/lib/site-content";
 import {
   hasBlogOrderChanged,
   sortBlogsByPublishedDate,
@@ -33,12 +33,10 @@ const navItems: Array<{ key: Section; label: string }> = [
   { key: "pageSeo", label: "Page SEO" },
   { key: "home", label: "Home Content" },
   { key: "aboutPage", label: "About Page" },
-  { key: "experiencePage", label: "Experience Page" },
   { key: "testimonialsPage", label: "Testimonials Page" },
   { key: "blogPage", label: "Blog Page" },
   { key: "servicesPage", label: "Services Page" },
   { key: "doctorTalkPage", label: "Doctor's Talk Page" },
-  { key: "contactPage", label: "Contact Page" },
   { key: "banjaraHillsPage", label: "Banjara Hills Page" },
   { key: "about", label: "About Data" },
   { key: "experience", label: "Experience Data" },
@@ -1023,12 +1021,7 @@ export default function AdminPanel() {
             </div>
           ) : null}
 
-          {activeSection === "experiencePage" ? (
-            <div className="grid gap-6 md:grid-cols-2">
-              <Field label="Heading" value={content.experiencePage.heading} onChange={(value) => update("experiencePage", { ...content.experiencePage, heading: value })} />
-              <Field label="Summary" value={content.experiencePage.summary} onChange={(value) => update("experiencePage", { ...content.experiencePage, summary: value })} multiline />
-            </div>
-          ) : null}
+
 
           {activeSection === "testimonialsPage" ? (
             <div className="space-y-8">
@@ -1083,29 +1076,7 @@ export default function AdminPanel() {
             </div>
           ) : null}
 
-          {activeSection === "contactPage" ? (
-            <div className="space-y-6">
-              <Field label="Heading" value={content.contactPage.heading} onChange={(value) => update("contactPage", { ...content.contactPage, heading: value })} />
-              <Field label="Subheading" value={content.contactPage.subheading} onChange={(value) => update("contactPage", { ...content.contactPage, subheading: value })} multiline />
-              <Field label="Calendar Heading" value={content.contactPage.calendarHeading} onChange={(value) => update("contactPage", { ...content.contactPage, calendarHeading: value })} />
-              <Field label="Calendar Subheading" value={content.contactPage.calendarSubheading} onChange={(value) => update("contactPage", { ...content.contactPage, calendarSubheading: value })} />
-              <Field label="Form Heading" value={content.contactPage.formHeading} onChange={(value) => update("contactPage", { ...content.contactPage, formHeading: value })} />
-              <Field label="Location Heading" value={content.contactPage.locationHeading} onChange={(value) => update("contactPage", { ...content.contactPage, locationHeading: value })} />
-              <Field label="Location Address" value={content.contactPage.locationAddress} onChange={(value) => update("contactPage", { ...content.contactPage, locationAddress: value })} multiline />
-              <div className="border-t border-(--border) pt-6">
-                <h3 className="text-sm font-semibold text-(--foreground) mb-4">Form Field Labels</h3>
-                <div className="grid gap-4 md:grid-cols-2">
-                  <Field label="Full Name" value={content.contactPage.formLabels.fullName} onChange={(value) => update("contactPage", { ...content.contactPage, formLabels: { ...content.contactPage.formLabels, fullName: value } })} />
-                  <Field label="Phone" value={content.contactPage.formLabels.phone} onChange={(value) => update("contactPage", { ...content.contactPage, formLabels: { ...content.contactPage.formLabels, phone: value } })} />
-                  <Field label="Email" value={content.contactPage.formLabels.email} onChange={(value) => update("contactPage", { ...content.contactPage, formLabels: { ...content.contactPage.formLabels, email: value } })} />
-                  <Field label="Concern" value={content.contactPage.formLabels.concern} onChange={(value) => update("contactPage", { ...content.contactPage, formLabels: { ...content.contactPage.formLabels, concern: value } })} />
-                  <Field label="Preferred Time" value={content.contactPage.formLabels.preferredTime} onChange={(value) => update("contactPage", { ...content.contactPage, formLabels: { ...content.contactPage.formLabels, preferredTime: value } })} />
-                  <Field label="How Did You Hear" value={content.contactPage.formLabels.howDidYouHear} onChange={(value) => update("contactPage", { ...content.contactPage, formLabels: { ...content.contactPage.formLabels, howDidYouHear: value } })} />
-                  <Field label="Submit Button" value={content.contactPage.formLabels.submit} onChange={(value) => update("contactPage", { ...content.contactPage, formLabels: { ...content.contactPage.formLabels, submit: value } })} />
-                </div>
-              </div>
-            </div>
-          ) : null}
+
 
           {activeSection === "banjaraHillsPage" ? (
             <BanjaraHillsPageForm
@@ -1316,26 +1287,32 @@ const GALLERY_PROCEDURE_PRESETS: Array<GalleryProcedure> = [
     procedureName: "Breast reconstruction",
     description: "Procedure-specific comparison set for breast reconstruction.",
     previewImage: "/images/img/Dr Divya Plastic Surgeon - Home Banner.jpg",
-    images: [
+    patients: [
       {
-        src: "/images/img/Dr Divya Plastic Surgeon - Home Banner.jpg",
-        alt: "Before front view for breast reconstruction",
-        label: "Before front",
-      },
-      {
-        src: "/images/img/gallery-2.jpg",
-        alt: "Before back view for breast reconstruction",
-        label: "Before back",
-      },
-      {
-        src: "/images/img/Dr Divya Plastic Surgeon home.jpg",
-        alt: "After front view for breast reconstruction",
-        label: "After front",
-      },
-      {
-        src: "/images/img/hero-bg.jpg",
-        alt: "After back view for breast reconstruction",
-        label: "After back",
+        id: "patient-1",
+        name: "Patient 1",
+        images: [
+          {
+            src: "/images/img/Dr Divya Plastic Surgeon - Home Banner.jpg",
+            alt: "Before front view for breast reconstruction",
+            label: "Before front",
+          },
+          {
+            src: "/images/img/gallery-2.jpg",
+            alt: "Before back view for breast reconstruction",
+            label: "Before back",
+          },
+          {
+            src: "/images/img/Dr Divya Plastic Surgeon home.jpg",
+            alt: "After front view for breast reconstruction",
+            label: "After front",
+          },
+          {
+            src: "/images/img/hero-bg.jpg",
+            alt: "After back view for breast reconstruction",
+            label: "After back",
+          },
+        ],
       },
     ],
   },
@@ -1343,26 +1320,32 @@ const GALLERY_PROCEDURE_PRESETS: Array<GalleryProcedure> = [
     procedureName: "Breast lift",
     description: "Procedure-specific comparison set for breast lift.",
     previewImage: "/images/img/Dr Divya Plastic Surgeon - Home Banner (1).jpg",
-    images: [
+    patients: [
       {
-        src: "/images/img/Dr Divya Plastic Surgeon - Home Banner (1).jpg",
-        alt: "Before front view for breast lift",
-        label: "Before front",
-      },
-      {
-        src: "/images/img/slider.jpeg",
-        alt: "Before back view for breast lift",
-        label: "Before back",
-      },
-      {
-        src: "/images/img/testimonials-4.jpg",
-        alt: "After front view for breast lift",
-        label: "After front",
-      },
-      {
-        src: "/images/img/DR Divya.jpeg",
-        alt: "After back view for breast lift",
-        label: "After back",
+        id: "patient-1",
+        name: "Patient 1",
+        images: [
+          {
+            src: "/images/img/Dr Divya Plastic Surgeon - Home Banner (1).jpg",
+            alt: "Before front view for breast lift",
+            label: "Before front",
+          },
+          {
+            src: "/images/img/slider.jpeg",
+            alt: "Before back view for breast lift",
+            label: "Before back",
+          },
+          {
+            src: "/images/img/testimonials-4.jpg",
+            alt: "After front view for breast lift",
+            label: "After front",
+          },
+          {
+            src: "/images/img/DR Divya.jpeg",
+            alt: "After back view for breast lift",
+            label: "After back",
+          },
+        ],
       },
     ],
   },
@@ -1370,26 +1353,32 @@ const GALLERY_PROCEDURE_PRESETS: Array<GalleryProcedure> = [
     procedureName: "Rhinoplasty",
     description: "Procedure-specific comparison set for rhinoplasty.",
     previewImage: "/images/img/about.jpeg",
-    images: [
+    patients: [
       {
-        src: "/images/img/about.jpeg",
-        alt: "Before front view for rhinoplasty",
-        label: "Before front",
-      },
-      {
-        src: "/images/img/logo.jpeg",
-        alt: "Before back view for rhinoplasty",
-        label: "Before back",
-      },
-      {
-        src: "/images/img/logo1.jpeg",
-        alt: "After front view for rhinoplasty",
-        label: "After front",
-      },
-      {
-        src: "/images/img/Dr Divya Logo Circle.png",
-        alt: "After back view for rhinoplasty",
-        label: "After back",
+        id: "patient-1",
+        name: "Patient 1",
+        images: [
+          {
+            src: "/images/img/about.jpeg",
+            alt: "Before front view for rhinoplasty",
+            label: "Before front",
+          },
+          {
+            src: "/images/img/logo.jpeg",
+            alt: "Before back view for rhinoplasty",
+            label: "Before back",
+          },
+          {
+            src: "/images/img/logo1.jpeg",
+            alt: "After front view for rhinoplasty",
+            label: "After front",
+          },
+          {
+            src: "/images/img/Dr Divya Logo Circle.png",
+            alt: "After back view for rhinoplasty",
+            label: "After back",
+          },
+        ],
       },
     ],
   },
@@ -1397,26 +1386,32 @@ const GALLERY_PROCEDURE_PRESETS: Array<GalleryProcedure> = [
     procedureName: "Body contouring",
     description: "Procedure-specific comparison set for body contouring.",
     previewImage: "/images/img/Dr Divya Plastic Surgeon.png",
-    images: [
+    patients: [
       {
-        src: "/images/img/Dr Divya Plastic Surgeon.png",
-        alt: "Before front view for body contouring",
-        label: "Before front",
-      },
-      {
-        src: "/images/img/Dr Divya Plastic Surgeon - Home Banner.jpg",
-        alt: "Before back view for body contouring",
-        label: "Before back",
-      },
-      {
-        src: "/images/img/gallery-2.jpg",
-        alt: "After front view for body contouring",
-        label: "After front",
-      },
-      {
-        src: "/images/img/hero-bg.jpg",
-        alt: "After back view for body contouring",
-        label: "After back",
+        id: "patient-1",
+        name: "Patient 1",
+        images: [
+          {
+            src: "/images/img/Dr Divya Plastic Surgeon.png",
+            alt: "Before front view for body contouring",
+            label: "Before front",
+          },
+          {
+            src: "/images/img/Dr Divya Plastic Surgeon - Home Banner.jpg",
+            alt: "Before back view for body contouring",
+            label: "Before back",
+          },
+          {
+            src: "/images/img/gallery-2.jpg",
+            alt: "After front view for body contouring",
+            label: "After front",
+          },
+          {
+            src: "/images/img/hero-bg.jpg",
+            alt: "After back view for body contouring",
+            label: "After back",
+          },
+        ],
       },
     ],
   },
@@ -1433,6 +1428,8 @@ function GalleryProcedureEditor({
   item: GalleryProcedure;
   onChange: (value: GalleryProcedure) => void;
 }) {
+  const patients = item.patients || [];
+
   return (
     <div className="space-y-5">
       <div className="grid gap-4 md:grid-cols-2 border-b border-(--border)/30 pb-4">
@@ -1443,33 +1440,74 @@ function GalleryProcedureEditor({
 
       <div className="space-y-4">
         <div className="flex items-center justify-between">
-          <p className="text-sm font-semibold text-(--foreground)">Procedure Images (1 to 6)</p>
-          <span className="text-xs text-(--foreground-muted)">{(item.images || []).length} of 6 images</span>
+          <div>
+            <p className="text-sm font-semibold text-(--foreground)">Patients for this Procedure</p>
+            <p className="text-xs text-(--foreground-muted) mt-0.5">Configure patients and their photos (up to 6 per patient).</p>
+          </div>
+          <span className="text-xs text-(--foreground-muted)">{patients.length} patient{patients.length !== 1 ? "s" : ""}</span>
         </div>
 
-        <ListEditor<GalleryImageSlot>
-          items={item.images || []}
+        <ListEditor<PatientGallery>
+          items={patients}
           onAdd={() => {
-            const nextImages = [...(item.images || []), { src: "", alt: "", label: `Image ${(item.images || []).length + 1}` }];
-            if (nextImages.length <= 6) {
-              onChange({ ...item, images: nextImages });
-            }
+            const nextPatients = [
+              ...patients,
+              {
+                id: `patient-${Date.now()}`,
+                name: `Patient ${patients.length + 1}`,
+                images: [],
+              },
+            ];
+            onChange({ ...item, patients: nextPatients });
           }}
           onRemove={(index) => {
-            onChange({ ...item, images: (item.images || []).filter((_, idx) => idx !== index) });
+            const nextPatients = patients.filter((_, idx) => idx !== index);
+            onChange({ ...item, patients: nextPatients });
           }}
-          onChange={(images) => {
-            if (images.length <= 6) {
-              onChange({ ...item, images });
-            }
+          onChange={(nextPatients) => {
+            onChange({ ...item, patients: nextPatients });
           }}
-          getItemTitle={(img, idx) => img.label || `Image ${idx + 1}`}
-          startCollapsed={false}
-          renderItem={(img, _index, updateImage) => (
-            <div className="grid gap-4 md:grid-cols-2">
-              <ImageField label="Image File" value={img.src} onChange={(src) => updateImage({ ...img, src })} className="md:col-span-2" />
-              <Field label="Image Label (e.g. Before Front, After)" value={img.label} onChange={(label) => updateImage({ ...img, label })} />
-              <Field label="Alt text" value={img.alt} onChange={(alt) => updateImage({ ...img, alt })} />
+          getItemKey={(p) => p.id}
+          getItemTitle={(p, idx) => p.name || `Patient ${idx + 1}`}
+          startCollapsed={true}
+          renderItem={(p, _index, updatePatient) => (
+            <div className="space-y-4">
+              <Field label="Patient Name / Identifier" value={p.name} onChange={(name) => updatePatient({ ...p, name })} />
+              
+              <div className="border border-(--border)/40 rounded-xl p-4 bg-(--background)/10 space-y-4 mt-2">
+                <div className="flex items-center justify-between">
+                  <p className="text-xs font-semibold text-(--foreground)">Patient Photos (Up to 6)</p>
+                  <span className="text-xs text-(--foreground-muted)">{(p.images || []).length} of 6 photos</span>
+                </div>
+                
+                <ListEditor<GalleryImageSlot>
+                  items={p.images || []}
+                  onAdd={() => {
+                    const nextImages = [...(p.images || []), { src: "", alt: "", label: `Photo ${(p.images || []).length + 1}` }];
+                    if (nextImages.length <= 6) {
+                      updatePatient({ ...p, images: nextImages });
+                    }
+                  }}
+                  onRemove={(imgIndex) => {
+                    updatePatient({ ...p, images: (p.images || []).filter((_, idx) => idx !== imgIndex) });
+                  }}
+                  onChange={(images) => {
+                    if (images.length <= 6) {
+                      updatePatient({ ...p, images });
+                    }
+                  }}
+                  getItemKey={(_img, idx) => String(idx)}
+                  getItemTitle={(img, idx) => img.label || `Photo ${idx + 1}`}
+                  startCollapsed={false}
+                  renderItem={(img, _imgIdx, updateImage) => (
+                    <div className="grid gap-4 md:grid-cols-2">
+                      <ImageField label="Photo File" value={img.src} onChange={(src) => updateImage({ ...img, src })} className="md:col-span-2" />
+                      <Field label="Photo Label (e.g. Before Front, After)" value={img.label} onChange={(label) => updateImage({ ...img, label })} />
+                      <Field label="Alt text" value={img.alt} onChange={(alt) => updateImage({ ...img, alt })} />
+                    </div>
+                  )}
+                />
+              </div>
             </div>
           )}
         />
@@ -1706,7 +1744,7 @@ function ServiceForm({ item, onChange }: { item: ServiceItem; onChange: (value: 
 function PdfImportButton({ currentContent, onImport }: { currentContent: string; onImport: (html: string) => void }) {
   const inputRef = useRef<HTMLInputElement | null>(null);
   const [status, setStatus] = useState<"idle" | "extracting" | "preview" | "error">("idle");
-  const [result, setResult] = useState<PdfExtractionResult | null>(null);
+  const [result, setResult] = useState<{ html: string; pageCount: number; isDocx?: boolean } | null>(null);
   const [errorMessage, setErrorMessage] = useState("");
   const [replaceMode, setReplaceMode] = useState(false);
   const [editedHtml, setEditedHtml] = useState("");
@@ -1717,8 +1755,12 @@ function PdfImportButton({ currentContent, onImport }: { currentContent: string;
     event.target.value = "";
     if (!file) return;
 
-    if (!file.name.toLowerCase().endsWith(".pdf") && file.type !== "application/pdf") {
-      setErrorMessage("Please select a PDF file.");
+    const fileLower = file.name.toLowerCase();
+    const isPdf = fileLower.endsWith(".pdf") || file.type === "application/pdf";
+    const isDocx = fileLower.endsWith(".docx") || file.type === "application/vnd.openxmlformats-officedocument.wordprocessingml.document";
+
+    if (!isPdf && !isDocx) {
+      setErrorMessage("Please select a PDF or DOCX file.");
       setStatus("error");
       return;
     }
@@ -1728,19 +1770,94 @@ function PdfImportButton({ currentContent, onImport }: { currentContent: string;
     setResult(null);
 
     try {
-      const extracted = await extractPdfContent(file);
-      if (!extracted.html.trim()) {
-        setErrorMessage("No text content found in this PDF. It may be a scanned image.");
-        setStatus("error");
-        return;
+      if (isPdf) {
+        const extracted = await extractPdfContent(file);
+        if (!extracted.html.trim()) {
+          setErrorMessage("No text content found in this PDF. It may be a scanned image.");
+          setStatus("error");
+          return;
+        }
+        setResult({ html: extracted.html, pageCount: extracted.pageCount, isDocx: false });
+        setEditedHtml(extracted.html);
+      } else {
+        const arrayBuffer = await file.arrayBuffer();
+        const mammoth = await import("mammoth");
+
+        // Custom style map for better Word formatting preservation
+        const styleMap = [
+          "p[style-name='Heading 1'] => h1:fresh",
+          "p[style-name='Heading 2'] => h2:fresh",
+          "p[style-name='Heading 3'] => h3:fresh",
+          "p[style-name='Heading 4'] => h4:fresh",
+          "p[style-name='Heading 5'] => h5:fresh",
+          "p[style-name='Heading 6'] => h6:fresh",
+          "p[style-name='Title'] => h1.doc-title:fresh",
+          "p[style-name='Subtitle'] => h2.doc-subtitle:fresh",
+          "p[style-name='List Paragraph'] => li:fresh",
+          "r[style-name='Strong'] => strong",
+          "r[style-name='Emphasis'] => em",
+          "r[style-name='Intense Emphasis'] => em > strong",
+          "p[style-name='Quote'] => blockquote > p:fresh",
+          "p[style-name='Intense Quote'] => blockquote > p:fresh",
+          "p[style-name='No Spacing'] => p:fresh",
+          // Table styles
+          "table => table.docx-table",
+        ];
+
+        const converted = await mammoth.convertToHtml({
+          arrayBuffer,
+        }, {
+          styleMap,
+          includeDefaultStyleMap: true,
+        });
+
+        // Post-process: enhance table HTML for better rendering
+        let html = converted.value;
+
+        // Add docx-table class to any tables that don't have it
+        html = html.replace(/<table(?![^>]*class=)/g, '<table class="docx-table"');
+
+        // Ensure th elements exist — mammoth often renders header rows as td
+        // Wrap first row of each table as thead if not already present
+        html = html.replace(
+          /<table([^>]*)>\s*<tr>([\s\S]*?)<\/tr>/g,
+          (match, attrs, firstRowContent) => {
+            // Check if the first row has mostly bold content (likely a header)
+            const hasBold = (firstRowContent.match(/<strong>/g) || []).length > 0;
+            const cellCount = (firstRowContent.match(/<td/g) || []).length;
+            const boldCount = (firstRowContent.match(/<strong>/g) || []).length;
+            if (hasBold && boldCount >= Math.ceil(cellCount / 2)) {
+              // Convert td to th in header row
+              const headerContent = firstRowContent
+                .replace(/<td/g, '<th')
+                .replace(/<\/td>/g, '</th>')
+                .replace(/<strong>([\s\S]*?)<\/strong>/g, '$1');
+              return `<table${attrs}><thead><tr>${headerContent}</tr></thead><tbody>`;
+            }
+            return match;
+          }
+        );
+        // Close tbody for tables that had thead added
+        html = html.replace(/<\/table>/g, (match, offset) => {
+          const before = html.substring(0, offset);
+          if (before.lastIndexOf('<tbody>') > before.lastIndexOf('</tbody>')) {
+            return '</tbody></table>';
+          }
+          return match;
+        });
+        if (!html.trim()) {
+          setErrorMessage("No text content found in this Word document.");
+          setStatus("error");
+          return;
+        }
+        setResult({ html, pageCount: 1, isDocx: true });
+        setEditedHtml(html);
       }
-      setResult(extracted);
-      setEditedHtml(extracted.html);
       setPreviewTab("visual");
       setReplaceMode(!currentContent.trim());
       setStatus("preview");
     } catch (err) {
-      setErrorMessage(err instanceof Error ? err.message : "Failed to extract PDF content.");
+      setErrorMessage(err instanceof Error ? err.message : "Failed to extract document content.");
       setStatus("error");
     }
   }
@@ -1764,7 +1881,7 @@ function PdfImportButton({ currentContent, onImport }: { currentContent: string;
       <input
         ref={inputRef}
         type="file"
-        accept=".pdf,application/pdf"
+        accept=".pdf,application/pdf,.docx,application/vnd.openxmlformats-officedocument.wordprocessingml.document"
         className="hidden"
         onChange={handleFileChange}
       />
@@ -1782,11 +1899,11 @@ function PdfImportButton({ currentContent, onImport }: { currentContent: string;
             <line x1="12" y1="18" x2="12" y2="12" />
             <line x1="9" y1="15" x2="15" y2="15" />
           </svg>
-          {status === "extracting" ? "Extracting PDF…" : "Import from PDF"}
+          {status === "extracting" ? "Extracting Document…" : "Import Word/PDF Document"}
         </button>
 
         {status === "extracting" && (
-          <span className="text-xs text-(--accent-gold) animate-pulse">Reading pages…</span>
+          <span className="text-xs text-(--accent-gold) animate-pulse">Reading document…</span>
         )}
 
         {status === "error" && (
@@ -1802,8 +1919,12 @@ function PdfImportButton({ currentContent, onImport }: { currentContent: string;
                 <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
                 <polyline points="14 2 14 8 20 8" />
               </svg>
-              <span className="text-sm font-medium text-(--foreground)">PDF Preview</span>
-              <span className="text-xs text-(--foreground-subtle)">({result.pageCount} {result.pageCount === 1 ? "page" : "pages"})</span>
+              <span className="text-sm font-medium text-(--foreground)">
+                {result.isDocx ? "Word (DOCX) Preview" : "PDF Preview"}
+              </span>
+              {!result.isDocx && (
+                <span className="text-xs text-(--foreground-subtle)">({result.pageCount} {result.pageCount === 1 ? "page" : "pages"})</span>
+              )}
             </div>
             <button type="button" onClick={handleCancel} className="text-xs text-(--foreground-muted) hover:text-(--foreground) transition-colors">✕ Close</button>
           </div>
