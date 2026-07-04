@@ -15,6 +15,17 @@ const ALLOWED_TYPES = new Set([
   "image/webp",
   "image/gif",
   "image/avif",
+  "image/svg+xml",
+]);
+
+const ALLOWED_EXTENSIONS = new Set([
+  ".jpg",
+  ".jpeg",
+  ".png",
+  ".webp",
+  ".gif",
+  ".avif",
+  ".svg",
 ]);
 
 const MAX_SIZE_BYTES = 8 * 1024 * 1024; // 8 MB
@@ -51,9 +62,13 @@ export async function POST(request: Request) {
     );
   }
 
-  if (!ALLOWED_TYPES.has(file.type)) {
+  const ext = path.extname(file.name).toLowerCase();
+  const hasAllowedType = ALLOWED_TYPES.has(file.type);
+  const hasAllowedExtension = ALLOWED_EXTENSIONS.has(ext);
+
+  if (!hasAllowedType && !hasAllowedExtension) {
     return NextResponse.json(
-      { ok: false, message: "Only image files (JPEG, PNG, WebP, GIF, AVIF) are allowed." },
+      { ok: false, message: "Only image files (JPEG, PNG, WebP, GIF, AVIF, SVG) are allowed." },
       { status: 400 },
     );
   }
@@ -69,8 +84,7 @@ export async function POST(request: Request) {
     const bytes = await file.arrayBuffer();
     const buffer = Buffer.from(bytes);
 
-    const ext = path.extname(file.name).toLowerCase() || ".jpg";
-    const safeExt = [".jpg", ".jpeg", ".png", ".webp", ".gif", ".avif"].includes(ext)
+    const safeExt = [".jpg", ".jpeg", ".png", ".webp", ".gif", ".avif", ".svg"].includes(ext)
       ? ext
       : ".jpg";
     const hash = crypto.randomBytes(10).toString("hex");

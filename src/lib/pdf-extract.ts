@@ -129,6 +129,8 @@ type TableResult = {
   rows: string[][];
   /** Indices into the original items array that belong to this table */
   itemIndices: Set<number>;
+  /** Bounding box for better table/non-table interleaving */
+  bounds: { left: number; right: number; top: number; bottom: number };
 };
 
 /**
@@ -350,6 +352,65 @@ function mergeEmptyKeyRows(rows: string[][]): string[][] {
   return merged;
 }
 
+function getNonEmptyCellIndices(row: string[]): number[] {
+  const indices: number[] = [];
+  for (let i = 0; i < row.length; i++) {
+    if (stripInlineHtml(row[i] ?? "")) {
+      indices.push(i);
+    }
+  }
+  return indices;
+}
+
+function mergeSparseContinuationRows(rows: string[][]): string[][] {
+  if (rows.length <= 1) return rows;
+
+  const merged: string[][] = [rows[0].slice()];
+
+  for (let i = 1; i < rows.length; i++) {
+    const row = rows[i];
+    const prevRow = merged[merged.length - 1];
+
+    if (prevRow.length !== row.length) {
+      merged.push(row.slice());
+      continue;
+    }
+
+    const prevNonEmpty = getNonEmptyCellIndices(prevRow);
+    const currNonEmpty = getNonEmptyCellIndices(row);
+
+    if (prevNonEmpty.length === 0 || currNonEmpty.length === 0) {
+      merged.push(row.slice());
+      continue;
+    }
+
+    const overlap = prevNonEmpty.filter((index) => currNonEmpty.includes(index)).length;
+    const union = new Set([...prevNonEmpty, ...currNonEmpty]).size;
+    const hasSparseRow = prevNonEmpty.length < prevRow.length || currNonEmpty.length < row.length;
+    const shouldMerge = hasSparseRow && overlap <= 1 && union >= Math.max(prevNonEmpty.length, currNonEmpty.length);
+
+    if (!shouldMerge) {
+      merged.push(row.slice());
+      continue;
+    }
+
+    for (let c = 0; c < row.length; c++) {
+      const prevText = prevRow[c] ?? "";
+      const nextText = row[c] ?? "";
+      const prevClean = stripInlineHtml(prevText);
+      const nextClean = stripInlineHtml(nextText);
+
+      if (prevClean && nextClean) {
+        prevRow[c] = `${prevText} ${nextText}`.trim();
+      } else if (!prevClean && nextClean) {
+        prevRow[c] = nextText;
+      }
+    }
+  }
+
+  return merged;
+}
+
 function looksLikeData(text: string): boolean {
   const clean = text.replace(/<\/?[a-z]+>/gi, "").trim();
   if (!clean) return false;
@@ -463,6 +524,10 @@ function buildTable(
   type TableItem = PositionedItem & { originalIndex: number; col: number };
   const allTableItems: TableItem[] = [];
   const itemIndices = new Set<number>();
+  let left = Infinity;
+  let right = -Infinity;
+  let top = -Infinity;
+  let bottom = Infinity;
 
   for (const rowGroup of rowGroups) {
     for (const item of rowGroup.items) {
@@ -482,6 +547,10 @@ function buildTable(
         col: bestCol,
       });
       itemIndices.add(item.originalIndex);
+      left = Math.min(left, item.x);
+      right = Math.max(right, item.x + item.width);
+      top = Math.max(top, item.y);
+      bottom = Math.min(bottom, item.y);
     }
   }
 
@@ -587,12 +656,16 @@ function buildTable(
     logicalRows.push(currentLogicalRow.cellsText.map(cellTexts => cellTexts.join(" ")));
   }
 
-  const cleanedRows = mergeEmptyKeyRows(logicalRows);
+  const cleanedRows = mergeSparseContinuationRows(mergeEmptyKeyRows(logicalRows));
   if (!isLikelyRealTable(cleanedRows)) {
     return null;
   }
 
-  return { rows: cleanedRows, itemIndices };
+  return {
+    rows: cleanedRows,
+    itemIndices,
+    bounds: { left, right, top, bottom },
+  };
 }
 
 /* -------------------------------------------------------------------------- */
@@ -1077,14 +1150,7 @@ function processPageItems(items: PositionedItem[]): PageBlock[] {
 
   // Add table blocks (use the y of the first row for ordering)
   for (const table of tables) {
-    // Find the topmost y among table items
-    let topY = -Infinity;
-    for (const idx of table.itemIndices) {
-      if (items[idx].y > topY) {
-        topY = items[idx].y;
-      }
-    }
-    blocks.push({ y: topY, block: { type: "table", rows: table.rows } });
+    blocks.push({ y: table.bounds.top, block: { type: "table", rows: table.rows } });
   }
 
   // Add non-table content (run through the column/line pipeline)
@@ -1094,19 +1160,13 @@ function processPageItems(items: PositionedItem[]): PageBlock[] {
     const sortedNonTable = [...nonTableItems].sort((a, b) => b.y - a.y);
 
     // Find the y-ranges occupied by tables to split non-table content
-    const tableYRanges: { top: number; bottom: number }[] = [];
+    const tableRanges: { top: number; bottom: number; left: number; right: number }[] = [];
     for (const table of tables) {
-      let top = -Infinity;
-      let bottom = Infinity;
-      for (const idx of table.itemIndices) {
-        if (items[idx].y > top) top = items[idx].y;
-        if (items[idx].y < bottom) bottom = items[idx].y;
-      }
-      tableYRanges.push({ top, bottom });
+      tableRanges.push(table.bounds);
     }
 
     // If no tables, process all non-table items as one block
-    if (tableYRanges.length === 0) {
+    if (tableRanges.length === 0) {
       const columns = detectColumns(nonTableItems);
       const lines: TextLine[] = [];
       for (const col of columns) {
@@ -1123,9 +1183,14 @@ function processPageItems(items: PositionedItem[]): PageBlock[] {
       let currentSegment: PositionedItem[] = [];
 
       for (const item of sortedNonTable) {
-        // Check if this item is inside any table's y-range (with a small buffer)
-        const insideTable = tableYRanges.some(
-          (range) => item.y <= range.top + 5 && item.y >= range.bottom - 5,
+        // Only suppress text that actually falls inside the table box,
+        // so nearby headings/paragraphs at the same vertical band survive.
+        const insideTable = tableRanges.some(
+          (range) =>
+            item.y <= range.top + 5 &&
+            item.y >= range.bottom - 5 &&
+            item.x >= range.left - 16 &&
+            item.x <= range.right + 16,
         );
 
         if (insideTable) {

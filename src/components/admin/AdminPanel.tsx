@@ -1987,10 +1987,35 @@ function ImageField({ label, value, onChange, className = "" }: { label: string;
   const [uploading, setUploading] = useState(false);
   const [uploadError, setUploadError] = useState("");
   const [uploadedUrl, setUploadedUrl] = useState("");
+  const maxUploadBytes = 8 * 1024 * 1024;
+  const allowedUploadTypes = new Set([
+    "image/jpeg",
+    "image/jpg",
+    "image/png",
+    "image/webp",
+    "image/gif",
+    "image/avif",
+    "image/svg+xml",
+  ]);
+  const allowedUploadExtensions = [".jpg", ".jpeg", ".png", ".webp", ".gif", ".avif", ".svg"];
 
   const handleFileChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (!file) return;
+
+    const fileName = file.name.toLowerCase();
+    const hasAllowedExtension = allowedUploadExtensions.some((ext) => fileName.endsWith(ext));
+    if (!allowedUploadTypes.has(file.type) && !hasAllowedExtension) {
+      setUploadError("Only image files (JPEG, PNG, WebP, GIF, AVIF, SVG) are allowed.");
+      event.target.value = "";
+      return;
+    }
+
+    if (file.size > maxUploadBytes) {
+      setUploadError("File size must be under 8 MB.");
+      event.target.value = "";
+      return;
+    }
 
     setUploading(true);
     setUploadError("");
@@ -2005,17 +2030,33 @@ function ImageField({ label, value, onChange, className = "" }: { label: string;
         body: formData,
       });
 
-      const result = (await response.json()) as { ok: boolean; url?: string; message?: string };
+      const responseText = await response.text();
+      let result: { ok?: boolean; url?: string; message?: string } = {};
+      try {
+        result = responseText ? JSON.parse(responseText) as { ok?: boolean; url?: string; message?: string } : {};
+      } catch {
+        result = {};
+      }
 
-      if (!result.ok || !result.url) {
-        setUploadError(result.message ?? "Upload failed. Please try again.");
+      if (!response.ok || !result.ok || !result.url) {
+        if (result.message) {
+          setUploadError(result.message);
+        } else if (response.status === 413) {
+          setUploadError("File size is too large for upload.");
+        } else if (response.status === 401) {
+          setUploadError("Your admin session expired. Please log in again.");
+        } else if (response.status) {
+          setUploadError(`Upload failed (${response.status}). Please try again.`);
+        } else {
+          setUploadError("Upload failed. Please try again.");
+        }
         return;
       }
 
       setUploadedUrl(result.url);
       onChange(result.url);
-    } catch {
-      setUploadError("Upload failed. Check your connection and try again.");
+    } catch (error) {
+      setUploadError(error instanceof Error ? error.message : "Upload failed. Check your connection and try again.");
     } finally {
       setUploading(false);
       event.target.value = "";
@@ -2038,7 +2079,7 @@ function ImageField({ label, value, onChange, className = "" }: { label: string;
         <div className="flex items-center gap-3">
           <input
             type="file"
-            accept="image/jpeg,image/jpg,image/png,image/webp,image/gif,image/avif"
+            accept="image/jpeg,image/jpg,image/png,image/webp,image/gif,image/avif,image/svg+xml,.svg"
             onChange={handleFileChange}
             disabled={uploading}
             className="flex-1 rounded-lg border border-(--border) bg-transparent px-3 py-2 text-(--foreground) disabled:opacity-50"
