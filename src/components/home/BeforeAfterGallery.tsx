@@ -350,7 +350,7 @@ function ProcedureCard({
   procedure: Procedure;
   onClick: () => void;
 }) {
-  const src = procedure.previewImage || "/images/img/about.jpeg";
+  const src = procedure.previewImage.trim();
   return (
     <button
       type="button"
@@ -362,15 +362,23 @@ function ProcedureCard({
         className="relative w-full flex items-center justify-center bg-[#0d1117]"
         style={{ aspectRatio: "4/3" }}
       >
-        <Image
-          src={src}
-          alt={procedure.procedureName}
-          fill
-          style={{ objectFit: "contain" }}
-          className="transition-transform duration-500 group-hover:scale-[1.03]"
-          unoptimized={isUnoptimized(src)}
-          sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
-        />
+        {src ? (
+          <Image
+            src={src}
+            alt={procedure.procedureName}
+            fill
+            style={{ objectFit: "contain" }}
+            className="transition-transform duration-500 group-hover:scale-[1.03]"
+            unoptimized={isUnoptimized(src)}
+            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
+          />
+        ) : (
+          <div className="flex h-full w-full items-center justify-center px-6 text-center">
+            <span className="text-xs uppercase tracking-[0.24em] text-white/45">
+              No preview image yet
+            </span>
+          </div>
+        )}
         {/* Hover overlay */}
         <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end justify-center pb-4">
           <span className="text-xs text-white/90 font-medium px-3 py-1.5 rounded-full bg-white/15 border border-white/20 backdrop-blur-sm">

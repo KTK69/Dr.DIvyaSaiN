@@ -94,20 +94,28 @@ export default function BlogListingClient({
                   className="glass-card rounded-xl overflow-hidden border border-(--border)"
                 >
                   <Link href={href} aria-label={`Read ${displayTitle}`}>
-                    <div className="relative aspect-16/10">
-                      <Image
-                        src={post.image}
-                        alt={displayTitle}
-                        fill
-                        className="object-cover"
-                        unoptimized={
-                          post.image.startsWith("data:") ||
-                          post.image.startsWith("blob:") ||
-                          post.image.startsWith("/uploads/")
-                        }
-                        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                      />
-                    </div>
+                    {post.image ? (
+                      <div className="relative aspect-16/10">
+                        <Image
+                          src={post.image}
+                          alt={displayTitle}
+                          fill
+                          className="object-cover"
+                          unoptimized={
+                            post.image.startsWith("data:") ||
+                            post.image.startsWith("blob:") ||
+                            post.image.startsWith("/uploads/")
+                          }
+                          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                        />
+                      </div>
+                    ) : (
+                      <div className="flex aspect-16/10 items-center justify-center bg-(--bg-surface) px-6 text-center">
+                        <span className="text-xs uppercase tracking-[0.24em] text-(--foreground-subtle)">
+                          No cover image yet
+                        </span>
+                      </div>
+                    )}
                   </Link>
                   <div className="p-5">
                     {post.published_at ? (

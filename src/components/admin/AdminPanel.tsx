@@ -331,7 +331,7 @@ export default function AdminPanel() {
               title: "",
               excerpt: "",
               content: "",
-              image: "/images/img/about.jpeg",
+              image: "",
               published_at: new Date().toISOString().slice(0, 10),
               meta_title: "",
               meta_description: "",
@@ -1282,143 +1282,14 @@ function ListEditor<T>({
   );
 }
 
-const GALLERY_PROCEDURE_PRESETS: Array<GalleryProcedure> = [
-  {
-    procedureName: "Breast reconstruction",
-    description: "Procedure-specific comparison set for breast reconstruction.",
-    previewImage: "/images/img/Dr Divya Plastic Surgeon - Home Banner.jpg",
-    patients: [
-      {
-        id: "patient-1",
-        name: "Patient 1",
-        images: [
-          {
-            src: "/images/img/Dr Divya Plastic Surgeon - Home Banner.jpg",
-            alt: "Before front view for breast reconstruction",
-            label: "Before front",
-          },
-          {
-            src: "/images/img/gallery-2.jpg",
-            alt: "Before back view for breast reconstruction",
-            label: "Before back",
-          },
-          {
-            src: "/images/img/Dr Divya Plastic Surgeon home.jpg",
-            alt: "After front view for breast reconstruction",
-            label: "After front",
-          },
-          {
-            src: "/images/img/hero-bg.jpg",
-            alt: "After back view for breast reconstruction",
-            label: "After back",
-          },
-        ],
-      },
-    ],
-  },
-  {
-    procedureName: "Breast lift",
-    description: "Procedure-specific comparison set for breast lift.",
-    previewImage: "/images/img/Dr Divya Plastic Surgeon - Home Banner (1).jpg",
-    patients: [
-      {
-        id: "patient-1",
-        name: "Patient 1",
-        images: [
-          {
-            src: "/images/img/Dr Divya Plastic Surgeon - Home Banner (1).jpg",
-            alt: "Before front view for breast lift",
-            label: "Before front",
-          },
-          {
-            src: "/images/img/slider.jpeg",
-            alt: "Before back view for breast lift",
-            label: "Before back",
-          },
-          {
-            src: "/images/img/testimonials-4.jpg",
-            alt: "After front view for breast lift",
-            label: "After front",
-          },
-          {
-            src: "/images/img/DR Divya.jpeg",
-            alt: "After back view for breast lift",
-            label: "After back",
-          },
-        ],
-      },
-    ],
-  },
-  {
-    procedureName: "Rhinoplasty",
-    description: "Procedure-specific comparison set for rhinoplasty.",
-    previewImage: "/images/img/about.jpeg",
-    patients: [
-      {
-        id: "patient-1",
-        name: "Patient 1",
-        images: [
-          {
-            src: "/images/img/about.jpeg",
-            alt: "Before front view for rhinoplasty",
-            label: "Before front",
-          },
-          {
-            src: "/images/img/logo.jpeg",
-            alt: "Before back view for rhinoplasty",
-            label: "Before back",
-          },
-          {
-            src: "/images/img/logo1.jpeg",
-            alt: "After front view for rhinoplasty",
-            label: "After front",
-          },
-          {
-            src: "/images/img/Dr Divya Logo Circle.png",
-            alt: "After back view for rhinoplasty",
-            label: "After back",
-          },
-        ],
-      },
-    ],
-  },
-  {
-    procedureName: "Body contouring",
-    description: "Procedure-specific comparison set for body contouring.",
-    previewImage: "/images/img/Dr Divya Plastic Surgeon.png",
-    patients: [
-      {
-        id: "patient-1",
-        name: "Patient 1",
-        images: [
-          {
-            src: "/images/img/Dr Divya Plastic Surgeon.png",
-            alt: "Before front view for body contouring",
-            label: "Before front",
-          },
-          {
-            src: "/images/img/Dr Divya Plastic Surgeon - Home Banner.jpg",
-            alt: "Before back view for body contouring",
-            label: "Before back",
-          },
-          {
-            src: "/images/img/gallery-2.jpg",
-            alt: "After front view for body contouring",
-            label: "After front",
-          },
-          {
-            src: "/images/img/hero-bg.jpg",
-            alt: "After back view for body contouring",
-            label: "After back",
-          },
-        ],
-      },
-    ],
-  },
-];
-
 function createDefaultGalleryProcedure(index = 0): GalleryProcedure {
-  return GALLERY_PROCEDURE_PRESETS[index % GALLERY_PROCEDURE_PRESETS.length];
+  return {
+    procedureName: `Procedure ${index}`,
+    description: "",
+    previewImage: "",
+    images: [],
+    patients: [],
+  };
 }
 
 function GalleryProcedureEditor({

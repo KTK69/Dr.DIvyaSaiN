@@ -98,21 +98,23 @@ export default function BlogDetailClient({ slug, serverBlog }: Props) {
           </p>
         ) : null}
 
-        <div className="relative aspect-video mt-8 rounded-2xl overflow-hidden border border-(--border)">
-          <Image
-            src={blog.image}
-            alt={displayTitle}
-            fill
-            className="object-cover"
-            unoptimized={
-              blog.image.startsWith("data:") ||
-              blog.image.startsWith("blob:") ||
-              blog.image.startsWith("/uploads/")
-            }
-            priority
-            sizes="(max-width: 1024px) 100vw, 900px"
-          />
-        </div>
+        {blog.image ? (
+          <div className="relative aspect-video mt-8 rounded-2xl overflow-hidden border border-(--border)">
+            <Image
+              src={blog.image}
+              alt={displayTitle}
+              fill
+              className="object-cover"
+              unoptimized={
+                blog.image.startsWith("data:") ||
+                blog.image.startsWith("blob:") ||
+                blog.image.startsWith("/uploads/")
+              }
+              priority
+              sizes="(max-width: 1024px) 100vw, 900px"
+            />
+          </div>
+        ) : null}
 
         <RichText
           value={blog.content}
