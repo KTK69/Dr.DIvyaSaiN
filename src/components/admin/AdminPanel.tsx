@@ -9,7 +9,7 @@ import {
   hasBlogOrderChanged,
   sortBlogsByPublishedDate,
 } from "@/lib/blog-sort";
-import { extractPdfContent, type PdfExtractionResult } from "@/lib/pdf-extract";
+import { extractPdfContent } from "@/lib/pdf-extract";
 
 type Section = "navigation" | "footer" | "siteSeo" | "pageSeo" | "home" | "aboutPage" | "experiencePage" | "testimonialsPage" | "blogPage" | "servicesPage" | "doctorTalkPage" | "contactPage" | "banjaraHillsPage" | "about" | "experience" | "doctorTalk" | "testimonials" | "blog" | "services" | "contact";
 
@@ -1741,6 +1741,156 @@ function ServiceForm({ item, onChange }: { item: ServiceItem; onChange: (value: 
   );
 }
 
+function normalizeDocxWhitespace(text: string) {
+  return text.replace(/\u00a0/g, " ").replace(/\s+/g, " ").trim();
+}
+
+function getDocxCellText(cell?: HTMLTableCellElement | null) {
+  return normalizeDocxWhitespace(cell?.textContent ?? "");
+}
+
+function isDocxTableHeaderRow(cells: HTMLTableCellElement[]) {
+  if (cells.length === 0) return false;
+
+  const nonEmptyCells = cells.filter((cell) => getDocxCellText(cell));
+  if (nonEmptyCells.length < 2) return false;
+
+  const boldCells = nonEmptyCells.filter((cell) =>
+    cell.querySelector("strong, b") || /font-weight\s*:\s*(bold|[6-9]00)/i.test(cell.getAttribute("style") ?? "")
+  ).length;
+  const shortCells = nonEmptyCells.filter((cell) => getDocxCellText(cell).split(/\s+/).length <= 6).length;
+
+  return boldCells >= Math.ceil(nonEmptyCells.length / 2) || shortCells === nonEmptyCells.length;
+}
+
+function flattenDocxTableToBlocks(table: HTMLTableElement) {
+  const fragment = document.createDocumentFragment();
+
+  for (const row of Array.from(table.rows)) {
+    const parts = Array.from(row.cells)
+      .map((cell) => cell.innerHTML.trim())
+      .filter(Boolean);
+
+    if (parts.length === 0) continue;
+
+    const paragraph = document.createElement("p");
+    paragraph.innerHTML = parts.join(" ");
+    fragment.appendChild(paragraph);
+  }
+
+  if (!fragment.childNodes.length) {
+    const text = normalizeDocxWhitespace(table.textContent ?? "");
+    if (text) {
+      const paragraph = document.createElement("p");
+      paragraph.textContent = text;
+      fragment.appendChild(paragraph);
+    }
+  }
+
+  return fragment;
+}
+
+function isLikelyDocxDataTable(table: HTMLTableElement) {
+  const rows = Array.from(table.rows);
+  if (rows.length < 2) return false;
+
+  const hasMergedCells = rows.some((row) =>
+    Array.from(row.cells).some((cell) => cell.colSpan > 1 || cell.rowSpan > 1)
+  );
+  if (hasMergedCells) return true;
+
+  const cellMatrix = rows.map((row) => Array.from(row.cells));
+  const columnCount = Math.max(...cellMatrix.map((cells) => cells.length), 0);
+  if (columnCount < 2) return false;
+
+  const nonEmptyCounts = cellMatrix.map((cells) =>
+    cells.reduce((count, cell) => count + (getDocxCellText(cell) ? 1 : 0), 0)
+  );
+  const denseRows = nonEmptyCounts.filter((count) => count >= 2).length;
+  if (denseRows < 2) return false;
+
+  const populatedColumns = Array.from({ length: columnCount }, (_, columnIndex) =>
+    cellMatrix.reduce((count, cells) => count + (getDocxCellText(cells[columnIndex]) ? 1 : 0), 0)
+  );
+  if (populatedColumns.filter((count) => count >= 2).length < 2) {
+    return false;
+  }
+
+  const totalSlots = rows.length * columnCount;
+  const filledSlots = nonEmptyCounts.reduce((sum, count) => sum + count, 0);
+  if (totalSlots === 0 || filledSlots / totalSlots < 0.5) {
+    return false;
+  }
+
+  const sparseRows = nonEmptyCounts.filter((count) => count <= 1).length;
+  if (sparseRows > Math.floor(rows.length / 2)) {
+    return false;
+  }
+
+  return true;
+}
+
+function enhanceDocxTable(table: HTMLTableElement) {
+  table.classList.add("docx-table");
+
+  for (const cell of Array.from(table.querySelectorAll("td, th"))) {
+    for (const paragraph of Array.from(cell.querySelectorAll("p"))) {
+      if (!normalizeDocxWhitespace(paragraph.textContent ?? "") && paragraph.childElementCount === 0) {
+        paragraph.remove();
+      }
+    }
+  }
+
+  const rows = Array.from(table.querySelectorAll("tr")).filter((row) => row.cells.length > 0);
+  if (rows.length === 0) return;
+
+  if (!table.tHead && isDocxTableHeaderRow(Array.from(rows[0].cells))) {
+    const thead = table.createTHead();
+    const headerRow = thead.insertRow();
+
+    for (const cell of Array.from(rows[0].cells)) {
+      const th = document.createElement("th");
+      th.innerHTML = cell.innerHTML.replace(/<strong>([\s\S]*?)<\/strong>/gi, "$1");
+      headerRow.appendChild(th);
+    }
+
+    rows[0].remove();
+  }
+
+  if (!table.tBodies.length) {
+    const tbody = document.createElement("tbody");
+    for (const row of Array.from(table.querySelectorAll("tr"))) {
+      if (row.parentElement?.tagName !== "THEAD") {
+        tbody.appendChild(row);
+      }
+    }
+    if (tbody.rows.length > 0) {
+      table.appendChild(tbody);
+    }
+  }
+}
+
+function normalizeDocxHtml(html: string) {
+  const parser = new DOMParser();
+  const doc = parser.parseFromString(`<div id="docx-root">${html}</div>`, "text/html");
+  const root = doc.getElementById("docx-root");
+
+  if (!root) {
+    return html;
+  }
+
+  for (const table of Array.from(root.querySelectorAll("table"))) {
+    if (!isLikelyDocxDataTable(table)) {
+      table.replaceWith(flattenDocxTableToBlocks(table));
+      continue;
+    }
+
+    enhanceDocxTable(table);
+  }
+
+  return root.innerHTML;
+}
+
 function PdfImportButton({ currentContent, onImport }: { currentContent: string; onImport: (html: string) => void }) {
   const inputRef = useRef<HTMLInputElement | null>(null);
   const [status, setStatus] = useState<"idle" | "extracting" | "preview" | "error">("idle");
@@ -1811,40 +1961,7 @@ function PdfImportButton({ currentContent, onImport }: { currentContent: string;
           includeDefaultStyleMap: true,
         });
 
-        // Post-process: enhance table HTML for better rendering
-        let html = converted.value;
-
-        // Add docx-table class to any tables that don't have it
-        html = html.replace(/<table(?![^>]*class=)/g, '<table class="docx-table"');
-
-        // Ensure th elements exist — mammoth often renders header rows as td
-        // Wrap first row of each table as thead if not already present
-        html = html.replace(
-          /<table([^>]*)>\s*<tr>([\s\S]*?)<\/tr>/g,
-          (match, attrs, firstRowContent) => {
-            // Check if the first row has mostly bold content (likely a header)
-            const hasBold = (firstRowContent.match(/<strong>/g) || []).length > 0;
-            const cellCount = (firstRowContent.match(/<td/g) || []).length;
-            const boldCount = (firstRowContent.match(/<strong>/g) || []).length;
-            if (hasBold && boldCount >= Math.ceil(cellCount / 2)) {
-              // Convert td to th in header row
-              const headerContent = firstRowContent
-                .replace(/<td/g, '<th')
-                .replace(/<\/td>/g, '</th>')
-                .replace(/<strong>([\s\S]*?)<\/strong>/g, '$1');
-              return `<table${attrs}><thead><tr>${headerContent}</tr></thead><tbody>`;
-            }
-            return match;
-          }
-        );
-        // Close tbody for tables that had thead added
-        html = html.replace(/<\/table>/g, (match, offset) => {
-          const before = html.substring(0, offset);
-          if (before.lastIndexOf('<tbody>') > before.lastIndexOf('</tbody>')) {
-            return '</tbody></table>';
-          }
-          return match;
-        });
+        const html = normalizeDocxHtml(converted.value);
         if (!html.trim()) {
           setErrorMessage("No text content found in this Word document.");
           setStatus("error");

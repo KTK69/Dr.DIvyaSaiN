@@ -141,7 +141,7 @@ export function mergeWithDefaults<T>(defaults: T, stored: unknown): T {
 
       let procedures: Array<Record<string, unknown>> = [];
 
-      if (Array.isArray(galleryValue.procedures) && galleryValue.procedures.length > 0) {
+      if (Array.isArray(galleryValue.procedures)) {
         procedures = galleryValue.procedures.map((procedure, index) =>
           normalizeGalleryProcedure(
             defaultProcedure,
@@ -149,20 +149,6 @@ export function mergeWithDefaults<T>(defaults: T, stored: unknown): T {
             `Procedure ${index + 1}`,
           ),
         );
-
-        if (defaultProcedures.length > procedures.length) {
-          const missingProcedures = defaultProcedures
-            .slice(procedures.length)
-            .map((procedure, index) =>
-              normalizeGalleryProcedure(
-                defaultProcedure,
-                procedure,
-                `Procedure ${procedures.length + index + 1}`,
-              ),
-            );
-
-          procedures = [...procedures, ...missingProcedures];
-        }
       } else if (legacyImages.length > 0 || isPlainObject(galleryValue.before) || isPlainObject(galleryValue.after) || galleryValue.procedureName) {
         const fallbackProcedure = {
           procedureName: String(galleryValue.procedureName ?? defaultProcedure.procedureName ?? galleryValue.title ?? "Procedure"),

@@ -185,6 +185,7 @@ function detectTables(items: PositionedItem[], yTolerance = 3, xTolerance = 15):
   const tables: TableResult[] = [];
   let currentTableRows: typeof rowGroups = [];
   let consecutiveSingleItemRows = 0;
+  let multiItemRowCount = 0;
   const maxTableGap = 45; // Maximum vertical gap between lines in a table
   const maxConsecutiveSingleItemRows = 3;
 
@@ -195,6 +196,7 @@ function detectTables(items: PositionedItem[], yTolerance = 3, xTolerance = 15):
       // Look for a table start: a row group with >= 2 items
       if (row.items.length >= 2) {
         currentTableRows.push(row);
+        multiItemRowCount = 1;
         consecutiveSingleItemRows = 0;
       }
     } else {
@@ -224,15 +226,17 @@ function detectTables(items: PositionedItem[], yTolerance = 3, xTolerance = 15):
       const maxAllowedGap = isCompatible ? 250 : maxTableGap;
       if (yGap > maxAllowedGap) {
         // Flush table if it has enough rows
-        if (currentTableRows.length - consecutiveSingleItemRows >= 2) {
+        if (currentTableRows.length - consecutiveSingleItemRows >= 2 && multiItemRowCount >= 2) {
           const tableRowsToFlush = currentTableRows.slice(0, currentTableRows.length - consecutiveSingleItemRows);
           const table = buildTable(tableRowsToFlush, xTolerance);
           if (table) tables.push(table);
         }
         currentTableRows = [];
         consecutiveSingleItemRows = 0;
+        multiItemRowCount = 0;
         if (row.items.length >= 2) {
           currentTableRows.push(row);
+          multiItemRowCount = 1;
         }
         continue;
       }
@@ -243,32 +247,37 @@ function detectTables(items: PositionedItem[], yTolerance = 3, xTolerance = 15):
           consecutiveSingleItemRows++;
         } else {
           consecutiveSingleItemRows = 0;
+          multiItemRowCount++;
         }
 
         if (consecutiveSingleItemRows > maxConsecutiveSingleItemRows) {
           // Flush table but exclude the trailing weak single-item rows
           const tableRowsToFlush = currentTableRows.slice(0, currentTableRows.length - consecutiveSingleItemRows);
-          if (tableRowsToFlush.length >= 2) {
+          if (tableRowsToFlush.length >= 2 && multiItemRowCount >= 2) {
             const table = buildTable(tableRowsToFlush, xTolerance);
             if (table) tables.push(table);
           }
           currentTableRows = [];
           consecutiveSingleItemRows = 0;
+          multiItemRowCount = 0;
           if (row.items.length >= 2) {
             currentTableRows.push(row);
+            multiItemRowCount = 1;
           }
         }
       } else {
         // Flush table if it has enough rows
-        if (currentTableRows.length - consecutiveSingleItemRows >= 2) {
+        if (currentTableRows.length - consecutiveSingleItemRows >= 2 && multiItemRowCount >= 2) {
           const tableRowsToFlush = currentTableRows.slice(0, currentTableRows.length - consecutiveSingleItemRows);
           const table = buildTable(tableRowsToFlush, xTolerance);
           if (table) tables.push(table);
         }
         currentTableRows = [];
         consecutiveSingleItemRows = 0;
+        multiItemRowCount = 0;
         if (row.items.length >= 2) {
           currentTableRows.push(row);
+          multiItemRowCount = 1;
         }
       }
     }
@@ -277,7 +286,7 @@ function detectTables(items: PositionedItem[], yTolerance = 3, xTolerance = 15):
   // Flush trailing table
   if (currentTableRows.length > 0) {
     const tableRowsToFlush = currentTableRows.slice(0, currentTableRows.length - consecutiveSingleItemRows);
-    if (tableRowsToFlush.length >= 2) {
+    if (tableRowsToFlush.length >= 2 && multiItemRowCount >= 2) {
       const table = buildTable(tableRowsToFlush, xTolerance);
       if (table) tables.push(table);
     }
@@ -360,11 +369,55 @@ function looksLikeData(text: string): boolean {
   return false;
 }
 
+function stripInlineHtml(text: string): string {
+  return text.replace(/<\/?[a-z]+>/gi, "").replace(/\s+/g, " ").trim();
+}
+
+function isLikelyRealTable(rows: string[][]): boolean {
+  if (rows.length < 2) return false;
+
+  const columnCount = Math.max(...rows.map((row) => row.length), 0);
+  if (columnCount < 2) return false;
+
+  const nonEmptyCounts = rows.map((row) =>
+    row.reduce((count, cell) => count + (stripInlineHtml(cell) ? 1 : 0), 0)
+  );
+
+  const denseRows = nonEmptyCounts.filter((count) => count >= 2).length;
+  if (denseRows < 2) return false;
+
+  const populatedColumns = Array.from({ length: columnCount }, (_, columnIndex) =>
+    rows.reduce((count, row) => count + (stripInlineHtml(row[columnIndex] ?? "") ? 1 : 0), 0)
+  );
+
+  if (populatedColumns.filter((count) => count >= 2).length < 2) {
+    return false;
+  }
+
+  const totalCells = rows.length * columnCount;
+  const filledCells = nonEmptyCounts.reduce((sum, count) => sum + count, 0);
+  if (totalCells === 0 || filledCells / totalCells < 0.45) {
+    return false;
+  }
+
+  const mostlySparseRows = nonEmptyCounts.filter((count) => count <= 1).length;
+  if (mostlySparseRows > Math.floor(rows.length / 2)) {
+    return false;
+  }
+
+  return true;
+}
+
 /** Build a TableResult from a slice of row groups, reconstructing logical rows */
 function buildTable(
   rowGroups: { y: number; items: (PositionedItem & { originalIndex: number })[] }[],
   xTolerance: number,
 ): TableResult | null {
+  const sourceRowsWithMultipleCells = rowGroups.filter((row) => row.items.length >= 2).length;
+  if (sourceRowsWithMultipleCells < 2) {
+    return null;
+  }
+
   // Collect all x-positions to determine column anchors
   const allXValues: number[] = [];
   for (const row of rowGroups) {
@@ -394,6 +447,17 @@ function buildTable(
 
   if (columnAnchors.length < 2) {
     return null; // Not a real table
+  }
+
+  const repeatedColumns = columnAnchors.map((anchor) =>
+    rowGroups.reduce((count, rowGroup) => {
+      const hasMatch = rowGroup.items.some((item) => Math.abs(item.x - anchor) <= xTolerance);
+      return count + (hasMatch ? 1 : 0);
+    }, 0)
+  );
+
+  if (repeatedColumns.filter((count) => count >= 2).length < 2) {
+    return null;
   }
 
   type TableItem = PositionedItem & { originalIndex: number; col: number };
@@ -524,6 +588,9 @@ function buildTable(
   }
 
   const cleanedRows = mergeEmptyKeyRows(logicalRows);
+  if (!isLikelyRealTable(cleanedRows)) {
+    return null;
+  }
 
   return { rows: cleanedRows, itemIndices };
 }
