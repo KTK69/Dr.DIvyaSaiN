@@ -3,6 +3,10 @@
 import { useSiteContent } from "@/components/site/SiteContentProvider";
 import { MapPin } from "lucide-react";
 
+function formatLocation(value: string) {
+  return value.replace(/\s*\/\s*/g, "\n");
+}
+
 export default function LocationCard() {
   const { content } = useSiteContent();
   const contactPage = content.contactPage;
@@ -19,7 +23,7 @@ export default function LocationCard() {
         </h2>
       </div>
       <address className="not-italic text-base text-(--foreground-muted) leading-8 whitespace-pre-line">
-        {contactPage.locationAddress || content.footer.contactLocation}
+        {formatLocation(contactPage.locationAddress || content.footer.contactLocation)}
       </address>
     </div>
   );

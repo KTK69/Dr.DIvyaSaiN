@@ -135,7 +135,7 @@ function CalendlyModal({ open, onClose }: { open: boolean; onClose: () => void }
                       Book Video Consultation
                     </p>
                     <p className="text-xs" style={{ color: "var(--foreground-muted)" }}>
-                      Dr. Divya Sai Narsingam · AIG & CARE Hospitals, Hyderabad
+                      Dr. Divya Sai Narsingam · AIG Hospitals, Banjara Hills & CARE Hospitals, Gachibowli, Hyderabad
                     </p>
                   </div>
                 </div>

@@ -218,7 +218,7 @@ export function buildServiceMetadata(
 ): Metadata {
   const label = categoryLabel(category);
   const pageTitle = `${service.name} in Hyderabad`;
-  const desc = `${service.shortDesc} ${label.toLowerCase()} by ${doctor.name} at AIG Hospitals, Banjara Hills & CARE Hospitals, Hitec City, Hyderabad.`;
+  const desc = `${service.shortDesc} ${label.toLowerCase()} by ${doctor.name} at AIG Hospitals, Banjara Hills & CARE Hospitals, Gachibowli, Hyderabad.`;
 
   return {
     title: pageTitle,
@@ -277,7 +277,7 @@ export function buildServiceJsonLd(
       },
       {
         "@type": "Hospital",
-        name: "CARE Hospitals, Hitec City",
+        name: "CARE Hospitals, Gachibowli",
       },
     ],
   };
@@ -492,7 +492,7 @@ export function buildUnifiedServiceMetadata(service: Service): Metadata {
 
   const metaDescription = service.meta_description?.trim()
     ? service.meta_description
-    : `${service.summary} by ${doctor.name} at AIG Hospitals, Banjara Hills & CARE Hospitals, Hitec City, Hyderabad.`;
+    : `${service.summary} by ${doctor.name} at AIG Hospitals, Banjara Hills & CARE Hospitals, Gachibowli, Hyderabad.`;
 
   // KEYWORD SCOPING FIX: only include keywords for THIS specific service, not the whole category
   const keywords = service.meta_keywords && service.meta_keywords.length > 0
@@ -573,7 +573,7 @@ export function buildUnifiedServiceJsonLd(service: Service) {
       },
       {
         "@type": "Hospital",
-        name: "CARE Hospitals, Hitec City",
+        name: "CARE Hospitals, Gachibowli",
       },
     ],
   };

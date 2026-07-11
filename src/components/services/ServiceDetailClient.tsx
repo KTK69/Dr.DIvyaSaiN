@@ -111,7 +111,7 @@ export default function ServiceDetailClient({ slug, serverService }: Props) {
             <h3 className="text-base font-medium text-(--foreground) mb-4" style={{ fontFamily: "var(--font-serif)" }}>Your Surgeon</h3>
             <p className="text-sm font-medium text-(--foreground)">Dr. Divya Sai Narsingam</p>
             <p className="text-xs text-(--accent-gold-light) mt-0.5">MCh (Plastic Surgery)</p>
-            <p className="text-xs text-(--foreground-muted) mt-3 leading-relaxed">Consultant at AIG Hospitals & CARE Hospitals, Hyderabad. 14+ years of reconstructive and aesthetic surgery experience.</p>
+            <p className="text-xs text-(--foreground-muted) mt-3 leading-relaxed">Consultant at AIG Hospitals, Banjara Hills & CARE Hospitals, Gachibowli, Hyderabad. 14+ years of reconstructive and aesthetic surgery experience.</p>
             <Link href="/about" className="mt-4 inline-flex text-xs text-(--foreground-subtle) hover:text-(--accent-gold-light) transition-colors">Full biography →</Link>
           </div>
 

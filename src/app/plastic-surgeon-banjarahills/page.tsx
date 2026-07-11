@@ -60,7 +60,7 @@ export default async function PlasticSurgeonBanjaraHillsPage() {
   const { content } = await getStoredSiteContent();
   const page = content.banjaraHillsPage;
   const whatsappLink = buildWhatsAppLink(
-    "Hello Dr. Divya Sai Narsingam, I would like to book a consultation at AIG Hospitals, Banjara Hills.",
+    "Hello Dr. Divya Sai Narsingam, I would like to book a consultation at AIG Hospitals, Banjara Hills & CARE Hospitals, Gachibowli.",
   );
 
   const breadcrumbJsonLd = buildBreadcrumbJsonLd([

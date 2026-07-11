@@ -74,7 +74,7 @@ export default function Navbar() {
                   Dr. Divya Sai Narsingam
                 </span>
                 <span className="block truncate text-[10px] leading-tight sm:text-xs text-(--foreground) font-semibold tracking-wide opacity-90">
-                  MCh Plastic Surgery · AIG & CARE Hospitals, Hyderabad
+                  MCh Plastic Surgery · AIG Hospitals, Banjara Hills & CARE Hospitals, Gachibowli, Hyderabad
                 </span>
               </div>
             </div>

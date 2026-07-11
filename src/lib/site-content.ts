@@ -342,8 +342,7 @@ export const DEFAULT_SITE_CONTENT: SiteContent = {
       { label: "Gynecomastia", href: "/services/gynecomastia-reduction" },
     ],
     contactTitle: "Contact",
-    contactLocation:
-      "Room No. 20, 1st Floor, AIG Hospitals, Banjara Hills, Hyderabad – 500034 / Room No 212  CARE Hospitals — Gachibowli, Hyderabad",
+    contactLocation: contactInfo.fullAddress,
     contactEmail: "Appointments via AIG & CARE Hospitals",
     linksTitle: "Links",
     links: [
@@ -502,13 +501,13 @@ export const DEFAULT_SITE_CONTENT: SiteContent = {
     },
     contact: {
       title:
-        "Book Appointment | Dr. Divya Sai Narsingam – AIG Hospitals Banjara Hills",
+        "Book Appointment | Dr. Divya Sai Narsingam – AIG Hospitals & CARE Hospitals",
       description:
-        "Book a consultation with Dr. Divya Sai Narsingam at AIG Hospitals, Banjara Hills, Hyderabad. Plastic & Reconstructive Surgeon – MCh (Plastic Surgery).",
+        "Book a consultation with Dr. Divya Sai Narsingam at AIG Hospitals, Banjara Hills & CARE Hospitals, Gachibowli, Hyderabad. Plastic & Reconstructive Surgeon – MCh (Plastic Surgery).",
       keywords: [
         "book appointment plastic surgeon Hyderabad",
         "contact Dr Divya Sai Narsingam",
-        "AIG Hospitals Banjara Hills consultation",
+        "AIG Hospitals and CARE Hospitals consultation",
       ],
       canonicalPath: "/contactus",
     },
@@ -524,13 +523,13 @@ export const DEFAULT_SITE_CONTENT: SiteContent = {
       canonicalPath: "/contactus",
     },
     banjaraHills: {
-      title: "Plastic Surgeon in Banjara Hills, Hyderabad | Dr. Divya Sai Narsingam | AIG Hospitals",
+      title: "Plastic Surgeon in Banjara Hills, Hyderabad | Dr. Divya Sai Narsingam | AIG Hospitals & CARE Hospitals",
       description:
-        "Consult Dr. Divya Sai Narsingam, MCh Plastic Surgeon, at AIG Hospitals Banjara Hills. Expert care for rhinoplasty, breast surgery, liposuction, reconstructive procedures, and more.",
+        "Consult Dr. Divya Sai Narsingam, MCh Plastic Surgeon, at AIG Hospitals, Banjara Hills & CARE Hospitals, Gachibowli. Expert care for rhinoplasty, breast surgery, liposuction, reconstructive procedures, and more.",
       keywords: [
         "plastic surgeon Banjara Hills",
         "plastic surgeon in Banjara Hills Hyderabad",
-        "AIG Hospitals plastic surgeon",
+        "AIG and CARE Hospitals plastic surgeon",
         "cosmetic surgeon Banjara Hills",
         "reconstructive surgeon Banjara Hills",
       ],
@@ -556,7 +555,7 @@ export const DEFAULT_SITE_CONTENT: SiteContent = {
       title: "Precision Surgery.",
       emphasis: "Compassionate",
       summary:
-        "Dr. Divya Sai Narsingam is a board-certified Plastic & Reconstructive Surgeon with over 14 years of clinical experience. Consultant at CARE Hospitals, Gachibowli, Hyderabad.",
+        "Dr. Divya Sai Narsingam is a board-certified Plastic & Reconstructive Surgeon with over 14 years of clinical experience. Consultant at AIG Hospitals, Banjara Hills & CARE Hospitals, Gachibowli, Hyderabad.",
       ctaPrimary: { label: "Book Video Consultation", href: "/contactus" },
       ctaSecondary: { label: "About the Doctor", href: "/aboutus" },
     },
@@ -564,7 +563,7 @@ export const DEFAULT_SITE_CONTENT: SiteContent = {
       quote:
         "Surgery is as much about listening as it is about operating. Every patient brings a unique story, unique anatomy, and unique expectations.",
       summary:
-        "Dr. Divya Sai Narsingam holds an MCh in Plastic Surgery and practices as a Consultant at CARE Hospitals, Gachibowli.",
+        "Dr. Divya Sai Narsingam holds an MCh in Plastic Surgery and practices as a Consultant at AIG Hospitals, Banjara Hills & CARE Hospitals, Gachibowli.",
       highlights: [
         { title: "Reconstructive Surgery", desc: "Onco, breast, trauma, head & neck" },
         { title: "Aesthetic Surgery", desc: "Face, body, breast procedures" },
@@ -577,16 +576,16 @@ export const DEFAULT_SITE_CONTENT: SiteContent = {
       ],
     },
     cta: {
-      eyebrow: "AIG Hospitals, Banjara Hills",
+      eyebrow: "AIG Hospitals, Banjara Hills & CARE Hospitals, Gachibowli",
       title: "Ready to discuss your concerns?",
       summary:
-        "Schedule a consultation with Dr. Narsingam at AIG Hospitals, Banjara Hills.",
+        "Schedule a consultation with Dr. Narsingam at AIG Hospitals, Banjara Hills & CARE Hospitals, Gachibowli.",
       appointmentLabel: "Book Video Consultation",
       appointmentHref: "/contactus",
       whatsappLabel: "WhatsApp Us",
       servicesLabel: "Explore Procedures",
       hospitalLocation:
-        "Room No. 20, 1st Floor, AIG Hospitals, Banjara Hills, Hyderabad – 500034",
+        "Room No. 20, 1st Floor, AIG Hospitals, Banjara Hills, Hyderabad – 500034\nRoom No. 212, CARE Hospitals, Gachibowli, Hyderabad",
     },
     beforeAfterGallery: {
       eyebrow: "Before & After",
@@ -782,14 +781,14 @@ export const DEFAULT_SITE_CONTENT: SiteContent = {
   },
 
   banjaraHillsPage: {
-    heroEyebrow: "AIG Hospitals, Banjara Hills, Hyderabad",
+    heroEyebrow: "AIG Hospitals, Banjara Hills & CARE Hospitals, Gachibowli, Hyderabad",
     heroTitle: "Plastic Surgeon in Banjara Hills, Hyderabad",
     heroSummary:
-      "Looking for an experienced and trusted plastic surgeon in Banjara Hills, Hyderabad? Dr. Divya Sai Narsingam offers plastic and reconstructive surgery consultations at AIG Hospitals with a focus on personalised, evidence-based care across cosmetic and reconstructive procedures.",
+      "Looking for an experienced and trusted plastic surgeon in Banjara Hills, Hyderabad? Dr. Divya Sai Narsingam offers plastic and reconstructive surgery consultations at AIG Hospitals, Banjara Hills & CARE Hospitals, Gachibowli with a focus on personalised, evidence-based care across cosmetic and reconstructive procedures.",
     contactCardTitle: "Consultation details",
     contactCardItems: [
       "MCh Plastic and Reconstructive Surgery",
-      "AIG Hospitals, Banjara Hills",
+      "AIG Hospitals, Banjara Hills & CARE Hospitals, Gachibowli",
       "Monday to Saturday, 4:00 PM to 5:00 PM",
       "Call: +91 99001 35489",
     ],
@@ -800,7 +799,7 @@ export const DEFAULT_SITE_CONTENT: SiteContent = {
     qualificationPoints: [
       "MBBS and MCh in Plastic Surgery",
       "Training across reconstructive microsurgery, cosmetic surgery, hand surgery, burn management, and onco reconstruction",
-      "Consulting at AIG Hospitals, Banjara Hills, Hyderabad",
+      "Consulting at AIG Hospitals, Banjara Hills & CARE Hospitals, Gachibowli, Hyderabad",
       "Patient-first, evidence-based treatment planning with clear communication",
     ],
     cosmeticEyebrow: "Cosmetic Surgery",
@@ -906,15 +905,15 @@ export const DEFAULT_SITE_CONTENT: SiteContent = {
         cta: "Learn about Burn and Scar Revision",
       },
     ],
-    aigEyebrow: "Why AIG",
-    aigTitle: "Why consult at AIG Hospitals, Banjara Hills?",
+    aigEyebrow: "Why AIG and CARE",
+    aigTitle: "Why consult at AIG Hospitals, Banjara Hills & CARE Hospitals, Gachibowli?",
     aigSubtitle:
-      "Hospital infrastructure, accessibility, peri-operative support, and diagnostic access are key advantages for patients consulting in Banjara Hills.",
+      "Hospital infrastructure, accessibility, peri-operative support, and diagnostic access are key advantages for patients consulting across both Hyderabad locations.",
     aigBenefits: [
       {
         title: "NABH-accredited facility",
         description:
-          "AIG Hospitals meets national standards for patient safety, hygiene, and clinical quality.",
+          "AIG Hospitals and CARE Hospitals meet national standards for patient safety, hygiene, and clinical quality.",
       },
       {
         title: "Advanced OT infrastructure",
@@ -927,9 +926,9 @@ export const DEFAULT_SITE_CONTENT: SiteContent = {
           "A multidisciplinary team and high-dependency care support recovery after major surgery.",
       },
       {
-        title: "Convenient Banjara Hills location",
+        title: "Convenient Hyderabad locations",
         description:
-          "The hospital is easily accessible from Jubilee Hills, Kondapur, Madhapur, Gachibowli, and surrounding areas.",
+          "The hospitals are easily accessible from Jubilee Hills, Kondapur, Madhapur, Gachibowli, and surrounding areas.",
       },
       {
         title: "Comprehensive diagnostics",
@@ -947,9 +946,9 @@ export const DEFAULT_SITE_CONTENT: SiteContent = {
     faqItems: [
       {
         question:
-          "What is the consultation fee for Dr. Divya Sai Narsingam at AIG Hospitals, Banjara Hills?",
+          "What is the consultation fee for Dr. Divya Sai Narsingam at AIG Hospitals, Banjara Hills & CARE Hospitals, Gachibowli?",
         answer:
-          "Consultation fees may vary. Please call +91 99001 35489 or contact AIG Hospitals, Banjara Hills directly to confirm the current consultation charge.",
+          "Consultation fees may vary. Please call +91 99001 35489 or contact AIG Hospitals, Banjara Hills & CARE Hospitals, Gachibowli directly to confirm the current consultation charge.",
       },
       {
         question: "What is the recovery time after plastic surgery?",
@@ -964,7 +963,7 @@ export const DEFAULT_SITE_CONTENT: SiteContent = {
       },
       {
         question:
-          "How do I book an appointment with the plastic surgeon at AIG Hospitals, Banjara Hills?",
+          "How do I book an appointment with the plastic surgeon at AIG Hospitals, Banjara Hills & CARE Hospitals, Gachibowli?",
         answer:
           "Appointments can be requested by calling +91 99001 35489, emailing drdivyaplasticsurgeon@gmail.com, or using the online appointment form. Consultation hours are Monday to Saturday, 4:00 PM to 5:00 PM.",
       },
@@ -980,7 +979,7 @@ export const DEFAULT_SITE_CONTENT: SiteContent = {
       },
     ],
     ctaEyebrow: "Book consultation",
-    ctaTitle: "Consult Dr. Divya Sai Narsingam at AIG Hospitals, Banjara Hills",
+    ctaTitle: "Consult Dr. Divya Sai Narsingam at AIG Hospitals, Banjara Hills & CARE Hospitals, Gachibowli",
     ctaSummary:
       "Use the contact page, WhatsApp, or phone to request an appointment. Consultation hours are Monday to Saturday, 4:00 PM to 5:00 PM.",
   },

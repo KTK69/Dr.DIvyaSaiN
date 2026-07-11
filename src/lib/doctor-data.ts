@@ -2,11 +2,11 @@ export const doctor = {
   name: "Dr. Divya Sai Narsingam",
   qualifications: "MBBS, MS (General Surgery), MCh (Plastic Surgery)",
   title: "Consultant Plastic & Reconstructive Surgeon",
-  hospital: "Room No. 20, 1st Floor, AIG Hospitals, Banjara Hills, Hyderabad – 500034 & Room No 212  CARE Hospitals — Gachibowli, Hyderabad",
+  hospital: "Room No. 20, 1st Floor, AIG Hospitals, Banjara Hills, Hyderabad – 500034 & Room No. 212, CARE Hospitals, Gachibowli, Hyderabad",
   yearsExperience: 14,
   yearsSpecialist: 9,
   summary:
-    "Dr. Divya Sai Narsingam is a board-certified Plastic and Reconstructive Surgeon with over 14 years of clinical experience, including 9 years as a specialist. She currently practises at Room No. 20, 1st Floor, AIG Hospitals, Banjara Hills, Hyderabad – 500034 and Room No 212  CARE Hospitals — Gachibowli, Hyderabad. She is known for delivering safe, natural-looking results in both aesthetic and reconstructive plastic surgery, combining surgical precision with compassionate care.",
+    "Dr. Divya Sai Narsingam is a board-certified Plastic and Reconstructive Surgeon with over 14 years of clinical experience, including 9 years as a specialist. She currently practises at AIG Hospitals, Banjara Hills, Hyderabad – 500034 and CARE Hospitals, Gachibowli, Hyderabad. She is known for delivering safe, natural-looking results in both aesthetic and reconstructive plastic surgery, combining surgical precision with compassionate care.",
   philosophy:
     "Surgery is as much about listening as it is about operating. Every patient brings a unique story, unique anatomy, and unique expectations. My role is to understand that story fully — and then use every tool at my disposal to help write a better chapter.",
 };
@@ -33,7 +33,7 @@ export const education = [
 export const experience = [
   {
     role: "Consultant Plastic & Reconstructive Surgeon",
-    institution: "Room No. 20, 1st Floor, AIG Hospitals, Banjara Hills, Hyderabad – 500034 & Room No 212  CARE Hospitals — Gachibowli, Hyderabad",
+    institution: "AIG Hospitals, Banjara Hills, Hyderabad – 500034 & CARE Hospitals, Gachibowli, Hyderabad",
     period: "2024 – Present",
     current: true,
   },
@@ -133,7 +133,7 @@ export const contactInfo = {
   area: "Banjara Hills & Gachibowli",
   city: "Hyderabad",
   fullAddress:
-    "Room No. 20, 1st Floor, AIG Hospitals, Banjara Hills, Hyderabad – 500034\nRoom No 212  CARE Hospitals — Gachibowli, Hyderabad",
+    "Room No. 20, 1st Floor, AIG Hospitals, Banjara Hills, Hyderabad – 500034\nRoom No. 212, CARE Hospitals, Gachibowli, Hyderabad",
 };
 
 export const reconstructiveServices = [

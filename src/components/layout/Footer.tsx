@@ -7,6 +7,10 @@ import { useSiteContent } from "@/components/site/SiteContentProvider";
 
 const LOGO = "/images/img/Dr%20Divya%20Logo%20Circle.png";
 
+function formatLocation(value: string) {
+  return value.replace(/\s*\/\s*/g, "\n");
+}
+
 export default function Footer() {
   const { content } = useSiteContent();
   const footer = content.footer;
@@ -68,8 +72,8 @@ export default function Footer() {
             <ul className="space-y-3">
               <li className="flex gap-3">
                 <MapPin size={15} className="text-(--accent-gold) mt-0.5 shrink-0" />
-                <span className="text-sm text-(--foreground-muted) leading-relaxed">
-                  {footer.contactLocation}
+                <span className="text-sm text-(--foreground-muted) leading-relaxed whitespace-pre-line">
+                  {formatLocation(footer.contactLocation)}
                 </span>
               </li>
               <li className="flex gap-3 items-center">
