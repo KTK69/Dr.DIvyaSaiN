@@ -101,6 +101,9 @@ export type ServicesPageContent = {
   subheading: string;
   categoryCosmeticTitle: string;
   categoryReconstructiveTitle: string;
+  bookConsultationHeading: string;
+  bookConsultationSubheading: string;
+  featuredServices: Array<{ slug: string; category: "reconstructive" | "cosmetic" }>;
 };
 
 export type DoctorTalkPageContent = {
@@ -186,11 +189,21 @@ export type BanjaraHillsPageContent = {
   ctaSummary: string;
 };
 
+export type ServiceReference = {
+  slug: string;
+  category: "reconstructive" | "cosmetic";
+};
+
+export type NavigationServiceItem = ServiceReference & {
+  label: string;
+  href: string;
+};
+
 export type NavigationContent = {
   links: NavLink[];
   services: {
-    reconstructive: NavLink[];
-    cosmetic: NavLink[];
+    reconstructive: NavigationServiceItem[];
+    cosmetic: NavigationServiceItem[];
   };
 };
 
@@ -306,22 +319,22 @@ export const DEFAULT_SITE_CONTENT: SiteContent = {
     ],
     services: {
       reconstructive: [
-        { label: "Onco Reconstruction", href: "/services/onco-reconstruction" },
-        { label: "Breast Reconstruction", href: "/services/breast-reconstruction" },
-        { label: "Trauma Reconstruction", href: "/services/trauma-reconstruction" },
-        { label: "Hand Surgery", href: "/services/hand-surgery" },
-        { label: "Microvascular Surgery", href: "/services/microvascular-surgery" },
-        { label: "Maxillofacial Trauma", href: "/services/maxillofacial-trauma" },
-        { label: "Facial Plastic Surgery", href: "/services/facial-plastic-surgery" },
+        { slug: "onco-reconstruction", category: "reconstructive", label: "Onco Reconstruction", href: "/services/reconstructive/onco-reconstruction" },
+        { slug: "breast-reconstruction", category: "reconstructive", label: "Breast Reconstruction", href: "/services/reconstructive/breast-reconstruction" },
+        { slug: "trauma-reconstruction", category: "reconstructive", label: "Trauma Reconstruction", href: "/services/reconstructive/trauma-reconstruction" },
+        { slug: "hand-surgery", category: "reconstructive", label: "Hand Surgery", href: "/services/reconstructive/hand-surgery" },
+        { slug: "microvascular-surgery", category: "reconstructive", label: "Microvascular Surgery", href: "/services/reconstructive/microvascular-surgery" },
+        { slug: "maxillofacial-trauma", category: "reconstructive", label: "Maxillofacial Trauma", href: "/services/reconstructive/maxillofacial-trauma" },
+        { slug: "facial-plastic-surgery", category: "reconstructive", label: "Facial Plastic Surgery", href: "/services/reconstructive/facial-plastic-surgery" },
       ],
       cosmetic: [
-        { label: "Breast Augmentation", href: "/services/breast-augmentation" },
-        { label: "Breast Reduction", href: "/services/breast-reduction" },
-        { label: "Breast Lift", href: "/services/breast-lift" },
-        { label: "Rhinoplasty", href: "/services/rhinoplasty" },
-        { label: "Tummy Tuck", href: "/services/tummy-tuck" },
-        { label: "Body Lipocontouring", href: "/services/body-lipocontouring" },
-        { label: "Gynecomastia Reduction", href: "/services/gynecomastia-reduction" },
+        { slug: "breast-augmentation", category: "cosmetic", label: "Breast Augmentation", href: "/services/cosmetic/breast-augmentation" },
+        { slug: "breast-reduction", category: "cosmetic", label: "Breast Reduction", href: "/services/cosmetic/breast-reduction" },
+        { slug: "breast-lift", category: "cosmetic", label: "Breast Lift", href: "/services/cosmetic/breast-lift" },
+        { slug: "rhinoplasty", category: "cosmetic", label: "Rhinoplasty", href: "/services/cosmetic/rhinoplasty" },
+        { slug: "tummy-tuck", category: "cosmetic", label: "Tummy Tuck", href: "/services/cosmetic/tummy-tuck" },
+        { slug: "body-lipocontouring", category: "cosmetic", label: "Body Lipocontouring", href: "/services/cosmetic/body-lipocontouring" },
+        { slug: "gynecomastia-reduction", category: "cosmetic", label: "Gynecomastia Reduction", href: "/services/cosmetic/gynecomastia-reduction" },
       ],
     },
   },
@@ -332,14 +345,14 @@ export const DEFAULT_SITE_CONTENT: SiteContent = {
     qualifications: "MCh Plastic Surgery · Board-Certified",
     servicesTitle: "Services",
     services: [
-      { label: "Onco Reconstruction", href: "/services/onco-reconstruction" },
-      { label: "Breast Reconstruction", href: "/services/breast-reconstruction" },
-      { label: "Microvascular Surgery", href: "/services/microvascular-surgery" },
-      { label: "Breast Augmentation", href: "/services/breast-augmentation" },
-      { label: "Breast Lift", href: "/services/breast-lift" },
-      { label: "Rhinoplasty", href: "/services/rhinoplasty" },
-      { label: "Body Lipocontouring", href: "/services/body-lipocontouring" },
-      { label: "Gynecomastia", href: "/services/gynecomastia-reduction" },
+      { label: "Onco Reconstruction", href: "/services/reconstructive/onco-reconstruction" },
+      { label: "Breast Reconstruction", href: "/services/reconstructive/breast-reconstruction" },
+      { label: "Microvascular Surgery", href: "/services/reconstructive/microvascular-surgery" },
+      { label: "Breast Augmentation", href: "/services/cosmetic/breast-augmentation" },
+      { label: "Breast Lift", href: "/services/cosmetic/breast-lift" },
+      { label: "Rhinoplasty", href: "/services/cosmetic/rhinoplasty" },
+      { label: "Body Lipocontouring", href: "/services/cosmetic/body-lipocontouring" },
+      { label: "Gynecomastia", href: "/services/cosmetic/gynecomastia-reduction" },
     ],
     contactTitle: "Contact",
     contactLocation: contactInfo.fullAddress,
@@ -752,6 +765,9 @@ export const DEFAULT_SITE_CONTENT: SiteContent = {
     subheading: "Comprehensive plastic and reconstructive surgery solutions",
     categoryCosmeticTitle: "Cosmetic Surgery",
     categoryReconstructiveTitle: "Reconstructive Surgery",
+    bookConsultationHeading: "Not sure which procedure is right for you?",
+    bookConsultationSubheading: "Book Video Consultation",
+    featuredServices: [],
   },
 
   doctorTalkPage: {

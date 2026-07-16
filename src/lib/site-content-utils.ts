@@ -1,4 +1,9 @@
-import type { SiteContent } from "@/lib/site-content";
+import type {
+  BeforeAfterProcedure,
+  NavigationServiceItem,
+  PatientGallery,
+  SiteContent,
+} from "@/lib/site-content";
 import type { Blog } from "@/types/content";
 
 function isPlainObject(value: unknown): value is Record<string, unknown> {
@@ -15,7 +20,7 @@ function normalizeGallerySlot(defaultSlot: Record<string, unknown>, storedSlot: 
   };
 }
 
-function normalizePatientGallery(storedPatient: unknown, fallbackId: string, fallbackName: string): any {
+function normalizePatientGallery(storedPatient: unknown, fallbackId: string, fallbackName: string): PatientGallery {
   const source = isPlainObject(storedPatient) ? storedPatient : {};
   const id = String(source.id ?? fallbackId);
   const name = String(source.name ?? fallbackName);
@@ -29,7 +34,7 @@ function normalizePatientGallery(storedPatient: unknown, fallbackId: string, fal
 function normalizeGalleryProcedure(defaultProcedure: Record<string, unknown>, storedProcedure: unknown, fallbackName: string) {
   const storedObject = isPlainObject(storedProcedure) ? storedProcedure : {};
   
-  let patients: Array<any> = [];
+  let patients: PatientGallery[] = [];
   
   if (Array.isArray(storedObject.patients)) {
     patients = storedObject.patients.map((p, i) => normalizePatientGallery(p, `patient-${i + 1}`, `Patient ${i + 1}`));
@@ -60,9 +65,9 @@ function normalizeGalleryProcedure(defaultProcedure: Record<string, unknown>, st
 
   if (patients.length === 0 && isPlainObject(defaultProcedure)) {
     if (Array.isArray(defaultProcedure.patients)) {
-      patients = (defaultProcedure.patients as Array<any>).map((p, i) => normalizePatientGallery(p, `patient-${i + 1}`, `Patient ${i + 1}`));
+      patients = (defaultProcedure.patients as PatientGallery[]).map((p, i) => normalizePatientGallery(p, `patient-${i + 1}`, `Patient ${i + 1}`));
     } else if (Array.isArray(defaultProcedure.images)) {
-      const images = (defaultProcedure.images as Array<any>).map((img, i) => normalizeGallerySlot({}, img, `Image ${i + 1}`));
+      const images = (defaultProcedure.images as Array<Record<string, unknown>>).map((img, i) => normalizeGallerySlot({}, img, `Image ${i + 1}`));
       patients = [{
         id: "patient-1",
         name: "Patient 1",
@@ -88,10 +93,57 @@ function normalizeGalleryProcedure(defaultProcedure: Record<string, unknown>, st
     previewImage,
     images: legacyImagesList,
     patients,
-  };
+  } satisfies BeforeAfterProcedure;
 }
 
 const STORED_ARRAY_KEYS = new Set(["blog", "services", "testimonials", "doctorTalk"]);
+
+function normalizeNavPath(value: string) {
+  const trimmed = value.trim();
+  if (!trimmed) {
+    return "";
+  }
+
+  if (/^https?:\/\//i.test(trimmed)) {
+    return trimmed;
+  }
+
+  return trimmed.startsWith("/") ? trimmed : `/${trimmed}`;
+}
+
+function sanitizeNavigationServiceItems(
+  items: NavigationServiceItem[],
+  category: "reconstructive" | "cosmetic",
+  services: SiteContent["services"],
+  seenKeys: Set<string>,
+) {
+  return items.reduce<NavigationServiceItem[]>((acc, item) => {
+    const service = services.find((entry) => entry.slug === item.slug && entry.category === category);
+    if (!service) {
+      return acc;
+    }
+
+    const href = normalizeNavPath(item.href || `/services/${category}/${item.slug}`);
+    const label = (item.label || service.name || item.slug).trim();
+    const slugKey = `slug:${category}:${item.slug}`;
+    const hrefKey = `href:${href.toLowerCase()}`;
+
+    if (!label || !href || seenKeys.has(slugKey) || seenKeys.has(hrefKey)) {
+      return acc;
+    }
+
+    seenKeys.add(slugKey);
+    seenKeys.add(hrefKey);
+    acc.push({
+      slug: item.slug,
+      category,
+      label,
+      href,
+    });
+
+    return acc;
+  }, []);
+}
 
 /** Merge stored CMS data without substituting seed blogs/services when arrays are empty. */
 export function mergeStoredSiteContent(
@@ -110,6 +162,22 @@ export function mergeStoredSiteContent(
   if (Array.isArray(storedObject.blog)) {
     merged.blog = storedObject.blog as Blog[];
   }
+
+  const seenNavigationItems = new Set<string>();
+  merged.navigation.services = {
+    reconstructive: sanitizeNavigationServiceItems(
+      merged.navigation.services.reconstructive,
+      "reconstructive",
+      merged.services,
+      seenNavigationItems,
+    ),
+    cosmetic: sanitizeNavigationServiceItems(
+      merged.navigation.services.cosmetic,
+      "cosmetic",
+      merged.services,
+      seenNavigationItems,
+    ),
+  };
 
   return merged;
 }

@@ -197,13 +197,16 @@ export function buildServicesPageJsonLd(services: Service[]) {
     url: `${SITE_URL}/services`,
     itemListOrder: "https://schema.org/ItemListOrderAscending",
     numberOfItems: services.length,
-    itemListElement: services.map((service, index) => ({
-      "@type": "ListItem",
-      position: index + 1,
-      url: `${SITE_URL}/services/${service.slug}`,
-      name: service.name,
-      description: service.summary,
-    })),
+    itemListElement: services.map((service, index) => {
+      const categoryPath = service.category === "reconstructive" ? "reconstructive" : "cosmetic";
+      return {
+        "@type": "ListItem",
+        position: index + 1,
+        url: `${SITE_URL}/services/${categoryPath}/${service.slug}`,
+        name: service.name,
+        description: service.summary,
+      };
+    }),
   };
 }
 
@@ -219,6 +222,8 @@ export function buildServiceMetadata(
   const label = categoryLabel(category);
   const pageTitle = `${service.name} in Hyderabad`;
   const desc = `${service.shortDesc} ${label.toLowerCase()} by ${doctor.name} at AIG Hospitals, Banjara Hills & CARE Hospitals, Gachibowli, Hyderabad.`;
+  const categoryPath = category === "reconstructive" ? "reconstructive" : "cosmetic";
+  const serviceUrl = `${SITE_URL}/services/${categoryPath}/${slug}`;
 
   return {
     title: pageTitle,
@@ -232,13 +237,13 @@ export function buildServiceMetadata(
       "CARE Hospitals Hyderabad",
     ]),
     alternates: {
-      canonical: `${SITE_URL}/services/${slug}`,
+      canonical: serviceUrl,
     },
     openGraph: {
       type: "article",
       title: `${pageTitle} ${SITE_NAME_SUFFIX}`,
       description: desc,
-      url: `${SITE_URL}/services/${slug}`,
+      url: serviceUrl,
       siteName: "Dr. Divya Sai Narsingam",
       locale: "en_IN",
     },
@@ -255,12 +260,15 @@ export function buildServiceJsonLd(
   category: ServiceCategory,
   slug: string,
 ) {
+  const categoryPath = category === "reconstructive" ? "reconstructive" : "cosmetic";
+  const serviceUrl = `${SITE_URL}/services/${categoryPath}/${slug}`;
+  
   return {
     "@context": "https://schema.org",
     "@type": ["MedicalProcedure", "Service"],
     name: service.name,
     description: service.description,
-    url: `${SITE_URL}/services/${slug}`,
+    url: serviceUrl,
     provider: {
       "@type": "Physician",
       name: doctor.name,
@@ -482,7 +490,8 @@ export function buildBlogJsonLd(blog: Blog) {
 /* -------------------------------------------------------------------------- */
 
 export function buildUnifiedServiceMetadata(service: Service): Metadata {
-  const canonical = `${SITE_URL}/services/${service.slug}`;
+  const categoryPath = service.category === "reconstructive" ? "reconstructive" : "cosmetic";
+  const canonical = `${SITE_URL}/services/${categoryPath}/${service.slug}`;
 
   // TITLE DEDUP FIX: strip the site name suffix so layout template doesn't double it
   const rawTitle = service.meta_title?.trim()
@@ -550,12 +559,15 @@ export function buildUnifiedServiceMetadata(service: Service): Metadata {
 /* -------------------------------------------------------------------------- */
 
 export function buildUnifiedServiceJsonLd(service: Service) {
+  const categoryPath = service.category === "reconstructive" ? "reconstructive" : "cosmetic";
+  const serviceUrl = `${SITE_URL}/services/${categoryPath}/${service.slug}`;
+  
   return {
     "@context": "https://schema.org",
     "@type": ["MedicalProcedure", "Service"],
     name: service.name,
     description: service.content,
-    url: `${SITE_URL}/services/${service.slug}`,
+    url: serviceUrl,
     provider: {
       "@type": "Physician",
       "@id": PHYSICIAN_ID,

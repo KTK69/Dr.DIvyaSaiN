@@ -7,43 +7,22 @@ import { useSiteContent } from "@/components/site/SiteContentProvider";
 import RichText from "@/components/ui/RichText";
 import type { Service } from "@/types/content";
 
-export type LegacyService = {
-  slug: string;
-  name: string;
-  shortDesc: string;
-  description: string;
-  keyPoints: string[];
-  category?: Service["category"];
-};
-
-function getServiceKeyPoints(service: Service | LegacyService) {
-  const modernPoints = (service as Service).key_points;
-  if (Array.isArray(modernPoints)) {
-    return modernPoints;
-  }
-
-  const legacyPoints = (service as LegacyService).keyPoints;
-  if (Array.isArray(legacyPoints)) {
-    return legacyPoints;
-  }
-
-  return [] as string[];
-}
-
 interface Props {
   slug: string;
-  serverService?: LegacyService | null;
+  serverService?: Service | null;
 }
 
 export default function ServiceDetailClient({ slug, serverService }: Props) {
   const { content } = useSiteContent();
   const services: Service[] = (content.services as Service[]) || [];
 
-  const service: Service | LegacyService | undefined = services.find((s) => s.slug === slug) || serverService || undefined;
+  const service = services.find((s) => s.slug === slug) || serverService || undefined;
   if (!service) return null;
 
   const related: Service[] = services.filter((s) => s.slug !== slug && s.category === service.category).slice(0, 3);
   const reconstructive: Service[] = services.filter((s) => s.category === "reconstructive").slice(0, 3);
+  const keyPoints = service.key_points ?? [];
+  const faqItems = service.faq ?? [];
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 section-padding">
@@ -54,7 +33,7 @@ export default function ServiceDetailClient({ slug, serverService }: Props) {
               Overview
             </h2>
             <RichText
-              value={"content" in service ? service.content : service.description}
+              value={service.content}
               className="text-base text-(--foreground-muted) leading-relaxed"
             />
           </section>
@@ -64,7 +43,7 @@ export default function ServiceDetailClient({ slug, serverService }: Props) {
               What this includes
             </h2>
             <ul className="space-y-3" role="list">
-              {getServiceKeyPoints(service).map((point: string) => (
+              {keyPoints.map((point: string) => (
                 <li key={point} className="flex items-start gap-3">
                   <CheckCircle size={16} className="text-(--accent-blue) mt-0.5 shrink-0" />
                   <span className="text-sm text-(--foreground-muted) leading-relaxed">{point}</span>
@@ -80,7 +59,7 @@ export default function ServiceDetailClient({ slug, serverService }: Props) {
             <p className="text-sm text-(--foreground-muted) leading-relaxed mb-5">
               Dr. Narsingam believes every aesthetic concern deserves a thoughtful, unhurried consultation. She reviews your goals, examines your anatomy, and explains realistic outcomes before any procedure is recommended.
             </p>
-            <Link href="/contact" className="inline-flex items-center gap-2 px-6 py-3 rounded-lg bg-(--accent-gold) text-(--background) text-sm font-medium hover:bg-(--accent-gold-light) transition-colors">
+            <Link href="/contactus" className="inline-flex items-center gap-2 px-6 py-3 rounded-lg bg-(--accent-gold) text-(--background) text-sm font-medium hover:bg-(--accent-gold-light) transition-colors">
               Book Video Consultation <ArrowRight size={15} />
             </Link>
           </section>
@@ -90,18 +69,12 @@ export default function ServiceDetailClient({ slug, serverService }: Props) {
               Frequently asked questions
             </h2>
             <div className="space-y-4 text-sm text-(--foreground-muted) leading-relaxed">
-              <div>
-                <p className="font-medium text-(--foreground) mb-1">What happens at the first consultation?</p>
-                <p>The consultation includes a discussion of goals, medical history, physical assessment, and a procedure-specific recommendation.</p>
-              </div>
-              <div>
-                <p className="font-medium text-(--foreground) mb-1">Will the result look natural?</p>
-                <p>The surgical plan is tailored to the patient&apos;s anatomy and expectations so the result remains balanced and natural.</p>
-              </div>
-              <div>
-                <p className="font-medium text-(--foreground) mb-1">How do I book a follow-up?</p>
-                <p>Follow-up can be arranged through the contact page or WhatsApp support for quick coordination.</p>
-              </div>
+              {faqItems.map((item) => (
+                <div key={item.question}>
+                  <p className="font-medium text-(--foreground) mb-1">{item.question}</p>
+                  <p>{item.answer}</p>
+                </div>
+              ))}
             </div>
           </section>
         </div>
@@ -120,7 +93,7 @@ export default function ServiceDetailClient({ slug, serverService }: Props) {
             <ul className="space-y-2">
               {related.map((r) => (
                 <li key={r.slug}>
-                  <Link href={`/services/${r.slug}`} className="text-sm text-(--foreground-muted) hover:text-(--foreground) transition-colors flex items-center gap-1">
+                  <Link href={`/services/${r.category === 'reconstructive' ? 'reconstructive' : 'cosmetic'}/${r.slug}`} className="text-sm text-(--foreground-muted) hover:text-(--foreground) transition-colors flex items-center gap-1">
                     <ArrowRight size={11} /> {r.name}
                   </Link>
                 </li>
@@ -129,7 +102,7 @@ export default function ServiceDetailClient({ slug, serverService }: Props) {
             <div className="mt-4 pt-4 border-t border-(--border)">
               <p className="text-xs text-(--foreground-subtle) mb-2">Reconstructive services:</p>
               {reconstructive.map((r) => (
-                <Link key={r.slug} href={`/services/${r.slug}`} className="block text-sm text-(--foreground-muted) hover:text-(--foreground) transition-colors py-1">{r.name}</Link>
+                <Link key={r.slug} href={`/services/reconstructive/${r.slug}`} className="block text-sm text-(--foreground-muted) hover:text-(--foreground) transition-colors py-1">{r.name}</Link>
               ))}
             </div>
           </div>

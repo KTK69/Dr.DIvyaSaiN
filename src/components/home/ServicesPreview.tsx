@@ -34,7 +34,7 @@ export default function ServicesPreview() {
                 key={svc.slug}
                 name={svc.name}
                 shortDesc={svc.summary}
-                href={`/services/${svc.slug}`}
+                href={`/services/reconstructive/${svc.slug}`}
                 category="reconstructive"
                 index={i}
               />
@@ -54,7 +54,7 @@ export default function ServicesPreview() {
                 key={svc.slug}
                 name={svc.name}
                 shortDesc={svc.summary}
-                href={`/services/${svc.slug}`}
+                href={`/services/cosmetic/${svc.slug}`}
                 category="cosmetic"
                 index={i}
               />

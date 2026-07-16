@@ -26,7 +26,7 @@ export default function ServicesContent() {
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
             {reconstructive.map((svc, i) => (
-              <ServiceCard key={svc.slug} name={svc.name} shortDesc={svc.summary} href={`/services/${svc.slug}`} category="reconstructive" index={i} />
+              <ServiceCard key={svc.slug} name={svc.name} shortDesc={svc.summary} href={`/services/reconstructive/${svc.slug}`} category="reconstructive" index={i} />
             ))}
           </div>
         </section>
@@ -41,28 +41,34 @@ export default function ServicesContent() {
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
             {cosmetic.map((svc, i) => (
-              <ServiceCard key={svc.slug} name={svc.name} shortDesc={svc.summary} href={`/services/${svc.slug}`} category="cosmetic" index={i} />
+              <ServiceCard key={svc.slug} name={svc.name} shortDesc={svc.summary} href={`/services/cosmetic/${svc.slug}`} category="cosmetic" index={i} />
             ))}
           </div>
         </section>
 
         <div className="mt-16 pt-10 border-t border-(--border) text-center">
-          <p className="text-sm text-(--foreground-muted) mb-4">Not sure which procedure is right for you?</p>
-          <Link href="/contactus" className="inline-flex items-center gap-2 px-6 py-3 rounded-lg bg-(--accent-gold) text-(--background) text-sm font-medium hover:bg-(--accent-gold-light) transition-colors duration-200">
-            Book Video Consultation
+          <p className="text-sm text-(--foreground-muted) mb-4">{content.servicesPage.bookConsultationHeading}</p>
+          <Link href="/contactus" className="inline-flex items-center gap-2 px-6 py-3 rounded-lg bg-(--accent-gold) text-(--background) text-sm font-medium hover:bg-(--accent-gold-light) transition-colors duration-200 mb-8">
+            {content.servicesPage.bookConsultationSubheading}
           </Link>
-          <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 text-left">
-            {[
-              ["Breast Reconstruction", "/services/breast-reconstruction"],
-              ["Microvascular Surgery", "/services/microvascular-surgery"],
-              ["Gynecomastia Reduction", "/services/gynecomastia-reduction"],
-            ].map(([label, href]) => (
-              <Link key={href} href={String(href)} className="glass-card rounded-xl p-4 border border-(--border) hover:border-(--accent-gold) transition-colors">
-                <p className="text-sm font-medium text-(--foreground)" style={{ fontFamily: "var(--font-serif)" }}>{String(label)}</p>
-                <p className="mt-1 text-xs text-(--foreground-subtle)">Open service details</p>
-              </Link>
-            ))}
-          </div>
+          
+          {content.servicesPage.featuredServices && content.servicesPage.featuredServices.length > 0 && (
+            <div className="mt-8">
+              <h3 className="text-sm font-semibold text-(--foreground) mb-4">Featured Services</h3>
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+                {content.servicesPage.featuredServices.map((featured) => {
+                  const service = services.find((s) => s.slug === featured.slug && s.category === featured.category);
+                  if (!service) return null;
+                  return (
+                    <Link key={service.slug} href={`/services/${featured.category}/${featured.slug}`} className="glass-card rounded-xl p-4 border border-(--border) hover:border-(--accent-gold) transition-colors">
+                      <p className="text-sm font-medium text-(--foreground)" style={{ fontFamily: "var(--font-serif)" }}>{service.name}</p>
+                      <p className="mt-1 text-xs text-(--foreground-subtle)">Open service details</p>
+                    </Link>
+                  );
+                })}
+              </div>
+            </div>
+          )}
         </div>
       </div>
     </PageWrapper>

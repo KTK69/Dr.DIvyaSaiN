@@ -1,15 +1,15 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { notFound } from "next/navigation";
 import PageWrapper from "@/components/ui/PageWrapper";
-import { reconstructiveServices } from "@/lib/doctor-data";
-import ServiceDetailClient, { type LegacyService } from "@/components/services/ServiceDetailClient";
-import Link from "next/link";
 import JsonLd from "@/components/seo/JsonLd";
+import ServiceDetailClient from "@/components/services/ServiceDetailClient";
+import { fetchServices } from "@/lib/api";
 import {
   buildBreadcrumbJsonLd,
   buildFaqJsonLd,
-  buildServiceJsonLd,
-  buildServiceMetadata,
+  buildUnifiedServiceJsonLd,
+  buildUnifiedServiceMetadata,
 } from "@/lib/seo";
 
 interface Props {
@@ -17,44 +17,38 @@ interface Props {
 }
 
 export async function generateStaticParams() {
-  return reconstructiveServices.map((s) => ({ slug: s.slug }));
+  const services = await fetchServices();
+  return services
+    .filter((service) => service.category === "reconstructive")
+    .map((service) => ({ slug: service.slug }));
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
-  const service = reconstructiveServices.find((s) => s.slug === slug);
-  if (!service) return {};
-  return buildServiceMetadata(service, "reconstructive", slug);
+  const services = await fetchServices();
+  const service = services.find((entry) => entry.slug === slug && entry.category === "reconstructive");
+  return service ? buildUnifiedServiceMetadata(service) : {};
 }
 
 export default async function ReconstructiveServicePage({ params }: Props) {
   const { slug } = await params;
-  const service = reconstructiveServices.find((s) => s.slug === slug);
+  const services = await fetchServices();
+  const service = services.find((entry) => entry.slug === slug && entry.category === "reconstructive");
   if (!service) notFound();
 
-  // related lists are generated client-side by ServiceDetailClient
-
-  const serviceJsonLd = buildServiceJsonLd(service, "reconstructive", slug);
+  const serviceJsonLd = buildUnifiedServiceJsonLd(service);
   const breadcrumbJsonLd = buildBreadcrumbJsonLd([
     { name: "Home", url: "https://drdivyaplasticsurgeon.com" },
     { name: "Services", url: "https://drdivyaplasticsurgeon.com/services" },
     { name: "Reconstructive Surgery", url: "https://drdivyaplasticsurgeon.com/services" },
-    { name: service.name, url: `https://drdivyaplasticsurgeon.com/services/${slug}` },
+    { name: service.name, url: `https://drdivyaplasticsurgeon.com/services/reconstructive/${slug}` },
   ]);
-  const faqJsonLd = buildFaqJsonLd([
-    {
-      question: `Who is a good candidate for ${service.name}?`,
-      answer: `Patients who need functional or form-restoring surgery after trauma, cancer treatment, or congenital concerns may benefit from ${service.name}. A consultation is required to confirm suitability.`,
-    },
-    {
-      question: `How long is recovery after ${service.name}?`,
-      answer: `Recovery depends on the procedure complexity, wound healing, and overall health. Dr. Divya Sai Narsingam discusses expected downtime and follow-up during consultation.`,
-    },
-    {
-      question: `Is ${service.name} performed at CARE Hospitals, Gachibowli?`,
-      answer: `Yes. Reconstructive procedures are planned and performed in coordination with CARE Hospitals, Gachibowli, Hyderabad.`,
-    },
-  ]);
+  const faqJsonLd = buildFaqJsonLd(
+    (service.faq ?? []).map((item) => ({
+      question: item.question,
+      answer: item.answer,
+    })),
+  );
 
   return (
     <PageWrapper>
@@ -73,10 +67,7 @@ export default async function ReconstructiveServicePage({ params }: Props) {
               </li>
               <li aria-hidden="true">/</li>
               <li>
-                <Link
-                  href="/services"
-                  className="hover:text-(--foreground-muted)"
-                >
+                <Link href="/services" className="hover:text-(--foreground-muted)">
                   Services
                 </Link>
               </li>
@@ -94,11 +85,11 @@ export default async function ReconstructiveServicePage({ params }: Props) {
             {service.name}
           </h1>
           <p className="mt-4 text-base text-(--foreground-muted) max-w-xl">
-            {service.shortDesc}
+            {service.summary}
           </p>
         </div>
       </div>
-      <ServiceDetailClient slug={slug} serverService={service as LegacyService} />
+      <ServiceDetailClient slug={slug} serverService={service} />
     </PageWrapper>
   );
 }

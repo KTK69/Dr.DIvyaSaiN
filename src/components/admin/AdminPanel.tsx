@@ -4,7 +4,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useSiteContent } from "@/components/site/SiteContentProvider";
 import RichTextEditor from "@/components/ui/RichTextEditor";
-import type { SiteContent, PatientGallery } from "@/lib/site-content";
+import type { NavigationServiceItem, SiteContent, PatientGallery } from "@/lib/site-content";
 import {
   hasBlogOrderChanged,
   sortBlogsByPublishedDate,
@@ -19,6 +19,7 @@ type BlogItem = SiteContent["blog"][number];
 type ServiceItem = SiteContent["services"][number];
 type ExperienceItem = SiteContent["experience"]["experience"][number];
 type NavLink = { label: string; href: string };
+type AdminNavigationServiceItem = NavigationServiceItem;
 type GalleryProcedure = SiteContent["home"]["beforeAfterGallery"]["procedures"][number];
 type GalleryImageSlot = { src: string; alt: string; label: string };
 type PageSeoKey = keyof SiteContent["pageSeo"];
@@ -760,13 +761,18 @@ export default function AdminPanel() {
               </div>
               <div className="border-t border-(--border) pt-8">
                 <h3 className="text-sm font-semibold text-(--foreground) mb-4">Reconstructive Services (Dropdown)</h3>
-                <ListEditor<NavLink>
+                <ListEditor<AdminNavigationServiceItem>
                   items={content.navigation.services.reconstructive}
                   onAdd={() => {
-                    const newLink = { label: "New Service", href: "/" };
                     update("navigation", {
                       ...content.navigation,
-                      services: { ...content.navigation.services, reconstructive: [...content.navigation.services.reconstructive, newLink] },
+                      services: {
+                        ...content.navigation.services,
+                        reconstructive: [
+                          ...content.navigation.services.reconstructive,
+                          { slug: "", category: "reconstructive", label: "", href: "" },
+                        ],
+                      },
                     });
                   }}
                   onRemove={(index) => {
@@ -779,23 +785,46 @@ export default function AdminPanel() {
                       services: { ...content.navigation.services, reconstructive },
                     })
                   }
+                  getItemTitle={(item) => {
+                    const service = content.services.find((s) => s.slug === item.slug && s.category === item.category);
+                    return item.label || service?.name || item.slug || "Select a service";
+                  }}
                   renderItem={(item, _index, updateItem) => (
                     <div className="grid gap-4 md:grid-cols-2">
-                      <Field label="Label" value={item.label} onChange={(value) => updateItem({ ...item, label: value })} />
-                      <Field label="URL" value={item.href} onChange={(value) => updateItem({ ...item, href: value })} />
+                      <SelectField
+                        label="Service"
+                        value={item.slug}
+                        options={content.services.filter((s) => s.category === "reconstructive").map((s) => ({ label: s.name, value: s.slug }))}
+                        onChange={(value) => {
+                          const selected = content.services.find((s) => s.slug === value && s.category === "reconstructive");
+                          updateItem({
+                            slug: value,
+                            category: "reconstructive",
+                            label: item.label || selected?.name || "",
+                            href: item.href || `/services/reconstructive/${value}`,
+                          });
+                        }}
+                      />
+                      <Field label="Menu label" value={item.label ?? ""} onChange={(value) => updateItem({ ...item, label: value })} />
+                      <Field label="Menu link" value={item.href ?? ""} onChange={(value) => updateItem({ ...item, href: value })} className="md:col-span-2" />
                     </div>
                   )}
                 />
               </div>
               <div className="border-t border-(--border) pt-8">
                 <h3 className="text-sm font-semibold text-(--foreground) mb-4">Cosmetic Services (Dropdown)</h3>
-                <ListEditor<NavLink>
+                <ListEditor<AdminNavigationServiceItem>
                   items={content.navigation.services.cosmetic}
                   onAdd={() => {
-                    const newLink = { label: "New Service", href: "/" };
                     update("navigation", {
                       ...content.navigation,
-                      services: { ...content.navigation.services, cosmetic: [...content.navigation.services.cosmetic, newLink] },
+                      services: {
+                        ...content.navigation.services,
+                        cosmetic: [
+                          ...content.navigation.services.cosmetic,
+                          { slug: "", category: "cosmetic", label: "", href: "" },
+                        ],
+                      },
                     });
                   }}
                   onRemove={(index) => {
@@ -808,10 +837,28 @@ export default function AdminPanel() {
                       services: { ...content.navigation.services, cosmetic },
                     })
                   }
+                  getItemTitle={(item) => {
+                    const service = content.services.find((s) => s.slug === item.slug && s.category === item.category);
+                    return item.label || service?.name || item.slug || "Select a service";
+                  }}
                   renderItem={(item, _index, updateItem) => (
                     <div className="grid gap-4 md:grid-cols-2">
-                      <Field label="Label" value={item.label} onChange={(value) => updateItem({ ...item, label: value })} />
-                      <Field label="URL" value={item.href} onChange={(value) => updateItem({ ...item, href: value })} />
+                      <SelectField
+                        label="Service"
+                        value={item.slug}
+                        options={content.services.filter((s) => s.category === "cosmetic").map((s) => ({ label: s.name, value: s.slug }))}
+                        onChange={(value) => {
+                          const selected = content.services.find((s) => s.slug === value && s.category === "cosmetic");
+                          updateItem({
+                            slug: value,
+                            category: "cosmetic",
+                            label: item.label || selected?.name || "",
+                            href: item.href || `/services/cosmetic/${value}`,
+                          });
+                        }}
+                      />
+                      <Field label="Menu label" value={item.label ?? ""} onChange={(value) => updateItem({ ...item, label: value })} />
+                      <Field label="Menu link" value={item.href ?? ""} onChange={(value) => updateItem({ ...item, href: value })} className="md:col-span-2" />
                     </div>
                   )}
                 />
@@ -1061,11 +1108,61 @@ export default function AdminPanel() {
           ) : null}
 
           {activeSection === "servicesPage" ? (
-            <div className="grid gap-6 md:grid-cols-2">
-              <Field label="Heading" value={content.servicesPage.heading} onChange={(value) => update("servicesPage", { ...content.servicesPage, heading: value })} />
-              <Field label="Subheading" value={content.servicesPage.subheading} onChange={(value) => update("servicesPage", { ...content.servicesPage, subheading: value })} />
-              <Field label="Cosmetic Category Title" value={content.servicesPage.categoryCosmeticTitle} onChange={(value) => update("servicesPage", { ...content.servicesPage, categoryCosmeticTitle: value })} />
-              <Field label="Reconstructive Category Title" value={content.servicesPage.categoryReconstructiveTitle} onChange={(value) => update("servicesPage", { ...content.servicesPage, categoryReconstructiveTitle: value })} />
+            <div className="space-y-8">
+              <div className="grid gap-6 md:grid-cols-2">
+                <Field label="Heading" value={content.servicesPage.heading} onChange={(value) => update("servicesPage", { ...content.servicesPage, heading: value })} />
+                <Field label="Subheading" value={content.servicesPage.subheading} onChange={(value) => update("servicesPage", { ...content.servicesPage, subheading: value })} />
+                <Field label="Cosmetic Category Title" value={content.servicesPage.categoryCosmeticTitle} onChange={(value) => update("servicesPage", { ...content.servicesPage, categoryCosmeticTitle: value })} />
+                <Field label="Reconstructive Category Title" value={content.servicesPage.categoryReconstructiveTitle} onChange={(value) => update("servicesPage", { ...content.servicesPage, categoryReconstructiveTitle: value })} />
+                <Field label="Book Consultation Heading" value={content.servicesPage.bookConsultationHeading} onChange={(value) => update("servicesPage", { ...content.servicesPage, bookConsultationHeading: value })} />
+                <Field label="Book Consultation Button" value={content.servicesPage.bookConsultationSubheading} onChange={(value) => update("servicesPage", { ...content.servicesPage, bookConsultationSubheading: value })} />
+              </div>
+              
+              <div className="border-t border-(--border) pt-6">
+                <h3 className="text-sm font-semibold text-(--foreground) mb-4">Featured Services (Below Consultation Button)</h3>
+                <ListEditor<{ slug: string; category: "reconstructive" | "cosmetic" }>
+                  items={content.servicesPage.featuredServices || []}
+                  onAdd={() => {
+                    update("servicesPage", {
+                      ...content.servicesPage,
+                      featuredServices: [...(content.servicesPage.featuredServices || []), { slug: "", category: "cosmetic" }],
+                    });
+                  }}
+                  onRemove={(index) => {
+                    const updated = (content.servicesPage.featuredServices || []).filter((_, i) => i !== index);
+                    update("servicesPage", { ...content.servicesPage, featuredServices: updated });
+                  }}
+                  onChange={(items) => update("servicesPage", { ...content.servicesPage, featuredServices: items })}
+                  getItemTitle={(item) => {
+                    const service = content.services.find((s) => s.slug === item.slug && s.category === item.category);
+                    return service?.name || item.slug || "Select a service";
+                  }}
+                  renderItem={(item, _index, updateItem) => (
+                    <div className="grid gap-4 md:grid-cols-2">
+                      <SelectField
+                        label="Service"
+                        value={item.slug}
+                        options={content.services.map((s) => ({ label: s.name, value: s.slug }))}
+                        onChange={(value) => {
+                          const service = content.services.find((s) => s.slug === value);
+                          if (service) {
+                            updateItem({ slug: value, category: service.category });
+                          }
+                        }}
+                      />
+                      <SelectField
+                        label="Category"
+                        value={item.category}
+                        options={[
+                          { label: "Reconstructive", value: "reconstructive" },
+                          { label: "Cosmetic", value: "cosmetic" },
+                        ]}
+                        onChange={(value) => updateItem({ ...item, category: value as "reconstructive" | "cosmetic" })}
+                      />
+                    </div>
+                  )}
+                />
+              </div>
             </div>
           ) : null}
 

@@ -39,6 +39,10 @@ export default function Navbar() {
     href === "/" ? pathname === "/" : pathname.startsWith(href);
 
   const navLinks = content.navigation.links;
+  const getMenuLabel = (slug: string, category: "reconstructive" | "cosmetic", customLabel?: string) =>
+    customLabel?.trim() || content.services.find((s) => s.slug === slug && s.category === category)?.name || slug;
+  const getMenuHref = (slug: string, category: "reconstructive" | "cosmetic", customHref?: string) =>
+    customHref?.trim() || `/services/${category}/${slug}`;
   const closeMenus = () => {
     setMobileOpen(false);
     setServicesOpen(false);
@@ -130,31 +134,37 @@ export default function Navbar() {
                         <p className="text-xs font-semibold uppercase tracking-widest text-(--accent-gold) mb-3">
                           Reconstructive
                         </p>
-                        {content.navigation.services.reconstructive.map(({ href, label }) => (
-                          <Link
-                            key={href}
-                            href={href}
-                            onClick={closeMenus}
-                            className="block py-1.5 text-sm text-(--foreground-muted) hover:text-(--foreground) transition-colors"
-                          >
-                            {label}
-                          </Link>
-                        ))}
+                        {content.navigation.services.reconstructive.map(({ slug, category, label, href }) => {
+                          const resolvedHref = getMenuHref(slug, category, href);
+                          return (
+                            <Link
+                              key={`${category}-${slug}-${resolvedHref}`}
+                              href={resolvedHref}
+                              onClick={closeMenus}
+                              className="block py-1.5 text-sm text-(--foreground-muted) hover:text-(--foreground) transition-colors"
+                            >
+                              {getMenuLabel(slug, category, label)}
+                            </Link>
+                          );
+                        })}
                       </div>
                       <div>
                         <p className="text-xs font-semibold uppercase tracking-widest text-(--accent-blue) mb-3">
                           Cosmetic
                         </p>
-                        {content.navigation.services.cosmetic.map(({ href, label }) => (
-                          <Link
-                            key={href}
-                            href={href}
-                            onClick={closeMenus}
-                            className="block py-1.5 text-sm text-(--foreground-muted) hover:text-(--foreground) transition-colors"
-                          >
-                            {label}
-                          </Link>
-                        ))}
+                        {content.navigation.services.cosmetic.map(({ slug, category, label, href }) => {
+                          const resolvedHref = getMenuHref(slug, category, href);
+                          return (
+                            <Link
+                              key={`${category}-${slug}-${resolvedHref}`}
+                              href={resolvedHref}
+                              onClick={closeMenus}
+                              className="block py-1.5 text-sm text-(--foreground-muted) hover:text-(--foreground) transition-colors"
+                            >
+                              {getMenuLabel(slug, category, label)}
+                            </Link>
+                          );
+                        })}
                       </div>
                     </div>
                     <div className="mt-5 pt-4 border-t border-(--border)">
@@ -285,7 +295,7 @@ export default function Navbar() {
                         : "text-(--foreground-muted) bg-(--bg-card)/40"
                     }`}
                   >
-                    Doctor's Talk
+                    Doctor&apos;s Talk
                   </Link>
                   <Link
                     href="/reviews"
@@ -331,18 +341,21 @@ export default function Navbar() {
                             Reconstructive
                           </p>
                           <div className="space-y-2.5">
-                            {content.navigation.services.reconstructive.map(({ href, label }) => (
-                              <Link
-                                key={href}
-                                href={href}
-                                onClick={closeMenus}
-                                className={`block text-xs leading-relaxed transition-colors ${
-                                  isActive(href) ? "text-(--accent-gold-light) font-semibold" : "text-(--foreground-muted) hover:text-(--foreground)"
-                                }`}
-                              >
-                                {label}
-                              </Link>
-                            ))}
+                            {content.navigation.services.reconstructive.map(({ slug, category, label, href }) => {
+                              const resolvedHref = getMenuHref(slug, category, href);
+                              return (
+                                <Link
+                                  key={`${category}-${slug}-${resolvedHref}`}
+                                  href={resolvedHref}
+                                  onClick={closeMenus}
+                                  className={`block text-xs leading-relaxed transition-colors ${
+                                    isActive(resolvedHref) ? "text-(--accent-gold-light) font-semibold" : "text-(--foreground-muted) hover:text-(--foreground)"
+                                  }`}
+                                >
+                                  {getMenuLabel(slug, category, label)}
+                                </Link>
+                              );
+                            })}
                           </div>
                         </div>
                         <div>
@@ -350,18 +363,21 @@ export default function Navbar() {
                             Cosmetic
                           </p>
                           <div className="space-y-2.5">
-                            {content.navigation.services.cosmetic.map(({ href, label }) => (
-                              <Link
-                                key={href}
-                                href={href}
-                                onClick={closeMenus}
-                                className={`block text-xs leading-relaxed transition-colors ${
-                                  isActive(href) ? "text-(--accent-gold-light) font-semibold" : "text-(--foreground-muted) hover:text-(--foreground)"
-                                }`}
-                              >
-                                {label}
-                              </Link>
-                            ))}
+                            {content.navigation.services.cosmetic.map(({ slug, category, label, href }) => {
+                              const resolvedHref = getMenuHref(slug, category, href);
+                              return (
+                                <Link
+                                  key={`${category}-${slug}-${resolvedHref}`}
+                                  href={resolvedHref}
+                                  onClick={closeMenus}
+                                  className={`block text-xs leading-relaxed transition-colors ${
+                                    isActive(resolvedHref) ? "text-(--accent-gold-light) font-semibold" : "text-(--foreground-muted) hover:text-(--foreground)"
+                                  }`}
+                                >
+                                  {getMenuLabel(slug, category, label)}
+                                </Link>
+                              );
+                            })}
                           </div>
                         </div>
                       </div>
