@@ -111,35 +111,76 @@ function normalizeNavPath(value: string) {
   return trimmed.startsWith("/") ? trimmed : `/${trimmed}`;
 }
 
+function resolveNavigationServiceItem(
+  item: Partial<NavigationServiceItem> & { href?: string; label?: string; slug?: string; category?: string },
+  fallbackCategory: "reconstructive" | "cosmetic",
+  services: SiteContent["services"],
+) {
+  const href = normalizeNavPath(item.href ?? "");
+  const hrefMatch = href.match(/^\/services\/(?:(reconstructive|cosmetic)\/)?([^/?#]+)/i);
+  const hrefCategory = hrefMatch?.[1]?.toLowerCase() as "reconstructive" | "cosmetic" | undefined;
+  const hrefSlug = hrefMatch?.[2]?.trim() ?? "";
+  const explicitSlug = item.slug?.trim() ?? "";
+  const explicitCategory =
+    item.category === "reconstructive" || item.category === "cosmetic"
+      ? item.category
+      : undefined;
+
+  const candidateSlug = explicitSlug || hrefSlug;
+  const candidateCategory = explicitCategory ?? hrefCategory ?? fallbackCategory;
+  const service =
+    (candidateSlug
+      ? services.find(
+          (entry) =>
+            entry.slug === candidateSlug &&
+            entry.category === candidateCategory,
+        )
+      : null) ??
+    (candidateSlug
+      ? services.find((entry) => entry.slug === candidateSlug)
+      : null);
+
+  if (!service) {
+    return null;
+  }
+
+  const resolvedHref = href || `/services/${service.category}/${service.slug}`;
+  const label = String(item.label ?? service.name ?? service.slug).trim();
+
+  if (!label || !resolvedHref) {
+    return null;
+  }
+
+  return {
+    slug: service.slug,
+    category: service.category,
+    label,
+    href: resolvedHref,
+  } satisfies NavigationServiceItem;
+}
+
 function sanitizeNavigationServiceItems(
-  items: NavigationServiceItem[],
+  items: Array<Partial<NavigationServiceItem> & { href?: string; label?: string; slug?: string; category?: string }>,
   category: "reconstructive" | "cosmetic",
   services: SiteContent["services"],
   seenKeys: Set<string>,
 ) {
   return items.reduce<NavigationServiceItem[]>((acc, item) => {
-    const service = services.find((entry) => entry.slug === item.slug && entry.category === category);
-    if (!service) {
+    const resolved = resolveNavigationServiceItem(item, category, services);
+    if (!resolved) {
       return acc;
     }
 
-    const href = normalizeNavPath(item.href || `/services/${category}/${item.slug}`);
-    const label = (item.label || service.name || item.slug).trim();
-    const slugKey = `slug:${category}:${item.slug}`;
-    const hrefKey = `href:${href.toLowerCase()}`;
+    const slugKey = `slug:${resolved.category}:${resolved.slug}`;
+    const hrefKey = `href:${resolved.href.toLowerCase()}`;
 
-    if (!label || !href || seenKeys.has(slugKey) || seenKeys.has(hrefKey)) {
+    if (seenKeys.has(slugKey) || seenKeys.has(hrefKey)) {
       return acc;
     }
 
     seenKeys.add(slugKey);
     seenKeys.add(hrefKey);
-    acc.push({
-      slug: item.slug,
-      category,
-      label,
-      href,
-    });
+    acc.push(resolved);
 
     return acc;
   }, []);
