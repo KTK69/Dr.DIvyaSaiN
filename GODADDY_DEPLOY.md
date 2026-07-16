@@ -1,54 +1,135 @@
-# GoDaddy deployment (content on server)
+# GoDaddy / VPS Deploy Guide
 
-This site stores all CMS content in a JSON file on the server:
+This app stores CMS content on the server in:
 
 `data/site-content.runtime.json`
 
-Admin saves at `/admin` write to this file. The live site reads the same file on every request.
+Admin saves at `/admin` write to that file. Code deploys should not overwrite it.
 
-## Requirements
+## What Changed
 
-- Node.js 20+ on the server
-- A **persistent**, **writable** `data/` directory (not wiped on redeploy)
-- Process manager such as PM2 running `npm run build` then `npm run start`
+This repo now includes a safer server deploy flow:
 
-## Environment variables
+- `npm run build:server`
+  Uses a Node memory cap for the Next.js build to reduce VPS crashes.
+- `npm run deploy:server`
+  Pulls latest code, installs deps, backs up CMS data, builds, and restarts PM2.
 
-Copy `.env.example` to `.env.local` on the server and set:
+## Server Requirements
+
+- Node.js 20+
+- npm
+- PM2 installed globally
+- A persistent writable `data/` directory
+- Git access to the repo
+
+## Environment Variables
+
+Set these on the server in `.env.local`:
 
 - `ADMIN_USERNAME`
 - `ADMIN_PASSWORD`
-- `ADMIN_SESSION_SECRET` (long random string)
+- `ADMIN_SESSION_SECRET`
 
-**Remove** any `BLOB_READ_WRITE_TOKEN` from hosting env vars (legacy Vercel storage).
+Optional:
 
-## Deploy steps
+- `NEXT_BUILD_MEMORY_MB=1024`
+- `APP_NAME=drdivya-site`
+- `APP_DIR=/home/divyavps/Dr.DIvyaSaiN`
+- `BACKUP_DIR=/home/divyavps/Dr.DIvyaSaiN/backups`
 
-1. Upload or `git pull` the project on the server.
-2. `npm ci`
-3. `npm run build`
-4. Ensure `data/site-content.runtime.json` exists and is writable.
-5. `npm run start` (or PM2: `pm2 start npm --name emmi -- start`)
-6. Point your domain reverse proxy to port 3000 (or your chosen port).
+If your CMS data should live outside the app folder, also set:
 
-## Keep your content safe
+- `SITE_CONTENT_DATA_DIR=/home/divyavps/emmi-data`
 
-- `data/site-content.runtime.json` is **not in git** — each server keeps its own copy. Pushing code will not overwrite blogs already saved on production.
-- Back up `data/site-content.runtime.json` on the server before every deploy.
-- If deploy replaces the app folder, set `SITE_CONTENT_DATA_DIR` to a path **outside** the deploy directory, e.g. `/home/youruser/emmi-data`, and keep `site-content.runtime.json` there.
-- After deploy, open `/admin`, confirm “Synced …” time updates after a small edit, then hard-refresh the live `/blog` page.
+## Recommended Deploy Command
 
-## Verify saves work
+From the VPS:
 
-1. Edit a blog in admin — wait for “Changes synced across the site.”
-2. Open `https://your-domain.com/api/site-content` — check `updatedAt` and blog text.
-3. On the server, confirm the JSON file timestamp and content changed.
+```bash
+cd ~/Dr.DIvyaSaiN
+npm run deploy:server
+```
+
+That command will:
+
+1. Back up `data/site-content.runtime.json` if it exists
+2. `git pull origin main`
+3. `npm ci --no-audit --no-fund`
+4. `npm run build:server`
+5. Restart PM2 app `drdivya-site`
+
+## First-Time PM2 Setup
+
+If PM2 is not installed:
+
+```bash
+npm install -g pm2
+```
+
+If the app has never been started before:
+
+```bash
+cd ~/Dr.DIvyaSaiN
+pm2 start npm --name drdivya-site -- start
+pm2 save
+pm2 startup
+```
+
+## If The Build Is Still Heavy
+
+Try lowering memory pressure and building after a reboot:
+
+```bash
+sudo reboot
+```
+
+Then deploy again:
+
+```bash
+cd ~/Dr.DIvyaSaiN
+NEXT_BUILD_MEMORY_MB=768 npm run deploy:server
+```
+
+If the SSH session still drops, run in the background:
+
+```bash
+cd ~/Dr.DIvyaSaiN
+nohup npm run deploy:server > deploy.log 2>&1 &
+tail -f deploy.log
+```
+
+## Verify After Deploy
+
+Check PM2:
+
+```bash
+pm2 status
+pm2 logs drdivya-site --lines 50
+```
+
+Check the site:
+
+- Open `/`
+- Open `/services`
+- Open `/admin`
+- Edit a small field and confirm it saves
 
 ## Troubleshooting
 
-| Symptom | Likely cause |
-|--------|----------------|
-| Admin saves but live site unchanged | Old Vercel Blob env var, or `data/` not persistent |
-| Old many blogs reappear | Server not reading `site-content.runtime.json`; check API response |
-| Sort order not sticking | Fixed: sort/Up-Down now save immediately |
-| Changes delayed 5+ minutes | Fixed: removed ISR caching; use latest build |
+If the SSH session closes during build, check:
+
+```bash
+free -h
+df -h
+dmesg -T | tail -100
+journalctl -xe --no-pager | tail -100
+```
+
+Common causes:
+
+- VPS rebooted
+- build hit memory limit and was killed
+- disk full
+- PM2 app name mismatch
+

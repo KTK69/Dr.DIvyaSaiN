@@ -5,8 +5,10 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
+    "build:server": "node ./scripts/run-next-build.mjs",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "deploy:server": "bash ./scripts/deploy-server.sh"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.2.2",
