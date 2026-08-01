@@ -28,6 +28,10 @@ export function getBlogRouteSlug(blog: Pick<Blog, "id" | "slug">) {
   return normalizeBlogSlug(blog.slug || blog.id);
 }
 
+export function isIndexableBlog(blog: Pick<Blog, "id" | "slug" | "title" | "content">) {
+  return Boolean(getBlogRouteSlug(blog) && blog.title?.trim() && blog.content?.trim());
+}
+
 export function getBlogInternalHref(blog: Pick<Blog, "id" | "slug">) {
   const routeSlug = getBlogRouteSlug(blog);
   return routeSlug ? `/blog/${encodeURIComponent(routeSlug)}` : "/blog";

@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import Link from "next/link";
+import { notFound } from "next/navigation";
 import JsonLd from "@/components/seo/JsonLd";
 import RichText from "@/components/ui/RichText";
 import { useSiteContent } from "@/components/site/SiteContentProvider";
@@ -32,34 +32,6 @@ function formatDate(value?: string) {
   });
 }
 
-function NotFoundBlock() {
-  return (
-    <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 pt-28 pb-16 text-center">
-      <p
-        className="text-5xl font-medium text-(--accent-gold) mb-4"
-        style={{ fontFamily: "var(--font-serif)" }}
-      >
-        404
-      </p>
-      <h1
-        className="text-2xl font-medium text-(--foreground) mb-3"
-        style={{ fontFamily: "var(--font-serif)" }}
-      >
-        Blog not found
-      </h1>
-      <p className="text-sm text-(--foreground-muted) mb-6">
-        We could not find that article. Explore the latest posts instead.
-      </p>
-      <Link
-        href="/blog"
-        className="inline-flex items-center gap-2 px-6 py-3 rounded-lg bg-(--accent-gold) text-(--background) text-sm font-medium hover:bg-(--accent-gold-light) transition-colors"
-      >
-        Back to blog
-      </Link>
-    </div>
-  );
-}
-
 export default function BlogDetailClient({ slug, serverBlog }: Props) {
   const { content } = useSiteContent();
   const normalizedSlug = normalizeBlogSlug(slug);
@@ -67,7 +39,7 @@ export default function BlogDetailClient({ slug, serverBlog }: Props) {
   const blog = serverBlog ?? localBlog ?? null;
 
   if (!blog) {
-    return <NotFoundBlock />;
+    notFound();
   }
 
   const publishedAt = formatDate(blog.published_at);

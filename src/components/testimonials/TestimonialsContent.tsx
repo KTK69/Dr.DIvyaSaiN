@@ -150,7 +150,7 @@ export default function TestimonialsContent() {
 
         <div className="mt-5 flex flex-wrap gap-3">
           <Link
-            href="/contact"
+            href="/contactus"
             className="inline-flex items-center gap-2 rounded-lg bg-(--accent-gold) px-5 py-3 text-sm font-medium text-(--background) hover:bg-(--accent-gold-light) transition-colors"
           >
             Request a consultation <ArrowRight size={15} />

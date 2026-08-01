@@ -79,7 +79,7 @@ export default function AboutPreview() {
             </div>
 
             <Link
-              href="/about"
+              href="/aboutus"
               className="inline-flex items-center gap-2 text-sm text-(--accent-gold-light) hover:gap-3 transition-all duration-200"
             >
               Read full biography <ArrowRight size={14} />

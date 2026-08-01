@@ -1,9 +1,10 @@
 import type { Metadata } from "next";
+import { notFound, permanentRedirect } from "next/navigation";
 import PageWrapper from "@/components/ui/PageWrapper";
 import JsonLd from "@/components/seo/JsonLd";
 import BlogDetailClient from "@/components/blog/BlogDetailClient";
 import { fetchBlogBySlug, fetchBlogs } from "@/lib/api";
-import { getBlogRouteSlug } from "@/lib/blog-links";
+import { getBlogRouteSlug, normalizeBlogSlug } from "@/lib/blog-links";
 import { buildBlogJsonLd, buildBlogMetadata } from "@/lib/seo";
 
 interface Props {
@@ -11,6 +12,10 @@ interface Props {
 }
 
 export const dynamic = "force-dynamic";
+
+const legacyBlogRedirects: Record<string, string> = {
+  "natural-vs-artificial-dimples-differences": "natural-vs-artificial-dimples",
+};
 
 export async function generateStaticParams() {
   const blogs = await fetchBlogs();
@@ -22,7 +27,13 @@ export async function generateStaticParams() {
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
-  const blog = await fetchBlogBySlug(slug);
+  const normalizedSlug = normalizeBlogSlug(slug);
+
+  if (legacyBlogRedirects[normalizedSlug]) {
+    return {};
+  }
+
+  const blog = await fetchBlogBySlug(normalizedSlug);
 
   if (!blog) {
     return {};
@@ -33,12 +44,27 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export default async function BlogDetailsPage({ params }: Props) {
   const { slug } = await params;
-  const blog = await fetchBlogBySlug(slug);
+  const normalizedSlug = normalizeBlogSlug(slug);
+
+  if (legacyBlogRedirects[normalizedSlug]) {
+    permanentRedirect(`/blog/${legacyBlogRedirects[normalizedSlug]}`);
+  }
+
+  const blog = await fetchBlogBySlug(normalizedSlug);
+
+  if (!blog) {
+    notFound();
+  }
+
+  const canonicalSlug = getBlogRouteSlug(blog);
+  if (canonicalSlug !== normalizedSlug) {
+    permanentRedirect(`/blog/${canonicalSlug}`);
+  }
 
   return (
     <PageWrapper>
-      {blog ? <JsonLd data={buildBlogJsonLd(blog)} /> : null}
-      <BlogDetailClient slug={slug} serverBlog={blog} />
+      <JsonLd data={buildBlogJsonLd(blog)} />
+      <BlogDetailClient slug={canonicalSlug} serverBlog={blog} />
     </PageWrapper>
   );
 }

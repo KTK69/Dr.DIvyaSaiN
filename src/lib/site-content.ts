@@ -310,7 +310,7 @@ export const DEFAULT_SITE_CONTENT: SiteContent = {
     links: [
       { label: "Home", href: "/" },
       { label: "About", href: "/aboutus" },
-      { label: "Experience", href: "/experience" },
+      { label: "Experience", href: "/aboutus" },
       { label: "Doctor's Talk", href: "/drvideo" },
       { label: "Testimonials", href: "/reviews" },
       { label: "Blog", href: "/blog" },
@@ -362,7 +362,7 @@ export const DEFAULT_SITE_CONTENT: SiteContent = {
       { label: "Home", href: "/" },
       { label: "About", href: "/aboutus" },
       { label: "Services", href: "/services" },
-      { label: "Experience", href: "/experience" },
+      { label: "Experience", href: "/aboutus" },
       { label: "Testimonials", href: "/reviews" },
       { label: "Blog", href: "/blog" },
       { label: "Contact", href: "/contactus" },
@@ -439,7 +439,7 @@ export const DEFAULT_SITE_CONTENT: SiteContent = {
         "plastic surgeon academic profile Hyderabad",
         "CARE Hospitals surgeon publications",
       ],
-      canonicalPath: "/experience",
+      canonicalPath: "/aboutus",
     },
     doctorsTalk: {
       title: "Doctor's Talk | Articles & Videos by Dr. Divya Sai Narsingam",

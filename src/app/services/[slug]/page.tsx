@@ -1,4 +1,4 @@
-import { redirect } from "next/navigation";
+import { notFound, permanentRedirect } from "next/navigation";
 import { fetchServiceBySlug, fetchServices } from "@/lib/api";
 
 interface Props {
@@ -15,10 +15,10 @@ export default async function ServiceRedirectPage({ params }: Props) {
   const service = await fetchServiceBySlug(slug);
 
   if (!service) {
-    redirect("/services");
+    notFound();
   }
 
   // Redirect to the canonical category-specific URL
   const categoryPath = service.category === "reconstructive" ? "reconstructive" : "cosmetic";
-  redirect(`/services/${categoryPath}/${slug}`);
+  permanentRedirect(`/services/${categoryPath}/${service.slug}`);
 }

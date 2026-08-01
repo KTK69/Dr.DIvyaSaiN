@@ -4,7 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import SectionHeading from "@/components/ui/SectionHeading";
 import { useSiteContent } from "@/components/site/SiteContentProvider";
-import { getBlogCardHref } from "@/lib/blog-links";
+import { getBlogCardHref, isIndexableBlog } from "@/lib/blog-links";
 import { getBlogDisplayTitle, getBlogPreviewText } from "@/lib/blog-preview";
 import type { Blog } from "@/types/content";
 import type { SiteContent } from "@/lib/site-content";
@@ -48,7 +48,7 @@ export default function BlogListingClient({
 
   const useClientSnapshot =
     contentReady && isNewerOrEqual(lastSyncedAt, serverUpdatedAt);
-  const blogs = useClientSnapshot ? content.blog : serverBlogs;
+  const blogs = (useClientSnapshot ? content.blog : serverBlogs).filter(isIndexableBlog);
   const blogPage = useClientSnapshot ? content.blogPage : serverBlogPage;
 
   return (

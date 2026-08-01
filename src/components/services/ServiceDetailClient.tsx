@@ -85,7 +85,7 @@ export default function ServiceDetailClient({ slug, serverService }: Props) {
             <p className="text-sm font-medium text-(--foreground)">Dr. Divya Sai Narsingam</p>
             <p className="text-xs text-(--accent-gold-light) mt-0.5">MCh (Plastic Surgery)</p>
             <p className="text-xs text-(--foreground-muted) mt-3 leading-relaxed">Consultant at AIG Hospitals, Banjara Hills & CARE Hospitals, Gachibowli, Hyderabad. 14+ years of reconstructive and aesthetic surgery experience.</p>
-            <Link href="/about" className="mt-4 inline-flex text-xs text-(--foreground-subtle) hover:text-(--accent-gold-light) transition-colors">Full biography →</Link>
+            <Link href="/aboutus" className="mt-4 inline-flex text-xs text-(--foreground-subtle) hover:text-(--accent-gold-light) transition-colors">Full biography →</Link>
           </div>
 
           <div className="glass-card rounded-xl p-6">

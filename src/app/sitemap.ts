@@ -1,6 +1,6 @@
 import type { MetadataRoute } from "next";
 import { fetchBlogs, fetchServices } from "@/lib/api";
-import { getBlogRouteSlug } from "@/lib/blog-links";
+import { getBlogRouteSlug, isIndexableBlog } from "@/lib/blog-links";
 import { SITE_URL } from "@/lib/seo";
 
 export const dynamic = "force-dynamic";
@@ -12,29 +12,14 @@ const staticRoutes: MetadataRoute.Sitemap = [
     priority: 1,
   },
   {
-    url: `${SITE_URL}/about`,
-    changeFrequency: "monthly",
-    priority: 0.8,
-  },
-  {
     url: `${SITE_URL}/aboutus`,
     changeFrequency: "monthly",
     priority: 0.8,
   },
   {
-    url: `${SITE_URL}/experience`,
-    changeFrequency: "monthly",
-    priority: 0.7,
-  },
-  {
     url: `${SITE_URL}/drvideo`,
     changeFrequency: "monthly",
     priority: 0.8,
-  },
-  {
-    url: `${SITE_URL}/doctors-talk`,
-    changeFrequency: "monthly",
-    priority: 0.7,
   },
   {
     url: `${SITE_URL}/reviews`,
@@ -78,12 +63,16 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   return [
     ...staticRoutes,
-    ...services.map((service) => ({
-      url: `${SITE_URL}/services/${service.slug}`,
-      changeFrequency: "monthly" as const,
-      priority: 0.7,
-    })),
+    ...services.map((service) => {
+      const categoryPath = service.category === "reconstructive" ? "reconstructive" : "cosmetic";
+      return {
+        url: `${SITE_URL}/services/${categoryPath}/${service.slug}`,
+        changeFrequency: "monthly" as const,
+        priority: 0.7,
+      };
+    }),
     ...blogs
+      .filter(isIndexableBlog)
       .map((blog) => ({ blog, slug: getBlogRouteSlug(blog) }))
       .filter(({ slug }) => Boolean(slug))
       .map(({ blog, slug }) => ({

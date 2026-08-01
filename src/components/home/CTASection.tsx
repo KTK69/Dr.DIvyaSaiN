@@ -43,7 +43,7 @@ export default function CTASection() {
             </p>
             <div className="flex flex-wrap gap-4 justify-center">
               <Link
-                href="/contact"
+                href="/contactus"
                 className="inline-flex items-center gap-2 px-8 py-3.5 rounded-lg bg-(--accent-gold) text-(--background) text-sm font-medium hover:bg-(--accent-gold-light) transition-colors duration-200"
               >
                 {cta.appointmentLabel}
