@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import TestimonialsPage from "@/app/testimonials/page";
+import TestimonialsPageContent from "@/components/testimonials/TestimonialsPageContent";
 import { getEditablePageMetadata } from "@/lib/page-metadata";
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -7,5 +7,5 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export default function ReviewsPage() {
-  return <TestimonialsPage />;
+  return <TestimonialsPageContent />;
 }

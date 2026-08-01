@@ -1,11 +1,5 @@
-import type { Metadata } from "next";
-import BlogListingPage from "@/app/blog/page";
-import { getEditablePageMetadata } from "@/lib/page-metadata";
-
-export async function generateMetadata(): Promise<Metadata> {
-  return getEditablePageMetadata("blog");
-}
+import { permanentRedirect } from "next/navigation";
 
 export default function BlogsPage() {
-  return <BlogListingPage />;
+  permanentRedirect("/blog");
 }

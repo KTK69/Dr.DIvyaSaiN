@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import DoctorsTalkPage from "@/app/doctors-talk/page";
+import DoctorsTalkPageContent from "@/components/doctors-talk/DoctorsTalkPageContent";
 import { getEditablePageMetadata } from "@/lib/page-metadata";
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -7,5 +7,5 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export default function DrVideoPage() {
-  return <DoctorsTalkPage />;
+  return <DoctorsTalkPageContent />;
 }
