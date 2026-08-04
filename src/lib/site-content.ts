@@ -834,7 +834,7 @@ export const DEFAULT_SITE_CONTENT: SiteContent = {
         title: "Breast Augmentation",
         description:
           "Breast augmentation enhances breast volume and contour using carefully selected implants or fat transfer techniques, with planning tailored to the patient's frame and preferences.",
-        href: "/services/breast-augmentation",
+        href: "/services/cosmetic/breast-augmentation",
         cta: "Learn about Breast Augmentation",
       },
       {
@@ -855,14 +855,14 @@ export const DEFAULT_SITE_CONTENT: SiteContent = {
         title: "Liposuction and Body Contouring",
         description:
           "Liposuction targets stubborn fat deposits in areas such as the abdomen, flanks, thighs, arms, and chin to create a smoother, more contoured silhouette.",
-        href: "/services/body-lipocontouring",
+        href: "/services/cosmetic/body-lipocontouring",
         cta: "Learn about Body Lipocontouring",
       },
       {
         title: "Gynecomastia Reduction",
         description:
           "Gynecomastia surgery removes excess glandular tissue and fat through minimally visible incisions to restore a flatter, more masculine chest contour.",
-        href: "/services/gynecomastia-reduction",
+        href: "/services/cosmetic/gynecomastia-reduction",
         cta: "Learn about Gynecomastia Reduction",
       },
       {
@@ -882,14 +882,14 @@ export const DEFAULT_SITE_CONTENT: SiteContent = {
         title: "Onco Reconstruction",
         description:
           "Following cancer surgery, including breast, oral, and skin cancer resections, reconstruction helps restore appearance and, wherever possible, normal function through coordinated surgical planning.",
-        href: "/services/onco-reconstruction",
+        href: "/services/reconstructive/onco-reconstruction",
         cta: "Learn about Onco Reconstruction",
       },
       {
         title: "Breast Reconstruction",
         description:
           "Breast reconstruction rebuilds the breast mound after mastectomy or lumpectomy using implant-based or autologous tissue techniques, including flap procedures where appropriate.",
-        href: "/services/breast-reconstruction",
+        href: "/services/reconstructive/breast-reconstruction",
         cta: "Learn about Breast Reconstruction",
       },
       {
@@ -910,7 +910,7 @@ export const DEFAULT_SITE_CONTENT: SiteContent = {
         title: "Microvascular Surgery",
         description:
           "Microvascular free-flap surgery transfers living tissue with its blood supply from one part of the body to another for reconstruction of complex defects.",
-        href: "/services/microvascular-surgery",
+        href: "/services/reconstructive/microvascular-surgery",
         cta: "Learn about Microvascular Surgery",
       },
       {
