@@ -111,6 +111,58 @@ function normalizeNavPath(value: string) {
   return trimmed.startsWith("/") ? trimmed : `/${trimmed}`;
 }
 
+const LEGACY_INTERNAL_PATH_MAP: Record<string, string> = {
+  "/experience": "/aboutus",
+  "/services/breast-augmentation": "/services/cosmetic/breast-augmentation",
+  "/services/rhinoplasty": "/services/cosmetic/rhinoplasty",
+  "/services/breast-lift": "/services/cosmetic/breast-lift",
+  "/services/breast-reconstruction": "/services/reconstructive/breast-reconstruction",
+  "/services/onco-reconstruction": "/services/reconstructive/onco-reconstruction",
+  "/services/microvascular-surgery": "/services/reconstructive/microvascular-surgery",
+  "/services/gynecomastia-reduction": "/services/cosmetic/gynecomastia-reduction",
+  "/services/body-lipocontouring": "/services/cosmetic/body-lipocontouring",
+};
+
+function normalizeLegacyInternalHref(value: string) {
+  const href = normalizeNavPath(value);
+  if (!href || /^https?:\/\//i.test(href)) {
+    return href;
+  }
+
+  const match = href.match(/^([^?#]+)([?#][\s\S]*)?$/);
+  const pathname = match?.[1] ?? href;
+  const suffix = match?.[2] ?? "";
+  const canonicalPath = LEGACY_INTERNAL_PATH_MAP[pathname] ?? pathname;
+
+  return `${canonicalPath}${suffix}`;
+}
+
+function normalizeLegacyInternalReferences<T>(value: T): T {
+  if (Array.isArray(value)) {
+    return value.map((entry) => normalizeLegacyInternalReferences(entry)) as T;
+  }
+
+  if (!isPlainObject(value)) {
+    return value;
+  }
+
+  const normalized: Record<string, unknown> = {};
+
+  for (const [key, entryValue] of Object.entries(value)) {
+    if (
+      typeof entryValue === "string" &&
+      (key === "canonicalPath" || key === "href" || key.endsWith("Href"))
+    ) {
+      normalized[key] = normalizeLegacyInternalHref(entryValue);
+      continue;
+    }
+
+    normalized[key] = normalizeLegacyInternalReferences(entryValue);
+  }
+
+  return normalized as T;
+}
+
 function resolveNavigationServiceItem(
   item: Partial<NavigationServiceItem> & { href?: string; label?: string; slug?: string; category?: string },
   fallbackCategory: "reconstructive" | "cosmetic",
@@ -191,7 +243,7 @@ export function mergeStoredSiteContent(
   defaults: SiteContent,
   stored: unknown,
 ): SiteContent {
-  const merged = mergeWithDefaults(defaults, stored);
+  const merged = normalizeLegacyInternalReferences(mergeWithDefaults(defaults, stored));
   const storedObject = isPlainObject(stored) ? stored : {};
 
   for (const key of STORED_ARRAY_KEYS) {

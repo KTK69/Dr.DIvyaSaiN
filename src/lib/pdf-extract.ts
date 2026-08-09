@@ -963,6 +963,63 @@ function isBulletOrListTable(rows: string[][]): boolean {
   return markerCount >= 1 && nonSubstantialCol0 && rows[0].length <= 2;
 }
 
+function hasStrongMarkup(text: string): boolean {
+  return /<(strong|b)>/i.test(text);
+}
+
+function countWords(text: string): number {
+  const clean = stripInlineHtml(text);
+  return clean ? clean.split(/\s+/).length : 0;
+}
+
+function isLikelyDefinitionListTable(rows: string[][]): boolean {
+  if (rows.length < 2) return false;
+
+  const columnCount = Math.max(...rows.map((row) => row.length), 0);
+  if (columnCount !== 2) return false;
+
+  let candidateLeadRows = 0;
+  let proseBodyRows = 0;
+  let shortValueRows = 0;
+
+  for (const row of rows) {
+    const leadHtml = row[0] ?? "";
+    const bodyHtml = row[1] ?? "";
+    const leadText = stripInlineHtml(leadHtml);
+    const bodyText = stripInlineHtml(bodyHtml);
+
+    if (!leadText || !bodyText) {
+      return false;
+    }
+
+    const leadWords = countWords(leadHtml);
+    const bodyWords = countWords(bodyHtml);
+    const leadLooksStyled =
+      hasStrongMarkup(leadHtml) ||
+      /:\s*$/.test(leadText) ||
+      (/^[A-Z]/.test(leadText) && leadWords <= 5);
+
+    if (leadLooksStyled && leadWords <= 8) {
+      candidateLeadRows++;
+    }
+
+    if (bodyWords >= 4 || looksLikeData(bodyText)) {
+      proseBodyRows++;
+    }
+
+    if (bodyWords <= 2 && !looksLikeData(bodyText)) {
+      shortValueRows++;
+    }
+  }
+
+  const threshold = Math.ceil(rows.length * 0.6);
+  return (
+    candidateLeadRows >= threshold &&
+    proseBodyRows >= threshold &&
+    shortValueRows <= Math.floor(rows.length / 3)
+  );
+}
+
 function cleanBulletMarker(text: string): string {
   let cleaned = text.trim();
   // Remove wrapping tags around bullet marker at the beginning
@@ -1086,6 +1143,31 @@ function listTableToHtml(rows: string[][]): string {
     const itemText = row[1] || row[0];
     parts.push(`<li>${itemText.trim()}</li>`);
   }
+  parts.push("</ul>");
+  return parts.join("\n");
+}
+
+function definitionListTableToHtml(rows: string[][]): string {
+  const parts: string[] = ["<ul>"];
+
+  for (const row of rows) {
+    const lead = (row[0] ?? "").trim();
+    const body = (row[1] ?? "").trim();
+    if (!lead && !body) {
+      continue;
+    }
+
+    if (!lead) {
+      parts.push(`<li>${body}</li>`);
+      continue;
+    }
+
+    const leadHasStrongMarkup = hasStrongMarkup(lead);
+    const normalizedLead = leadHasStrongMarkup ? lead : `<strong>${lead}</strong>`;
+    const separator = body ? " " : "";
+    parts.push(`<li>${normalizedLead}${separator}${body}</li>`);
+  }
+
   parts.push("</ul>");
   return parts.join("\n");
 }
@@ -1358,6 +1440,16 @@ export async function extractPdfContent(file: File): Promise<PdfExtractionResult
         
         for (const item of [...col0Items, ...col1Items]) {
           allPlainTextLines.push(cleanBulletMarker(item).replace(/<\/?[a-z]+>/gi, ""));
+        }
+      } else if (isLikelyDefinitionListTable(block.rows)) {
+        allHtmlParts.push(definitionListTableToHtml(block.rows));
+        for (const row of block.rows) {
+          const lead = stripInlineHtml(row[0] ?? "");
+          const body = stripInlineHtml(row[1] ?? "");
+          const text = `${lead} ${body}`.trim();
+          if (text) {
+            allPlainTextLines.push(text);
+          }
         }
       } else if (isBulletOrListTable(block.rows)) {
         const items = block.rows.map(row => row[1] || row[0]);
