@@ -897,7 +897,7 @@ function linesToHtml(lines: TextLine[]): string {
 
   // Compute median font size to distinguish headings from body text
   const fontSizes = lines.map((line) => line.fontSize).sort((a, b) => a - b);
-    const pageBlocks = processPageItems(filteredItems, options);
+  const medianFontSize = fontSizes[Math.floor(fontSizes.length / 2)] || 0;
   const headingThreshold = medianFontSize * 1.2;
 
   // Pre-process lines to merge sentence fragments
