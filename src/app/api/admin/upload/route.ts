@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { cookies } from "next/headers";
-import { ADMIN_SESSION_COOKIE, isValidSessionToken } from "@/lib/admin-auth";
+import { ADMIN_SESSION_COOKIE, isValidSessionToken, getAdminSessionCookieOptions, getSessionToken } from "@/lib/admin-auth";
 import { writeFile, mkdir } from "node:fs/promises";
 import path from "node:path";
 import crypto from "node:crypto";
@@ -97,7 +97,14 @@ export async function POST(request: Request) {
     await writeFile(filePath, buffer);
 
     const url = `/uploads/${filename}`;
-    return NextResponse.json({ ok: true, url });
+    const response = NextResponse.json({ ok: true, url });
+    // Refresh the admin session cookie to keep the admin logged in while actively using the UI
+    response.cookies.set(
+      ADMIN_SESSION_COOKIE,
+      getSessionToken(),
+      getAdminSessionCookieOptions(),
+    );
+    return response;
   } catch (error) {
     const message =
       error instanceof Error ? error.message : "Upload failed.";

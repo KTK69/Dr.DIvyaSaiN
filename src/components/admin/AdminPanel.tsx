@@ -693,7 +693,7 @@ export default function AdminPanel() {
                     <div className="md:col-span-2">
                       <PdfImportButton
                         currentContent={item.content}
-                        onImport={(html) => updateItem({ ...item, content: html })}
+                        onImport={(html) => updateItem({ ...item, content: normalizeDocxHtml(html) })}
                       />
                       <RichTextField label="Content" value={item.content} onChange={(value) => updateItem({ ...item, content: value })} height={320} />
                     </div>
@@ -1668,7 +1668,7 @@ function ServiceForm({ item, onChange }: { item: ServiceItem; onChange: (value: 
         <div className="md:col-span-2">
           <PdfImportButton
             currentContent={item.content}
-            onImport={(html) => onChange({ ...item, content: html })}
+            onImport={(html) => onChange({ ...item, content: normalizeDocxHtml(html) })}
           />
           <RichTextField label="Content" value={item.content} onChange={(value) => onChange({ ...item, content: value })} height={280} />
         </div>
@@ -1715,6 +1715,20 @@ function normalizeDocxWhitespace(text: string) {
 
 function getDocxCellText(cell?: HTMLTableCellElement | null) {
   return normalizeDocxWhitespace(cell?.textContent ?? "");
+}
+
+function countTableCellWords(text: string) {
+  const normalized = normalizeDocxWhitespace(text);
+  return normalized ? normalized.split(/\s+/).length : 0;
+}
+
+function cellLooksLikeProse(text: string) {
+  const normalized = normalizeDocxWhitespace(text);
+  if (!normalized || countTableCellWords(normalized) < 5) {
+    return false;
+  }
+
+  return /[.,;:?!](?:\s|$)/.test(normalized);
 }
 
 function isDocxTableHeaderRow(cells: HTMLTableCellElement[]) {
@@ -1798,6 +1812,46 @@ function isLikelyDocxDataTable(table: HTMLTableElement) {
   return true;
 }
 
+function isLikelyImportedLayoutTable(table: HTMLTableElement) {
+  const rows = Array.from(table.rows).map((row) =>
+    Array.from(row.cells).map((cell) => getDocxCellText(cell))
+  );
+  if (rows.length < 2) return false;
+
+  const columnCount = Math.max(...rows.map((row) => row.length), 0);
+  if (columnCount !== 2) return false;
+
+  let denseRows = 0;
+  let proseRows = 0;
+  let shortLeadRows = 0;
+
+  for (const row of rows) {
+    const left = row[0] ?? "";
+    const right = row[1] ?? "";
+    if (!left || !right) {
+      continue;
+    }
+
+    denseRows++;
+
+    if (cellLooksLikeProse(left) && cellLooksLikeProse(right)) {
+      proseRows++;
+    }
+
+    if (countTableCellWords(left) <= 4 && countTableCellWords(right) >= 6) {
+      shortLeadRows++;
+    }
+  }
+
+  if (denseRows < 2) return false;
+
+  return proseRows >= Math.ceil(denseRows / 2) && shortLeadRows < Math.ceil(denseRows / 2);
+}
+
+function isLikelyImportedDataTable(table: HTMLTableElement) {
+  return isLikelyDocxDataTable(table) && !isLikelyImportedLayoutTable(table);
+}
+
 function enhanceDocxTable(table: HTMLTableElement) {
   table.classList.add("docx-table");
 
@@ -1848,7 +1902,7 @@ function normalizeDocxHtml(html: string) {
   }
 
   for (const table of Array.from(root.querySelectorAll("table"))) {
-    if (!isLikelyDocxDataTable(table)) {
+    if (!isLikelyImportedDataTable(table)) {
       table.replaceWith(flattenDocxTableToBlocks(table));
       continue;
     }
@@ -1867,6 +1921,7 @@ function PdfImportButton({ currentContent, onImport }: { currentContent: string;
   const [replaceMode, setReplaceMode] = useState(false);
   const [editedHtml, setEditedHtml] = useState("");
   const [previewTab, setPreviewTab] = useState<"visual" | "html">("visual");
+  const [preferNoTables, setPreferNoTables] = useState(false);
 
   async function handleFileChange(event: React.ChangeEvent<HTMLInputElement>) {
     const file = event.target.files?.[0];
@@ -1889,14 +1944,15 @@ function PdfImportButton({ currentContent, onImport }: { currentContent: string;
 
     try {
       if (isPdf) {
-        const extracted = await extractPdfContent(file);
-        if (!extracted.html.trim()) {
+        const extracted = await extractPdfContent(file, { preferNoTables });
+        const normalizedHtml = normalizeDocxHtml(extracted.html);
+        if (!normalizedHtml.trim()) {
           setErrorMessage("No text content found in this PDF. It may be a scanned image.");
           setStatus("error");
           return;
         }
-        setResult({ html: extracted.html, pageCount: extracted.pageCount, isDocx: false });
-        setEditedHtml(extracted.html);
+        setResult({ html: normalizedHtml, pageCount: extracted.pageCount, isDocx: false });
+        setEditedHtml(normalizedHtml);
       } else {
         const arrayBuffer = await file.arrayBuffer();
         const mammoth = await import("mammoth");
@@ -1986,6 +2042,11 @@ function PdfImportButton({ currentContent, onImport }: { currentContent: string;
           </svg>
           {status === "extracting" ? "Extracting Document…" : "Import Word/PDF Document"}
         </button>
+
+        <label className="text-xs flex items-center gap-2">
+          <input type="checkbox" className="mr-1" checked={preferNoTables} onChange={(e) => setPreferNoTables(e.target.checked)} />
+          <span className="text-xs text-(--foreground-muted)">Prefer prose (don't auto-detect tables)</span>
+        </label>
 
         {status === "extracting" && (
           <span className="text-xs text-(--accent-gold) animate-pulse">Reading document…</span>
@@ -2125,6 +2186,7 @@ function ImageField({ label, value, onChange, className = "" }: { label: string;
       const response = await fetch("/api/admin/upload", {
         method: "POST",
         body: formData,
+        credentials: "include",
       });
 
       const responseText = await response.text();

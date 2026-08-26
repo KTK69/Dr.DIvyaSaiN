@@ -161,7 +161,7 @@ function getColumnAnchors(items: PositionedItem[], xTolerance: number): number[]
   return anchors;
 }
 
-function detectTables(items: PositionedItem[], yTolerance = 3, xTolerance = 15): TableResult[] {
+function detectTables(items: PositionedItem[], yTolerance = 3, xTolerance = 15, opts?: { autoTune?: boolean }): TableResult[] {
   if (items.length < 4) {
     return []; // Need at least 2×2 for a table
   }
@@ -188,8 +188,10 @@ function detectTables(items: PositionedItem[], yTolerance = 3, xTolerance = 15):
   let currentTableRows: typeof rowGroups = [];
   let consecutiveSingleItemRows = 0;
   let multiItemRowCount = 0;
-  const maxTableGap = 45; // Maximum vertical gap between lines in a table
-  const maxConsecutiveSingleItemRows = 3;
+  // Tuning: make detection more conservative when autoTune is set
+  const maxTableGap = opts?.autoTune ? 35 : 45; // Maximum vertical gap between lines in a table
+  const maxConsecutiveSingleItemRows = opts?.autoTune ? 2 : 3;
+  const minMultiItemRowCount = opts?.autoTune ? 3 : 2;
 
   for (let r = 0; r < rowGroups.length; r++) {
     const row = rowGroups[r];
@@ -228,9 +230,9 @@ function detectTables(items: PositionedItem[], yTolerance = 3, xTolerance = 15):
       const maxAllowedGap = isCompatible ? 250 : maxTableGap;
       if (yGap > maxAllowedGap) {
         // Flush table if it has enough rows
-        if (currentTableRows.length - consecutiveSingleItemRows >= 2 && multiItemRowCount >= 2) {
+        if (currentTableRows.length - consecutiveSingleItemRows >= minMultiItemRowCount && multiItemRowCount >= minMultiItemRowCount) {
           const tableRowsToFlush = currentTableRows.slice(0, currentTableRows.length - consecutiveSingleItemRows);
-          const table = buildTable(tableRowsToFlush, xTolerance);
+          const table = buildTable(tableRowsToFlush, xTolerance, opts);
           if (table) tables.push(table);
         }
         currentTableRows = [];
@@ -255,8 +257,8 @@ function detectTables(items: PositionedItem[], yTolerance = 3, xTolerance = 15):
         if (consecutiveSingleItemRows > maxConsecutiveSingleItemRows) {
           // Flush table but exclude the trailing weak single-item rows
           const tableRowsToFlush = currentTableRows.slice(0, currentTableRows.length - consecutiveSingleItemRows);
-          if (tableRowsToFlush.length >= 2 && multiItemRowCount >= 2) {
-            const table = buildTable(tableRowsToFlush, xTolerance);
+          if (tableRowsToFlush.length >= minMultiItemRowCount && multiItemRowCount >= minMultiItemRowCount) {
+            const table = buildTable(tableRowsToFlush, xTolerance, opts);
             if (table) tables.push(table);
           }
           currentTableRows = [];
@@ -269,9 +271,9 @@ function detectTables(items: PositionedItem[], yTolerance = 3, xTolerance = 15):
         }
       } else {
         // Flush table if it has enough rows
-        if (currentTableRows.length - consecutiveSingleItemRows >= 2 && multiItemRowCount >= 2) {
+        if (currentTableRows.length - consecutiveSingleItemRows >= minMultiItemRowCount && multiItemRowCount >= minMultiItemRowCount) {
           const tableRowsToFlush = currentTableRows.slice(0, currentTableRows.length - consecutiveSingleItemRows);
-          const table = buildTable(tableRowsToFlush, xTolerance);
+          const table = buildTable(tableRowsToFlush, xTolerance, opts);
           if (table) tables.push(table);
         }
         currentTableRows = [];
@@ -288,8 +290,8 @@ function detectTables(items: PositionedItem[], yTolerance = 3, xTolerance = 15):
   // Flush trailing table
   if (currentTableRows.length > 0) {
     const tableRowsToFlush = currentTableRows.slice(0, currentTableRows.length - consecutiveSingleItemRows);
-    if (tableRowsToFlush.length >= 2 && multiItemRowCount >= 2) {
-      const table = buildTable(tableRowsToFlush, xTolerance);
+    if (tableRowsToFlush.length >= minMultiItemRowCount && multiItemRowCount >= minMultiItemRowCount) {
+      const table = buildTable(tableRowsToFlush, xTolerance, opts);
       if (table) tables.push(table);
     }
   }
@@ -434,8 +436,8 @@ function stripInlineHtml(text: string): string {
   return text.replace(/<\/?[a-z]+>/gi, "").replace(/\s+/g, " ").trim();
 }
 
-function isLikelyRealTable(rows: string[][]): boolean {
-  if (rows.length < 2) return false;
+function isLikelyRealTable(rows: string[][], opts?: { autoTune?: boolean }): boolean {
+  if (rows.length < (opts?.autoTune ? 3 : 2)) return false;
 
   const columnCount = Math.max(...rows.map((row) => row.length), 0);
   if (columnCount < 2) return false;
@@ -445,19 +447,20 @@ function isLikelyRealTable(rows: string[][]): boolean {
   );
 
   const denseRows = nonEmptyCounts.filter((count) => count >= 2).length;
-  if (denseRows < 2) return false;
+  if (denseRows < (opts?.autoTune ? 3 : 2)) return false;
 
   const populatedColumns = Array.from({ length: columnCount }, (_, columnIndex) =>
     rows.reduce((count, row) => count + (stripInlineHtml(row[columnIndex] ?? "") ? 1 : 0), 0)
   );
 
-  if (populatedColumns.filter((count) => count >= 2).length < 2) {
+  if (populatedColumns.filter((count) => count >= (opts?.autoTune ? 3 : 2)).length < 2) {
     return false;
   }
 
   const totalCells = rows.length * columnCount;
   const filledCells = nonEmptyCounts.reduce((sum, count) => sum + count, 0);
-  if (totalCells === 0 || filledCells / totalCells < 0.45) {
+  const minFillRatio = opts?.autoTune ? 0.6 : 0.45;
+  if (totalCells === 0 || filledCells / totalCells < minFillRatio) {
     return false;
   }
 
@@ -469,10 +472,72 @@ function isLikelyRealTable(rows: string[][]): boolean {
   return true;
 }
 
+function isSentenceLikeCell(text: string): boolean {
+  const clean = stripInlineHtml(text);
+  if (!clean) return false;
+
+  const words = countWords(clean);
+  if (words < 5) return false;
+
+  return /[.,;:?!]\s|[.,;:?!]$/.test(clean) || looksLikeData(clean);
+}
+
+function isLikelyTwoColumnProseLayout(rows: string[][]): boolean {
+  if (rows.length < 2) return false;
+
+  const columnCount = Math.max(...rows.map((row) => row.length), 0);
+  if (columnCount !== 2) return false;
+
+  if (
+    isLikelyDefinitionListTable(rows) ||
+    isBulletOrListTable(rows) ||
+    isSideBySideLists(rows) ||
+    isTableOfMergedLists(rows)
+  ) {
+    return false;
+  }
+
+  let bothColumnsLookLikeProse = 0;
+  let totalDenseRows = 0;
+  let shortLeadRows = 0;
+
+  for (const row of rows) {
+    const left = row[0] ?? "";
+    const right = row[1] ?? "";
+    const leftText = stripInlineHtml(left);
+    const rightText = stripInlineHtml(right);
+
+    if (!leftText || !rightText) {
+      continue;
+    }
+
+    totalDenseRows++;
+
+    const leftLooksProse = isSentenceLikeCell(left);
+    const rightLooksProse = isSentenceLikeCell(right);
+
+    if (leftLooksProse && rightLooksProse) {
+      bothColumnsLookLikeProse++;
+    }
+
+    if (countWords(leftText) <= 4 && countWords(rightText) >= 6) {
+      shortLeadRows++;
+    }
+  }
+
+  if (totalDenseRows < 2) return false;
+
+  return (
+    bothColumnsLookLikeProse >= Math.ceil(totalDenseRows * 0.5) &&
+    shortLeadRows < Math.ceil(totalDenseRows * 0.5)
+  );
+}
+
 /** Build a TableResult from a slice of row groups, reconstructing logical rows */
 function buildTable(
   rowGroups: { y: number; items: (PositionedItem & { originalIndex: number })[] }[],
   xTolerance: number,
+  opts?: { autoTune?: boolean },
 ): TableResult | null {
   const sourceRowsWithMultipleCells = rowGroups.filter((row) => row.items.length >= 2).length;
   if (sourceRowsWithMultipleCells < 2) {
@@ -657,7 +722,10 @@ function buildTable(
   }
 
   const cleanedRows = mergeSparseContinuationRows(mergeEmptyKeyRows(logicalRows));
-  if (!isLikelyRealTable(cleanedRows)) {
+  if (!isLikelyRealTable(cleanedRows, opts)) {
+    return null;
+  }
+  if (isLikelyTwoColumnProseLayout(cleanedRows)) {
     return null;
   }
 
@@ -829,7 +897,7 @@ function linesToHtml(lines: TextLine[]): string {
 
   // Compute median font size to distinguish headings from body text
   const fontSizes = lines.map((line) => line.fontSize).sort((a, b) => a - b);
-  const medianFontSize = fontSizes[Math.floor(fontSizes.length / 2)];
+    const pageBlocks = processPageItems(filteredItems, options);
   const headingThreshold = medianFontSize * 1.2;
 
   // Pre-process lines to merge sentence fragments
@@ -1207,13 +1275,13 @@ type PageBlock = { type: "lines"; lines: TextLine[] } | { type: "table"; rows: s
  * Process a page's items: detect tables first, then handle remaining items
  * through column detection and line merging.
  */
-function processPageItems(items: PositionedItem[]): PageBlock[] {
+function processPageItems(items: PositionedItem[], opts?: { autoTune?: boolean }): PageBlock[] {
   if (items.length === 0) {
     return [];
   }
 
   // Step 1: Detect tables
-  const tables = detectTables(items);
+  const tables = detectTables(items, 3, 15, opts);
 
   // Collect all indices that belong to tables
   const tableItemIndices = new Set<number>();
@@ -1326,7 +1394,7 @@ export type PdfExtractionResult = {
  * @param file  A File object (from `<input type="file">`)
  * @returns     Extracted HTML, plain text, and page count
  */
-export async function extractPdfContent(file: File): Promise<PdfExtractionResult> {
+export async function extractPdfContent(file: File, options?: { preferNoTables?: boolean; autoTune?: boolean }): Promise<PdfExtractionResult> {
   const pdfjs = await loadPdfJs();
   const arrayBuffer = await file.arrayBuffer();
   const pdf = await pdfjs.getDocument({ data: arrayBuffer }).promise;
@@ -1377,8 +1445,23 @@ export async function extractPdfContent(file: File): Promise<PdfExtractionResult
       return true;
     });
 
-    const pageBlocks = processPageItems(filteredItems);
-    allBlocks.push(...pageBlocks);
+    // Allow caller to disable table detection when PDFs are being mis-classified
+    const pageBlocks = options?.preferNoTables ?
+      // Treat everything as non-table lines: detect columns only
+      (function () {
+        const columns = detectColumns(filteredItems);
+        const lines: TextLine[] = [];
+        for (const col of columns) {
+          lines.push(...mergeIntoLines(col));
+        }
+        return lines.length > 0 ? [{ type: "lines", lines }] : [];
+      })() : processPageItems(filteredItems);
+    // If autoTune is not explicitly false, run table detection with autoTune enabled.
+    const tunedPageBlocks = options?.preferNoTables ?
+      (pageBlocks as PageBlock[]) :
+      processPageItems(filteredItems, { autoTune: options?.autoTune !== false });
+    allBlocks.push(...tunedPageBlocks);
+    
   }
 
   const mergedBlocks = mergeConsecutiveTables(allBlocks);

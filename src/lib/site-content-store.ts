@@ -18,6 +18,7 @@ const DATA_DIR =
   process.env.SITE_CONTENT_DATA_DIR?.trim() ||
   path.join(process.cwd(), "data");
 const LOCAL_FILE_PATH = path.join(DATA_DIR, "site-content.runtime.json");
+let lastKnownGoodEnvelope: SiteContentEnvelope | null = null;
 
 export function getSiteContentPersistenceDiagnostics() {
   return {
@@ -43,21 +44,35 @@ function emptyPublicContent(): SiteContent {
   return mergeStoredSiteContent(DEFAULT_SITE_CONTENT, CLIENT_FALLBACK_SITE_CONTENT);
 }
 
+function cacheEnvelope(envelope: SiteContentEnvelope) {
+  lastKnownGoodEnvelope = envelope;
+  return envelope;
+}
+
 async function readFromLocalFile(): Promise<SiteContentEnvelope | null> {
   try {
     const raw = await readFile(LOCAL_FILE_PATH, "utf8");
     const parsed = JSON.parse(raw) as Partial<SiteContentEnvelope> | SiteContent;
 
     if ("content" in parsed && parsed.content) {
-      return {
+      return cacheEnvelope({
         content: withStoredContent(parsed.content),
         updatedAt: parsed.updatedAt ?? new Date().toISOString(),
-      };
+      });
     }
 
-    return createEnvelope(withStoredContent(parsed));
-  } catch {
-    return null;
+    return cacheEnvelope(createEnvelope(withStoredContent(parsed)));
+  } catch (error) {
+    const errorCode =
+      error && typeof error === "object" && "code" in error
+        ? String((error as { code?: unknown }).code)
+        : null;
+
+    if (errorCode === "ENOENT") {
+      return null;
+    }
+
+    throw error;
   }
 }
 
@@ -82,9 +97,21 @@ async function writeToLocalFile(envelope: SiteContentEnvelope) {
 export async function getStoredSiteContent(): Promise<SiteContentEnvelope> {
   try {
     const envelope = await readFromLocalFile();
-    return envelope ?? createEnvelope(emptyPublicContent());
+    if (envelope) {
+      return envelope;
+    }
+
+    if (lastKnownGoodEnvelope) {
+      return lastKnownGoodEnvelope;
+    }
+
+    return cacheEnvelope(createEnvelope(emptyPublicContent()));
   } catch {
-    return createEnvelope(emptyPublicContent());
+    if (lastKnownGoodEnvelope) {
+      return lastKnownGoodEnvelope;
+    }
+
+    return cacheEnvelope(createEnvelope(emptyPublicContent()));
   }
 }
 

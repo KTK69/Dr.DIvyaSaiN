@@ -1,7 +1,7 @@
 const DEFAULT_USERNAME = "Divya";
 const DEFAULT_PASSWORD = "#DivyaSai123";
 const DEFAULT_SESSION_TOKEN = "dev-admin-session";
-const DEFAULT_SESSION_MAX_AGE = 30 * 60;
+const DEFAULT_SESSION_MAX_AGE = 8 * 60 * 60;
 
 export const ADMIN_SESSION_COOKIE = "emmi-admin-session";
 
@@ -37,4 +37,16 @@ export function isValidCredentials(username: string, password: string) {
 
 export function isValidSessionToken(token?: string | null) {
   return Boolean(token && token === getSessionToken());
+}
+
+export function getAdminSessionCookieOptions(overrides?: Partial<{
+  maxAge: number;
+}>) {
+  return {
+    httpOnly: true,
+    sameSite: "lax" as const,
+    secure: process.env.NODE_ENV === "production",
+    maxAge: overrides?.maxAge ?? getSessionMaxAge(),
+    path: "/",
+  };
 }

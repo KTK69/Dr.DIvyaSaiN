@@ -196,10 +196,6 @@ function normalizeHtml(value: string) {
   return trimmed;
 }
 
-function htmlFromValue(value: string) {
-  return normalizeHtml(value) || "<p><br></p>";
-}
-
 function escapeHtml(value: string) {
   return value
     .replace(/&/g, "&amp;")
@@ -235,6 +231,159 @@ function unwrapElement(element: Element) {
     parent.insertBefore(element.firstChild, element);
   }
   parent.removeChild(element);
+}
+
+function normalizeTableText(value: string) {
+  return value.replace(/\u00a0/g, " ").replace(/\s+/g, " ").trim();
+}
+
+function countTableWords(value: string) {
+  const normalized = normalizeTableText(value);
+  return normalized ? normalized.split(/\s+/).length : 0;
+}
+
+function tableCellLooksLikeSentence(value: string) {
+  const normalized = normalizeTableText(value);
+  if (!normalized || countTableWords(normalized) < 5) {
+    return false;
+  }
+
+  return /[.,;:?!](?:\s|$)/.test(normalized);
+}
+
+function isTableMarkerCell(value: string) {
+  const normalized = normalizeTableText(value);
+  return /^[-*•]+(?:\s+[-*•]+)*$/.test(normalized);
+}
+
+function flattenPastedTable(table: HTMLTableElement) {
+  const fragment = document.createDocumentFragment();
+
+  for (const row of Array.from(table.rows)) {
+    const parts = Array.from(row.cells)
+      .map((cell) => cell.innerHTML.trim())
+      .filter(Boolean);
+
+    if (parts.length === 0) {
+      continue;
+    }
+
+    const paragraph = document.createElement("p");
+    paragraph.innerHTML = parts.join(" ");
+    fragment.appendChild(paragraph);
+  }
+
+  if (!fragment.childNodes.length) {
+    const text = normalizeTableText(table.textContent ?? "");
+    if (text) {
+      const paragraph = document.createElement("p");
+      paragraph.textContent = text;
+      fragment.appendChild(paragraph);
+    }
+  }
+
+  return fragment;
+}
+
+function isSuspiciousPastedTable(table: HTMLTableElement) {
+  if (table.classList.contains("docx-table")) {
+    return true;
+  }
+
+  const cells = Array.from(table.querySelectorAll("td, th")).map((cell) =>
+    normalizeTableText(cell.textContent ?? "")
+  );
+
+  const longCells = cells.filter((cell) => countTableWords(cell) >= 10).length;
+  const markerCells = cells.filter((cell) => isTableMarkerCell(cell)).length;
+
+  return longCells >= 2 || markerCells > 0;
+}
+
+function isLikelyPastedDataTable(table: HTMLTableElement) {
+  if (isSuspiciousPastedTable(table)) {
+    return false;
+  }
+
+  const rows = Array.from(table.rows).map((row) =>
+    Array.from(row.cells).map((cell) => normalizeTableText(cell.textContent ?? ""))
+  );
+
+  if (rows.length < 2) {
+    return false;
+  }
+
+  const columnCount = Math.max(...rows.map((row) => row.length), 0);
+  if (columnCount < 2) {
+    return false;
+  }
+
+  let denseRows = 0;
+  let sentenceRows = 0;
+  let markerRows = 0;
+  let shortLeadRows = 0;
+
+  for (const row of rows) {
+    const first = row[0] ?? "";
+    const second = row[1] ?? "";
+    const populated = row.filter(Boolean);
+
+    if (populated.length >= 2) {
+      denseRows++;
+    }
+
+    if (tableCellLooksLikeSentence(first) && tableCellLooksLikeSentence(second)) {
+      sentenceRows++;
+    }
+
+    if (isTableMarkerCell(first)) {
+      markerRows++;
+    }
+
+    if (countTableWords(first) <= 4 && countTableWords(second) >= 6) {
+      shortLeadRows++;
+    }
+  }
+
+  if (denseRows < 2) {
+    return false;
+  }
+
+  if (markerRows > 0) {
+    return false;
+  }
+
+  if (sentenceRows >= Math.ceil(denseRows / 2) && shortLeadRows < Math.ceil(denseRows / 2)) {
+    return false;
+  }
+
+  return true;
+}
+
+function normalizeEditorHtmlTables(value: string) {
+  if (typeof window === "undefined" || !value.trim()) {
+    return value;
+  }
+
+  const parser = new DOMParser();
+  const documentValue = parser.parseFromString(`<div id="rich-text-root">${value}</div>`, "text/html");
+  const root = documentValue.getElementById("rich-text-root");
+
+  if (!root) {
+    return value;
+  }
+
+  for (const table of Array.from(root.querySelectorAll("table"))) {
+    if (!isLikelyPastedDataTable(table)) {
+      table.replaceWith(flattenPastedTable(table));
+    }
+  }
+
+  return root.innerHTML;
+}
+
+function htmlFromValue(value: string) {
+  return normalizeEditorHtmlTables(normalizeHtml(value)) || "<p><br></p>";
 }
 
 function sanitizePastedHtml(value: string) {
@@ -317,6 +466,12 @@ function sanitizePastedHtml(value: string) {
     }
   }
 
+  for (const table of Array.from(documentValue.querySelectorAll("table"))) {
+    if (!isLikelyPastedDataTable(table)) {
+      table.replaceWith(flattenPastedTable(table));
+    }
+  }
+
   return documentValue.body.innerHTML
     .replace(/<!--[\s\S]*?-->/g, "")
     .replace(/<p>\s*<\/p>/gi, "")
@@ -364,6 +519,17 @@ function formatCalloutBlock(quill: QuillInstance, value: string) {
 function replaceEditorHtml(quill: QuillInstance, html: string) {
   quill.deleteText(0, quill.getLength(), "silent");
   quill.clipboard.dangerouslyPasteHTML(0, html, "silent");
+}
+
+function getNormalizedEditorOutput(quill: QuillInstance) {
+  const currentHtml = normalizeHtml(quill.root.innerHTML);
+  const normalizedHtml = normalizeEditorHtmlTables(currentHtml);
+
+  if (normalizedHtml !== currentHtml) {
+    replaceEditorHtml(quill, normalizedHtml || "<p><br></p>");
+  }
+
+  return normalizeHtml(normalizedHtml);
 }
 
 export default function RichTextEditor({
@@ -426,18 +592,18 @@ export default function RichTextEditor({
 
       const initialHtml = htmlFromValue(initialValueRef.current);
       replaceEditorHtml(quill, initialHtml);
-      lastSyncedHtmlRef.current = normalizeHtml(quill.root.innerHTML);
+      lastSyncedHtmlRef.current = getNormalizedEditorOutput(quill);
       quill.enable(!initialReadOnlyRef.current);
       setReady(true);
 
       const handleTextChange = () => {
-        const nextHtml = normalizeHtml(quill.root.innerHTML);
+        const nextHtml = getNormalizedEditorOutput(quill);
         if (nextHtml === lastSyncedHtmlRef.current) {
           return;
         }
 
         lastSyncedHtmlRef.current = nextHtml;
-        onChangeRef.current(quill.root.innerHTML);
+        onChangeRef.current(nextHtml);
       };
 
       const handleSelectionChange = (...args: Array<unknown>) => {
@@ -515,7 +681,7 @@ export default function RichTextEditor({
 
         quill.clipboard.dangerouslyPasteHTML(index, sanitizedHtml, "silent");
 
-        const nextHtml = normalizeHtml(quill.root.innerHTML);
+        const nextHtml = getNormalizedEditorOutput(quill);
         lastSyncedHtmlRef.current = nextHtml;
         onChangeRef.current(nextHtml);
 
@@ -565,12 +731,12 @@ export default function RichTextEditor({
     // When switching from source mode to visual, always sync
     if (!isSourceMode) {
       const nextHtml = normalizeHtml(value);
-      const currentHtml = normalizeHtml(quill.root.innerHTML);
+      const currentHtml = getNormalizedEditorOutput(quill);
 
       if (nextHtml !== currentHtml) {
         const currentSelection = selectionRef.current ?? quill.getSelection(true);
         replaceEditorHtml(quill, htmlFromValue(value));
-        lastSyncedHtmlRef.current = normalizeHtml(quill.root.innerHTML);
+        lastSyncedHtmlRef.current = getNormalizedEditorOutput(quill);
 
         if (currentSelection) {
           const nextIndex = Math.min(currentSelection.index, Math.max(0, quill.getLength() - 1));
@@ -593,7 +759,7 @@ export default function RichTextEditor({
 
     const currentSelection = selectionRef.current ?? quill.getSelection(true);
     replaceEditorHtml(quill, htmlFromValue(value));
-    lastSyncedHtmlRef.current = normalizeHtml(quill.root.innerHTML);
+    lastSyncedHtmlRef.current = getNormalizedEditorOutput(quill);
 
     if (currentSelection) {
       const nextIndex = Math.min(currentSelection.index, Math.max(0, quill.getLength() - 1));

@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { cookies } from "next/headers";
-import { ADMIN_SESSION_COOKIE, isValidSessionToken } from "@/lib/admin-auth";
+import { ADMIN_SESSION_COOKIE, isValidSessionToken, getAdminSessionCookieOptions, getSessionToken } from "@/lib/admin-auth";
 import {
   getSiteContentPersistenceDiagnostics,
   getStoredSiteContent,
@@ -29,7 +29,7 @@ export async function GET() {
   }
 
   const payload = await getStoredSiteContent();
-  return NextResponse.json(
+  const response = NextResponse.json(
     {
       ok: true,
       ...payload,
@@ -39,6 +39,15 @@ export async function GET() {
       headers: SITE_CONTENT_CACHE_HEADERS,
     },
   );
+
+  // Refresh admin session cookie on active usage
+  response.cookies.set(
+    ADMIN_SESSION_COOKIE,
+    getSessionToken(),
+    getAdminSessionCookieOptions(),
+  );
+
+  return response;
 }
 
 export async function POST(request: Request) {
@@ -79,7 +88,7 @@ export async function POST(request: Request) {
   try {
     const saved = await saveStoredSiteContent(mergedContent);
 
-    return NextResponse.json(
+    const response = NextResponse.json(
       {
         ok: true,
         ...saved,
@@ -89,6 +98,15 @@ export async function POST(request: Request) {
         headers: SITE_CONTENT_CACHE_HEADERS,
       },
     );
+
+    // Refresh admin session cookie on successful save
+    response.cookies.set(
+      ADMIN_SESSION_COOKIE,
+      getSessionToken(),
+      getAdminSessionCookieOptions(),
+    );
+
+    return response;
   } catch (error) {
     const message =
       error instanceof Error
