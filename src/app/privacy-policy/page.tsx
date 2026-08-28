@@ -6,6 +6,9 @@ export const metadata: Metadata = {
   title: "Privacy Policy - Dr. Divya Sai Narsingam, Hyderabad",
   description:
     "Read the privacy policy for Dr. Divya Sai Narsingam's practice and patient communication.",
+  alternates: {
+    canonical: "/privacy-policy",
+  },
 };
 
 const LAST_UPDATED = "May 21, 2026";

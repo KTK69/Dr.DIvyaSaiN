@@ -91,6 +91,7 @@ export default function BlogDetailClient({ slug, serverBlog }: Props) {
         <RichText
           value={blog.content}
           className="mt-10 max-w-none text-(--foreground-muted) leading-relaxed"
+          demoteHeadings
         />
       </article>
     </>

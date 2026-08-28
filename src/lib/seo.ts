@@ -3,7 +3,7 @@ import type { cosmeticServices, reconstructiveServices } from "@/lib/doctor-data
 import type { Blog, Service } from "@/types/content";
 import type { PageSeoEntry } from "@/lib/site-content";
 import { getBlogRouteSlug } from "@/lib/blog-links";
-import { contactInfo, doctor, education } from "@/lib/doctor-data";
+import { doctor, education } from "@/lib/doctor-data";
 
 export type ReconstructiveService = (typeof reconstructiveServices)[number];
 export type CosmeticService = (typeof cosmeticServices)[number];
@@ -14,11 +14,12 @@ export const SITE_URL = "https://drdivyaplasticsurgeon.com";
 const SITE_LOGO_URL = `${SITE_URL}/images/img/Dr%20Divya%20Logo%20Circle.png`;
 const SITE_IMAGE_URL = `${SITE_URL}/images/img/DR%20Divya.jpeg`;
 const ORGANIZATION_ID = `${SITE_URL}/#organization`;
-const CLINIC_ID = `${SITE_URL}/#clinic`;
 const PHYSICIAN_ID = `${SITE_URL}/#physician`;
 
 const SITE_NAME_SUFFIX = "| Dr. Divya Sai Narsingam";
 const DEFAULT_SERVICE_IMAGE = "/images/img/about.jpeg";
+const AIG_LOCATION_ID = `${SITE_URL}/#aig`;
+const CARE_LOCATION_ID = `${SITE_URL}/#care`;
 
 /* -------------------------------------------------------------------------- */
 /*  Utility helpers                                                           */
@@ -92,16 +93,16 @@ export function buildSiteIdentityJsonLd() {
       },
       {
         "@type": ["MedicalClinic", "MedicalBusiness"],
-        "@id": CLINIC_ID,
-        name: `${doctor.name} Plastic & Reconstructive Surgery`,
-        url: SITE_URL,
+        "@id": AIG_LOCATION_ID,
+        name: `${doctor.name} – AIG Hospitals, Banjara Hills`,
+        url: `${SITE_URL}/plastic-surgeon-banjarahills`,
         image: SITE_IMAGE_URL,
         description: doctor.summary,
         telephone: "+919900135489",
         address: {
           "@type": "PostalAddress",
-          streetAddress: `${contactInfo.roomNo}, ${contactInfo.street}`,
-          addressLocality: contactInfo.area,
+          streetAddress: "Room No. 20, 1st Floor, AIG Hospitals",
+          addressLocality: "Banjara Hills",
           addressRegion: "Telangana",
           postalCode: "500034",
           addressCountry: "IN",
@@ -130,37 +131,27 @@ export function buildSiteIdentityJsonLd() {
           "@id": ORGANIZATION_ID,
         },
       },
-      // LocalBusiness schema for local SEO
       {
-        "@type": "LocalBusiness",
-        "@id": `${SITE_URL}/#localbusiness`,
-        name: `${doctor.name} – Plastic & Reconstructive Surgeon`,
+        "@type": ["MedicalClinic", "LocalBusiness"],
+        "@id": CARE_LOCATION_ID,
+        name: `${doctor.name} – CARE Hospitals, Gachibowli`,
         url: SITE_URL,
         image: SITE_IMAGE_URL,
         telephone: "+919900135489",
         priceRange: "₹₹₹",
         address: {
           "@type": "PostalAddress",
-          streetAddress: `${contactInfo.roomNo}, ${contactInfo.street}`,
-          addressLocality: contactInfo.area,
+          streetAddress: "Room No. 212, CARE Hospitals",
+          addressLocality: "Gachibowli",
           addressRegion: "Telangana",
-          postalCode: "500034",
           addressCountry: "IN",
         },
-        geo: {
-          "@type": "GeoCoordinates",
-          latitude: 17.4156,
-          longitude: 78.4484,
-        },
-        openingHoursSpecification: [
-          {
-            "@type": "OpeningHoursSpecification",
-            dayOfWeek: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
-            opens: "16:00",
-            closes: "17:00",
-          },
+        sameAs: [
+          "https://www.instagram.com/drreconstruct",
+          "https://www.practo.com/hyderabad/doctor/divya-sai-narsingam-plastic-surgeon",
+          "https://www.carehospitals.com/doctor/hyderabad/hitec-city/divya-sai-narsingam-cosmetic-surgeon",
+          "https://www.hexahealth.com/hyderabad/doctor/dr-divya-sai-narsingam-plastic-surgeon",
         ],
-        sameAs: [],
       },
       {
         "@type": "Physician",
@@ -177,9 +168,7 @@ export function buildSiteIdentityJsonLd() {
           credentialCategory: item,
         })),
         alumniOf,
-        worksFor: {
-          "@id": CLINIC_ID,
-        },
+        worksFor: [{ "@id": AIG_LOCATION_ID }, { "@id": CARE_LOCATION_ID }],
       },
     ],
   };
@@ -368,7 +357,7 @@ export function buildEditablePageMetadata(page: PageSeoEntry): Metadata {
   const cleanTitle = stripSiteSuffix(page.title);
 
   return {
-    title: cleanTitle,
+    title: { absolute: `${cleanTitle} ${SITE_NAME_SUFFIX}` },
     description: page.description,
     keywords: page.keywords,
     alternates: {
@@ -423,7 +412,7 @@ export function buildBlogMetadata(blog: Blog): Metadata {
       ]);
 
   return {
-    title: pageTitle,
+    title: { absolute: `${pageTitle} ${SITE_NAME_SUFFIX}` },
     description: metaDescription,
     keywords,
     alternates: {

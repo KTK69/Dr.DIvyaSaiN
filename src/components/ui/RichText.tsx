@@ -5,6 +5,7 @@ import { Fragment } from "react";
 type RichTextProps = {
   value?: string | null;
   className?: string;
+  demoteHeadings?: boolean;
 };
 
 function hasHtmlTags(value: string) {
@@ -75,7 +76,7 @@ function shouldFlattenRenderTable(table: HTMLTableElement) {
   return longCells >= 2 || markerCells > 0;
 }
 
-function normalizeRichTextHtml(value: string) {
+function normalizeRichTextHtml(value: string, demoteHeadings: boolean) {
   if (typeof window === "undefined" || !value.trim()) {
     return value;
   }
@@ -94,10 +95,21 @@ function normalizeRichTextHtml(value: string) {
     }
   }
 
+  if (demoteHeadings) {
+    for (const heading of Array.from(root.querySelectorAll("h1"))) {
+      const replacement = documentValue.createElement("h2");
+      replacement.innerHTML = heading.innerHTML;
+      for (const attribute of Array.from(heading.attributes)) {
+        replacement.setAttribute(attribute.name, attribute.value);
+      }
+      heading.replaceWith(replacement);
+    }
+  }
+
   return root.innerHTML;
 }
 
-export default function RichText({ value, className = "" }: RichTextProps) {
+export default function RichText({ value, className = "", demoteHeadings = false }: RichTextProps) {
   if (!value) {
     return null;
   }
@@ -108,7 +120,7 @@ export default function RichText({ value, className = "" }: RichTextProps) {
   }
 
   if (hasHtmlTags(trimmed)) {
-    const normalizedHtml = normalizeRichTextHtml(trimmed);
+    const normalizedHtml = normalizeRichTextHtml(trimmed, demoteHeadings);
     return (
       <div
         className={`rich-text ${className}`.trim()}

@@ -421,6 +421,7 @@ export default function BeforeAfterGallery() {
           eyebrow={gallery.eyebrow}
           title={gallery.title}
           subtitle={gallery.subtitle}
+          headingLevel="h1"
         />
         {gallery.description && (
           <p className="mt-3 max-w-3xl text-sm text-(--foreground-muted)">

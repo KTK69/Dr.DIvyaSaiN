@@ -25,6 +25,12 @@ export default function LocationCard() {
       <address className="not-italic text-base text-(--foreground-muted) leading-8 whitespace-pre-line">
         {formatLocation(contactPage.locationAddress || content.footer.contactLocation)}
       </address>
+      <a
+        href="tel:+919900135489"
+        className="mt-4 inline-flex text-sm text-(--accent-gold) hover:text-(--foreground) transition-colors"
+      >
+        +91 99001 35489
+      </a>
     </div>
   );
 }

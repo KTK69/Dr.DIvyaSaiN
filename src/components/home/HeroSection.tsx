@@ -123,6 +123,7 @@ export default function HeroSection() {
                   fill
                   className="object-cover object-top"
                   priority
+                  sizes="(max-width: 768px) 100vw, (max-width: 1280px) 40vw, 520px"
                 />
               </div>
 
