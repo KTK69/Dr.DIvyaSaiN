@@ -11,12 +11,24 @@ export default function CalendlyBookingFrame({ className = "" }: { className?: s
 
   useEffect(() => {
     const handleMessage = async (message: MessageEvent) => {
-      if (message.origin !== "https://calendly.com") return;
-      const eventName = message.data?.event;
+      if (
+        message.origin !== "https://calendly.com" &&
+        message.origin !== "https://assets.calendly.com"
+      ) return;
+
+      let data: { event?: string; payload?: { event?: unknown; invitee?: unknown } };
+      try {
+        data = typeof message.data === "string"
+          ? JSON.parse(message.data) as { event?: string; payload?: { event?: unknown; invitee?: unknown } }
+          : message.data as { event?: string; payload?: { event?: unknown; invitee?: unknown } };
+      } catch {
+        return;
+      }
+      const eventName = data?.event;
       if (eventName !== "calendly.event_scheduled") return;
 
-      const eventUri = message.data?.payload?.event;
-      const inviteeUri = message.data?.payload?.invitee;
+      const eventUri = data?.payload?.event;
+      const inviteeUri = data?.payload?.invitee;
       if (typeof eventUri !== "string" || handledEvents.current.has(eventUri)) return;
       handledEvents.current.add(eventUri);
 
