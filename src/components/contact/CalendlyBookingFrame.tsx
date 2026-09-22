@@ -6,6 +6,15 @@ import { authorizeCalendlyBooking } from "@/lib/client-api";
 const CALENDLY_URL =
   "https://calendly.com/drdivyaplasticsurgeon/30min?hide_event_type_details=1&hide_gdpr_banner=1&background_color=0d1117&text_color=e2e8f0&primary_color=b8972a";
 
+function getCalendlyUri(value: unknown) {
+  if (typeof value === "string") return value;
+  if (value && typeof value === "object" && "uri" in value) {
+    const uri = (value as { uri?: unknown }).uri;
+    return typeof uri === "string" ? uri : null;
+  }
+  return null;
+}
+
 export default function CalendlyBookingFrame({ className = "" }: { className?: string }) {
   const handledEvents = useRef(new Set<string>());
 
@@ -27,9 +36,9 @@ export default function CalendlyBookingFrame({ className = "" }: { className?: s
       const eventName = data?.event;
       if (eventName !== "calendly.event_scheduled") return;
 
-      const eventUri = data?.payload?.event;
-      const inviteeUri = data?.payload?.invitee;
-      if (typeof eventUri !== "string" || handledEvents.current.has(eventUri)) return;
+      const eventUri = getCalendlyUri(data?.payload?.event);
+      const inviteeUri = getCalendlyUri(data?.payload?.invitee);
+      if (!eventUri || handledEvents.current.has(eventUri)) return;
       handledEvents.current.add(eventUri);
 
       const result = await authorizeCalendlyBooking(eventUri);
