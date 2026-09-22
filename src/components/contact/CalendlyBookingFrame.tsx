@@ -21,6 +21,29 @@ function getCalendlyUri(value: unknown) {
   return null;
 }
 
+function findScheduledPayload(value: unknown, seen = new Set<object>()): { eventUri: string; inviteeUri?: string } | null {
+  if (!value || typeof value !== "object") return null;
+  if (seen.has(value)) return null;
+  seen.add(value);
+
+  const record = value as Record<string, unknown>;
+  const eventName = record.event ?? record.name ?? record.type;
+  if (eventName === "calendly.event_scheduled") {
+    const payload = record.payload && typeof record.payload === "object"
+      ? record.payload as Record<string, unknown>
+      : record;
+    const eventUri = getCalendlyUri(payload.event ?? payload.eventUri ?? payload.scheduled_event);
+    const inviteeUri = getCalendlyUri(payload.invitee ?? payload.inviteeUri);
+    if (eventUri) return { eventUri, inviteeUri: inviteeUri ?? undefined };
+  }
+
+  for (const child of Object.values(record)) {
+    const result = findScheduledPayload(child, seen);
+    if (result) return result;
+  }
+  return null;
+}
+
 export default function CalendlyBookingFrame({ className = "" }: { className?: string }) {
   const handledEvents = useRef(new Set<string>());
 
@@ -34,12 +57,9 @@ export default function CalendlyBookingFrame({ className = "" }: { className?: s
       } catch {
         return;
       }
-      const eventName = data?.event ?? (data as { name?: string })?.name;
-      if (eventName !== "calendly.event_scheduled") return;
-
-      const eventUri = getCalendlyUri(data?.payload?.event);
-      const inviteeUri = getCalendlyUri(data?.payload?.invitee);
-      if (!eventUri || handledEvents.current.has(eventUri)) return;
+      const scheduled = findScheduledPayload(data);
+      if (!scheduled || handledEvents.current.has(scheduled.eventUri)) return;
+      const { eventUri, inviteeUri } = scheduled;
       handledEvents.current.add(eventUri);
 
       const result = await authorizeCalendlyBooking(eventUri);
