@@ -1,5 +1,8 @@
 import "server-only";
 
+import { randomUUID } from "node:crypto";
+import { mkdir, readFile, rename, writeFile } from "node:fs/promises";
+import path from "node:path";
 import { getStoredSiteContent } from "@/lib/site-content-store";
 import { getBlogRouteSlug, normalizeBlogSlug } from "@/lib/blog-links";
 import type {
@@ -10,6 +13,11 @@ import type {
   Review,
   Service,
 } from "@/types/content";
+
+const APPOINTMENTS_PATH = path.join(
+  process.env.SITE_CONTENT_DATA_DIR?.trim() || path.join(process.cwd(), "data"),
+  "appointments.runtime.json",
+);
 
 export async function getBlogs(): Promise<Blog[]> {
   const { content } = await getStoredSiteContent();
@@ -45,8 +53,21 @@ export async function getAboutContent(): Promise<AboutContent> {
 export async function saveAppointment(
   payload: AppointmentRequest,
 ): Promise<AppointmentResponse> {
-  const id = `appt-${Date.now()}`;
-  void payload;
+  const id = `appt-${randomUUID()}`;
+  const directory = path.dirname(APPOINTMENTS_PATH);
+  await mkdir(directory, { recursive: true });
+
+  let appointments: Array<AppointmentRequest & { id: string; createdAt: string }> = [];
+  try {
+    const stored = JSON.parse(await readFile(APPOINTMENTS_PATH, "utf8")) as unknown;
+    if (Array.isArray(stored)) appointments = stored as typeof appointments;
+  } catch {
+  }
+
+  appointments.push({ ...payload, id, createdAt: new Date().toISOString() });
+  const temporaryPath = `${APPOINTMENTS_PATH}.${process.pid}.${randomUUID()}.tmp`;
+  await writeFile(temporaryPath, JSON.stringify(appointments, null, 2), "utf8");
+  await rename(temporaryPath, APPOINTMENTS_PATH);
 
   return {
     ok: true,

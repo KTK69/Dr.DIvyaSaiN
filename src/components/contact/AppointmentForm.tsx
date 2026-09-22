@@ -40,7 +40,14 @@ export default function AppointmentForm() {
       return;
     }
 
-    setSubmitted(true);
+    if (!result.confirmationToken) {
+      setSubmitError("Unable to authorize this appointment confirmation.");
+      return;
+    }
+
+    window.location.assign(
+      `/appointment-thank-you?token=${encodeURIComponent(result.confirmationToken)}`,
+    );
     reset();
   };
 

@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { X, Calendar, Instagram } from "lucide-react";
 import { buildWhatsAppLink, WHATSAPP_DEFAULT_MESSAGE } from "@/lib/communication";
-const CALENDLY_URL = "https://calendly.com/drdivyaplasticsurgeon/30min";
+import CalendlyBookingFrame from "@/components/contact/CalendlyBookingFrame";
 const INSTAGRAM_URL = "https://www.instagram.com/drreconstruct";
 
 // ─── WhatsApp pulse button ────────────────────────────────────────────────────
@@ -151,16 +151,7 @@ function CalendlyModal({ open, onClose }: { open: boolean; onClose: () => void }
 
               {/* Calendly iframe */}
               <div className="flex-1 overflow-hidden" style={{ minHeight: "560px" }}>
-                <iframe
-                  src={`${CALENDLY_URL}?hide_event_type_details=1&hide_gdpr_banner=1&background_color=0d1117&text_color=e2e8f0&primary_color=b8972a`}
-                  width="100%"
-                  height="100%"
-                  frameBorder="0"
-                  title="Book appointment with Dr. Divya Sai Narsingam"
-                  className="w-full h-full"
-                  style={{ minHeight: "560px" }}
-                  loading="lazy"
-                />
+                <CalendlyBookingFrame className="h-full" />
               </div>
             </div>
           </motion.div>

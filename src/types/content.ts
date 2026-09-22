@@ -60,4 +60,5 @@ export interface AppointmentResponse {
   ok: boolean;
   message: string;
   id?: string;
+  confirmationToken?: string;
 }

@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { saveAppointment } from "@/lib/content-repository";
 import { sendAppointmentEmail } from "@/lib/appointment-email";
+import { issueAppointmentConfirmation } from "@/lib/appointment-confirmation";
 import type { AppointmentRequest } from "@/types/content";
 
 export async function POST(request: Request) {
@@ -24,8 +25,20 @@ export async function POST(request: Request) {
     }
 
     await sendAppointmentEmail(payload, result.id);
+    const confirmation = await issueAppointmentConfirmation({
+      source: "native-form",
+      sourceId: result.id,
+      metadata: {
+        service: payload.concern,
+        landingPage: request.headers.get("referer") ?? undefined,
+        bookingMethod: "Native Form",
+      },
+    });
 
-    return NextResponse.json(result, { status: 201 });
+    return NextResponse.json(
+      { ...result, confirmationToken: confirmation.token },
+      { status: 201 },
+    );
   } catch (error) {
     console.error("Appointment submission failed", error);
 
