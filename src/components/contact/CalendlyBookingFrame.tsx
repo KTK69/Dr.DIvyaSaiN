@@ -20,11 +20,6 @@ export default function CalendlyBookingFrame({ className = "" }: { className?: s
 
   useEffect(() => {
     const handleMessage = async (message: MessageEvent) => {
-      if (
-        message.origin !== "https://calendly.com" &&
-        message.origin !== "https://assets.calendly.com"
-      ) return;
-
       let data: { event?: string; payload?: { event?: unknown; invitee?: unknown } };
       try {
         data = typeof message.data === "string"
@@ -33,7 +28,7 @@ export default function CalendlyBookingFrame({ className = "" }: { className?: s
       } catch {
         return;
       }
-      const eventName = data?.event;
+      const eventName = data?.event ?? (data as { name?: string })?.name;
       if (eventName !== "calendly.event_scheduled") return;
 
       const eventUri = getCalendlyUri(data?.payload?.event);
