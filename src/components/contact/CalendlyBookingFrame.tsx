@@ -3,6 +3,12 @@
 import { useEffect, useRef } from "react";
 import { authorizeCalendlyBooking } from "@/lib/client-api";
 
+declare global {
+  interface Window {
+    gtag?: (...args: unknown[]) => void;
+  }
+}
+
 const CALENDLY_URL =
   "https://calendly.com/drdivyaplasticsurgeon/30min?hide_event_type_details=1&hide_gdpr_banner=1&background_color=0d1117&text_color=e2e8f0&primary_color=b8972a&redirect_url=https%3A%2F%2Fdrdivyaplasticsurgeon.com%2Fapi%2Fappointments%2Fcalendly%2Fredirect";
 
@@ -37,10 +43,12 @@ export default function CalendlyBookingFrame({ className = "" }: { className?: s
       handledEvents.current.add(eventUri);
 
       const result = await authorizeCalendlyBooking(eventUri);
-      if (result.ok && result.confirmationToken) {
-        window.location.assign(
-          `/appointment-thank-you?token=${encodeURIComponent(result.confirmationToken)}`,
-        );
+      if (result.ok && result.conversionId) {
+        window.gtag?.("event", "conversion", {
+          send_to: "AW-18459222154/fq-GCNqttP4CEIrBheJE",
+          transaction_id: result.conversionId,
+          currency: "INR",
+        });
       }
       void inviteeUri;
     };

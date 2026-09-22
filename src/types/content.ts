@@ -61,4 +61,6 @@ export interface AppointmentResponse {
   message: string;
   id?: string;
   confirmationToken?: string;
+  conversionId?: string;
+  bookingMethod?: "native-form" | "calendly";
 }
