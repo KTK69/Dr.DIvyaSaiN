@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { isCalendlyScheduledEventUri, verifyCalendlyEvent } from "@/lib/calendly-verification";
+import { verifyCalendlyEvent } from "@/lib/calendly-verification";
 
 export async function POST(request: Request) {
   const body = (await request.json().catch(() => null)) as {
@@ -7,7 +7,7 @@ export async function POST(request: Request) {
     inviteeUri?: unknown;
   } | null;
 
-  if (!isCalendlyScheduledEventUri(body?.eventUri)) {
+  if (typeof body?.eventUri !== "string") {
     return NextResponse.json({ ok: false, message: "Booking could not be verified." }, { status: 400 });
   }
 
