@@ -51,6 +51,26 @@ function findScheduledPayload(value: unknown, seen = new Set<object>()): { event
   return null;
 }
 
+function fireCalendlyConversion(transactionId: string) {
+  const conversionPayload = {
+    send_to: GOOGLE_ADS_SEND_TO,
+    transaction_id: transactionId,
+    currency: "INR",
+  };
+
+  window.dataLayer = window.dataLayer || [];
+  window.dataLayer.push({
+    event: "appointment_confirmation_validated",
+    booking_method: "calendly",
+  });
+
+  if (window.gtag) {
+    window.gtag("event", "conversion", conversionPayload);
+  } else {
+    window.dataLayer.push(["event", "conversion", conversionPayload]);
+  }
+}
+
 export default function CalendlyBookingFrame({ className = "" }: { className?: string }) {
   const handledEvents = useRef(new Set<string>());
 
@@ -69,20 +89,10 @@ export default function CalendlyBookingFrame({ className = "" }: { className?: s
       if (!scheduled || handledEvents.current.has(scheduled.eventUri)) return;
       handledEvents.current.add(scheduled.eventUri);
 
-      const result = await authorizeCalendlyBooking(scheduled.eventUri, scheduled.inviteeUri);
-      if (!result.ok || !result.conversionId) return;
-
-      const conversionPayload = {
-        send_to: GOOGLE_ADS_SEND_TO,
-        transaction_id: result.conversionId,
-        currency: "INR",
-      };
-      if (window.gtag) {
-        window.gtag("event", "conversion", conversionPayload);
-      } else {
-        window.dataLayer = window.dataLayer || [];
-        window.dataLayer.push(["event", "conversion", conversionPayload]);
-      }
+      // Fire immediately from Calendly's confirmed browser event; API verification
+      // should not block Ads tracking if the redirect races the POST request.
+      fireCalendlyConversion(scheduled.eventUri);
+      void authorizeCalendlyBooking(scheduled.eventUri, scheduled.inviteeUri);
     };
 
     window.addEventListener("message", handleMessage);
