@@ -7,6 +7,9 @@ declare global {
   interface Window {
     dataLayer?: unknown[];
     gtag?: (...args: unknown[]) => void;
+    Calendly?: {
+      initInlineWidget: (options: { url: string; parentElement: HTMLElement }) => void;
+    };
   }
 }
 
@@ -72,6 +75,7 @@ function fireCalendlyConversion(transactionId: string) {
 }
 
 export default function CalendlyBookingFrame({ className = "" }: { className?: string }) {
+  const containerRef = useRef<HTMLDivElement>(null);
   const handledEvents = useRef(new Set<string>());
 
   useEffect(() => {
@@ -96,19 +100,37 @@ export default function CalendlyBookingFrame({ className = "" }: { className?: s
     };
 
     window.addEventListener("message", handleMessage);
+
+    const initializeWidget = () => {
+      if (!containerRef.current || !window.Calendly) return false;
+      containerRef.current.replaceChildren();
+      window.Calendly.initInlineWidget({
+        url: CALENDLY_URL,
+        parentElement: containerRef.current,
+      });
+      return true;
+    };
+
+    if (!initializeWidget()) {
+      const script = document.querySelector<HTMLScriptElement>(
+        'script[src="https://assets.calendly.com/assets/external/widget.js"]',
+      );
+      const retry = window.setInterval(() => {
+        if (initializeWidget()) window.clearInterval(retry);
+      }, 100);
+      script?.addEventListener("load", initializeWidget, { once: true });
+      window.setTimeout(() => window.clearInterval(retry), 10000);
+    }
+
     return () => window.removeEventListener("message", handleMessage);
   }, []);
 
   return (
-    <iframe
-      src={CALENDLY_URL}
-      width="100%"
-      height="760"
-      frameBorder="0"
+    <div
+      ref={containerRef}
+      className={`calendly-inline-widget w-full block ${className}`}
+      style={{ minWidth: "320px", height: "760px" }}
       title="Book appointment with Dr. Divya Sai Narsingam"
-      loading="lazy"
-      className={`w-full block ${className}`}
-      style={{ minHeight: "760px" }}
     />
   );
 }
