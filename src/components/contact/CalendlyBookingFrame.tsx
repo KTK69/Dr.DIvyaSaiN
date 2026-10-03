@@ -8,6 +8,7 @@ declare global {
     dataLayer?: unknown[];
     gtag?: (...args: unknown[]) => void;
     __calendlyTrackedEvents?: Set<string>;
+    __calendlyLastConversionAt?: number;
     Calendly?: {
       initInlineWidget: (options: { url: string; parentElement: HTMLElement }) => void;
     };
@@ -78,7 +79,14 @@ function fireCalendlyConversion(transactionId: string) {
 function claimCalendlyEvent(eventUri: string) {
   window.__calendlyTrackedEvents ??= new Set<string>();
   if (window.__calendlyTrackedEvents.has(eventUri)) return false;
+
+  const now = Date.now();
+  if (window.__calendlyLastConversionAt && now - window.__calendlyLastConversionAt < 10000) {
+    return false;
+  }
+
   window.__calendlyTrackedEvents.add(eventUri);
+  window.__calendlyLastConversionAt = now;
   return true;
 }
 
