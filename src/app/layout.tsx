@@ -8,6 +8,7 @@ import { SiteContentProvider } from "@/components/site/SiteContentProvider";
 import { getStoredSiteContent } from "@/lib/site-content-store";
 
 const GOOGLE_TAG_ID = "G-DF5TQCEYCB";
+const GOOGLE_ADS_TAG_ID = "AW-18459222154";
 
 export const dynamic = "force-dynamic";
 
@@ -62,6 +63,7 @@ export default async function RootLayout({
             function gtag(){dataLayer.push(arguments);}
             gtag('js', new Date());
             gtag('config', '${GOOGLE_TAG_ID}');
+            gtag('config', '${GOOGLE_ADS_TAG_ID}');
           `}
         </Script>
         <script

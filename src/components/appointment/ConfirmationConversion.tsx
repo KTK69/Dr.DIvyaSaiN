@@ -4,7 +4,7 @@ import { useEffect, useRef } from "react";
 
 declare global {
   interface Window {
-    dataLayer?: Array<Record<string, unknown>>;
+    dataLayer?: unknown[];
     gtag?: (...args: unknown[]) => void;
   }
 }
@@ -28,11 +28,18 @@ export default function ConfirmationConversion({
       event: "appointment_confirmation_validated",
       booking_method: bookingMethod,
     });
-    window.gtag?.("event", "conversion", {
+    const conversionPayload = {
       send_to: GOOGLE_ADS_SEND_TO,
       transaction_id: transactionId,
       currency: "INR",
-    });
+    };
+
+    if (window.gtag) {
+      window.gtag("event", "conversion", conversionPayload);
+    } else {
+      window.dataLayer = window.dataLayer || [];
+      window.dataLayer.push(["event", "conversion", conversionPayload]);
+    }
   }, [bookingMethod, transactionId]);
 
   return null;
