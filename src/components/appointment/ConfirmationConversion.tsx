@@ -21,6 +21,7 @@ export default function ConfirmationConversion({
   const sent = useRef(false);
 
   useEffect(() => {
+    if (bookingMethod !== "native-form") return;
     if (sent.current) return;
     sent.current = true;
 
