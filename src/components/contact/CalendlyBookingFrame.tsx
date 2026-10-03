@@ -7,6 +7,7 @@ declare global {
   interface Window {
     dataLayer?: unknown[];
     gtag?: (...args: unknown[]) => void;
+    __calendlyTrackedEvents?: Set<string>;
     Calendly?: {
       initInlineWidget: (options: { url: string; parentElement: HTMLElement }) => void;
     };
@@ -74,6 +75,13 @@ function fireCalendlyConversion(transactionId: string) {
   }
 }
 
+function claimCalendlyEvent(eventUri: string) {
+  window.__calendlyTrackedEvents ??= new Set<string>();
+  if (window.__calendlyTrackedEvents.has(eventUri)) return false;
+  window.__calendlyTrackedEvents.add(eventUri);
+  return true;
+}
+
 export default function CalendlyBookingFrame({ className = "" }: { className?: string }) {
   const containerRef = useRef<HTMLDivElement>(null);
   const handledEvents = useRef(new Set<string>());
@@ -95,7 +103,9 @@ export default function CalendlyBookingFrame({ className = "" }: { className?: s
 
       // Fire immediately from Calendly's confirmed browser event; API verification
       // should not block Ads tracking if the redirect races the POST request.
-      fireCalendlyConversion(scheduled.eventUri);
+      if (claimCalendlyEvent(scheduled.eventUri)) {
+        fireCalendlyConversion(scheduled.eventUri);
+      }
       void authorizeCalendlyBooking(scheduled.eventUri, scheduled.inviteeUri);
     };
 
