@@ -1,14 +1,12 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import { authorizeCalendlyBooking } from "@/lib/client-api";
 
 declare global {
   interface Window {
     dataLayer?: unknown[];
     gtag?: (...args: unknown[]) => void;
-    __calendlyTrackedEvents?: Set<string>;
-    __calendlyLastConversionAt?: number;
+    __drDivyaCalendlyTrackedEvents?: Set<string>;
     Calendly?: {
       initInlineWidget: (options: { url: string; parentElement: HTMLElement }) => void;
     };
@@ -16,86 +14,48 @@ declare global {
 }
 
 const CALENDLY_URL =
-  "https://calendly.com/drdivyaplasticsurgeon/30min?hide_event_type_details=1&hide_gdpr_banner=1&background_color=0d1117&text_color=e2e8f0&primary_color=b8972a&redirect_url=https%3A%2F%2Fdrdivyaplasticsurgeon.com%2Fapi%2Fappointments%2Fcalendly%2Fredirect";
+  "https://calendly.com/drdivyaplasticsurgeon/30min?hide_event_type_details=1&hide_gdpr_banner=1&background_color=0d1117&text_color=e2e8f0&primary_color=b8972a";
 
 const GOOGLE_ADS_SEND_TO = "AW-18459222154/fq-GCNqttP4CEIrBheJE";
+const CALENDLY_TRACKED_EVENTS_KEY = "__drDivyaCalendlyTrackedEvents";
 
 function isCalendlyOrigin(origin: string) {
   return origin === "https://calendly.com" || origin.endsWith(".calendly.com");
 }
 
-function getCalendlyUri(value: unknown) {
-  if (typeof value === "string") return value;
-  if (value && typeof value === "object" && "uri" in value) {
-    const uri = (value as { uri?: unknown }).uri;
-    return typeof uri === "string" ? uri : null;
-  }
-  return null;
-}
-
-function findScheduledPayload(value: unknown, seen = new Set<object>()): { eventUri: string; inviteeUri?: string } | null {
+function getScheduledEventUri(value: unknown): string | null {
   if (!value || typeof value !== "object") return null;
-  if (seen.has(value)) return null;
-  seen.add(value);
-
   const record = value as Record<string, unknown>;
-  const eventName = record.event ?? record.name ?? record.type;
-  if (eventName === "calendly.event_scheduled") {
+  const name = record.event ?? record.name ?? record.type;
+  if (name === "calendly.event_scheduled") {
     const payload = record.payload && typeof record.payload === "object"
       ? record.payload as Record<string, unknown>
       : record;
-    const eventUri = getCalendlyUri(payload.event ?? payload.eventUri ?? payload.scheduled_event);
-    const inviteeUri = getCalendlyUri(payload.invitee ?? payload.inviteeUri);
-    if (eventUri) return { eventUri, inviteeUri: inviteeUri ?? undefined };
+    const event = payload.event ?? payload.eventUri ?? payload.scheduled_event;
+    if (typeof event === "string") return event;
+    if (event && typeof event === "object" && "uri" in event) {
+      const uri = (event as { uri?: unknown }).uri;
+      if (typeof uri === "string") return uri;
+    }
   }
 
   for (const child of Object.values(record)) {
-    const result = findScheduledPayload(child, seen);
-    if (result) return result;
+    const uri = getScheduledEventUri(child);
+    if (uri) return uri;
   }
   return null;
 }
 
-function fireCalendlyConversion(transactionId: string) {
-  const conversionPayload = {
-    send_to: GOOGLE_ADS_SEND_TO,
-    transaction_id: transactionId,
-    currency: "INR",
-  };
-
-  window.dataLayer = window.dataLayer || [];
-  window.dataLayer.push({
-    event: "appointment_confirmation_validated",
-    booking_method: "calendly",
-  });
-
-  if (window.gtag) {
-    window.gtag("event", "conversion", conversionPayload);
-  } else {
-    window.dataLayer.push(["event", "conversion", conversionPayload]);
-  }
-}
-
-function claimCalendlyEvent(eventUri: string) {
-  window.__calendlyTrackedEvents ??= new Set<string>();
-  if (window.__calendlyTrackedEvents.has(eventUri)) return false;
-
-  const now = Date.now();
-  if (window.__calendlyLastConversionAt && now - window.__calendlyLastConversionAt < 10000) {
-    return false;
-  }
-
-  window.__calendlyTrackedEvents.add(eventUri);
-  window.__calendlyLastConversionAt = now;
-  return true;
+function getTrackedCalendlyEvents() {
+  window[CALENDLY_TRACKED_EVENTS_KEY] ??= new Set<string>();
+  return window[CALENDLY_TRACKED_EVENTS_KEY];
 }
 
 export default function CalendlyBookingFrame({ className = "" }: { className?: string }) {
   const containerRef = useRef<HTMLDivElement>(null);
-  const handledEvents = useRef(new Set<string>());
 
   useEffect(() => {
-    const handleMessage = async (message: MessageEvent) => {
+    const handleCalendlyMessage = (message: MessageEvent) => {
       if (!isCalendlyOrigin(message.origin)) return;
 
       let data: unknown;
@@ -105,19 +65,31 @@ export default function CalendlyBookingFrame({ className = "" }: { className?: s
         return;
       }
 
-      const scheduled = findScheduledPayload(data);
-      if (!scheduled || handledEvents.current.has(scheduled.eventUri)) return;
-      handledEvents.current.add(scheduled.eventUri);
+      const eventUri = getScheduledEventUri(data);
+      if (!eventUri) return;
 
-      // Fire immediately from Calendly's confirmed browser event; API verification
-      // should not block Ads tracking if the redirect races the POST request.
-      if (claimCalendlyEvent(scheduled.eventUri)) {
-        fireCalendlyConversion(scheduled.eventUri);
+      // Calendly success is reported by the client-side calendly.event_scheduled
+      // message. Share the event set across all widget instances and lifecycles.
+      const trackedEvents = getTrackedCalendlyEvents();
+      if (trackedEvents.has(eventUri)) return;
+      trackedEvents.add(eventUri);
+
+      window.dataLayer = window.dataLayer || [];
+      window.dataLayer.push({ event: "appointment_confirmation_validated" });
+      const conversionPayload = {
+        send_to: GOOGLE_ADS_SEND_TO,
+        transaction_id: eventUri,
+        currency: "INR",
+      };
+
+      if (window.gtag) {
+        window.gtag("event", "conversion", conversionPayload);
+      } else {
+        window.dataLayer.push(["event", "conversion", conversionPayload]);
       }
-      void authorizeCalendlyBooking(scheduled.eventUri, scheduled.inviteeUri);
     };
 
-    window.addEventListener("message", handleMessage);
+    window.addEventListener("message", handleCalendlyMessage);
 
     const initializeWidget = () => {
       if (!containerRef.current || !window.Calendly) return false;
@@ -140,7 +112,7 @@ export default function CalendlyBookingFrame({ className = "" }: { className?: s
       window.setTimeout(() => window.clearInterval(retry), 10000);
     }
 
-    return () => window.removeEventListener("message", handleMessage);
+    return () => window.removeEventListener("message", handleCalendlyMessage);
   }, []);
 
   return (

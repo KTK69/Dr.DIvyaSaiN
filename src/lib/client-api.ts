@@ -29,13 +29,3 @@ export async function submitAppointment(
 
   return (await response.json()) as AppointmentResponse;
 }
-
-export async function authorizeCalendlyBooking(eventUri: string, inviteeUri?: string) {
-  const response = await fetch("/api/appointments/calendly", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ eventUri, inviteeUri }),
-  });
-
-  return (await response.json().catch(() => ({ ok: false }))) as AppointmentResponse;
-}

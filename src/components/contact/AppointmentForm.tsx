@@ -46,7 +46,7 @@ export default function AppointmentForm() {
     }
 
     window.location.assign(
-      `/appointment-thank-you?token=${encodeURIComponent(result.confirmationToken)}`,
+      `/form-thank-you?token=${encodeURIComponent(result.confirmationToken)}`,
     );
     reset();
   };

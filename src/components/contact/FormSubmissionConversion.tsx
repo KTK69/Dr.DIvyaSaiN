@@ -9,26 +9,17 @@ declare global {
   }
 }
 
-const GOOGLE_ADS_SEND_TO = "AW-18459222154/fq-GCNqttP4CEIrBheJE";
+const GOOGLE_ADS_SEND_TO = "AW-18459222154/eMRqCLakjJIdEIrBheJE";
 
-export default function ConfirmationConversion({
-  transactionId,
-  bookingMethod,
-}: {
-  transactionId: string;
-  bookingMethod: "native-form" | "calendly";
-}) {
+export default function FormSubmissionConversion({ transactionId }: { transactionId: string }) {
   const sent = useRef(false);
 
   useEffect(() => {
-    if (bookingMethod !== "native-form") return;
     if (sent.current) return;
     sent.current = true;
 
-    window.dataLayer?.push({
-      event: "appointment_confirmation_validated",
-      booking_method: bookingMethod,
-    });
+    window.dataLayer = window.dataLayer || [];
+    window.dataLayer.push({ event: "form_submission_validated" });
     const conversionPayload = {
       send_to: GOOGLE_ADS_SEND_TO,
       transaction_id: transactionId,
@@ -38,10 +29,9 @@ export default function ConfirmationConversion({
     if (window.gtag) {
       window.gtag("event", "conversion", conversionPayload);
     } else {
-      window.dataLayer = window.dataLayer || [];
       window.dataLayer.push(["event", "conversion", conversionPayload]);
     }
-  }, [bookingMethod, transactionId]);
+  }, [transactionId]);
 
   return null;
 }

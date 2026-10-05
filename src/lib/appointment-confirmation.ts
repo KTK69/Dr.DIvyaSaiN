@@ -105,13 +105,21 @@ export async function issueAppointmentConfirmation(input: {
   });
 }
 
-export async function consumeAppointmentConfirmation(token: string) {
+export async function consumeAppointmentConfirmation(
+  token: string,
+  expectedSource?: ConfirmationRecord["source"],
+) {
   if (!token || token.length > 200) return null;
 
   return withStoreLock(async () => {
     const store = await readStore();
     const record = store.confirmations.find((item) => item.tokenHash === hashToken(token));
-    if (!record || record.consumedAt || new Date(record.expiresAt).getTime() <= Date.now()) {
+    if (
+      !record ||
+      (expectedSource && record.source !== expectedSource) ||
+      record.consumedAt ||
+      new Date(record.expiresAt).getTime() <= Date.now()
+    ) {
       return null;
     }
 
