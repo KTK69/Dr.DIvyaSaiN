@@ -24,6 +24,13 @@ type QuillInstance = {
   setSelection: (index: number, length?: number, source?: "api" | "silent" | "user") => void;
   deleteText: (index: number, length: number, source?: "api" | "silent" | "user") => void;
   insertText: (index: number, text: string, source?: "api" | "silent" | "user") => void;
+  formatText: (
+    index: number,
+    length: number,
+    name: string,
+    value: string | false,
+    source?: "api" | "silent" | "user",
+  ) => void;
   formatLine: (index: number, length: number, name: string, value: string | false, source?: "api" | "silent" | "user") => void;
   clipboard: {
     dangerouslyPasteHTML: (index: number, html: string, source?: "api" | "silent" | "user") => void;
@@ -532,6 +539,27 @@ function getNormalizedEditorOutput(quill: QuillInstance) {
   return normalizeHtml(normalizedHtml);
 }
 
+function normalizeLinkHref(value: string) {
+  const href = value.trim();
+  if (!href) {
+    return "";
+  }
+
+  if (href.startsWith("www.")) {
+    return `https://${href}`;
+  }
+
+  if (/^(https?:|mailto:|tel:|\/|#)/i.test(href)) {
+    return href;
+  }
+
+  if (!/\s/.test(href)) {
+    return `/${href}`;
+  }
+
+  return null;
+}
+
 export default function RichTextEditor({
   value,
   onChange,
@@ -615,6 +643,30 @@ export default function RichTextEditor({
       selectionRef.current = quill.getSelection();
 
       const toolbar = quill.getModule("toolbar") as QuillToolbarModule | null;
+      toolbar?.addHandler("link", () => {
+        const selection = quill.getSelection(true);
+        if (!selection || selection.length === 0) {
+          window.alert("Select the text you want to link first.");
+          return;
+        }
+
+        const enteredHref = window.prompt(
+          "Enter a URL (for example /blog/your-blog-slug or https://example.com):",
+          "https://",
+        );
+        if (enteredHref === null) {
+          return;
+        }
+
+        const href = normalizeLinkHref(enteredHref);
+        if (href === null) {
+          window.alert("Please enter a valid URL without spaces.");
+          return;
+        }
+
+        quill.setSelection(selection.index, selection.length, "silent");
+        quill.formatText(selection.index, selection.length, "link", href || false, "user");
+      });
       toolbar?.addHandler("image", () => {
         inputRef.current?.click();
       });
