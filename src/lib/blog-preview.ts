@@ -18,6 +18,24 @@ function textFromHtml(value: string) {
     .replace(HTML_ENTITY_PATTERN, (entity) => HTML_ENTITIES[entity] ?? entity);
 }
 
+function normalizePreviewText(value: string) {
+  return value
+    .replace(/\s+/g, " ")
+    .trim()
+    .toLowerCase();
+}
+
+export function isPreviewAlreadyInContent(excerpt: string | undefined, content: string | undefined) {
+  const normalizedExcerpt = normalizePreviewText(excerpt ?? "");
+  const normalizedContent = normalizePreviewText(textFromHtml(content ?? ""));
+
+  return Boolean(
+    normalizedExcerpt &&
+      normalizedContent &&
+      (normalizedContent === normalizedExcerpt || normalizedContent.startsWith(normalizedExcerpt)),
+  );
+}
+
 export function getBlogPreviewText(excerpt: string | undefined, content: string | undefined, maxLength = 180) {
   const source = (excerpt?.trim() || textFromHtml(content ?? "")).replace(/\s+/g, " ").trim();
 

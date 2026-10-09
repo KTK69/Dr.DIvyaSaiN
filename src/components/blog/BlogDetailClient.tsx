@@ -6,7 +6,7 @@ import JsonLd from "@/components/seo/JsonLd";
 import RichText from "@/components/ui/RichText";
 import { useSiteContent } from "@/components/site/SiteContentProvider";
 import { getBlogRouteSlug, normalizeBlogSlug } from "@/lib/blog-links";
-import { getBlogDisplayTitle, getBlogPreviewText } from "@/lib/blog-preview";
+import { getBlogDisplayTitle, getBlogPreviewText, isPreviewAlreadyInContent } from "@/lib/blog-preview";
 import { buildBlogJsonLd } from "@/lib/seo";
 import type { Blog } from "@/types/content";
 
@@ -45,6 +45,7 @@ export default function BlogDetailClient({ slug, serverBlog }: Props) {
   const publishedAt = formatDate(blog.published_at);
   const displayTitle = getBlogDisplayTitle(blog.title, blog.slug, blog.content);
   const previewText = getBlogPreviewText(blog.excerpt, blog.content);
+  const showPreview = Boolean(previewText && !isPreviewAlreadyInContent(blog.excerpt, blog.content));
 
   return (
     <>
@@ -64,7 +65,7 @@ export default function BlogDetailClient({ slug, serverBlog }: Props) {
           {displayTitle}
         </h1>
 
-        {previewText ? (
+        {showPreview ? (
           <p className="mt-5 text-base text-(--foreground-muted) leading-relaxed">
             {previewText}
           </p>

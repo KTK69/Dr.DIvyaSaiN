@@ -1445,22 +1445,18 @@ export async function extractPdfContent(file: File, options?: { preferNoTables?:
       return true;
     });
 
-    // Allow caller to disable table detection when PDFs are being mis-classified
-    const pageBlocks = options?.preferNoTables ?
-      // Treat everything as non-table lines: detect columns only
-      (function () {
-        const columns = detectColumns(filteredItems);
-        const lines: TextLine[] = [];
-        for (const col of columns) {
-          lines.push(...mergeIntoLines(col));
-        }
-        return lines.length > 0 ? [{ type: "lines", lines }] : [];
-      })() : processPageItems(filteredItems);
-    // If autoTune is not explicitly false, run table detection with autoTune enabled.
-    const tunedPageBlocks = options?.preferNoTables ?
-      (pageBlocks as PageBlock[]) :
-      processPageItems(filteredItems, { autoTune: options?.autoTune !== false });
-    allBlocks.push(...tunedPageBlocks);
+    // Allow caller to disable table detection when PDFs are being mis-classified.
+    const pageBlocks: PageBlock[] = options?.preferNoTables
+      ? (() => {
+          const columns = detectColumns(filteredItems);
+          const lines: TextLine[] = [];
+          for (const col of columns) {
+            lines.push(...mergeIntoLines(col));
+          }
+          return lines.length > 0 ? [{ type: "lines" as const, lines }] : [];
+        })()
+      : processPageItems(filteredItems, { autoTune: options?.autoTune !== false });
+    allBlocks.push(...pageBlocks);
     
   }
 
