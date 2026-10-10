@@ -6,14 +6,16 @@ import { z } from "zod/v4";
 import { useState } from "react";
 import { Send, CheckCircle } from "lucide-react";
 import { submitAppointment } from "@/lib/client-api";
+import { isValidIndianMobileNumber } from "@/lib/appointment-validation";
 
 const appointmentSchema = z.object({
   fullName: z.string().min(2, "Please enter your full name"),
-  phone: z.string().min(10, "Please enter a valid phone number"),
+  phone: z.string().refine(isValidIndianMobileNumber, "Please enter a valid Indian mobile number"),
   email: z.email("Please enter a valid email address"),
   concern: z.string().min(10, "Please briefly describe your concern (min 10 characters)"),
   preferredTime: z.string().optional(),
   howDidYouHear: z.string().optional(),
+  website: z.string().max(0).optional(),
 });
 
 type AppointmentFormData = z.infer<typeof appointmentSchema>;
@@ -21,6 +23,7 @@ type AppointmentFormData = z.infer<typeof appointmentSchema>;
 export default function AppointmentForm() {
   const [submitted, setSubmitted] = useState(false);
   const [submitError, setSubmitError] = useState<string | null>(null);
+  const [formStartedAt, setFormStartedAt] = useState(0);
 
   const {
     register,
@@ -33,7 +36,10 @@ export default function AppointmentForm() {
 
   const onSubmit = async (data: AppointmentFormData) => {
     setSubmitError(null);
-    const result = await submitAppointment(data);
+    const result = await submitAppointment({
+      ...data,
+      formStartedAt,
+    });
 
     if (!result.ok) {
       setSubmitError(result.message || "Unable to submit appointment request.");
@@ -88,7 +94,20 @@ export default function AppointmentForm() {
       className="glass-card rounded-2xl p-8 md:p-10 space-y-8"
       noValidate
       aria-label="Appointment request form"
+      onFocus={() => {
+        setFormStartedAt((startedAt) => startedAt || Date.now());
+      }}
     >
+      <div className="hidden" aria-hidden="true">
+        <label htmlFor="website">Website</label>
+        <input
+          id="website"
+          type="text"
+          tabIndex={-1}
+          autoComplete="off"
+          {...register("website")}
+        />
+      </div>
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-7">
         <div>
           <label htmlFor="fullName" className={labelClass}>

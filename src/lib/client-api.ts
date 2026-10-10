@@ -3,8 +3,13 @@ import type {
   AppointmentResponse,
 } from "@/types/content";
 
+type AppointmentSubmission = AppointmentRequest & {
+  website?: string;
+  formStartedAt: number;
+};
+
 export async function submitAppointment(
-  payload: AppointmentRequest,
+  payload: AppointmentSubmission,
 ): Promise<AppointmentResponse> {
   const response = await fetch("/api/appointments", {
     method: "POST",
