@@ -235,7 +235,7 @@ function ProcedureModal({
                         className="group text-left glass-card overflow-hidden rounded-2xl border border-(--border) transition-all hover:border-(--accent-gold)/30 hover:shadow-xl hover:shadow-(--accent-gold)/5 flex flex-col"
                       >
                         <div
-                          className="relative w-full flex items-center justify-center bg-[#0d1117]"
+                          className="relative w-full flex items-center justify-center bg-(--background)"
                           style={{ aspectRatio: "4/3" }}
                         >
                           <Image
@@ -298,7 +298,7 @@ function ProcedureModal({
                       aria-label={`View ${image.label} full size`}
                     >
                       <div
-                        className="relative w-full flex items-center justify-center bg-[#0d1117]"
+                        className="relative w-full flex items-center justify-center bg-(--background)"
                         style={{ aspectRatio: "4/3" }}
                       >
                         <Image
@@ -359,7 +359,7 @@ function ProcedureCard({
       aria-label={`Open ${procedure.procedureName} gallery`}
     >
       <div
-        className="relative w-full flex items-center justify-center bg-[#0d1117]"
+        className="relative w-full flex items-center justify-center bg-(--background)"
         style={{ aspectRatio: "4/3" }}
       >
         {src ? (

@@ -2,19 +2,20 @@
 @import "tailwindcss";
 
 :root {
-  --background: #0d1117;
-  --bg-surface: #131920;
-  --bg-card: #161e28;
-  --bg-glass: rgba(22, 30, 40, 0.72);
-  --border: rgba(255, 255, 255, 0.07);
-  --border-subtle: rgba(255, 255, 255, 0.04);
-  --foreground: #e8edf3;
-  --foreground-muted: #8a95a3;
-  --foreground-subtle: #4a5568;
-  --accent-blue: #3b82f6;
-  --accent-blue-dim: #1d4ed8;
-  --accent-gold: #b8972a;
-  --accent-gold-light: #d4af4a;
+  --background: #fcfaf7;
+  --bg-surface: #f5eee9;
+  --bg-card: #fffdfa;
+  --bg-glass: rgba(255, 253, 250, 0.88);
+  --border: rgba(24, 60, 52, 0.15);
+  --border-subtle: rgba(24, 60, 52, 0.08);
+  --foreground: #183c34;
+  --foreground-muted: #61736c;
+  --foreground-subtle: #8c9a94;
+  --accent-blue: #2f6b5d;
+  --accent-blue-dim: #1f5146;
+  --accent-gold: #b4873d;
+  --accent-gold-light: #c69e5c;
+  --accent-blush: #f1dfd9;
   --font-serif: "Playfair Display", Georgia, serif;
   --font-sans: "Inter", system-ui, sans-serif;
 }
@@ -68,7 +69,7 @@ a {
 }
 
 ::selection {
-  background: rgba(59, 130, 246, 0.25);
+  background: rgba(77, 129, 116, 0.22);
   color: var(--foreground);
 }
 
@@ -83,10 +84,11 @@ a {
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
   border: 1px solid var(--border);
+  box-shadow: 0 14px 36px rgba(24, 60, 52, 0.06);
 }
 
 .gradient-text {
-  background: linear-gradient(135deg, #e8edf3 0%, var(--accent-gold-light) 100%);
+  background: linear-gradient(135deg, var(--foreground) 0%, var(--accent-gold-light) 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;

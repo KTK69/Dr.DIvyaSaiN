@@ -39,7 +39,7 @@ function WhatsAppButton() {
       </svg>
       {/* Tooltip */}
       <span className="pointer-events-none absolute right-16 top-1/2 -translate-y-1/2 whitespace-nowrap rounded-lg px-3 py-1.5 text-xs font-medium text-white opacity-0 group-hover:opacity-100 transition-opacity duration-200 shadow-xl"
-        style={{ background: "#1a1a2e" }}>
+        style={{ background: "var(--foreground)" }}>
         Chat on WhatsApp
       </span>
     </motion.a>
@@ -65,7 +65,7 @@ function InstagramButton() {
       <Instagram size={22} color="white" aria-hidden="true" />
       <span
         className="pointer-events-none absolute right-16 top-1/2 -translate-y-1/2 whitespace-nowrap rounded-lg px-3 py-1.5 text-xs font-medium text-white opacity-0 group-hover:opacity-100 transition-opacity duration-200 shadow-xl"
-        style={{ background: "#1a1a2e" }}
+        style={{ background: "var(--foreground)" }}
       >
         Visit Instagram
       </span>

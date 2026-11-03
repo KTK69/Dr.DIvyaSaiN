@@ -356,7 +356,7 @@ export const DEFAULT_SITE_CONTENT: SiteContent = {
     ],
     contactTitle: "Contact",
     contactLocation: contactInfo.fullAddress,
-    contactEmail: "Appointments via AIG & CARE Hospitals",
+    contactEmail: "Appointments via AIG Hospitals, Banjara Hills & Aura Aesthetics & CARE Hospitals, Gachibowli",
     linksTitle: "Links",
     links: [
       { label: "Home", href: "/" },
@@ -500,7 +500,7 @@ export const DEFAULT_SITE_CONTENT: SiteContent = {
     services: {
       title: "Plastic Surgery Services Hyderabad | Reconstructive & Cosmetic",
       description:
-        "Comprehensive plastic and reconstructive surgery services by Dr. Divya Sai Narsingam at Aura Aesthetics & CARE Hospitals, Gachibowli, Hyderabad. Breast reconstruction, onco reconstruction, cosmetic procedures and more.",
+        "Comprehensive plastic and reconstructive surgery services by Dr. Divya Sai Narsingam at AIG Hospitals, Banjara Hills & Aura Aesthetics & CARE Hospitals, Gachibowli, Hyderabad. Breast reconstruction, onco reconstruction, cosmetic procedures and more.",
       keywords: [
         "plastic surgery services Hyderabad",
         "breast reconstruction Hyderabad",
@@ -543,7 +543,7 @@ export const DEFAULT_SITE_CONTENT: SiteContent = {
       keywords: [
         "plastic surgeon Banjara Hills",
         "plastic surgeon in Banjara Hills Hyderabad",
-        "AIG and CARE Hospitals plastic surgeon",
+        "AIG, Aura Aesthetics & CARE Hospitals plastic surgeon",
         "cosmetic surgeon Banjara Hills",
         "reconstructive surgeon Banjara Hills",
       ],
@@ -599,7 +599,7 @@ export const DEFAULT_SITE_CONTENT: SiteContent = {
       whatsappLabel: "WhatsApp Us",
       servicesLabel: "Explore Procedures",
       hospitalLocation:
-        "Room No. 20, 1st Floor, AIG Hospitals, Banjara Hills, Hyderabad – 500034\nRoom No. 212, Aura Aesthetics & CARE Hospitals, Gachibowli, Hyderabad",
+        "Room No. 20, 1st Floor, AIG Hospitals, Banjara Hills, Hyderabad – 500034\nRoom No. 212, AIG Hospitals, Banjara Hills & Aura Aesthetics & CARE Hospitals, Gachibowli, Hyderabad",
     },
     beforeAfterGallery: {
       eyebrow: "Before & After",
@@ -922,7 +922,7 @@ export const DEFAULT_SITE_CONTENT: SiteContent = {
         cta: "Learn about Burn and Scar Revision",
       },
     ],
-    aigEyebrow: "Why AIG and CARE",
+    aigEyebrow: "Why AIG, Aura Aesthetics & CARE",
     aigTitle: "Why consult at AIG Hospitals, Banjara Hills & Aura Aesthetics & CARE Hospitals, Gachibowli?",
     aigSubtitle:
       "Hospital infrastructure, accessibility, peri-operative support, and diagnostic access are key advantages for patients consulting across both Hyderabad locations.",

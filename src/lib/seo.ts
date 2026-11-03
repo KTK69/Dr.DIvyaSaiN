@@ -134,7 +134,7 @@ export function buildSiteIdentityJsonLd() {
       {
         "@type": ["MedicalClinic", "LocalBusiness"],
         "@id": CARE_LOCATION_ID,
-        name: `${doctor.name} – Aura Aesthetics & CARE Hospitals, Gachibowli`,
+        name: `${doctor.name} – AIG Hospitals, Banjara Hills & Aura Aesthetics & CARE Hospitals, Gachibowli`,
         url: SITE_URL,
         image: SITE_IMAGE_URL,
         telephone: "+919900135489",
@@ -274,7 +274,7 @@ export function buildServiceJsonLd(
       },
       {
         "@type": "Hospital",
-        name: "Aura Aesthetics & CARE Hospitals, Gachibowli",
+        name: "AIG Hospitals, Banjara Hills & Aura Aesthetics & CARE Hospitals, Gachibowli",
       },
     ],
   };
@@ -574,7 +574,7 @@ export function buildUnifiedServiceJsonLd(service: Service) {
       },
       {
         "@type": "Hospital",
-        name: "Aura Aesthetics & CARE Hospitals, Gachibowli",
+        name: "AIG Hospitals, Banjara Hills & Aura Aesthetics & CARE Hospitals, Gachibowli",
       },
     ],
   };

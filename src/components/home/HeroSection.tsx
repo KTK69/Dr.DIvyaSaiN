@@ -22,7 +22,7 @@ export default function HeroSection() {
         aria-hidden="true"
         style={{
           background:
-            "radial-gradient(ellipse 80% 60% at 60% 40%, rgba(59,130,246,0.05) 0%, transparent 70%), radial-gradient(ellipse 50% 50% at 20% 80%, rgba(184,151,42,0.06) 0%, transparent 60%)",
+            "radial-gradient(ellipse 80% 60% at 60% 40%, rgba(47,107,93,0.1) 0%, transparent 70%), radial-gradient(ellipse 50% 50% at 20% 80%, rgba(241,223,217,0.7) 0%, transparent 60%)",
         }}
       />
 
@@ -119,7 +119,7 @@ export default function HeroSection() {
               <div className="w-full aspect-3/4 max-w-xs mx-auto rounded-xl overflow-hidden border border-(--border) relative mb-6">
                 <Image
                   src={HERO_IMAGE}
-                  alt="Dr. Divya Sai Narsingam – Plastic & Reconstructive Surgeon, AIG & CARE Hospitals Hyderabad"
+                  alt="Dr. Divya Sai Narsingam – Plastic & Reconstructive Surgeon at AIG Hospitals, Aura Aesthetics & CARE Hospitals, Hyderabad"
                   fill
                   className="object-cover object-top"
                   priority

@@ -90,11 +90,11 @@ export const DEFAULT_SERVICES: Service[] = [
       {
         question: `Where is ${item.name} performed?`,
         answer:
-          "Procedures are planned in coordination with Aura Aesthetics & CARE Hospitals, Gachibowli, Hyderabad.",
+          "Procedures are planned in coordination with AIG Hospitals, Banjara Hills & Aura Aesthetics & CARE Hospitals, Gachibowli, Hyderabad.",
       },
     ],
     meta_title: `${item.name} in Hyderabad | Dr. Divya Sai Narsingam`,
-    meta_description: `${item.shortDesc} Specialist ${category} surgery by Dr. Divya Sai Narsingam at Aura Aesthetics & CARE Hospitals, Gachibowli, Hyderabad.`,
+    meta_description: `${item.shortDesc} Specialist ${category} surgery by Dr. Divya Sai Narsingam at AIG Hospitals, Banjara Hills & Aura Aesthetics & CARE Hospitals, Gachibowli, Hyderabad.`,
     meta_keywords: [],
   };
 });

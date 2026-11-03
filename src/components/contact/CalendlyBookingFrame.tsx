@@ -11,7 +11,7 @@ declare global {
 }
 
 const CALENDLY_URL =
-  "https://calendly.com/drdivyaplasticsurgeon/30min?hide_event_type_details=1&hide_gdpr_banner=1&background_color=0d1117&text_color=e2e8f0&primary_color=b8972a";
+  "https://calendly.com/drdivyaplasticsurgeon/30min?hide_event_type_details=1&hide_gdpr_banner=1&background_color=fbfaf6&text_color=24332f&primary_color=b89a5a";
 
 export default function CalendlyBookingFrame({ className = "" }: { className?: string }) {
   const containerRef = useRef<HTMLDivElement>(null);

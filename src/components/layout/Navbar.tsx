@@ -64,7 +64,7 @@ export default function Navbar() {
           {/* Logo */}
           <Link
             href="/"
-            className="flex min-w-0 flex-1 max-w-[calc(100%-4.5rem)] flex-col overflow-hidden leading-tight group sm:max-w-none"
+            className="flex min-w-0 flex-1 max-w-[calc(100%-5rem)] flex-col overflow-hidden leading-tight group sm:max-w-none"
           >
             <div className="flex items-center gap-2.5 sm:gap-3 min-w-0">
               <div className="relative h-10 w-10 sm:h-11 sm:w-11 shrink-0 overflow-hidden rounded-full border border-(--border) bg-(--bg-card)">
@@ -77,7 +77,10 @@ export default function Navbar() {
                 >
                   Dr. Divya Sai Narsingam
                 </span>
-                <span className="block truncate text-[10px] leading-tight sm:text-xs text-(--foreground) font-semibold tracking-wide opacity-90">
+                <span className="block truncate text-[10px] leading-tight sm:hidden text-(--foreground) font-semibold tracking-wide opacity-90">
+                  MCh Plastic Surgery · Aura Aesthetics, Gachibowli
+                </span>
+                <span className="hidden truncate text-xs leading-tight sm:block text-(--foreground) font-semibold tracking-wide opacity-90">
                   MCh Plastic Surgery · AIG Hospitals, Banjara Hills & Aura Aesthetics & CARE Hospitals, Gachibowli, Hyderabad
                 </span>
               </div>
