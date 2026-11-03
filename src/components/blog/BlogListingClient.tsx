@@ -95,12 +95,12 @@ export default function BlogListingClient({
                 >
                   <Link href={href} aria-label={`Read ${displayTitle}`}>
                     {post.image ? (
-                      <div className="relative aspect-16/10">
+                      <div className="relative aspect-16/10 bg-(--bg-surface)">
                         <Image
                           src={post.image}
                           alt={displayTitle}
                           fill
-                          className="object-cover"
+                          className="object-contain"
                           unoptimized={
                             post.image.startsWith("data:") ||
                             post.image.startsWith("blob:") ||

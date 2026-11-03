@@ -27,7 +27,7 @@ export default async function FormThankYouPage({
       <div className="glass-card max-w-2xl rounded-2xl p-10 md:p-16 text-center">
         {confirmation ? (
           <>
-            <FormSubmissionConversion transactionId={confirmation.id} />
+            <FormSubmissionConversion />
             <CheckCircle size={56} className="text-[var(--accent-gold)] mx-auto mb-6" />
             <h1 className="text-3xl md:text-5xl mb-5">Thank You for Reaching Out</h1>
             <p className="text-[var(--foreground-muted)] leading-relaxed">

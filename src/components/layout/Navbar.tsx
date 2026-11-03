@@ -78,7 +78,7 @@ export default function Navbar() {
                   Dr. Divya Sai Narsingam
                 </span>
                 <span className="block truncate text-[10px] leading-tight sm:text-xs text-(--foreground) font-semibold tracking-wide opacity-90">
-                  MCh Plastic Surgery · AIG Hospitals, Banjara Hills & CARE Hospitals, Gachibowli, Hyderabad
+                  MCh Plastic Surgery · AIG Hospitals, Banjara Hills & Aura Aesthetics & CARE Hospitals, Gachibowli, Hyderabad
                 </span>
               </div>
             </div>
@@ -204,9 +204,9 @@ export default function Navbar() {
           </div>
         </div>
 
-        {/* Row 2: Mobile Horizontal Navigation Strip (Non-scrollable, fits all mobile screens) */}
-        <div className="lg:hidden flex items-center justify-between border-t border-(--border)/20 -mx-4 sm:-mx-6 px-4 sm:px-6 py-2 bg-(--bg-surface)/95">
-          <div className="flex w-full items-center justify-between gap-1">
+        {/* Row 2: Mobile horizontal navigation strip */}
+        <div className="lg:hidden overflow-x-auto border-t border-(--border)/20 -mx-4 sm:-mx-6 px-4 sm:px-6 py-2 bg-(--bg-surface)/95 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+          <div className="flex min-w-max items-center gap-1">
             <Link
               href="/"
               onClick={closeMenus}

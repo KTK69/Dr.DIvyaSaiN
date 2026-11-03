@@ -2263,7 +2263,7 @@ function ImageField({ label, value, onChange, className = "" }: { label: string;
             <img
               src={value}
               alt={`${label} preview`}
-              className="h-full w-full object-cover"
+              className="h-full w-full object-contain"
             />
           </div>
         ) : isBase64 ? (
@@ -2272,7 +2272,7 @@ function ImageField({ label, value, onChange, className = "" }: { label: string;
             <img
               src={value}
               alt={`${label} preview`}
-              className="h-full w-full object-cover"
+              className="h-full w-full object-contain"
             />
           </div>
         ) : null}

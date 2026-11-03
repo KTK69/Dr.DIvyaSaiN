@@ -25,7 +25,7 @@
 
 html {
   scroll-behavior: smooth;
-  font-size: clamp(18px, 17px + 0.45vw, 20px);
+  font-size: 16px;
   overflow-x: hidden;
 }
 
@@ -95,6 +95,13 @@ a {
 .section-padding {
   padding-top: 5rem;
   padding-bottom: 5rem;
+}
+
+@media (max-width: 640px) {
+  .section-padding {
+    padding-top: 3.5rem;
+    padding-bottom: 3.5rem;
+  }
 }
 
 .rich-text > :first-child,

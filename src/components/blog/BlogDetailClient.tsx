@@ -72,12 +72,12 @@ export default function BlogDetailClient({ slug, serverBlog }: Props) {
         ) : null}
 
         {blog.image ? (
-          <div className="relative aspect-video mt-8 rounded-2xl overflow-hidden border border-(--border)">
+          <div className="relative aspect-video mt-8 rounded-2xl overflow-hidden border border-(--border) bg-(--bg-surface)">
             <Image
               src={blog.image}
               alt={displayTitle}
               fill
-              className="object-cover"
+              className="object-contain"
               unoptimized={
                 blog.image.startsWith("data:") ||
                 blog.image.startsWith("blob:") ||

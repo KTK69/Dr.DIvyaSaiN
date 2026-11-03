@@ -138,7 +138,7 @@ export default function HeroSection() {
                   MBBS, MS, MCh (Plastic Surgery)
                 </p>
                 <p className="text-xs text-(--foreground-muted)">
-                  Consultant · AIG Hospitals, Banjara Hills & CARE Hospitals, Gachibowli
+                  Consultant · AIG Hospitals, Banjara Hills & Aura Aesthetics & CARE Hospitals, Gachibowli
                 </p>
               </div>
 
