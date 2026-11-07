@@ -31,6 +31,23 @@ export default function LocationCard() {
       >
         +91 99001 35489
       </a>
+      <div className="mt-5 overflow-hidden rounded-xl border border-(--border)">
+        <iframe
+          title="AIG Hospitals and CARE Hospitals Hyderabad locations"
+          src="https://www.google.com/maps?q=AIG%20Hospitals%20Banjara%20Hills%20Hyderabad&output=embed"
+          className="h-52 w-full border-0"
+          loading="lazy"
+          referrerPolicy="no-referrer-when-downgrade"
+        />
+      </div>
+      <a
+        href="https://www.google.com/maps/search/?api=1&query=AIG+Hospitals+Banjara+Hills+Hyderabad"
+        target="_blank"
+        rel="noreferrer"
+        className="mt-3 inline-flex text-sm text-(--accent-gold) hover:text-(--foreground) transition-colors"
+      >
+        Get directions
+      </a>
     </div>
   );
 }

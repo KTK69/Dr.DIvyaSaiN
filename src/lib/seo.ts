@@ -39,8 +39,21 @@ function uniqueKeywords(values: string[]) {
  */
 function stripSiteSuffix(title: string): string {
   if (!title) return title;
-  // Remove trailing " | Dr. Divya Sai Narsingam" (case-insensitive, with optional whitespace)
-  return title.replace(/\s*\|\s*Dr\.?\s*Divya\s+Sai\s+Narsingam\s*$/i, "").trim();
+  return title
+    .replace(/Dr\.?\s*Divya\s+Sai\s+Narsingam/gi, "")
+    .replace(/\s*\|\s*/g, " | ")
+    .replace(/\s*\|\s*$/g, "")
+    .replace(/\s{2,}/g, " ")
+    .replace(/^[\s|–—-]+|[\s|–—-]+$/g, "")
+    .trim();
+}
+
+function cleanMetaText(value: string): string {
+  return value
+    .replace(/\r?\n/g, " ")
+    .replace(/\s+/g, " ")
+    .replace(/Hyderabad\.\s*and/gi, "Hyderabad and")
+    .trim();
 }
 
 /**
@@ -171,6 +184,33 @@ export function buildSiteIdentityJsonLd() {
         worksFor: [{ "@id": AIG_LOCATION_ID }, { "@id": CARE_LOCATION_ID }],
       },
     ],
+  };
+}
+
+export function buildPhysicianJsonLd() {
+  const credentials = doctor.qualifications.split(",").map((item) => item.trim());
+  const alumniOf = education.map((item) => ({
+    "@type": "CollegeOrUniversity",
+    name: item.institution,
+  }));
+
+  return {
+    "@context": "https://schema.org",
+    "@type": "Physician",
+    "@id": PHYSICIAN_ID,
+    name: doctor.name,
+    url: SITE_URL,
+    image: SITE_IMAGE_URL,
+    description: doctor.summary,
+    medicalSpecialty: "Plastic and Reconstructive Surgery",
+    jobTitle: doctor.title,
+    telephone: "+919900135489",
+    hasCredential: credentials.map((item) => ({
+      "@type": "EducationalOccupationalCredential",
+      credentialCategory: item,
+    })),
+    alumniOf,
+    worksFor: [{ "@id": AIG_LOCATION_ID }, { "@id": CARE_LOCATION_ID }],
   };
 }
 
@@ -355,10 +395,11 @@ export function buildStaticPageMetadata(
 export function buildEditablePageMetadata(page: PageSeoEntry): Metadata {
   const canonical = `${SITE_URL}${page.canonicalPath}`;
   const cleanTitle = stripSiteSuffix(page.title);
+  const description = cleanMetaText(page.description);
 
   return {
     title: { absolute: `${cleanTitle} ${SITE_NAME_SUFFIX}` },
-    description: page.description,
+    description,
     keywords: page.keywords,
     alternates: {
       canonical,
@@ -366,7 +407,7 @@ export function buildEditablePageMetadata(page: PageSeoEntry): Metadata {
     openGraph: {
       type: "website",
       title: `${cleanTitle} ${SITE_NAME_SUFFIX}`,
-      description: page.description,
+      description,
       url: canonical,
       siteName: "Dr. Divya Sai Narsingam",
       locale: "en_IN",
@@ -374,7 +415,7 @@ export function buildEditablePageMetadata(page: PageSeoEntry): Metadata {
     twitter: {
       card: "summary_large_image",
       title: `${cleanTitle} ${SITE_NAME_SUFFIX}`,
-      description: page.description,
+      description,
     },
   };
 }
@@ -396,7 +437,7 @@ export function buildBlogMetadata(blog: Blog): Metadata {
   const pageTitle = stripSiteSuffix(rawTitle);
 
   const metaDescription = blog.meta_description?.trim()
-    ? blog.meta_description
+    ? cleanMetaText(blog.meta_description)
     : blog.excerpt?.trim()
       ? truncateDescription(blog.excerpt)
       : `Read about ${blog.title || "plastic surgery"} by ${doctor.name}, Plastic & Reconstructive Surgeon in Hyderabad.`;
@@ -489,7 +530,7 @@ export function buildUnifiedServiceMetadata(service: Service): Metadata {
   const pageTitle = stripSiteSuffix(rawTitle);
 
   const metaDescription = service.meta_description?.trim()
-    ? service.meta_description
+    ? cleanMetaText(service.meta_description)
     : `${service.summary} by ${doctor.name} at AIG Hospitals, Banjara Hills & Aura Aesthetics & CARE Hospitals, Gachibowli, Hyderabad.`;
 
   // KEYWORD SCOPING FIX: only include keywords for THIS specific service, not the whole category

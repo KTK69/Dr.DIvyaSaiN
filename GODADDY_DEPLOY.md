@@ -116,6 +116,19 @@ Check the site:
 - Open `/admin`
 - Edit a small field and confirm it saves
 
+## One-Time SEO CMS Migration
+
+The server CMS file is intentionally not tracked by Git. After deploying the SEO
+code changes, run this once on the VPS to update the existing CMS content:
+
+```bash
+cd ~/Dr.DIvyaSaiN
+npm run migrate:seo-content
+```
+
+The command creates a timestamped backup beside the CMS file before updating
+titles, descriptions, doctor wording, blog headings, and the numeric blog slug.
+
 ## Troubleshooting
 
 If the SSH session closes during build, check:
@@ -133,4 +146,3 @@ Common causes:
 - build hit memory limit and was killed
 - disk full
 - PM2 app name mismatch
-

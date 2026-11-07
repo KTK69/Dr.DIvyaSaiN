@@ -75,7 +75,7 @@ export default function BlogDetailClient({ slug, serverBlog }: Props) {
           <div className="relative aspect-video mt-8 rounded-2xl overflow-hidden border border-(--border) bg-(--bg-surface)">
             <Image
               src={blog.image}
-              alt={displayTitle}
+              alt={`${displayTitle} - plastic surgery article by Dr. Divya Sai Narsingam`}
               fill
               className="object-contain"
               unoptimized={

@@ -2,6 +2,9 @@ import type { Blog } from "@/types/content";
 
 const URL_PATTERN = /(https?:\/\/[^\s<>"']+|www\.[^\s<>"']+|\/[A-Za-z0-9][^\s<>"']*)/i;
 const TRAILING_PUNCTUATION = /[),.;!?]+$/;
+const CANONICAL_SLUG_OVERRIDES: Record<string, string> = {
+  "blog-1783155145253": "hernia-repair-with-tummy-tuck",
+};
 
 export function normalizeBlogSlug(value: string) {
   const trimmed = value.trim();
@@ -25,7 +28,8 @@ export function normalizeBlogSlug(value: string) {
 }
 
 export function getBlogRouteSlug(blog: Pick<Blog, "id" | "slug">) {
-  return normalizeBlogSlug(blog.slug || blog.id);
+  const source = normalizeBlogSlug(blog.slug || blog.id);
+  return CANONICAL_SLUG_OVERRIDES[source] ?? source;
 }
 
 export function isIndexableBlog(blog: Pick<Blog, "id" | "slug" | "title" | "content">) {

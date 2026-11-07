@@ -78,7 +78,9 @@ function shouldFlattenRenderTable(table: HTMLTableElement) {
 
 function normalizeRichTextHtml(value: string, demoteHeadings: boolean) {
   if (typeof window === "undefined" || !value.trim()) {
-    return value;
+    return demoteHeadings
+      ? value.replace(/<h1\b/gi, "<h2").replace(/<\/h1>/gi, "</h2>")
+      : value;
   }
 
   const parser = new DOMParser();

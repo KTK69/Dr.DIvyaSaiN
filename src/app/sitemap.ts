@@ -2,6 +2,7 @@ import type { MetadataRoute } from "next";
 import { fetchBlogs, fetchServices } from "@/lib/api";
 import { getBlogRouteSlug, isIndexableBlog } from "@/lib/blog-links";
 import { SITE_URL } from "@/lib/seo";
+import { getStoredSiteContent } from "@/lib/site-content-store";
 
 export const dynamic = "force-dynamic";
 
@@ -60,13 +61,16 @@ const staticRoutes: MetadataRoute.Sitemap = [
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const [blogs, services] = await Promise.all([fetchBlogs(), fetchServices()]);
+  const { updatedAt } = await getStoredSiteContent();
+  const siteLastModified = new Date(updatedAt);
 
   return [
-    ...staticRoutes,
+    ...staticRoutes.map((route) => ({ ...route, lastModified: siteLastModified })),
     ...services.map((service) => {
       const categoryPath = service.category === "reconstructive" ? "reconstructive" : "cosmetic";
       return {
         url: `${SITE_URL}/services/${categoryPath}/${service.slug}`,
+        lastModified: siteLastModified,
         changeFrequency: "monthly" as const,
         priority: 0.7,
       };

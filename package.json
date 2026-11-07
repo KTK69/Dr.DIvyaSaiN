@@ -6,6 +6,7 @@
     "dev": "next dev",
     "build": "next build",
     "build:server": "node ./scripts/run-next-build.mjs",
+    "migrate:seo-content": "node ./scripts/migrate-seo-content.mjs",
     "start": "next start",
     "lint": "eslint",
     "deploy:server": "bash ./scripts/deploy-server.sh"
