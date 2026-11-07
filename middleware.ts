@@ -18,6 +18,7 @@ export function middleware(request: NextRequest) {
     const redirectUrl = request.nextUrl.clone();
     redirectUrl.hostname = CANONICAL_HOST;
     redirectUrl.protocol = "https:";
+    redirectUrl.port = "";
     return NextResponse.redirect(redirectUrl, 308);
   }
 
@@ -29,6 +30,7 @@ export function middleware(request: NextRequest) {
     redirectUrl.search = "";
     redirectUrl.protocol = "https:";
     redirectUrl.hostname = CANONICAL_HOST;
+    redirectUrl.port = "";
     return NextResponse.redirect(redirectUrl, 301);
   }
 
