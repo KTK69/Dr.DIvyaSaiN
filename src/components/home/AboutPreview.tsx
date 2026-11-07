@@ -11,7 +11,7 @@ export default function AboutPreview() {
   return (
     <section className="section-padding" aria-label="About Dr. Narsingam">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+        <div className="grid grid-cols-1 items-start gap-10 lg:grid-cols-2 lg:gap-16 lg:items-center">
           {/* Quote card */}
           <motion.div
             initial={{ opacity: 0, x: -20 }}
@@ -19,7 +19,7 @@ export default function AboutPreview() {
             viewport={{ once: true }}
             transition={{ duration: 0.5 }}
           >
-            <div className="glass-card rounded-2xl p-10 relative">
+            <div className="glass-card relative rounded-2xl p-6 sm:p-10">
               <div
                 className="absolute top-6 left-6 text-6xl leading-none text-(--accent-gold) opacity-20"
                 aria-hidden="true"
@@ -58,7 +58,7 @@ export default function AboutPreview() {
               className="text-3xl md:text-4xl font-medium text-(--foreground) mb-5"
               style={{ fontFamily: "var(--font-serif)" }}
             >
-              Board-Certified.
+              Compassionate Care.
               <br />
               Clinically Experienced.
             </h2>

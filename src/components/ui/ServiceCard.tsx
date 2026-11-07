@@ -30,7 +30,7 @@ export default function ServiceCard({
     >
       <Link
         href={href}
-        className="block h-full glass-card rounded-xl p-6 transition-all duration-300 hover:border-[var(--border)] hover:shadow-lg"
+        className="block h-full min-w-0 glass-card rounded-xl p-5 sm:p-6 transition-all duration-300 hover:border-[var(--border)] hover:shadow-lg"
         style={{
           boxShadow: "0 0 0 0 transparent",
         }}
@@ -47,12 +47,12 @@ export default function ServiceCard({
           </span>
         </div>
         <h3
-          className="text-lg font-medium text-[var(--foreground)] mb-2 group-hover:text-[var(--accent-gold-light)] transition-colors"
+          className="text-lg font-medium leading-snug text-[var(--foreground)] mb-2 group-hover:text-[var(--accent-gold-light)] transition-colors"
           style={{ fontFamily: "var(--font-serif)" }}
         >
           {name}
         </h3>
-        <p className="text-sm text-[var(--foreground-muted)] leading-relaxed mb-4">
+        <p className="text-sm text-[var(--foreground-muted)] leading-relaxed mb-4 line-clamp-4">
           {shortDesc}
         </p>
         <span className="inline-flex items-center gap-1 text-xs text-[var(--foreground-subtle)] group-hover:text-[var(--accent-gold-light)] transition-colors">

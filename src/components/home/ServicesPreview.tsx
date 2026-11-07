@@ -15,20 +15,20 @@ export default function ServicesPreview() {
       className="section-padding bg-(--bg-surface) border-y border-(--border)"
       aria-label="Services"
     >
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <SectionHeading
           eyebrow="Areas of Practice"
           title="Reconstructive & Cosmetic Surgery"
           subtitle="Dr. Narsingam offers a full spectrum of plastic and reconstructive procedures — each performed with meticulous attention to anatomy, function, and natural outcomes."
         />
 
-        <div className="mb-12">
+        <div className="mb-10 sm:mb-12">
           <h3
             className="text-xs font-semibold uppercase tracking-widest text-(--accent-gold) mb-6"
           >
             Reconstructive Surgery
           </h3>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
             {previewReconstructive.map((svc, i) => (
               <ServiceCard
                 key={svc.slug}
@@ -48,7 +48,7 @@ export default function ServicesPreview() {
           >
             Cosmetic Surgery
           </h3>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
             {previewCosmetic.map((svc, i) => (
               <ServiceCard
                 key={svc.slug}

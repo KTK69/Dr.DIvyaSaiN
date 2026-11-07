@@ -172,13 +172,10 @@ function BookButton({ onClick }: { onClick: () => void }) {
       transition={{ type: "spring", stiffness: 260, damping: 20, delay: 1.5 }}
       whileHover={{ scale: 1.1 }}
       whileTap={{ scale: 0.95 }}
-      className="flex max-w-full items-center justify-center gap-2 h-14 px-3 md:px-0 md:w-14 rounded-full md:rounded-full shadow-2xl focus:outline-none focus-visible:ring-2 focus-visible:ring-(--accent-gold)"
+      className="flex h-12 w-12 items-center justify-center rounded-full shadow-2xl focus:outline-none focus-visible:ring-2 focus-visible:ring-(--accent-gold) sm:h-14 sm:w-14"
       style={{ background: "var(--accent-gold)" }}
     >
-      <Calendar size={22} color="var(--background)" />
-      <span className="text-xs font-semibold text-(--background) md:hidden">
-        Video Consult
-      </span>
+      <Calendar size={20} color="var(--background)" />
     </motion.button>
   );
 }
@@ -192,7 +189,7 @@ export default function FloatingActions() {
     <>
       {/* Sticky column — bottom-right */}
       <div
-        className="fixed bottom-4 right-3 md:bottom-6 md:right-6 z-900 flex max-w-[calc(100vw-0.75rem)] flex-col items-end gap-3"
+        className="fixed bottom-3 right-3 z-900 flex max-w-[calc(100vw-1.5rem)] flex-col items-end gap-2 sm:bottom-6 sm:right-6 sm:gap-3"
         onMouseEnter={() => setShowLabels(true)}
         onMouseLeave={() => setShowLabels(false)}
       >
@@ -230,7 +227,7 @@ export default function FloatingActions() {
         </AnimatePresence>
 
         {/* Buttons column */}
-        <div className="flex flex-col items-center gap-3">
+        <div className="flex flex-col items-center gap-2 sm:gap-3">
           <BookButton onClick={() => setCalendlyOpen(true)} />
           <WhatsAppButton />
           <InstagramButton />

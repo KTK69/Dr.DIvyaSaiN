@@ -41,6 +41,11 @@ body {
   overflow-x: hidden;
 }
 
+main {
+  min-width: 0;
+  overflow: clip;
+}
+
 h1, h2, h3, h4, h5 {
   font-family: var(--font-serif);
   font-weight: 500;
@@ -95,14 +100,20 @@ a {
 }
 
 .section-padding {
-  padding-top: 5rem;
-  padding-bottom: 5rem;
+  padding-top: clamp(3.5rem, 7vw, 6.5rem);
+  padding-bottom: clamp(3.5rem, 7vw, 6.5rem);
 }
 
 @media (max-width: 640px) {
   .section-padding {
-    padding-top: 3.5rem;
-    padding-bottom: 3.5rem;
+    padding-top: 3rem;
+    padding-bottom: 3rem;
+  }
+}
+
+@media (min-width: 1600px) {
+  .max-w-7xl {
+    max-width: 80rem;
   }
 }
 

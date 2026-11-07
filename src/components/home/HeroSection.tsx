@@ -13,7 +13,7 @@ export default function HeroSection() {
   const hero = content.home.hero;
   return (
     <section
-      className="relative min-h-screen flex items-center overflow-hidden"
+      className="relative flex items-center overflow-hidden pt-28 sm:pt-32 lg:min-h-[min(900px,100vh)] lg:pt-24"
       aria-label="Hero"
     >
       {/* Background gradient */}
@@ -26,8 +26,8 @@ export default function HeroSection() {
         }}
       />
 
-      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full pt-28 pb-20">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+      <div className="relative mx-auto w-full max-w-7xl px-4 pb-14 sm:px-6 sm:pb-20 lg:px-8 lg:pb-24">
+        <div className="grid grid-cols-1 items-center gap-12 lg:grid-cols-[minmax(0,1.05fr)_minmax(360px,0.95fr)] lg:gap-16 xl:gap-24">
           {/* Text */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -44,7 +44,7 @@ export default function HeroSection() {
             </motion.p>
 
             <h1
-              className="text-4xl sm:text-5xl lg:text-6xl font-medium text-(--foreground) leading-tight mb-6"
+              className="max-w-3xl text-[clamp(2.5rem,6vw,5.25rem)] font-medium leading-[1.05] tracking-[-0.04em] text-(--foreground) mb-6"
               style={{ fontFamily: "var(--font-serif)" }}
             >
               {hero.title}
@@ -55,28 +55,28 @@ export default function HeroSection() {
               Care.
             </h1>
 
-            <p className="text-base text-(--foreground-muted) leading-relaxed mb-8 max-w-lg">
+            <p className="max-w-xl text-base leading-relaxed text-(--foreground-muted) mb-8 sm:text-lg">
               {hero.summary}
             </p>
 
-            <div className="flex flex-wrap gap-4">
+            <div className="flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:gap-4">
               <Link
                 href={hero.ctaPrimary.href}
-                className="inline-flex items-center gap-2 px-6 py-3 rounded-lg bg-(--accent-gold) text-(--background) text-sm font-medium hover:bg-(--accent-gold-light) transition-colors duration-200"
+                className="inline-flex min-h-12 items-center justify-center gap-2 rounded-lg bg-(--accent-gold) px-6 py-3 text-center text-sm font-medium text-(--background) transition-colors duration-200 hover:bg-(--accent-gold-light) sm:w-auto"
               >
                 {hero.ctaPrimary.label}
                 <ArrowRight size={16} />
               </Link>
               <Link
                 href={hero.ctaSecondary.href}
-                className="inline-flex items-center gap-2 px-6 py-3 rounded-lg border border-(--border) text-(--foreground-muted) text-sm hover:border-(--foreground-muted) hover:text-(--foreground) transition-all duration-200"
+                className="inline-flex min-h-12 items-center justify-center gap-2 rounded-lg border border-(--border) px-6 py-3 text-center text-sm text-(--foreground-muted) transition-all duration-200 hover:border-(--foreground-muted) hover:text-(--foreground) sm:w-auto"
               >
                 {hero.ctaSecondary.label}
               </Link>
             </div>
 
             {/* Quick stats */}
-            <div className="flex flex-wrap gap-8 mt-12 pt-8 border-t border-(--border)">
+            <div className="grid grid-cols-3 gap-3 mt-10 max-w-xl border-t border-(--border) pt-6 sm:mt-12 sm:gap-8 sm:pt-8">
               {[
                 { value: "14+", label: "Years Experience", highlight: true },
                 { value: "9+", label: "Years Specialist", highlight: true },
@@ -84,12 +84,12 @@ export default function HeroSection() {
               ].map(({ value, label, highlight }) => (
                 <div key={label}>
                   <p
-                    className={`font-medium ${highlight ? "text-4xl text-(--accent-gold)" : "text-3xl text-(--foreground)"}`}
+                    className={`font-medium ${highlight ? "text-3xl text-(--accent-gold) sm:text-4xl" : "text-2xl text-(--foreground) sm:text-3xl"}`}
                     style={{ fontFamily: "var(--font-serif)" }}
                   >
                     {value}
                   </p>
-                  <p className={`text-sm mt-1 ${highlight ? "text-(--accent-gold-light)" : "text-(--foreground-muted)"}`}>
+                  <p className={`mt-1 text-[11px] leading-tight sm:text-sm ${highlight ? "text-(--accent-gold-light)" : "text-(--foreground-muted)"}`}>
                     {label}
                   </p>
                 </div>
@@ -102,9 +102,9 @@ export default function HeroSection() {
             initial={{ opacity: 0, x: 20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.6, delay: 0.2, ease: "easeOut" }}
-            className="relative"
+            className="relative mx-auto w-full max-w-xl lg:max-w-none"
           >
-            <div className="glass-card rounded-2xl p-8 relative overflow-hidden">
+            <div className="glass-card relative overflow-hidden rounded-2xl p-5 sm:p-8">
               {/* Decorative inner glow */}
               <div
                 className="absolute top-0 right-0 w-64 h-64 rounded-full pointer-events-none"
@@ -116,7 +116,7 @@ export default function HeroSection() {
               />
 
               {/* Doctor image */}
-              <div className="w-full aspect-3/4 max-w-xs mx-auto rounded-xl overflow-hidden border border-(--border) relative mb-6">
+              <div className="relative mx-auto mb-6 aspect-[4/5] w-full max-w-[22rem] overflow-hidden rounded-xl border border-(--border) sm:aspect-3/4">
                 <Image
                   src={HERO_IMAGE}
                   alt="Dr. Divya Sai Narsingam – Plastic & Reconstructive Surgeon at AIG Hospitals, Aura Aesthetics & CARE Hospitals, Hyderabad"
@@ -137,7 +137,7 @@ export default function HeroSection() {
                 <p className="text-sm text-(--accent-gold-light) mb-1">
                   MBBS, MS, MCh (Plastic Surgery)
                 </p>
-                <p className="text-xs text-(--foreground-muted)">
+                <p className="mx-auto max-w-sm text-xs leading-relaxed text-(--foreground-muted)">
                   Consultant · AIG Hospitals, Banjara Hills & Aura Aesthetics & CARE Hospitals, Gachibowli
                 </p>
               </div>

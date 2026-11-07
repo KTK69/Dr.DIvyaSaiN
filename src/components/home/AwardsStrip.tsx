@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Award, GraduationCap, Microscope, Users } from "lucide-react";
+import { Award, GraduationCap, Microscope } from "lucide-react";
 
 const highlights = [
   {
@@ -32,8 +32,8 @@ export default function AwardsStrip() {
       className="border-y border-[var(--border)] bg-[var(--bg-surface)]"
       aria-label="Credentials and awards"
     >
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
+      <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 sm:py-10 lg:px-8">
+        <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4 lg:gap-6">
           {highlights.map(({ icon: Icon, value, label }, i) => (
             <motion.div
               key={value}
@@ -41,12 +41,12 @@ export default function AwardsStrip() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.4, delay: i * 0.07 }}
-              className="flex items-start gap-3"
+              className="flex min-w-0 items-start gap-3"
             >
               <div className="p-2 rounded-lg bg-[var(--bg-card)] border border-[var(--border)] shrink-0">
                 <Icon size={16} className="text-[var(--accent-gold)]" />
               </div>
-              <div>
+              <div className="min-w-0">
                 <p
                   className="text-sm font-medium text-[var(--foreground)]"
                   style={{ fontFamily: "var(--font-serif)" }}

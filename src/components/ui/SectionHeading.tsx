@@ -17,14 +17,14 @@ export default function SectionHeading({
 }: SectionHeadingProps) {
   const Heading = headingLevel;
   return (
-    <div className={`mb-12 ${centered ? "text-center" : ""}`}>
+    <div className={`mb-10 sm:mb-12 ${centered ? "text-center" : ""}`}>
       {eyebrow && (
         <p className="text-xs font-semibold uppercase tracking-widest text-[var(--accent-gold)] mb-3">
           {eyebrow}
         </p>
       )}
       <Heading
-        className={`text-3xl md:text-4xl font-medium ${
+        className={`text-3xl sm:text-4xl font-medium ${
           light ? "text-[var(--foreground-muted)]" : "text-[var(--foreground)]"
         }`}
         style={{ fontFamily: "var(--font-serif)" }}
@@ -32,7 +32,7 @@ export default function SectionHeading({
         {title}
       </Heading>
       {subtitle && (
-        <p className="mt-4 text-base text-[var(--foreground-muted)] max-w-2xl leading-relaxed">
+        <p className={`mt-4 max-w-2xl text-base leading-relaxed text-[var(--foreground-muted)] ${centered ? "mx-auto" : ""}`}>
           {subtitle}
         </p>
       )}

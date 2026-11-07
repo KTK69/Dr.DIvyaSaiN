@@ -90,7 +90,7 @@ export default function Footer() {
           <p className="text-xs text-(--foreground-subtle)">
             © {new Date().getFullYear()} {footer.copyright}
           </p>
-          <nav className="flex gap-5" aria-label="Footer navigation">
+          <nav className="flex flex-wrap gap-x-5 gap-y-2" aria-label="Footer navigation">
             {footer.links.map(({ label, href }) => (
               <Link
                 key={href}
@@ -106,4 +106,3 @@ export default function Footer() {
     </footer>
   );
 }
-
