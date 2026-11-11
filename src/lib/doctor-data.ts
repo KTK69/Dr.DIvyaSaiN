@@ -3,10 +3,10 @@ export const doctor = {
   qualifications: "MBBS, MS (General Surgery), MCh (Plastic Surgery)",
   title: "Consultant Plastic & Reconstructive Surgeon",
   hospital: "Room No. 20, 1st Floor, AIG Hospitals, Banjara Hills, Hyderabad – 500034 & Room No. 212, AIG Hospitals, Banjara Hills & Aura Aesthetics & CARE Hospitals, Gachibowli, Hyderabad",
-  yearsExperience: 14,
+  yearsExperience: 15,
   yearsSpecialist: 9,
   summary:
-    "Dr. Divya Sai Narsingam is a Plastic and Reconstructive Surgeon with over 14 years of clinical experience, including 9 years as a specialist. She currently practises at AIG Hospitals, Banjara Hills, Hyderabad – 500034 and AIG Hospitals, Banjara Hills & Aura Aesthetics & CARE Hospitals, Gachibowli, Hyderabad. She is known for delivering safe, natural-looking results in both aesthetic and reconstructive plastic surgery, combining surgical precision with compassionate care.",
+    "Dr. Divya Sai Narsingam is a Board-Certified Plastic and Reconstructive Surgeon with over 15 years of clinical experience, including 9+ years of specialised experience in Plastic Surgery.",
   philosophy:
     "Surgery is as much about listening as it is about operating. Every patient brings a unique story, unique anatomy, and unique expectations. My role is to understand that story fully — and then use every tool at my disposal to help write a better chapter.",
 };

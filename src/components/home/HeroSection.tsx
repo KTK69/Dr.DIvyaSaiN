@@ -78,7 +78,7 @@ export default function HeroSection() {
             {/* Quick stats */}
             <div className="grid grid-cols-3 gap-3 mt-10 max-w-xl border-t border-(--border) pt-6 sm:mt-12 sm:gap-8 sm:pt-8">
               {[
-                { value: "14+", label: "Years Experience", highlight: true },
+                { value: "15+", label: "Years Experience", highlight: true },
                 { value: "9+", label: "Years Specialist", highlight: true },
                 { value: "MCh", label: "Plastic Surgery", highlight: false },
               ].map(({ value, label, highlight }) => (
