@@ -599,7 +599,7 @@ export const DEFAULT_SITE_CONTENT: SiteContent = {
       whatsappLabel: "WhatsApp Us",
       servicesLabel: "Explore Procedures",
       hospitalLocation:
-        "Room No. 20, 1st Floor, AIG Hospitals, Banjara Hills, Hyderabad – 500034\nRoom No. 212, AIG Hospitals, Banjara Hills & Aura Aesthetics & CARE Hospitals, Gachibowli, Hyderabad",
+        "Room No. 20, 1st Floor, AIG Hospitals, Banjara Hills, Hyderabad – 500034\nRoom No. 212, Aura Aesthetics & CARE Hospitals, Gachibowli, Hyderabad",
     },
     beforeAfterGallery: {
       eyebrow: "Before & After",

@@ -7,10 +7,6 @@ import { useSiteContent } from "@/components/site/SiteContentProvider";
 
 const LOGO = "/images/img/Dr%20Divya%20Logo%20Circle.png";
 
-function formatLocation(value: string) {
-  return value.replace(/\s*\/\s*/g, "\n");
-}
-
 export default function Footer() {
   const { content } = useSiteContent();
   const footer = content.footer;
@@ -72,11 +68,21 @@ export default function Footer() {
             <ul className="space-y-3">
               <li className="flex gap-3">
                 <MapPin size={15} className="text-(--accent-gold) mt-0.5 shrink-0" />
-                <span className="text-sm text-(--foreground-muted) leading-relaxed whitespace-pre-line">
-                  {formatLocation(
-                    "Room No. 20, 1st Floor, AIG Hospitals, Banjara Hills, Hyderabad – 500034\n" +
-                    "Room No. 212, Aura Aesthetics & CARE Hospitals, Gachibowli, Hyderabad"
-                  )}
+                <span className="space-y-3 text-sm text-(--foreground-muted) leading-relaxed">
+                  <span className="block">
+                    <span className="mb-1 block font-semibold text-(--foreground)">AIG Hospitals, Banjara Hills</span>
+                    <span className="block">
+                      Room No. 20, 1st Floor, AIG Hospitals,<br />
+                      Banjara Hills, Hyderabad – 500034
+                    </span>
+                  </span>
+                  <span className="block">
+                    <span className="mb-1 block font-semibold text-(--foreground)">Aura Aesthetics &amp; CARE Hospitals, Gachibowli</span>
+                    <span className="block">
+                      Room No. 212, Aura Aesthetics &amp; CARE Hospitals,<br />
+                      Gachibowli, Hyderabad
+                    </span>
+                  </span>
                 </span>
               </li>
               <li className="flex gap-3 items-center">

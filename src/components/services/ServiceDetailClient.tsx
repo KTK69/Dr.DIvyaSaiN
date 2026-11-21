@@ -117,20 +117,28 @@ export default function ServiceDetailClient({ slug, serverService }: Props) {
 
           <div className="glass-card rounded-xl p-6">
             <h3 className="text-xs font-semibold uppercase tracking-widest text-(--foreground-muted) mb-3">Location</h3>
-            <p className="text-sm text-(--foreground-muted) leading-relaxed">
+            <div className="space-y-4 text-sm text-(--foreground-muted) leading-relaxed">
               {service.right_sidebar_location ? (
                 <span className="whitespace-pre-line">{service.right_sidebar_location}</span>
               ) : (
                 <>
-                  Room No. 20, 1st Floor,<br/>
-                  AIG Hospitals, Banjara Hills,<br/>
-                  Hyderabad – 500034
-                  <br/><br/>
-                  Room No. 212<br/>
-                  Aura Aesthetics &amp; CARE Hospitals, Gachibowli, Hyderabad
+                  <div>
+                    <p className="mb-1 font-semibold text-(--foreground)">AIG Hospitals, Banjara Hills</p>
+                    <p>
+                      Room No. 20, 1st Floor, AIG Hospitals,<br />
+                      Banjara Hills, Hyderabad – 500034
+                    </p>
+                  </div>
+                  <div>
+                    <p className="mb-1 font-semibold text-(--foreground)">Aura Aesthetics &amp; CARE Hospitals, Gachibowli</p>
+                    <p>
+                      Room No. 212, Aura Aesthetics &amp; CARE Hospitals,<br />
+                      Gachibowli, Hyderabad
+                    </p>
+                  </div>
                 </>
               )}
-            </p>
+            </div>
           </div>
         </aside>
       </div>

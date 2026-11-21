@@ -2,7 +2,7 @@ export const doctor = {
   name: "Dr. Divya Sai Narsingam",
   qualifications: "MBBS, MS (General Surgery), MCh (Plastic Surgery)",
   title: "Consultant Plastic & Reconstructive Surgeon",
-  hospital: "Room No. 20, 1st Floor, AIG Hospitals, Banjara Hills, Hyderabad – 500034 & Room No. 212, AIG Hospitals, Banjara Hills & Aura Aesthetics & CARE Hospitals, Gachibowli, Hyderabad",
+  hospital: "Room No. 20, 1st Floor, AIG Hospitals, Banjara Hills, Hyderabad – 500034 & Room No. 212, Aura Aesthetics & CARE Hospitals, Gachibowli, Hyderabad",
   yearsExperience: 15,
   yearsSpecialist: 9,
   summary:
@@ -33,7 +33,7 @@ export const education = [
 export const experience = [
   {
     role: "Consultant Plastic & Reconstructive Surgeon",
-    institution: "AIG Hospitals, Banjara Hills, Hyderabad – 500034 & AIG Hospitals, Banjara Hills & Aura Aesthetics & CARE Hospitals, Gachibowli, Hyderabad",
+    institution: "AIG Hospitals, Banjara Hills, Hyderabad – 500034 & Aura Aesthetics & CARE Hospitals, Gachibowli, Hyderabad",
     period: "2024 – Present",
     current: true,
   },

@@ -154,7 +154,7 @@ export function buildSiteIdentityJsonLd() {
         priceRange: "₹₹₹",
         address: {
           "@type": "PostalAddress",
-          streetAddress: "Room No. 212, CARE Hospitals",
+          streetAddress: "Room No. 212, Aura Aesthetics & CARE Hospitals",
           addressLocality: "Gachibowli",
           addressRegion: "Telangana",
           addressCountry: "IN",
