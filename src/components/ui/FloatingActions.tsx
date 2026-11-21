@@ -1,10 +1,11 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Instagram } from "lucide-react";
+import { Instagram, Youtube } from "lucide-react";
 import { buildWhatsAppLink, WHATSAPP_DEFAULT_MESSAGE } from "@/lib/communication";
 
 const INSTAGRAM_URL = "https://www.instagram.com/drreconstruct";
+const YOUTUBE_URL = "https://www.youtube.com/@DrDivyaplasticsurgeon";
 
 function WhatsAppButton() {
   return (
@@ -48,11 +49,32 @@ function InstagramButton() {
   );
 }
 
+function YouTubeButton() {
+  return (
+    <motion.a
+      href={YOUTUBE_URL}
+      target="_blank"
+      rel="noopener noreferrer"
+      aria-label="Visit YouTube"
+      initial={{ scale: 0, opacity: 0 }}
+      animate={{ scale: 1, opacity: 1 }}
+      transition={{ type: "spring", stiffness: 260, damping: 20, delay: 1.05 }}
+      whileHover={{ scale: 1.08 }}
+      whileTap={{ scale: 0.95 }}
+      className="flex h-12 w-12 items-center justify-center rounded-full shadow-2xl sm:h-14 sm:w-14"
+      style={{ background: "#FF0000" }}
+    >
+      <Youtube size={24} color="white" fill="white" aria-hidden="true" />
+    </motion.a>
+  );
+}
+
 export default function FloatingActions() {
   return (
     <div className="fixed bottom-3 right-3 z-[900] flex max-w-[calc(100vw-1.5rem)] flex-col items-center gap-2 sm:bottom-6 sm:right-6 sm:gap-3">
       <WhatsAppButton />
       <InstagramButton />
+      <YouTubeButton />
     </div>
   );
 }
