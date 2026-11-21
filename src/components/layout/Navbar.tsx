@@ -4,7 +4,7 @@ import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
-import { ChevronDown, Video } from "lucide-react";
+import { ChevronDown } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useSiteContent } from "@/components/site/SiteContentProvider";
 
@@ -189,8 +189,7 @@ export default function Navbar() {
               onClick={closeMenus}
               className="ml-2 inline-flex items-center gap-2 px-4 py-2.5 text-sm rounded-xl bg-(--accent-gold) text-(--background) shadow-lg shadow-black/20 hover:bg-(--accent-gold-light) transition-all duration-200"
             >
-              <Video size={16} />
-              Book Video Consultation
+              Send Enquiry
             </Link>
           </div>
 
@@ -201,8 +200,7 @@ export default function Navbar() {
               onClick={closeMenus}
               className="inline-flex items-center gap-1.5 px-3 py-2 text-xs font-semibold rounded-lg bg-(--accent-gold) text-(--background) shadow-lg shadow-black/10 hover:bg-(--accent-gold-light) transition-all duration-200"
             >
-              <Video size={13} />
-              <span>Book</span>
+              <span>Enquiry</span>
             </Link>
           </div>
         </div>
@@ -398,15 +396,14 @@ export default function Navbar() {
                 </AnimatePresence>
               </div>
 
-              {/* Bottom Consultation Button */}
+              {/* Bottom enquiry button */}
               <div className="border-t border-(--border)/20 pt-5">
                 <Link
                   href="/contactus"
                   onClick={closeMenus}
                   className="flex items-center justify-center gap-2 w-full px-4 py-3.5 text-sm rounded-xl bg-(--accent-gold) text-(--background) font-medium shadow-xl hover:bg-(--accent-gold-light) transition-all duration-200"
                 >
-                  <Video size={16} />
-                  Book Video Consultation
+                  Send Enquiry
                 </Link>
               </div>
             </div>

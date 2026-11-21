@@ -52,15 +52,15 @@ export default function ServiceDetailClient({ slug, serverService }: Props) {
             </ul>
           </section>
 
-          <section className="glass-card rounded-xl p-8" aria-labelledby="consultation-heading">
-            <h2 id="consultation-heading" className="text-xl font-medium text-(--foreground) mb-3" style={{ fontFamily: "var(--font-serif)" }}>
-              Schedule a Consultation
+          <section className="glass-card rounded-xl p-6 sm:p-8" aria-labelledby="enquiry-heading">
+            <h2 id="enquiry-heading" className="text-xl font-medium text-(--foreground) mb-3" style={{ fontFamily: "var(--font-serif)" }}>
+              Contact the team
             </h2>
             <p className="text-sm text-(--foreground-muted) leading-relaxed mb-5">
-              Dr. Narsingam believes every aesthetic concern deserves a thoughtful, unhurried consultation. She reviews your goals, examines your anatomy, and explains realistic outcomes before any procedure is recommended.
+              Send your details and concern, or chat on WhatsApp. Our team will reach out to help with the next steps.
             </p>
             <Link href="/contactus" className="inline-flex items-center gap-2 px-6 py-3 rounded-lg bg-(--accent-gold) text-(--background) text-sm font-medium hover:bg-(--accent-gold-light) transition-colors">
-              Book Video Consultation <ArrowRight size={15} />
+              Send an enquiry <ArrowRight size={15} />
             </Link>
           </section>
 
@@ -81,11 +81,19 @@ export default function ServiceDetailClient({ slug, serverService }: Props) {
 
         <aside className="space-y-6">
           <div className="glass-card rounded-xl p-6">
-            <h3 className="text-base font-medium text-(--foreground) mb-4" style={{ fontFamily: "var(--font-serif)" }}>Your Surgeon</h3>
-            <p className="text-sm font-medium text-(--foreground)">Dr. Divya Sai Narsingam</p>
-            <p className="text-xs text-(--accent-gold-light) mt-0.5">MCh (Plastic Surgery)</p>
-            <p className="text-xs text-(--foreground-muted) mt-3 leading-relaxed">Dr. Divya Sai Narsingam is a Board-Certified Plastic and Reconstructive Surgeon with over 15 years of clinical experience, including 9+ years of specialised experience in Plastic Surgery.</p>
-            <Link href="/aboutus" className="mt-4 inline-flex text-xs text-(--foreground-subtle) hover:text-(--accent-gold-light) transition-colors">Full biography →</Link>
+            <h3 className="text-base font-medium text-(--foreground) mb-4" style={{ fontFamily: "var(--font-serif)" }}>
+              {service.right_sidebar_heading || "Your Surgeon"}
+            </h3>
+            {service.right_sidebar_content ? (
+              <RichText value={service.right_sidebar_content} className="text-sm text-(--foreground-muted) leading-relaxed" />
+            ) : (
+              <>
+                <p className="text-sm font-medium text-(--foreground)">Dr. Divya Sai Narsingam</p>
+                <p className="text-xs text-(--accent-gold-light) mt-0.5">MCh (Plastic Surgery)</p>
+                <p className="text-xs text-(--foreground-muted) mt-3 leading-relaxed">Dr. Divya Sai Narsingam is a Board-Certified Plastic and Reconstructive Surgeon with over 15 years of clinical experience, including 9+ years of specialised experience in Plastic Surgery.</p>
+                <Link href="/aboutus" className="mt-4 inline-flex text-xs text-(--foreground-subtle) hover:text-(--accent-gold-light) transition-colors">Full biography →</Link>
+              </>
+            )}
           </div>
 
           <div className="glass-card rounded-xl p-6">
@@ -110,12 +118,18 @@ export default function ServiceDetailClient({ slug, serverService }: Props) {
           <div className="glass-card rounded-xl p-6">
             <h3 className="text-xs font-semibold uppercase tracking-widest text-(--foreground-muted) mb-3">Location</h3>
             <p className="text-sm text-(--foreground-muted) leading-relaxed">
-              Room No. 20, 1st Floor,<br/>
-              AIG Hospitals, Banjara Hills,<br/>
-              Hyderabad – 500034
-              <br/><br/>
-              Room No 212<br/>
-              CARE Hospitals — Gachibowli, Hyderabad
+              {service.right_sidebar_location ? (
+                <span className="whitespace-pre-line">{service.right_sidebar_location}</span>
+              ) : (
+                <>
+                  Room No. 20, 1st Floor,<br/>
+                  AIG Hospitals, Banjara Hills,<br/>
+                  Hyderabad – 500034
+                  <br/><br/>
+                  Room No. 212<br/>
+                  Aura Aesthetics &amp; CARE Hospitals, Gachibowli, Hyderabad
+                </>
+              )}
             </p>
           </div>
         </aside>

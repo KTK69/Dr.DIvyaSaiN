@@ -13,7 +13,7 @@ export default function HeroSection() {
   const hero = content.home.hero;
   return (
     <section
-      className="relative flex items-center overflow-hidden pt-28 sm:pt-32 lg:min-h-[min(900px,100vh)] lg:pt-24"
+      className="relative flex items-center overflow-hidden pt-[8.75rem] sm:pt-32 lg:min-h-[min(900px,100vh)] lg:pt-24"
       aria-label="Hero"
     >
       {/* Background gradient */}
@@ -26,8 +26,8 @@ export default function HeroSection() {
         }}
       />
 
-      <div className="relative mx-auto w-full max-w-7xl px-4 pb-14 sm:px-6 sm:pb-20 lg:px-8 lg:pb-24">
-        <div className="grid grid-cols-1 items-center gap-12 lg:grid-cols-[minmax(0,1.05fr)_minmax(360px,0.95fr)] lg:gap-16 xl:gap-24">
+      <div className="relative mx-auto w-full max-w-7xl px-4 pb-10 sm:px-6 sm:pb-20 lg:px-8 lg:pb-24">
+        <div className="grid grid-cols-1 items-center gap-8 lg:grid-cols-[minmax(0,1.05fr)_minmax(360px,0.95fr)] lg:gap-16 xl:gap-24">
           {/* Text */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -38,13 +38,13 @@ export default function HeroSection() {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ duration: 0.5, delay: 0.1 }}
-              className="text-xs font-semibold uppercase tracking-widest text-(--accent-gold) mb-5"
+              className="mb-5 text-[10px] font-semibold uppercase leading-[1.5] tracking-[0.18em] text-(--accent-gold) sm:text-xs sm:tracking-widest"
             >
               {hero.eyebrow}
             </motion.p>
 
             <h1
-              className="max-w-3xl text-[clamp(2.5rem,6vw,5.25rem)] font-medium leading-[1.05] tracking-[-0.04em] text-(--foreground) mb-6"
+              className="max-w-3xl mb-6 text-[clamp(2rem,8.5vw,5.25rem)] font-medium leading-[1.05] tracking-[-0.04em] text-(--foreground) sm:text-[clamp(2.5rem,6vw,5.25rem)]"
               style={{ fontFamily: "var(--font-serif)" }}
             >
               {hero.title}

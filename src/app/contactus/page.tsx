@@ -4,7 +4,6 @@ import AppointmentForm from "@/components/contact/AppointmentForm";
 import JsonLd from "@/components/seo/JsonLd";
 import WhatsAppSupportCard from "@/components/contact/WhatsAppSupportCard";
 import ContactPageHeader from "@/components/contact/ContactPageHeader";
-import CalendlySection from "@/components/contact/CalendlySection";
 import LocationCard from "@/components/contact/LocationCard";
 import { getEditablePageMetadata } from "@/lib/page-metadata";
 import { buildSiteIdentityJsonLd } from "@/lib/seo";
@@ -25,11 +24,6 @@ export default function ContactUsPage() {
       </div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 section-padding">
-
-        {/* ── Calendly inline booking ──────────────────────────────────────── */}
-        <section className="mb-20" aria-labelledby="calendly-heading">
-          <CalendlySection />
-        </section>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-14 xl:gap-16">
           {/* Form */}

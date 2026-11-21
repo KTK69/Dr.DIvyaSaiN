@@ -515,22 +515,22 @@ export const DEFAULT_SITE_CONTENT: SiteContent = {
     },
     contact: {
       title:
-        "Book Appointment | Dr. Divya Sai Narsingam – AIG Hospitals & CARE Hospitals",
+        "Contact Dr. Divya Sai Narsingam – AIG Hospitals & CARE Hospitals",
       description:
-        "Book a consultation with Dr. Divya Sai Narsingam at AIG Hospitals, Banjara Hills & Aura Aesthetics & CARE Hospitals, Gachibowli, Hyderabad. Plastic & Reconstructive Surgeon – MCh (Plastic Surgery).",
+        "Contact Dr. Divya Sai Narsingam at AIG Hospitals, Banjara Hills & Aura Aesthetics & CARE Hospitals, Gachibowli, Hyderabad. Plastic & Reconstructive Surgeon – MCh (Plastic Surgery).",
       keywords: [
-        "book appointment plastic surgeon Hyderabad",
+        "plastic surgeon enquiry Hyderabad",
         "contact Dr Divya Sai Narsingam",
         "AIG Hospitals and CARE Hospitals consultation",
       ],
       canonicalPath: "/contactus",
     },
     contactUs: {
-      title: "Contact and Appointment Booking | Dr. Divya Sai Narsingam",
+      title: "Contact Dr. Divya Sai Narsingam",
       description:
-        "Book appointments and contact Dr. Divya Sai Narsingam for reconstructive and cosmetic surgery consultations in Hyderabad.",
+        "Contact Dr. Divya Sai Narsingam for reconstructive and cosmetic surgery consultations in Hyderabad.",
       keywords: [
-        "appointment booking plastic surgeon Hyderabad",
+        "plastic surgeon enquiry Hyderabad",
         "contact reconstructive surgeon Hyderabad",
         "cosmetic surgery consultation Hyderabad",
       ],
@@ -570,7 +570,7 @@ export const DEFAULT_SITE_CONTENT: SiteContent = {
       emphasis: "Compassionate",
       summary:
         "Dr. Divya Sai Narsingam is a Board-Certified Plastic and Reconstructive Surgeon with over 15 years of clinical experience, including 9+ years of specialised experience in Plastic Surgery.",
-      ctaPrimary: { label: "Book Video Consultation", href: "/contactus" },
+      ctaPrimary: { label: "Send Enquiry", href: "/contactus" },
       ctaSecondary: { label: "About the Doctor", href: "/aboutus" },
     },
     aboutPreview: {
@@ -593,8 +593,8 @@ export const DEFAULT_SITE_CONTENT: SiteContent = {
       eyebrow: "AIG Hospitals, Banjara Hills & Aura Aesthetics & CARE Hospitals, Gachibowli",
       title: "Ready to discuss your concerns?",
       summary:
-        "Schedule a consultation with Dr. Narsingam at AIG Hospitals, Banjara Hills & Aura Aesthetics & CARE Hospitals, Gachibowli.",
-      appointmentLabel: "Book Video Consultation",
+        "Send an enquiry to Dr. Narsingam’s team for care at AIG Hospitals, Banjara Hills or Aura Aesthetics & CARE Hospitals, Gachibowli.",
+      appointmentLabel: "Send Enquiry",
       appointmentHref: "/contactus",
       whatsappLabel: "WhatsApp Us",
       servicesLabel: "Explore Procedures",
@@ -766,8 +766,8 @@ export const DEFAULT_SITE_CONTENT: SiteContent = {
     subheading: "Comprehensive plastic and reconstructive surgery solutions",
     categoryCosmeticTitle: "Cosmetic Surgery",
     categoryReconstructiveTitle: "Reconstructive Surgery",
-    bookConsultationHeading: "Not sure which procedure is right for you?",
-    bookConsultationSubheading: "Book Video Consultation",
+    bookConsultationHeading: "Need help choosing the right procedure?",
+    bookConsultationSubheading: "Send an enquiry",
     featuredServices: [],
   },
 
@@ -777,13 +777,12 @@ export const DEFAULT_SITE_CONTENT: SiteContent = {
   },
 
   contactPage: {
-    heading: "Book a Video Consultation",
+    heading: "Talk to our team",
     subheading:
-      "Pick a slot directly from the calendar below, or use the form to send a consultation request. Our team will confirm your appointment and send any pre-visit instructions.",
-    calendarHeading: "Choose an Available Slot",
-    calendarSubheading:
-      "Instantly book your consultation — select a date & time that works for you.",
-    formHeading: "Consultation Request",
+      "Send the form or chat on WhatsApp. Our team will reach out to understand your concern and guide you with the next steps.",
+    calendarHeading: "Request a call",
+    calendarSubheading: "Share your details and our team will contact you.",
+    formHeading: "Send an enquiry",
     locationHeading: "Location",
     locationAddress: contactInfo.fullAddress,
     formLabels: {

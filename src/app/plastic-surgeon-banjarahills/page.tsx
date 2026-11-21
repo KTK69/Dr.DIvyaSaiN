@@ -93,7 +93,7 @@ export default async function PlasticSurgeonBanjaraHillsPage() {
                   href="/contactus"
                   className="inline-flex items-center rounded-xl bg-(--accent-gold) px-5 py-3 text-sm font-medium text-(--background) hover:bg-(--accent-gold-light) transition-colors"
                 >
-                  Book appointment
+                  Send enquiry
                 </Link>
                 <Link
                   href={whatsappLink}
@@ -211,7 +211,7 @@ export default async function PlasticSurgeonBanjaraHillsPage() {
               href="/contactus"
               className="inline-flex items-center rounded-xl bg-(--accent-gold) px-5 py-3 text-sm font-medium text-(--background) hover:bg-(--accent-gold-light) transition-colors"
             >
-              Book appointment
+              Send enquiry
             </Link>
             <Link
               href={whatsappLink}

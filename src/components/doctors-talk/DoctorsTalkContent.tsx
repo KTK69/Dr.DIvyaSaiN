@@ -313,14 +313,13 @@ export default function DoctorsTalkContent() {
       {/* CTA */}
       <div className="mt-16 pt-10 border-t border-(--border) text-center">
         <p className="text-base text-(--foreground-muted) mb-5">
-          Have a specific question? The best place to start is a direct
-          consultation.
+          Have a specific question? Send an enquiry and our team will reach out.
         </p>
         <Link
           href="/contactus"
           className="inline-flex items-center gap-2 px-6 py-3 rounded-lg bg-(--accent-gold) text-(--background) text-sm font-medium hover:bg-(--accent-gold-light) transition-colors"
         >
-          Book Video Consultation <ArrowRight size={15} />
+          Send Enquiry <ArrowRight size={15} />
         </Link>
       </div>
 

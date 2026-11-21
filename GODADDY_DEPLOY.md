@@ -37,7 +37,6 @@ Optional:
 - `APP_NAME=drdivya-site`
 - `APP_DIR=/home/divyavps/Dr.DIvyaSaiN`
 - `BACKUP_DIR=/home/divyavps/Dr.DIvyaSaiN/backups`
-- `CALENDLY_API_TOKEN` for server-side verification of completed Calendly bookings
 
 If your CMS data should live outside the app folder, also set:
 

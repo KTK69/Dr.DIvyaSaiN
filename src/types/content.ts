@@ -31,6 +31,9 @@ export interface Service extends SeoFields {
   category: "reconstructive" | "cosmetic";
   key_points: string[];
   faq: FaqItem[];
+  right_sidebar_heading?: string;
+  right_sidebar_content?: string;
+  right_sidebar_location?: string;
   meta_keywords: string[];
 }
 
@@ -62,5 +65,5 @@ export interface AppointmentResponse {
   id?: string;
   confirmationToken?: string;
   conversionId?: string;
-  bookingMethod?: "native-form" | "calendly";
+  bookingMethod?: "native-form";
 }

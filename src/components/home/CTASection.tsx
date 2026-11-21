@@ -10,7 +10,7 @@ export default function CTASection() {
   const { content } = useSiteContent();
   const cta = content.home.cta;
   return (
-    <section className="section-padding" aria-label="Book an appointment">
+    <section className="section-padding" aria-label="Contact Dr. Divya">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <motion.div
           initial={{ opacity: 0, y: 16 }}
@@ -41,19 +41,19 @@ export default function CTASection() {
             <p className="text-base text-(--foreground-muted) max-w-lg mx-auto mb-8 leading-relaxed">
               {cta.summary}
             </p>
-            <div className="flex flex-wrap gap-4 justify-center">
+            <div className="flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:justify-center sm:gap-4">
               <Link
                 href="/contactus"
-                className="inline-flex items-center gap-2 px-8 py-3.5 rounded-lg bg-(--accent-gold) text-(--background) text-sm font-medium hover:bg-(--accent-gold-light) transition-colors duration-200"
+                className="inline-flex w-full items-center justify-center gap-2 px-6 py-3.5 rounded-lg bg-(--accent-gold) text-(--background) text-sm font-medium hover:bg-(--accent-gold-light) transition-colors duration-200 sm:w-auto sm:px-8"
               >
-                {cta.appointmentLabel}
+                Send Enquiry
                 <ArrowRight size={16} />
               </Link>
               <a
                 href={buildWhatsAppLink(WHATSAPP_DEFAULT_MESSAGE)}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 px-8 py-3.5 rounded-lg border border-[#25D366] text-[#25D366] text-sm font-medium hover:bg-[#25D366] hover:text-white transition-colors duration-200"
+                className="inline-flex w-full items-center justify-center gap-2 px-6 py-3.5 rounded-lg border border-[#25D366] text-[#25D366] text-sm font-medium hover:bg-[#25D366] hover:text-white transition-colors duration-200 sm:w-auto sm:px-8"
               >
                 {cta.whatsappLabel}
                 <MessageCircle size={16} />

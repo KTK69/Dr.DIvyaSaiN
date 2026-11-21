@@ -23,7 +23,10 @@ export default function LocationCard() {
         </h2>
       </div>
       <address className="not-italic text-base text-(--foreground-muted) leading-8 whitespace-pre-line">
-        {formatLocation(contactPage.locationAddress || content.footer.contactLocation)}
+        {formatLocation(
+          contactPage.locationAddress ||
+          "AIG Hospitals, Banjara Hills, Hyderabad – 500034\nAura Aesthetics & CARE Hospitals, Gachibowli, Hyderabad"
+        )}
       </address>
       <a
         href="tel:+919900135489"

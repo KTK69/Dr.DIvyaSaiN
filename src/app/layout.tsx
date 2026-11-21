@@ -62,10 +62,6 @@ export default async function RootLayout({
             gtag('config', 'G-DF5TQCEYCB');
           `}
         </Script>
-        <script
-          src="https://assets.calendly.com/assets/external/widget.js"
-          async
-        />
       </head>
       <body>
         <SiteContentProvider initialEnvelope={initialEnvelope}>

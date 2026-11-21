@@ -153,7 +153,7 @@ export default function TestimonialsContent() {
             href="/contactus"
             className="inline-flex items-center gap-2 rounded-lg bg-(--accent-gold) px-5 py-3 text-sm font-medium text-(--background) hover:bg-(--accent-gold-light) transition-colors"
           >
-            Request a consultation <ArrowRight size={15} />
+            Send an enquiry <ArrowRight size={15} />
           </Link>
           <Link
             href="/services"

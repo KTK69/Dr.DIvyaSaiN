@@ -1114,12 +1114,12 @@ export default function AdminPanel() {
                 <Field label="Subheading" value={content.servicesPage.subheading} onChange={(value) => update("servicesPage", { ...content.servicesPage, subheading: value })} />
                 <Field label="Cosmetic Category Title" value={content.servicesPage.categoryCosmeticTitle} onChange={(value) => update("servicesPage", { ...content.servicesPage, categoryCosmeticTitle: value })} />
                 <Field label="Reconstructive Category Title" value={content.servicesPage.categoryReconstructiveTitle} onChange={(value) => update("servicesPage", { ...content.servicesPage, categoryReconstructiveTitle: value })} />
-                <Field label="Book Consultation Heading" value={content.servicesPage.bookConsultationHeading} onChange={(value) => update("servicesPage", { ...content.servicesPage, bookConsultationHeading: value })} />
-                <Field label="Book Consultation Button" value={content.servicesPage.bookConsultationSubheading} onChange={(value) => update("servicesPage", { ...content.servicesPage, bookConsultationSubheading: value })} />
+                <Field label="Enquiry Heading" value={content.servicesPage.bookConsultationHeading} onChange={(value) => update("servicesPage", { ...content.servicesPage, bookConsultationHeading: value })} />
+                <Field label="Enquiry Button" value={content.servicesPage.bookConsultationSubheading} onChange={(value) => update("servicesPage", { ...content.servicesPage, bookConsultationSubheading: value })} />
               </div>
               
               <div className="border-t border-(--border) pt-6">
-                <h3 className="text-sm font-semibold text-(--foreground) mb-4">Featured Services (Below Consultation Button)</h3>
+                <h3 className="text-sm font-semibold text-(--foreground) mb-4">Featured Services (Below Enquiry Button)</h3>
                 <ListEditor<{ slug: string; category: "reconstructive" | "cosmetic" }>
                   items={content.servicesPage.featuredServices || []}
                   onAdd={() => {
@@ -1672,6 +1672,24 @@ function ServiceForm({ item, onChange }: { item: ServiceItem; onChange: (value: 
           />
           <RichTextField label="Content" value={item.content} onChange={(value) => onChange({ ...item, content: value })} height={280} />
         </div>
+        <RichTextField
+          label="Right sidebar content"
+          value={item.right_sidebar_content || ""}
+          onChange={(value) => onChange({ ...item, right_sidebar_content: value })}
+          height={220}
+          className="md:col-span-2"
+        />
+        <Field
+          label="Right sidebar heading"
+          value={item.right_sidebar_heading || "Your Surgeon"}
+          onChange={(value) => onChange({ ...item, right_sidebar_heading: value })}
+        />
+        <Field
+          label="Right sidebar location"
+          value={item.right_sidebar_location || ""}
+          onChange={(value) => onChange({ ...item, right_sidebar_location: value })}
+          multiline
+        />
         <Field label="Meta title" value={item.meta_title} onChange={(value) => onChange({ ...item, meta_title: value })} />
         <Field label="Meta description" value={item.meta_description} onChange={(value) => onChange({ ...item, meta_description: value })} multiline className="md:col-span-2" />
         <KeywordField label="Keywords (one per line)" values={item.meta_keywords ?? []} onChange={(value) => onChange({ ...item, meta_keywords: value })} className="md:col-span-2" />
@@ -2045,7 +2063,7 @@ function PdfImportButton({ currentContent, onImport }: { currentContent: string;
 
         <label className="text-xs flex items-center gap-2">
           <input type="checkbox" className="mr-1" checked={preferNoTables} onChange={(e) => setPreferNoTables(e.target.checked)} />
-          <span className="text-xs text-(--foreground-muted)">Prefer prose (don't auto-detect tables)</span>
+          <span className="text-xs text-(--foreground-muted)">Prefer prose (don&apos;t auto-detect tables)</span>
         </label>
 
         {status === "extracting" && (

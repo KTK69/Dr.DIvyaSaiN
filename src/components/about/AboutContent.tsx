@@ -41,12 +41,12 @@ export default function AboutContent() {
             </div>
             <div>
               {/* Doctor photo */}
-              <div className="relative w-full aspect-3/4 rounded-xl overflow-hidden border border-(--border) mb-6">
+              <div className="relative w-full aspect-4/5 rounded-xl overflow-hidden border border-(--border) mb-6 bg-(--bg-surface)">
                 <Image
                   src={ABOUT_PORTRAIT}
                   alt="Dr. Divya Sai Narsingam – Plastic & Reconstructive Surgeon, CARE Hospitals Hyderabad"
                   fill
-                  className="object-cover object-top"
+                  className="object-contain object-top"
                   priority
                 />
               </div>

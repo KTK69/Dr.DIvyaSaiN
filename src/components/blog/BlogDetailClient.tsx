@@ -72,7 +72,7 @@ export default function BlogDetailClient({ slug, serverBlog }: Props) {
         ) : null}
 
         {blog.image ? (
-          <div className="relative aspect-video mt-8 rounded-2xl overflow-hidden border border-(--border) bg-(--bg-surface)">
+          <div className="relative aspect-16/10 mt-8 rounded-2xl overflow-hidden border border-(--border) bg-(--bg-surface)">
             <Image
               src={blog.image}
               alt={`${displayTitle} - plastic surgery article by Dr. Divya Sai Narsingam`}

@@ -13,7 +13,7 @@ const TOKEN_TTL_MS = 15 * 60 * 1000;
 type ConfirmationRecord = {
   id: string;
   tokenHash: string;
-  source: "native-form" | "calendly";
+  source: "native-form";
   sourceId: string;
   metadata: Record<string, string>;
   createdAt: string;
