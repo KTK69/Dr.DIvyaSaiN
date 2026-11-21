@@ -133,7 +133,7 @@ export const contactInfo = {
   area: "Banjara Hills & Gachibowli",
   city: "Hyderabad",
   fullAddress:
-    "Room No. 20, 1st Floor, AIG Hospitals, Banjara Hills, Hyderabad – 500034\nRoom No. 212, AIG Hospitals, Banjara Hills & Aura Aesthetics & CARE Hospitals, Gachibowli, Hyderabad",
+    "Room No. 20, 1st Floor, AIG Hospitals, Banjara Hills, Hyderabad – 500034\nRoom No. 212, Aura Aesthetics & CARE Hospitals, Gachibowli, Hyderabad",
 };
 
 export const reconstructiveServices = [

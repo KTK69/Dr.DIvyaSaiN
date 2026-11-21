@@ -73,7 +73,10 @@ export default function Footer() {
               <li className="flex gap-3">
                 <MapPin size={15} className="text-(--accent-gold) mt-0.5 shrink-0" />
                 <span className="text-sm text-(--foreground-muted) leading-relaxed whitespace-pre-line">
-                  {formatLocation(footer.contactLocation)}
+                  {formatLocation(
+                    "Room No. 20, 1st Floor, AIG Hospitals, Banjara Hills, Hyderabad – 500034\n" +
+                    "Room No. 212, Aura Aesthetics & CARE Hospitals, Gachibowli, Hyderabad"
+                  )}
                 </span>
               </li>
               <li className="flex gap-3 items-center">
