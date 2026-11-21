@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Instagram, Youtube } from "lucide-react";
+import { Instagram } from "lucide-react";
 import { buildWhatsAppLink, WHATSAPP_DEFAULT_MESSAGE } from "@/lib/communication";
 
 const INSTAGRAM_URL = "https://www.instagram.com/drreconstruct";
@@ -64,7 +64,18 @@ function YouTubeButton() {
       className="flex h-12 w-12 items-center justify-center rounded-full shadow-2xl sm:h-14 sm:w-14"
       style={{ background: "#FF0000" }}
     >
-      <Youtube size={24} color="white" fill="white" aria-hidden="true" />
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 24 24"
+        className="h-7 w-7"
+        aria-hidden="true"
+      >
+        <path
+          fill="white"
+          d="M23.5 6.2a3 3 0 0 0-2.1-2.1C19.5 3.6 12 3.6 12 3.6s-7.5 0-9.4.5A3 3 0 0 0 .5 6.2 31.3 31.3 0 0 0 0 12a31.3 31.3 0 0 0 .5 5.8 3 3 0 0 0 2.1 2.1c1.9.5 9.4.5 9.4.5s7.5 0 9.4-.5a3 3 0 0 0 2.1-2.1A31.3 31.3 0 0 0 24 12a31.3 31.3 0 0 0-.5-5.8Z"
+        />
+        <path fill="#FF0000" d="m9.6 15.6 6.3-3.6-6.3-3.6v7.2Z" />
+      </svg>
     </motion.a>
   );
 }
