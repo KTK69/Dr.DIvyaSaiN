@@ -11,76 +11,30 @@ export default function AboutPreview() {
   return (
     <section className="section-padding" aria-label="About Dr. Narsingam">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 items-start gap-10 lg:grid-cols-2 lg:gap-16 lg:items-center">
-          {/* Quote card */}
+        <div className="mx-auto max-w-4xl">
           <motion.div
-            initial={{ opacity: 0, x: -20 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5 }}
-          >
-            <div className="glass-card relative rounded-2xl p-6 sm:p-10">
-              <div
-                className="absolute top-6 left-6 text-6xl leading-none text-(--accent-gold) opacity-20"
-                aria-hidden="true"
-                style={{ fontFamily: "var(--font-serif)" }}
-              >
-                &ldquo;
-              </div>
-              <blockquote className="relative">
-                <p
-                  className="text-xl text-(--foreground) leading-relaxed italic mb-6"
-                  style={{ fontFamily: "var(--font-serif)" }}
-                >
-                  {about.quote}
-                </p>
-                <footer className="flex items-center gap-3">
-                  <div className="w-8 h-px bg-(--accent-gold)" aria-hidden="true" />
-                  <cite className="text-sm not-italic text-(--accent-gold-light)">
-                    Dr. Divya Sai Narsingam
-                  </cite>
-                </footer>
-              </blockquote>
-            </div>
-          </motion.div>
-
-          {/* Text */}
-          <motion.div
-            initial={{ opacity: 0, x: 20 }}
+            initial={{ opacity: 0, y: 16 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.5, delay: 0.1 }}
+            className="text-center"
           >
             <p className="text-xs font-semibold uppercase tracking-widest text-(--accent-gold) mb-4">
               Your Doctor
             </p>
             <h2
-              className="text-3xl md:text-4xl font-medium text-(--foreground) mb-5"
+              className="text-3xl md:text-4xl font-medium text-(--foreground)"
               style={{ fontFamily: "var(--font-serif)" }}
             >
-              Compassionate Care.
-              <br />
-              Clinically Experienced.
+              Specialist care, shaped around you
             </h2>
-            <p className="text-base text-(--foreground-muted) leading-relaxed mb-6">
+            <p className="mx-auto mt-5 max-w-2xl text-base text-(--foreground-muted) leading-relaxed">
               {about.summary}
             </p>
-            <p className="text-base text-(--foreground-muted) leading-relaxed mb-8">
-              She currently practises as a Consultant at AIG Hospitals, Banjara Hills and Aura Aesthetics & CARE Hospitals, Gachibowli — two of Hyderabad&apos;s leading private healthcare institutions.
-            </p>
-
-            <div className="grid grid-cols-2 gap-4 mb-8">
-              {about.highlights.map(({ title, desc }) => (
-                <div key={title} className="p-4 rounded-lg bg-(--bg-card) border border-(--border)">
-                  <p className="text-sm font-medium text-(--foreground) mb-1">{title}</p>
-                  <p className="text-xs text-(--foreground-muted)">{desc}</p>
-                </div>
-              ))}
-            </div>
 
             <Link
               href="/aboutus"
-              className="inline-flex items-center gap-2 text-sm text-(--accent-gold-light) hover:gap-3 transition-all duration-200"
+              className="mt-7 inline-flex items-center gap-2 text-sm text-(--accent-gold-light) hover:gap-3 transition-all duration-200"
             >
               Read full biography <ArrowRight size={14} />
             </Link>
