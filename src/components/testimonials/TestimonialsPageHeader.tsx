@@ -8,11 +8,11 @@ export default function TestimonialsPageHeader() {
   
   return (
     <>
-      <p className="text-xs font-semibold uppercase tracking-widest text-(--accent-gold) mb-3">
+      <p className="mb-3 text-[10px] font-semibold uppercase leading-relaxed tracking-[0.12em] text-(--accent-gold) break-words sm:text-xs sm:tracking-widest">
         Patient Experiences
       </p>
       <h1
-        className="text-4xl md:text-5xl font-medium text-(--foreground) max-w-3xl"
+        className="max-w-3xl break-words text-3xl font-medium leading-tight text-(--foreground) sm:text-4xl md:text-5xl"
         style={{ fontFamily: "var(--font-serif)" }}
       >
         {testimonialsPage.heading}

@@ -8,11 +8,11 @@ export default function ContactPageHeader() {
   
   return (
     <>
-      <p className="text-sm font-semibold uppercase tracking-[0.22em] text-(--accent-gold) mb-4">
+      <p className="mb-4 text-[10px] font-semibold uppercase leading-relaxed tracking-[0.12em] text-(--accent-gold) break-words sm:text-xs sm:tracking-[0.18em]">
         Appointments
       </p>
       <h1
-        className="text-5xl md:text-6xl font-medium text-(--foreground) max-w-3xl"
+        className="max-w-3xl break-words text-3xl font-medium leading-tight text-(--foreground) sm:text-5xl md:text-6xl"
         style={{ fontFamily: "var(--font-serif)" }}
       >
         {contactPage.heading}

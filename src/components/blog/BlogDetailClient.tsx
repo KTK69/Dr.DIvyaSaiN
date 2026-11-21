@@ -51,7 +51,7 @@ export default function BlogDetailClient({ slug, serverBlog }: Props) {
     <>
       {!serverBlog && localBlog ? <JsonLd data={buildBlogJsonLd(localBlog)} /> : null}
 
-      <article className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 pt-28 pb-16">
+      <article className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 pt-32 lg:pt-24 pb-16">
         {publishedAt ? (
           <p className="text-xs uppercase tracking-widest text-(--foreground-subtle) mb-3">
             {publishedAt}

@@ -56,7 +56,7 @@ export default async function ReconstructiveServicePage({ params }: Props) {
       <JsonLd data={breadcrumbJsonLd} />
       <JsonLd data={faqJsonLd} />
 
-      <div className="pt-28 pb-16 border-b border-(--border) bg-(--bg-surface)">
+      <div className="pt-32 pb-16 lg:pt-24 border-b border-(--border) bg-(--bg-surface)">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <nav aria-label="Breadcrumb" className="mb-4">
             <ol className="flex items-center gap-2 text-xs text-(--foreground-subtle)">

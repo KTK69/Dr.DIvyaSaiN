@@ -76,7 +76,7 @@ export default async function PlasticSurgeonBanjaraHillsPage() {
       <JsonLd data={breadcrumbJsonLd} />
       <JsonLd data={buildFaqJsonLd(page.faqItems)} />
 
-      <section className="pt-28 pb-16 border-b border-(--border) bg-(--bg-surface)">
+      <section className="pt-32 pb-16 lg:pt-24 border-b border-(--border) bg-(--bg-surface)">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid gap-10 lg:grid-cols-[1.15fr_0.85fr] lg:items-center">
             <div>
